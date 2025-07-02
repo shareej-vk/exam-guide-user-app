@@ -1,0 +1,165 @@
+/* Hide the radio buttons */
+
+.tabs-container img{
+    width: 100% !important;
+    height: auto;
+}
+
+.tabs-container input[type="radio"] {
+    display: none !important;
+}
+.tabs-container{
+  margin-top: 20px !important;
+}
+[type="radio"] {
+    display: none !important;
+}
+
+.notes-popup-intro{
+    padding-top: 30px !important;
+}
+
+/* Style the tab labels (buttons) */
+.tab-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-right: 1px solid #e5e7eb;
+    background-color: #f9fafb;
+    color: #6b7280;
+    font-weight: 500;
+    text-align: center;
+    min-height: 60px;
+}
+
+.tab-label:last-child {
+    border-right: none;
+}
+
+.tab-label:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+/* Active tab label styling */
+#tab1:checked ~ .tabs-header #label1,
+#tab2:checked ~ .tabs-header #label2,
+#tab3:checked ~ .tabs-header #label3,
+#tab4:checked ~ .tabs-header #label4,
+#tab5:checked ~ .tabs-header #label5 {
+    background-color: #3b82f6;
+    color: white;
+    font-weight: 600;
+    border-bottom: 3px solid #1d4ed8;
+}
+
+/* Hide all tab content by default */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Show content based on which radio button is checked */
+#tab1:checked ~ .tab-content-container .content1,
+#tab2:checked ~ .tab-content-container .content2,
+#tab3:checked ~ .tab-content-container .content3,
+#tab4:checked ~ .tab-content-container .content4,
+#tab5:checked ~ .tab-content-container .content5 {
+    display: block;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive design for mobile */
+@media (max-width: 640px) {
+    .tabs-header {
+        flex-direction: column;
+    }
+    
+    .tab-label {
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+        min-height: 50px;
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+    
+    .tab-label:last-child {
+        border-bottom: none;
+    }
+}
+
+/* Additional styling for better visual hierarchy */
+.tabs-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+}
+
+.tab-content-container {
+    min-height: 400px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+/* SVG responsiveness */
+.tab-content svg {
+    max-width: 100%;
+    height: auto;
+}
+
+.tabs-container > h2{
+    display: none;
+}
+.tabs-container > p{
+    display: none;
+}
+.intro-title{
+    display:none;
+}
+
+.answer-container{
+    display: none;
+}
+.show-answer-button {
+    display: inline-block;
+    margin: 20px 0;
+    padding: 12px 24px;
+    background-color: #3b82f6; /* A nice blue, consistent with active tab */
+    color: white;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.show-answer-button:hover {
+    background-color: #2563eb; /* A slightly darker blue for hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.show-answer-button:active {
+    background-color: #1d4ed8; /* An even darker blue for click */
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}

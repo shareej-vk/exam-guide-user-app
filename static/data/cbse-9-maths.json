@@ -1,0 +1,730 @@
+ {
+        "subject": {
+            "id": 1,
+            "name": "math",
+            "label": "Mathematics"
+        },
+        "units": [
+            {
+                "id": 16,
+                "name": "number_systems",
+                "label": "Number Systems",
+                "lessons": [
+                    {
+                        "id": 166,
+                        "title": "Lesson 1: Introduction to Number Systems (Natural, Whole, Integers)",
+                        "slug": "lesson_1_introduction_to_number_systems_natural_whole_integers",
+                        "display_order": 1
+                    },
+                    {
+                        "id": 167,
+                        "title": "Lesson 2: Rational Numbers and Their Representation",
+                        "slug": "lesson_2_rational_numbers_and_their_representation",
+                        "display_order": 2
+                    },
+                    {
+                        "id": 168,
+                        "title": "Lesson 3: Finding Rational Numbers Between Two Given Numbers",
+                        "slug": "lesson_3_finding_rational_numbers_between_two_given_numbers",
+                        "display_order": 3
+                    },
+                    {
+                        "id": 169,
+                        "title": "Lesson 4: Introduction to Irrational Numbers",
+                        "slug": "lesson_4_introduction_to_irrational_numbers",
+                        "display_order": 4
+                    },
+                    {
+                        "id": 170,
+                        "title": "Lesson 5: Real Numbers and the Real Number Line",
+                        "slug": "lesson_5_real_numbers_and_the_real_number_line",
+                        "display_order": 5
+                    },
+                    {
+                        "id": 171,
+                        "title": "Lesson 6: Locating Irrational Numbers on the Number Line (e.g., √2, √3)",
+                        "slug": "lesson_6_locating_irrational_numbers_on_the_number_line_eg_2_3",
+                        "display_order": 6
+                    },
+                    {
+                        "id": 172,
+                        "title": "Lesson 7: Decimal Expansions of Rational Numbers (Terminating & Non-Terminating Recurring)",
+                        "slug": "lesson_7_decimal_expansions_of_rational_numbers_terminating_non-terminating_recurring",
+                        "display_order": 7
+                    },
+                    {
+                        "id": 173,
+                        "title": "Lesson 8: Converting Decimal Expansions into p/q Form",
+                        "slug": "lesson_8_converting_decimal_expansions_into_pq_form",
+                        "display_order": 8
+                    },
+                    {
+                        "id": 174,
+                        "title": "Lesson 9: Decimal Expansions of Irrational Numbers (Non-Terminating Non-Recurring)",
+                        "slug": "lesson_9_decimal_expansions_of_irrational_numbers_non-terminating_non-recurring",
+                        "display_order": 9
+                    },
+                    {
+                        "id": 175,
+                        "title": "Lesson 10: Operations on Real Numbers",
+                        "slug": "lesson_10_operations_on_real_numbers",
+                        "display_order": 10
+                    },
+                    {
+                        "id": 176,
+                        "title": "Lesson 11: Representing √x Geometrically on the Number Line",
+                        "slug": "lesson_11_representing_x_geometrically_on_the_number_line",
+                        "display_order": 11
+                    },
+                    {
+                        "id": 177,
+                        "title": "Lesson 12: Identities Involving Square Roots",
+                        "slug": "lesson_12_identities_involving_square_roots",
+                        "display_order": 12
+                    },
+                    {
+                        "id": 178,
+                        "title": "Lesson 13: Rationalizing the Denominator",
+                        "slug": "lesson_13_rationalizing_the_denominator",
+                        "display_order": 13
+                    },
+                    {
+                        "id": 179,
+                        "title": "Lesson 14: Laws of Exponents for Real Numbers",
+                        "slug": "lesson_14_laws_of_exponents_for_real_numbers",
+                        "display_order": 14
+                    }
+                ]
+            },
+            {
+                "id": 18,
+                "name": "polynomials",
+                "label": "Polynomials",
+                "lessons": [
+                    {
+                        "id": 180,
+                        "title": "Lesson 1: Introduction to Polynomials in One Variable",
+                        "slug": "lesson_1_introduction_to_polynomials_in_one_variable",
+                        "display_order": 1
+                    },
+                    {
+                        "id": 181,
+                        "title": "Lesson 2: Terms, Coefficients, and Degree of a Polynomial",
+                        "slug": "lesson_2_terms_coefficients_and_degree_of_a_polynomial",
+                        "display_order": 2
+                    },
+                    {
+                        "id": 182,
+                        "title": "Lesson 3: Classification of Polynomials (Linear, Quadratic, Cubic, etc.)",
+                        "slug": "lesson_3_classification_of_polynomials_linear_quadratic_cubic_etc",
+                        "display_order": 3
+                    },
+                    {
+                        "id": 183,
+                        "title": "Lesson 4: Zeroes of a Polynomial",
+                        "slug": "lesson_4_zeroes_of_a_polynomial",
+                        "display_order": 4
+                    },
+                    {
+                        "id": 184,
+                        "title": "Lesson 5: The Remainder Theorem and Factor Theorem",
+                        "slug": "lesson_5_the_remainder_theorem_and_factor_theorem",
+                        "display_order": 5
+                    },
+                    {
+                        "id": 185,
+                        "title": "Lesson 6: Factorisation of Quadratic Polynomials by Splitting the Middle Term",
+                        "slug": "lesson_6_factorisation_of_quadratic_polynomials_by_splitting_the_middle_term",
+                        "display_order": 6
+                    },
+                    {
+                        "id": 186,
+                        "title": "Lesson 7: Factorisation of Cubic Polynomials using the Factor Theorem",
+                        "slug": "lesson_7_factorisation_of_cubic_polynomials_using_the_factor_theorem",
+                        "display_order": 7
+                    },
+                    {
+                        "id": 187,
+                        "title": "Lesson 8: Algebraic Identity I: (x + y + z)²",
+                        "slug": "lesson_8_algebraic_identity_i_x_y_z",
+                        "display_order": 8
+                    },
+                    {
+                        "id": 188,
+                        "title": "Lesson 9: Algebraic Identity II: (x + y)³ and (x - y)³",
+                        "slug": "lesson_9_algebraic_identity_ii_x_y_and_x_-_y",
+                        "display_order": 9
+                    },
+                    {
+                        "id": 189,
+                        "title": "Lesson 10: Algebraic Identity III: x³ + y³ + z³ – 3xyz",
+                        "slug": "lesson_10_algebraic_identity_iii_x_y_z_3xyz",
+                        "display_order": 10
+                    },
+                    {
+                        "id": 190,
+                        "title": "Lesson 11: Factorisation using Sum and Difference of Cubes (x³ + y³ and x³ - y³)",
+                        "slug": "lesson_11_factorisation_using_sum_and_difference_of_cubes_x_y_and_x_-_y",
+                        "display_order": 11
+                    },
+                    {
+                        "id": 191,
+                        "title": "Lesson 12: Applications of Polynomials and Identities",
+                        "slug": "lesson_12_applications_of_polynomials_and_identities",
+                        "display_order": 12
+                    }
+                ]
+            },
+            {
+                "id": 21,
+                "name": "coordinate_geometry",
+                "label": "Coordinate Geometry",
+                "lessons": [
+                    {
+                        "id": 192,
+                        "title": "Lesson 1: Introduction to the Coordinate Plane",
+                        "slug": "lesson_1_introduction_to_the_coordinate_plane",
+                        "display_order": 1
+                    },
+                    {
+                        "id": 193,
+                        "title": "Lesson 2: The Cartesian System: Axes and Origin",
+                        "slug": "lesson_2_the_cartesian_system_axes_and_origin",
+                        "display_order": 2
+                    },
+                    {
+                        "id": 194,
+                        "title": "Lesson 3: Coordinates of a Point: Abscissa and Ordinate",
+                        "slug": "lesson_3_coordinates_of_a_point_abscissa_and_ordinate",
+                        "display_order": 3
+                    },
+                    {
+                        "id": 195,
+                        "title": "Lesson 4: Quadrants and Sign Conventions",
+                        "slug": "lesson_4_quadrants_and_sign_conventions",
+                        "display_order": 4
+                    },
+                    {
+                        "id": 196,
+                        "title": "Lesson 5: Identifying the Coordinates of a Point from a Graph",
+                        "slug": "lesson_5_identifying_the_coordinates_of_a_point_from_a_graph",
+                        "display_order": 5
+                    },
+                    {
+                        "id": 197,
+                        "title": "Lesson 6: Plotting Points in the Cartesian Plane",
+                        "slug": "lesson_6_plotting_points_in_the_cartesian_plane",
+                        "display_order": 6
+                    },
+                    {
+                        "id": 198,
+                        "title": "Lesson 7: Coordinates of Points on the Axes",
+                        "slug": "lesson_7_coordinates_of_points_on_the_axes",
+                        "display_order": 7
+                    }
+                ]
+            },
+            {
+                "id": 22,
+                "name": "linear_equations_in_two_variables",
+                "label": "Linear Equations in Two Variables",
+                "lessons": [
+                    {
+                        "id": 216,
+                        "title": "Lesson 1: Introduction to Linear Equations in Two Variables",
+                        "slug": "lesson_1_introduction_to_linear_equations_in_two_variables",
+                        "display_order": 1
+                    },
+                    {
+                        "id": 217,
+                        "title": "Lesson 2: The Standard Form: ax + by + c = 0",
+                        "slug": "lesson_2_the_standard_form_ax_by_c_0",
+                        "display_order": 2
+                    },
+                    {
+                        "id": 218,
+                        "title": "Lesson 3: Identifying the Coefficients a, b, and c",
+                        "slug": "lesson_3_identifying_the_coefficients_a_b_and_c",
+                        "display_order": 3
+                    },
+                    {
+                        "id": 219,
+                        "title": "Lesson 4: Expressing One-Variable Equations in a Two-Variable Form",
+                        "slug": "lesson_4_expressing_one-variable_equations_in_a_two-variable_form",
+                        "display_order": 4
+                    },
+                    {
+                        "id": 220,
+                        "title": "Lesson 5: What is a Solution to a Linear Equation in Two Variables?",
+                        "slug": "lesson_5_what_is_a_solution_to_a_linear_equation_in_two_variables",
+                        "display_order": 5
+                    },
+                    {
+                        "id": 221,
+                        "title": "Lesson 6: Verifying if a Given Ordered Pair is a Solution",
+                        "slug": "lesson_6_verifying_if_a_given_ordered_pair_is_a_solution",
+                        "display_order": 6
+                    },
+                    {
+                        "id": 222,
+                        "title": "Lesson 7: Understanding that Linear Equations in Two Variables have Infinitely Many Solutions",
+                        "slug": "lesson_7_understanding_that_linear_equations_in_two_variables_have_infinitely_many_solutions",
+                        "display_order": 7
+                    },
+                    {
+                        "id": 223,
+                        "title": "Lesson 8: Methods for Finding Multiple Solutions to a Linear Equation",
+                        "slug": "lesson_8_methods_for_finding_multiple_solutions_to_a_linear_equation",
+                        "display_order": 8
+                    },
+                    {
+                        "id": 224,
+                        "title": "Lesson 9: Finding an Unknown Constant (k) when a Solution is Given",
+                        "slug": "lesson_9_finding_an_unknown_constant_k_when_a_solution_is_given",
+                        "display_order": 9
+                    }
+                ]
+            },
+            {
+                "id": 23,
+                "name": "introduction_to_euclid’s_geometry",
+                "label": "Introduction to Euclid’s Geometry",
+                "lessons": [
+                    {
+                        "id": 225,
+                        "title": "Lesson 1: A Brief History of Geometry",
+                        "slug": "lesson_1_a_brief_history_of_geometry",
+                        "display_order": 1
+                    },
+                    {
+                        "id": 226,
+                        "title": "Lesson 2: Euclid's Definitions for Point, Line, and Surface",
+                        "slug": "lesson_2_euclids_definitions_for_point_line_and_surface",
+                        "display_order": 2
+                    },
+                    {
+                        "id": 227,
+                        "title": "Lesson 3: The Concept of Undefined Terms in Geometry",
+                        "slug": "lesson_3_the_concept_of_undefined_terms_in_geometry",
+                        "display_order": 3
+                    },
+                    {
+                        "id": 228,
+                        "title": "Lesson 4: Euclid's Axioms (Common Notions)",
+                        "slug": "lesson_4_euclids_axioms_common_notions",
+                        "display_order": 4
+                    },
+                    {
+                        "id": 229,
+                        "title": "Lesson 5: Euclid's Postulate 1: A Unique Line Through Two Points",
+                        "slug": "lesson_5_euclids_postulate_1_a_unique_line_through_two_points",
+                        "display_order": 5
+                    },
+                    {
+                        "id": 230,
+                        "title": "Lesson 6: Euclid's Postulate 2: Extending a Terminated Line",
+                        "slug": "lesson_6_euclids_postulate_2_extending_a_terminated_line",
+                        "display_order": 6
+                    },
+                    {
+                        "id": 231,
+                        "title": "Lesson 7: Euclid's Postulate 3: Drawing a Circle",
+                        "slug": "lesson_7_euclids_postulate_3_drawing_a_circle",
+                        "display_order": 7
+                    },
+                    {
+                        "id": 232,
+                        "title": "Lesson 8: Euclid's Postulate 4: Equality of Right Angles",
+                        "slug": "lesson_8_euclids_postulate_4_equality_of_right_angles",
+                        "display_order": 8
+                    },
+                    {
+                        "id": 233,
+                        "title": "Lesson 9: Euclid's Postulate 5: The Parallel Postulate",
+                        "slug": "lesson_9_euclids_postulate_5_the_parallel_postulate",
+                        "display_order": 9
+                    },
+                    {
+                        "id": 234,
+                        "title": "Lesson 10: Distinguishing Between Axioms, Postulates, and Theorems",
+                        "slug": "lesson_10_distinguishing_between_axioms_postulates_and_theorems",
+                        "display_order": 10
+                    },
+                    {
+                        "id": 235,
+                        "title": "Lesson 11: Applying Axioms and Postulates to Prove a Theorem",
+                        "slug": "lesson_11_applying_axioms_and_postulates_to_prove_a_theorem",
+                        "display_order": 11
+                    }
+                ]
+            },
+            {
+                "id": 24,
+                "name": "lines_and_angles",
+                "label": "Lines and Angles",
+                "lessons": [
+                    {
+                        "id": 236,
+                        "title": "Lesson 1: Foundational Concepts: Line, Ray, and Types of Angles",
+                        "slug": "lesson_1_foundational_concepts_line_ray_and_types_of_angles",
+                        "display_order": 1
+                    },
+                    {
+                        "id": 237,
+                        "title": "Lesson 2: Important Angle Pairs: Adjacent, Linear, and Vertically Opposite",
+                        "slug": "lesson_2_important_angle_pairs_adjacent_linear_and_vertically_opposite",
+                        "display_order": 2
+                    },
+                    {
+                        "id": 238,
+                        "title": "Lesson 3: The Linear Pair Axiom and its Converse",
+                        "slug": "lesson_3_the_linear_pair_axiom_and_its_converse",
+                        "display_order": 3
+                    },
+                    {
+                        "id": 239,
+                        "title": "Lesson 4: Proving Vertically Opposite Angles are Equal",
+                        "slug": "lesson_4_proving_vertically_opposite_angles_are_equal",
+                        "display_order": 4
+                    },
+                    {
+                        "id": 240,
+                        "title": "Lesson 5: Introduction to Parallel Lines and Transversals",
+                        "slug": "lesson_5_introduction_to_parallel_lines_and_transversals",
+                        "display_order": 5
+                    },
+                    {
+                        "id": 241,
+                        "title": "Lesson 6: The Corresponding Angles Axiom and its Converse",
+                        "slug": "lesson_6_the_corresponding_angles_axiom_and_its_converse",
+                        "display_order": 6
+                    },
+                    {
+                        "id": 242,
+                        "title": "Lesson 7: The Alternate Interior Angles Theorem and its Converse",
+                        "slug": "lesson_7_the_alternate_interior_angles_theorem_and_its_converse",
+                        "display_order": 7
+                    },
+                    {
+                        "id": 243,
+                        "title": "Lesson 8: The Consecutive Interior Angles Theorem and its Converse",
+                        "slug": "lesson_8_the_consecutive_interior_angles_theorem_and_its_converse",
+                        "display_order": 8
+                    },
+                    {
+                        "id": 244,
+                        "title": "Lesson 9: Theorem: Lines Parallel to the Same Line",
+                        "slug": "lesson_9_theorem_lines_parallel_to_the_same_line",
+                        "display_order": 9
+                    },
+                    {
+                        "id": 245,
+                        "title": "Lesson 10: Applying Properties of Parallel Lines to Solve Problems",
+                        "slug": "lesson_10_applying_properties_of_parallel_lines_to_solve_problems",
+                        "display_order": 10
+                    }
+                ]
+            },
+            {
+                "id": 25,
+                "name": "triangles",
+                "label": "Triangles",
+                "lessons": [
+                    {
+                        "id": 246,
+                        "title": "Lesson 1: Introduction to Congruent Figures",
+                        "slug": "lesson_1_introduction_to_congruent_figures",
+                        "display_order": 1
+                    },
+                    {
+                        "id": 247,
+                        "title": "Lesson 2: Congruence of Triangles and CPCT",
+                        "slug": "lesson_2_congruence_of_triangles_and_cpct",
+                        "display_order": 2
+                    },
+                    {
+                        "id": 248,
+                        "title": "Lesson 3: The SAS (Side-Angle-Side) Congruence Rule",
+                        "slug": "lesson_3_the_sas_side-angle-side_congruence_rule",
+                        "display_order": 3
+                    },
+                    {
+                        "id": 249,
+                        "title": "Lesson 4: The ASA (Angle-Side-Angle) Congruence Rule",
+                        "slug": "lesson_4_the_asa_angle-side-angle_congruence_rule",
+                        "display_order": 4
+                    },
+                    {
+                        "id": 250,
+                        "title": "Lesson 5: The AAS (Angle-Angle-Side) Congruence Rule",
+                        "slug": "lesson_5_the_aas_angle-angle-side_congruence_rule",
+                        "display_order": 5
+                    },
+                    {
+                        "id": 251,
+                        "title": "Lesson 6: Theorem: Angles Opposite to Equal Sides are Equal",
+                        "slug": "lesson_6_theorem_angles_opposite_to_equal_sides_are_equal",
+                        "display_order": 6
+                    },
+                    {
+                        "id": 252,
+                        "title": "Lesson 7: Theorem: Sides Opposite to Equal Angles are Equal",
+                        "slug": "lesson_7_theorem_sides_opposite_to_equal_angles_are_equal",
+                        "display_order": 7
+                    },
+                    {
+                        "id": 253,
+                        "title": "Lesson 8: The SSS (Side-Side-Side) Congruence Rule",
+                        "slug": "lesson_8_the_sss_side-side-side_congruence_rule",
+                        "display_order": 8
+                    },
+                    {
+                        "id": 254,
+                        "title": "Lesson 9: The RHS (Right Angle-Hypotenuse-Side) Congruence Rule",
+                        "slug": "lesson_9_the_rhs_right_angle-hypotenuse-side_congruence_rule",
+                        "display_order": 9
+                    },
+                    {
+                        "id": 255,
+                        "title": "Lesson 10: Applications of Congruence Rules",
+                        "slug": "lesson_10_applications_of_congruence_rules",
+                        "display_order": 10
+                    }
+                ]
+            },
+            {
+                "id": 26,
+                "name": "quadrilaterals",
+                "label": "Quadrilaterals",
+                "lessons": [
+                    {
+                        "id": 256,
+                        "title": "Lesson 1: The Diagonal of a Parallelogram and Congruent Triangles",
+                        "slug": "lesson_1_the_diagonal_of_a_parallelogram_and_congruent_triangles",
+                        "display_order": 1
+                    },
+                    {
+                        "id": 257,
+                        "title": "Lesson 2: Property: Opposite Sides of a Parallelogram are Equal",
+                        "slug": "lesson_2_property_opposite_sides_of_a_parallelogram_are_equal",
+                        "display_order": 2
+                    },
+                    {
+                        "id": 258,
+                        "title": "Lesson 3: Property: Opposite Angles of a Parallelogram are Equal",
+                        "slug": "lesson_3_property_opposite_angles_of_a_parallelogram_are_equal",
+                        "display_order": 3
+                    },
+                    {
+                        "id": 259,
+                        "title": "Lesson 4: Property: Diagonals of a Parallelogram Bisect Each Other",
+                        "slug": "lesson_4_property_diagonals_of_a_parallelogram_bisect_each_other",
+                        "display_order": 4
+                    },
+                    {
+                        "id": 260,
+                        "title": "Lesson 5: Condition for a Parallelogram: Equal Opposite Sides",
+                        "slug": "lesson_5_condition_for_a_parallelogram_equal_opposite_sides",
+                        "display_order": 5
+                    },
+                    {
+                        "id": 261,
+                        "title": "Lesson 6: Condition for a Parallelogram: Equal Opposite Angles",
+                        "slug": "lesson_6_condition_for_a_parallelogram_equal_opposite_angles",
+                        "display_order": 6
+                    },
+                    {
+                        "id": 262,
+                        "title": "Lesson 7: Condition for a Parallelogram: Bisecting Diagonals",
+                        "slug": "lesson_7_condition_for_a_parallelogram_bisecting_diagonals",
+                        "display_order": 7
+                    },
+                    {
+                        "id": 263,
+                        "title": "Lesson 8: Properties of Special Quadrilaterals: Rectangle, Rhombus, and Square",
+                        "slug": "lesson_8_properties_of_special_quadrilaterals_rectangle_rhombus_and_square",
+                        "display_order": 8
+                    },
+                    {
+                        "id": 264,
+                        "title": "Lesson 9: The Mid-point Theorem",
+                        "slug": "lesson_9_the_mid-point_theorem",
+                        "display_order": 9
+                    },
+                    {
+                        "id": 265,
+                        "title": "Lesson 10: The Converse of the Mid-point Theorem",
+                        "slug": "lesson_10_the_converse_of_the_mid-point_theorem",
+                        "display_order": 10
+                    }
+                ]
+            },
+            {
+                "id": 27,
+                "name": "circles",
+                "label": "Circles",
+                "lessons": [
+                    {
+                        "id": 266,
+                        "title": "Lesson 1: Equal Chords and the Angles they Subtend at the Centre",
+                        "slug": "lesson_1_equal_chords_and_the_angles_they_subtend_at_the_centre",
+                        "display_order": 1
+                    },
+                    {
+                        "id": 267,
+                        "title": "Lesson 2: The Perpendicular from the Centre to a Chord and its Converse",
+                        "slug": "lesson_2_the_perpendicular_from_the_centre_to_a_chord_and_its_converse",
+                        "display_order": 2
+                    },
+                    {
+                        "id": 268,
+                        "title": "Lesson 3: Equal Chords and their Distance from the Centre and its Converse",
+                        "slug": "lesson_3_equal_chords_and_their_distance_from_the_centre_and_its_converse",
+                        "display_order": 3
+                    },
+                    {
+                        "id": 269,
+                        "title": "Lesson 4: The Angle Subtended by an Arc at the Centre and at the Circumference",
+                        "slug": "lesson_4_the_angle_subtended_by_an_arc_at_the_centre_and_at_the_circumference",
+                        "display_order": 4
+                    },
+                    {
+                        "id": 270,
+                        "title": "Lesson 5: Angles in the Same Segment and Angle in a Semicircle",
+                        "slug": "lesson_5_angles_in_the_same_segment_and_angle_in_a_semicircle",
+                        "display_order": 5
+                    },
+                    {
+                        "id": 271,
+                        "title": "Lesson 6: Introduction to Cyclic Quadrilaterals",
+                        "slug": "lesson_6_introduction_to_cyclic_quadrilaterals",
+                        "display_order": 6
+                    },
+                    {
+                        "id": 272,
+                        "title": "Lesson 7: The Angle Sum Property of a Cyclic Quadrilateral",
+                        "slug": "lesson_7_the_angle_sum_property_of_a_cyclic_quadrilateral",
+                        "display_order": 7
+                    },
+                    {
+                        "id": 273,
+                        "title": "Lesson 8: Conditions for a Quadrilateral to be Cyclic",
+                        "slug": "lesson_8_conditions_for_a_quadrilateral_to_be_cyclic",
+                        "display_order": 8
+                    }
+                ]
+            },
+            {
+                "id": 28,
+                "name": "heron’s_formula",
+                "label": "Heron’s Formula",
+                "lessons": [
+                    {
+                        "id": 274,
+                        "title": "Lesson 1: Introduction to Heron's Formula and the Semi-Perimeter (s)",
+                        "slug": "lesson_1_introduction_to_herons_formula_and_the_semi-perimeter_s",
+                        "display_order": 1
+                    },
+                    {
+                        "id": 275,
+                        "title": "Lesson 2: Calculating Area when all Three Sides of a Triangle are Known",
+                        "slug": "lesson_2_calculating_area_when_all_three_sides_of_a_triangle_are_known",
+                        "display_order": 2
+                    },
+                    {
+                        "id": 276,
+                        "title": "Lesson 3: Applying Heron's Formula to Isosceles and Equilateral Triangles",
+                        "slug": "lesson_3_applying_herons_formula_to_isosceles_and_equilateral_triangles",
+                        "display_order": 3
+                    },
+                    {
+                        "id": 277,
+                        "title": "Lesson 4: Finding Area when the Perimeter is Given",
+                        "slug": "lesson_4_finding_area_when_the_perimeter_is_given",
+                        "display_order": 4
+                    },
+                    {
+                        "id": 278,
+                        "title": "Lesson 5: Solving Application-Based Word Problems",
+                        "slug": "lesson_5_solving_application-based_word_problems",
+                        "display_order": 5
+                    }
+                ]
+            },
+            {
+                "id": 29,
+                "name": "surface_areas_and_volumes",
+                "label": "Surface Areas and Volumes",
+                "lessons": [
+                    {
+                        "id": 279,
+                        "title": "Lesson 1: Curved and Total Surface Area of a Right Circular Cone",
+                        "slug": "lesson_1_curved_and_total_surface_area_of_a_right_circular_cone",
+                        "display_order": 1
+                    },
+                    {
+                        "id": 280,
+                        "title": "Lesson 2: Surface Area of a Sphere",
+                        "slug": "lesson_2_surface_area_of_a_sphere",
+                        "display_order": 2
+                    },
+                    {
+                        "id": 281,
+                        "title": "Lesson 3: Surface Area of a Hemisphere",
+                        "slug": "lesson_3_surface_area_of_a_hemisphere",
+                        "display_order": 3
+                    },
+                    {
+                        "id": 282,
+                        "title": "Lesson 4: Volume of a Right Circular Cone",
+                        "slug": "lesson_4_volume_of_a_right_circular_cone",
+                        "display_order": 4
+                    },
+                    {
+                        "id": 283,
+                        "title": "Lesson 5: Volume of a Sphere",
+                        "slug": "lesson_5_volume_of_a_sphere",
+                        "display_order": 5
+                    },
+                    {
+                        "id": 284,
+                        "title": "Lesson 6: Volume of a Hemisphere",
+                        "slug": "lesson_6_volume_of_a_hemisphere",
+                        "display_order": 6
+                    }
+                ]
+            },
+            {
+                "id": 30,
+                "name": "statistics",
+                "label": "Statistics",
+                "lessons": [
+                    {
+                        "id": 285,
+                        "title": "Lesson 1: Bar Graphs",
+                        "slug": "lesson_1_bar_graphs",
+                        "display_order": 1
+                    },
+                    {
+                        "id": 286,
+                        "title": "Lesson 2: Histograms with Uniform Width",
+                        "slug": "lesson_2_histograms_with_uniform_width",
+                        "display_order": 2
+                    },
+                    {
+                        "id": 287,
+                        "title": "Lesson 3: Histograms with Varying Widths",
+                        "slug": "lesson_3_histograms_with_varying_widths",
+                        "display_order": 3
+                    },
+                    {
+                        "id": 288,
+                        "title": "Lesson 4: Frequency Polygons",
+                        "slug": "lesson_4_frequency_polygons",
+                        "display_order": 4
+                    }
+                ]
+            }
+        ],
+        "downloadUrl": "/exports/subject-1-navigation-1751078255618.json"
+    }

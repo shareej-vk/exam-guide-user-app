@@ -1,0 +1,34 @@
+{
+  "exportedAt": "2025-06-27T10:52:41.723Z",
+  "tables": [
+    {
+      "name": "boards",
+      "count": 3
+    },
+    {
+      "name": "classes",
+      "count": 0
+    },
+    {
+      "name": "subjects",
+      "count": 5
+    },
+    {
+      "name": "units",
+      "count": 64
+    },
+    {
+      "name": "content",
+      "count": 0
+    },
+    {
+      "name": "lessons",
+      "count": 809
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "generatedBy": "export-db.js",
+    "database": "exam-guide.db"
+  }
+}

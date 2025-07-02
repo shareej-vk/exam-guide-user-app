@@ -1,0 +1,47 @@
+[
+  {
+    "id": 1,
+    "board_id": 1,
+    "name": "9",
+    "created_at": "2025-06-15 11:22:30",
+    "slug": null,
+    "description": null,
+    "updated_at": "2025-06-17 07:26:44"
+  },
+  {
+    "id": 2,
+    "board_id": 1,
+    "name": "10",
+    "created_at": "2025-06-15 11:22:30",
+    "slug": null,
+    "description": null,
+    "updated_at": "2025-06-17 07:26:44"
+  },
+  {
+    "id": 3,
+    "board_id": 1,
+    "name": "11",
+    "created_at": "2025-06-15 11:22:30",
+    "slug": null,
+    "description": null,
+    "updated_at": "2025-06-17 07:26:44"
+  },
+  {
+    "id": 4,
+    "board_id": 1,
+    "name": "12",
+    "created_at": "2025-06-15 11:22:30",
+    "slug": null,
+    "description": null,
+    "updated_at": "2025-06-17 07:26:44"
+  },
+  {
+    "id": 5,
+    "board_id": 1,
+    "name": "8",
+    "created_at": "2025-06-15T15:58:14.581Z",
+    "slug": "8",
+    "description": null,
+    "updated_at": "2025-06-17 07:26:44"
+  }
+]
