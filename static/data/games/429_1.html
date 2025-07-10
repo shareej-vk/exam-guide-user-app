@@ -20,6 +20,9 @@
             --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
             --correct-color: #4d908e;
             --incorrect-color: #f94144;
+            --line-color: #adb5bd;
+            --drop-zone-highlight: rgba(44, 125, 160, 0.1);
+            --drop-zone-active: rgba(44, 125, 160, 0.25);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -37,9 +40,18 @@
 
         .main-container {
             display: flex;
+            flex-direction: column;
+            align-items: center;
             gap: 25px;
             width: 100%;
             max-width: 1500px;
+        }
+
+        .top-row {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            align-items: flex-start;
         }
 
         .instructions-card, .game-card {
@@ -48,12 +60,11 @@
             border-radius: 24px;
             box-shadow: var(--shadow);
             border: 1px solid #e9ecef;
-            align-self: flex-start;
         }
 
-        .instructions-card { flex: 3; }
+        .instructions-card { flex: 4; }
         .game-card {
-            flex: 7;
+            flex: 6;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -73,27 +84,11 @@
         }
 
         .instructions-list { list-style: none; padding-left: 0; }
-        .instructions-list li {
-            margin-bottom: 15px;
-            line-height: 1.6;
-            display: flex;
-            align-items: flex-start;
-        }
-        .instructions-list li::before {
-            content: '✅';
-            margin-right: 12px;
-            font-size: 18px;
-            margin-top: 2px;
-        }
+        .instructions-list li { margin-bottom: 15px; line-height: 1.6; display: flex; align-items: flex-start; }
+        .instructions-list li::before { content: '✅'; margin-right: 12px; font-size: 18px; margin-top: 2px; }
         .instructions-list b { color: var(--primary-color); }
         
-        .controls {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 15px;
-            width: 100%;
-            justify-content: center;
-        }
+        .controls { margin-bottom: 20px; display: flex; gap: 15px; width: 100%; justify-content: center; }
 
         .btn {
             font-family: var(--heading-font);
@@ -122,137 +117,122 @@
             width: 100%;
         }
 
-        .lab-wrapper {
-            width: 100%;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .flowchart-container {
-            width: 100%;
-            position: relative;
-            height: 450px;
-        }
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        .flowchart-container { width: 100%; position: relative; height: 500px; }
 
         .flowchart-box {
             position: absolute;
             font-family: var(--heading-font);
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
-            padding: 15px 20px;
+            padding: 15px;
+            width: 160px;
+            min-height: 60px;
             border-radius: 12px;
             text-align: center;
             border: 3px dashed #ced4da;
             background-color: #f8f9fa;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
-        .flowchart-box.filled {
-            border-style: solid;
-            color: white;
-            box-shadow: var(--shadow);
-        }
+        .flowchart-box.filled { border-style: solid; color: white; box-shadow: var(--shadow); }
+        .flowchart-box.drop-zone.highlight, .example-drop-zone.highlight { border-color: var(--primary-color); background-color: var(--drop-zone-highlight); }
+        .flowchart-box.drop-zone.drag-over-active, .example-drop-zone.drag-over-active { background-color: var(--drop-zone-active); transform: scale(1.05); }
+        #box-pure.drag-over-active, #box-element.drag-over-active, #box-compound.drag-over-active { transform: translateX(-50%) scale(1.05); }
+        #box-mixture.drag-over-active, #box-homo.drag-over-active, #box-hetero.drag-over-active { transform: translateX(-50%) scale(1.05); }
         
         #box-matter { top: 0; left: 50%; transform: translateX(-50%); border-style: solid; background-color: var(--primary-color); color: white;}
-        #box-pure { top: 100px; left: 20%; transform: translateX(-50%); }
-        #box-mixture { top: 100px; left: 80%; transform: translateX(-50%); }
-        #box-element { top: 220px; left: 5%; }
-        #box-compound { top: 220px; left: 35%; }
-        #box-homo { top: 220px; left: 65%; }
-        #box-hetero { top: 220px; left: 95%; transform: translateX(-100%); }
+        #box-pure { top: 120px; left: 25%; transform: translateX(-50%); }
+        #box-mixture { top: 120px; left: 75%; transform: translateX(-50%); }
+        #box-element, #box-compound, #box-homo, #box-hetero { top: 240px; }
+        #box-element { left: 12%; transform: translateX(-50%); }
+        #box-compound { left: 38%; transform: translateX(-50%); }
+        #box-homo { left: 62%; transform: translateX(-50%); }
+        #box-hetero { left: 88%; transform: translateX(-50%); }
         
         .example-drop-zone {
-            min-height: 50px;
-            margin-top: 10px;
-            padding-top: 5px;
-            border-top: 2px solid #ced4da;
+            min-height: 50px; margin-top: 10px; padding: 5px; border-radius: 8px;
+            border: 2px dashed #ced4da; background-color: transparent;
+            display: flex; flex-direction: column; gap: 5px;
+            align-items: center; width: 100%; transition: all 0.3s ease;
         }
 
         .label-bank {
-            width: 100%;
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #e9ecef;
-            border-radius: 16px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
+            width: 100%; margin-top: 20px; padding: 20px;
+            background-color: #e9ecef; border-radius: 16px;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
         }
 
         .label-card {
-            padding: 8px 15px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 10px;
-            background-color: var(--card-bg);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            cursor: grab;
-            transition: all 0.2s;
-            border: 2px solid transparent;
+            padding: 8px 15px; font-size: 14px; font-weight: 600;
+            border-radius: 10px; background-color: var(--card-bg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: grab;
+            transition: all 0.2s; border: 2px solid transparent;
+            display: flex; align-items: center; gap: 5px;
         }
-        .label-card:active { cursor: grabbing; transform: scale(1.1); }
-        .label-card.correct { border-color: var(--correct-color); }
-        .label-card.incorrect { border-color: var(--incorrect-color); }
+        .label-card:active { cursor: grabbing; transform: scale(1.1); z-index: 100;}
+        .label-card.dragging { opacity: 0.5; }
+        .label-card.correct { border-color: var(--correct-color); background-color: #e8f5e9; color: var(--correct-color); cursor: default; }
+        .label-card.correct::before { content: '✔'; color: var(--correct-color); font-weight: bold; }
+        .label-card.incorrect { border-color: var(--incorrect-color); animation: shake 0.5s; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
 
         #completion-message {
             margin-top: 20px; font-size: 22px; font-weight: 800;
             display: none; font-family: var(--heading-font);
             color: var(--correct-color); text-align: center;
         }
-        
     </style>
 </head>
 <body>
     <div class="main-container">
-        <div class="instructions-card">
-            <h2 class="card-header">Matter Flowchart</h2>
-            <p><strong>Lesson:</strong> Summary of the Chapter</p>
-            <br>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Final Challenge</h3>
-            <p style="margin-bottom: 15px;">You've learned all about matter! Now it's time to put it all together. Your final mission is to complete the classification of matter flowchart, from the biggest category down to specific examples.</p>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
-            <ul class="instructions-list">
-                <li>Click <b>Start</b> to get the flowchart puzzle.</li>
-                <li>From the <b>Label Bank</b> at the bottom, drag each label to its correct empty box in the flowchart.</li>
-                <li>Next, drag the <b>examples</b> (like 'Air' or 'Iron') to their correct final categories.</li>
-                <li>The game will give you instant feedback. Green means correct, red means try again!</li>
-                <li>Complete the entire flowchart to prove you're a Matter Master!</li>
-            </ul>
-        </div>
-
-        <div class="game-card">
-            <div class="controls">
-                <button id="start-btn" class="btn">Start</button>
-                <button id="reset-btn" class="btn">Reset</button>
+        <div class="top-row">
+            <div class="instructions-card">
+                <h2 class="card-header">Matter Flowchart</h2>
+                <p><strong>Lesson:</strong> Summary of the Chapter</p>
+                <br>
+                <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Final Challenge</h3>
+                <p style="margin-bottom: 15px;">You've learned all about matter! Now it's time to put it all together. Your final mission is to complete the classification of matter flowchart, from the biggest category down to specific examples.</p>
+                <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
+                <ul class="instructions-list">
+                    <li>Click <b>Start</b> to get the flowchart puzzle.</li>
+                    <li>Drag a label from the <b>Label Bank</b>. All possible drop locations will light up.</li>
+                    <li>Drop the label into its correct box. It will turn green if correct, or shake if incorrect.</li>
+                    <li>Complete the entire flowchart to prove you're a Matter Master!</li>
+                </ul>
             </div>
-            <div id="initial-message">Click 'Start' to build the ultimate Matter Flowchart!</div>
-            <div class="lab-wrapper" id="lab-wrapper">
-                <div class="flowchart-container" id="flowchart-container">
-                    <!-- SVG lines will be drawn here -->
-                    <div id="box-matter" class="flowchart-box">Matter</div>
-                    <div id="box-pure" class="flowchart-box drop-zone" data-accepts="category-pure_substance"></div>
-                    <div id="box-mixture" class="flowchart-box drop-zone" data-accepts="category-mixture"></div>
-                    <div id="box-element" class="flowchart-box drop-zone" data-accepts="category-element">
-                        <div class="example-drop-zone" data-accepts="example-element"></div>
-                    </div>
-                    <div id="box-compound" class="flowchart-box drop-zone" data-accepts="category-compound">
-                         <div class="example-drop-zone" data-accepts="example-compound"></div>
-                    </div>
-                    <div id="box-homo" class="flowchart-box drop-zone" data-accepts="category-homogeneous">
-                         <div class="example-drop-zone" data-accepts="example-homogeneous"></div>
-                    </div>
-                    <div id="box-hetero" class="flowchart-box drop-zone" data-accepts="category-heterogeneous">
-                         <div class="example-drop-zone" data-accepts="example-heterogeneous"></div>
-                    </div>
+            <div class="game-card">
+                <div class="controls">
+                    <button id="start-btn" class="btn">Start</button>
+                    <button id="reset-btn" class="btn">Reset</button>
                 </div>
-                <div id="label-bank" class="label-bank"></div>
-                <div id="completion-message">🎉 Fantastic! You've correctly classified all of matter! 🎉</div>
+                <div id="initial-message">Click 'Start' to build the ultimate Matter Flowchart!</div>
+                <div class="lab-wrapper" id="lab-wrapper">
+                    <div class="flowchart-container" id="flowchart-container">
+                        <div id="box-matter" class="flowchart-box">Matter</div>
+                        <div id="box-pure" class="flowchart-box drop-zone" data-accepts="category-pure_substance"></div>
+                        <div id="box-mixture" class="flowchart-box drop-zone" data-accepts="category-mixture"></div>
+                        <div id="box-element" class="flowchart-box drop-zone" data-accepts="category-element"></div>
+                        <div id="box-compound" class="flowchart-box drop-zone" data-accepts="category-compound"></div>
+                        <div id="box-homo" class="flowchart-box drop-zone" data-accepts="category-homogeneous"></div>
+                        <div id="box-hetero" class="flowchart-box drop-zone" data-accepts="category-heterogeneous"></div>
+                    </div>
+                    <div id="completion-message">🎉 Fantastic! You've correctly classified all of matter! 🎉</div>
+                </div>
             </div>
         </div>
+        <div id="label-bank" class="label-bank" style="display: none;"></div>
     </div>
 
 <script>
-    // --- DOM Elements ---
     const startBtn = document.getElementById('start-btn');
     const resetBtn = document.getElementById('reset-btn');
     const initialMessage = document.getElementById('initial-message');
@@ -261,7 +241,6 @@
     const labelBank = document.getElementById('label-bank');
     const completionMessage = document.getElementById('completion-message');
 
-    // --- Data ---
     const labels = [
         { id: 'cat1', text: 'Pure Substance', type: 'category-pure_substance'},
         { id: 'cat2', text: 'Mixture', type: 'category-mixture'},
@@ -277,10 +256,9 @@
         { id: 'ex6', text: 'Sugar (C₁₂H₂₂O₁₁)', type: 'example-compound'},
     ];
     let correctPlacements = 0;
+    let draggedCard = null;
 
-    // --- Game Logic ---
     function drawLines() {
-        // Clear previous lines
         flowchartContainer.querySelectorAll('svg').forEach(svg => svg.remove());
         const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svg.setAttribute('width', '100%');
@@ -294,15 +272,11 @@
             const box1 = document.getElementById(box1Id);
             const box2 = document.getElementById(box2Id);
             const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            const rect1 = box1.getBoundingClientRect();
-            const rect2 = box2.getBoundingClientRect();
-            const containerRect = flowchartContainer.getBoundingClientRect();
-            
-            line.setAttribute('x1', rect1.left - containerRect.left + rect1.width/2);
-            line.setAttribute('y1', rect1.top - containerRect.top + rect1.height);
-            line.setAttribute('x2', rect2.left - containerRect.left + rect2.width/2);
-            line.setAttribute('y2', rect2.top - containerRect.top);
-            line.setAttribute('stroke', '#adb5bd');
+            line.setAttribute('x1', box1.offsetLeft + box1.offsetWidth / 2);
+            line.setAttribute('y1', box1.offsetTop + box1.offsetHeight);
+            line.setAttribute('x2', box2.offsetLeft + box2.offsetWidth / 2);
+            line.setAttribute('y2', box2.offsetTop);
+            line.setAttribute('stroke', 'var(--line-color)');
             line.setAttribute('stroke-width', '3');
             svg.appendChild(line);
         };
@@ -323,90 +297,109 @@
             card.textContent = label.text;
             card.draggable = true;
             card.dataset.type = label.type;
-            card.addEventListener('dragstart', e => {
-                e.dataTransfer.setData('text/plain', e.target.id);
-            });
+            card.addEventListener('dragstart', handleDragStart);
+            card.addEventListener('dragend', handleDragEnd);
             labelBank.appendChild(card);
         });
     }
 
     function checkCompletion() {
-        if(correctPlacements === labels.length) {
+        if (correctPlacements === labels.length) {
             completionMessage.style.display = 'block';
         }
     }
 
-    function handleDrop(e) {
+    function handleDragStart(e) {
+        draggedCard = e.target;
+        setTimeout(() => e.target.classList.add('dragging'), 0);
+        document.querySelectorAll(`.drop-zone[data-accepts="${draggedCard.dataset.type}"]`).forEach(zone => {
+            zone.classList.add('highlight');
+        });
+    }
+
+    function handleDragEnd() {
+        if (draggedCard) draggedCard.classList.remove('dragging');
+        draggedCard = null;
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            zone.classList.remove('highlight');
+            zone.classList.remove('drag-over-active');
+        });
+    }
+
+    function handleDragOver(e) {
+        e.preventDefault();
         const dropZone = e.target.closest('.drop-zone');
-        if (!dropZone) return;
+        if (dropZone && dropZone.classList.contains('highlight')) {
+            dropZone.classList.add('drag-over-active');
+        }
+    }
 
-        dropZone.classList.remove('drag-over');
-        const cardId = e.dataTransfer.getData('text/plain');
-        const card = document.getElementById(cardId);
-        if (!card) return;
+    function handleDragLeave(e) {
+        e.target.closest('.drop-zone')?.classList.remove('drag-over-active');
+    }
 
-        if (card.dataset.type === dropZone.dataset.accepts) {
-            card.classList.add('correct');
-            card.draggable = false;
+    function handleDrop(e) {
+        e.preventDefault();
+        const dropZone = e.target.closest('.drop-zone');
+        if (!dropZone || !draggedCard) return;
+
+        if (draggedCard.dataset.type === dropZone.dataset.accepts) {
+            draggedCard.classList.add('correct');
+            draggedCard.draggable = false;
             
-            if (card.dataset.type.startsWith('category')) {
-                dropZone.textContent = card.textContent;
+            if (draggedCard.dataset.type.startsWith('category')) {
+                dropZone.textContent = draggedCard.textContent;
                 dropZone.classList.add('filled');
-                if(card.dataset.type.includes('pure')) dropZone.style.backgroundColor = 'var(--pure-color)';
-                if(card.dataset.type.includes('mixture')) dropZone.style.backgroundColor = 'var(--mixture-color)';
-                card.remove();
+                if (draggedCard.dataset.type.includes('pure')) dropZone.style.backgroundColor = 'var(--pure-color)';
+                if (draggedCard.dataset.type.includes('mixture')) dropZone.style.backgroundColor = 'var(--mixture-color)';
+                draggedCard.remove();
             } else {
-                dropZone.appendChild(card);
+                dropZone.appendChild(draggedCard);
             }
             correctPlacements++;
             checkCompletion();
         } else {
-            card.classList.add('incorrect');
-            setTimeout(() => card.classList.remove('incorrect'), 1000);
+            draggedCard.classList.add('incorrect');
+            setTimeout(() => draggedCard.classList.remove('incorrect'), 500);
         }
     }
 
     function startGame() {
         initialMessage.style.display = 'none';
         labWrapper.style.display = 'flex';
+        labelBank.style.display = 'flex';
         completionMessage.style.display = 'none';
         correctPlacements = 0;
         
-        // Reset drop zones
         document.querySelectorAll('.flowchart-box.drop-zone').forEach(dz => {
-            dz.innerHTML = dz.dataset.accepts.startsWith('category') ? '' : '<div class="example-drop-zone" data-accepts="'+dz.dataset.accepts+'"></div>';
+            dz.innerHTML = '';
             dz.classList.remove('filled');
             dz.style.backgroundColor = '';
+            const acceptType = dz.dataset.accepts;
+            // --- FIX: Recreate example drop zones for all relevant boxes ---
+            if (!acceptType.startsWith('category-')) {
+                 const exampleZone = document.createElement('div');
+                 exampleZone.className = 'example-drop-zone';
+                 exampleZone.dataset.accepts = acceptType;
+                 dz.appendChild(exampleZone);
+            }
         });
         
         populateLabelBank();
-        
-        // Timeout to ensure elements are rendered before drawing lines
-        setTimeout(drawLines, 100);
+        setTimeout(drawLines, 50);
     }
 
     // --- Event Listeners ---
     startBtn.addEventListener('click', startGame);
     resetBtn.addEventListener('click', startGame);
     
-    document.querySelectorAll('.drop-zone').forEach(zone => {
-        zone.addEventListener('dragover', e => {
-            e.preventDefault();
-            zone.classList.add('drag-over');
-        });
-        zone.addEventListener('dragleave', () => {
-            zone.classList.remove('drag-over');
-        });
-        zone.addEventListener('drop', handleDrop);
-    });
+    flowchartContainer.addEventListener('dragover', handleDragOver);
+    flowchartContainer.addEventListener('dragleave', handleDragLeave);
+    flowchartContainer.addEventListener('drop', handleDrop);
     
     window.addEventListener('resize', () => {
-        if (labWrapper.style.display === 'flex') {
-            drawLines();
-        }
+        if (labWrapper.style.display === 'flex') drawLines();
     });
-
 </script>
 </body>
 </html>
-<!--end-of-code-block-->
