@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Term Dissector</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #f1f9ff;
+      font-family: 'Poppins', sans-serif;
+    }
+    .container {
+      max-width: 1300px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 30% 70%;
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      font-family: 'Baloo 2', cursive;
+      color: #3949ab;
+      margin-bottom: 10px;
+    }
+    .instructions ul {
+      padding-left: 20px;
+    }
+    .instructions li {
+      margin-bottom: 10px;
+    }
+    .term-display {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .highlighted {
+      background: #fff59d;
+      padding: 5px 10px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+    .label-bank {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .label {
+      background-color: #e1f5fe;
+      border: 2px dashed #0288d1;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: grab;
+      font-size: 16px;
+      user-select: none;
+    }
+    .drop-zone {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .drop-box {
+      border: 3px dashed #cfd8dc;
+      padding: 12px;
+      min-height: 50px;
+      border-radius: 8px;
+      font-size: 16px;
+      color: #455a64;
+      background-color: #eceff1;
+    }
+    .drop-box.correct {
+      background-color: #c8e6c9;
+      border-color: #66bb6a;
+    }
+    .drop-box.wrong {
+      background-color: #ffcdd2;
+      border-color: #e53935;
+    }
+    .btn-row {
+      margin-top: 20px;
+    }
+    button {
+      margin-right: 10px;
+      padding: 10px 18px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #4caf50;
+      color: white;
+    }
+    button:hover {
+      background-color: #388e3c;
+    }
+    #resultMsg {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card instructions">
+      <h2>🔍 Term Dissector</h2>
+      <p>Instructions:</p>
+      <ul>
+        <li>Drag and drop the correct labels for Coefficient, Variable, and Exponent.</li>
+        <li>Terms like "x" have a coefficient of 1, and constant terms have exponent 0.</li>
+        <li>Once you've dropped all 3 labels, click "Check" to verify.</li>
+      </ul>
+      <button onclick="startNewTerm()">🔁 Start</button>
+      <button onclick="resetLabels()">🧹 Reset</button>
+    </div>
+    <div class="card game">
+      <h2>🧪 Dissect the Polynomial Term</h2>
+      <div class="term-display">
+        <span class="highlighted" id="currentTerm">-3x²</span>
+      </div>
+      <div class="label-bank" id="labelBank">
+        <div class="label" draggable="true" ondragstart="drag(event)" data-label="Coefficient">Coefficient</div>
+        <div class="label" draggable="true" ondragstart="drag(event)" data-label="Variable">Variable</div>
+        <div class="label" draggable="true" ondragstart="drag(event)" data-label="Exponent">Exponent</div>
+      </div>
+      <div class="drop-zone">
+        <div class="drop-box" ondrop="drop(event, 'Coefficient')" ondragover="allowDrop(event)" id="dropCoefficient">Drop Coefficient Here</div>
+        <div class="drop-box" ondrop="drop(event, 'Variable')" ondragover="allowDrop(event)" id="dropVariable">Drop Variable Here</div>
+        <div class="drop-box" ondrop="drop(event, 'Exponent')" ondragover="allowDrop(event)" id="dropExponent">Drop Exponent Here</div>
+      </div>
+      <div class="btn-row">
+        <button onclick="checkAnswer()">✅ Check</button>
+      </div>
+      <div id="resultMsg"></div>
+    </div>
+  </div>
+
+  <script>
+    const terms = [
+      { term: "5x²", coefficient: "5", variable: "x", exponent: "2" },
+      { term: "-x³", coefficient: "-1", variable: "x", exponent: "3" },
+      { term: "7", coefficient: "7", variable: "-", exponent: "0" },
+      { term: "x", coefficient: "1", variable: "x", exponent: "1" },
+      { term: "-4x", coefficient: "-4", variable: "x", exponent: "1" },
+      { term: "2x⁴", coefficient: "2", variable: "x", exponent: "4" },
+    ];
+
+    let current = {};
+    function startNewTerm() {
+      resetLabels();
+      const random = terms[Math.floor(Math.random() * terms.length)];
+      current = random;
+      document.getElementById("currentTerm").innerText = random.term;
+      document.getElementById("resultMsg").innerText = '';
+    }
+
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("label", ev.target.getAttribute("data-label"));
+    }
+
+    function drop(ev, type) {
+      ev.preventDefault();
+      const label = ev.dataTransfer.getData("label");
+      const box = document.getElementById("drop" + type);
+      box.innerText = label;
+      box.setAttribute("data-user", label);
+    }
+
+    function checkAnswer() {
+      const c = document.getElementById("dropCoefficient");
+      const v = document.getElementById("dropVariable");
+      const e = document.getElementById("dropExponent");
+
+      let correct = 0;
+
+      if (c.getAttribute("data-user") === "Coefficient") {
+        c.classList.add("correct");
+        correct++;
+      } else c.classList.add("wrong");
+
+      if (current.variable === "-" && v.getAttribute("data-user") === "Variable") {
+        v.classList.add("wrong");
+      } else if (v.getAttribute("data-user") === "Variable") {
+        v.classList.add("correct");
+        correct++;
+      } else v.classList.add("wrong");
+
+      if (e.getAttribute("data-user") === "Exponent") {
+        e.classList.add("correct");
+        correct++;
+      } else e.classList.add("wrong");
+
+      const result = document.getElementById("resultMsg");
+      if (correct === 3) {
+        result.innerHTML = `<span style="color:green">🎉 Well done! You dissected it correctly.</span>`;
+      } else {
+        result.innerHTML = `<span style="color:red">❌ Oops! Some labels are incorrect. Try again!</span>`;
+      }
+    }
+
+    function resetLabels() {
+      ["Coefficient", "Variable", "Exponent"].forEach(id => {
+        const box = document.getElementById("drop" + id);
+        box.innerText = `Drop ${id} Here`;
+        box.removeAttribute("data-user");
+        box.classList.remove("correct", "wrong");
+      });
+      document.getElementById("resultMsg").innerText = '';
+    }
+
+    // Initial load
+    startNewTerm();
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

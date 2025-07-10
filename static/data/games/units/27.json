@@ -1,0 +1,275 @@
+{
+  "subject": {
+    "id": 1,
+    "name": "math",
+    "label": "Mathematics"
+  },
+  "units": [
+    {
+      "id": 27,
+      "name": "circles",
+      "label": "Circles",
+      "lessons": [
+        {
+          "id": 266,
+          "title": "Lesson 1: Equal Chords and the Angles they Subtend at the Centre",
+          "slug": "lesson_1_equal_chords_and_the_angles_they_subtend_at_the_centre",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "266_1",
+              "name": "Angle side chain",
+              "implementationDetails": "What number if one equal what angle must be there or angle set",
+              "learningPoints": [
+                "Chords are equal in part",
+                "Subtandent  angle selector",
+                "Geometric formula"
+              ]
+            },
+               {
+                "id": "266_2",
+                "name": "Condition generator",
+                "implementationDetails": "Side angle selector give correct point",
+                "learningPoints": [
+                  "Property construction power",
+                  "application to side identifire",
+                  "Equal condition check"
+                ]
+              },
+            {
+              "id": "266_3",
+              "name": "Chord angle ruler",
+              "implementationDetails": "Show radius base equation if angle of same chord differe",
+              "learningPoints": [
+                "Chords are circle distance same",
+                "Angle side application",
+                "Congruency condition"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 267,
+          "title": "Lesson 2: The Perpendicular from the Centre to a Chord and its Converse",
+          "slug": "lesson_2_the_perpendicular_from_the_centre_to_a_chord_and_its_converse",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "267_1",
+              "name": "Crease identifer",
+              "implementationDetails": "How line from paper that cut for that chord will behave",
+              "learningPoints": [
+                "Paper fold activity check",
+                "Chord prop identification",
+                "Perpenducular application in formula"
+              ]
+            },
+            {
+              "id": "267_2",
+              "name": "True or flase question",
+              "implementationDetails": "With definition give some statement for right choice by theorems and formula application",
+              "learningPoints": [
+                "Application theorem application",
+                "Practical rule understanding",
+                "Theorems formula application"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 268,
+          "title": "Lesson 3: Equal Chords and their Distance from the Centre and its Converse",
+          "slug": "lesson_3_equal_chords_and_their_distance_from_the_centre_and_its_converse",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "268_1",
+              "name": "Distanc rule",
+              "implementationDetails": "If distance are same and what different parameter can be same",
+              "learningPoints": [
+                "Distance calculation",
+                "Theorem side distance property",
+                "Properties formula application"
+              ]
+            },
+            {
+              "id": "268_2",
+              "name": "Middle theoreom",
+              "implementationDetails": "What property hold with middile in equal triangle chords are the part",
+              "learningPoints": [
+                "Mid distance theoream",
+                "Triangle chord condition",
+                "Practical implementation"
+              ]
+            },
+            {
+              "id": "268_3",
+              "name": "Same distance indentifier",
+              "implementationDetails": "Select shape which have equal distance circle",
+              "learningPoints": [
+                "Equal shape finder",
+                "Shape size recognization",
+                "Application of points formula"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 269,
+          "title": "Lesson 4: The Angle Subtended by an Arc at the Centre and at the Circumference",
+          "slug": "lesson_4_the_angle_subtended_by_an_arc_at_the_centre_and_at_the_circumference",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "269_1",
+              "name": "Angle position identifier",
+              "implementationDetails": "Where line for part and center line angle property set at this condition by theorem from set of option selection in number",
+              "learningPoints": [
+                "Angle position understanding",
+                "Part circle application",
+                "Circle parts knowledge"
+              ]
+            },
+             {
+              "id": "269_2",
+              "name": "What ratio",
+              "implementationDetails": "By line angle where part set so which portion show full side if draw triangle to that cord and center from",
+              "learningPoints": [
+                "Part and part relation",
+                "Number portion side selector",
+                "Relation building formula"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 270,
+          "title": "Lesson 5: Angles in the Same Segment and Angle in a Semicircle",
+          "slug": "lesson_5_angles_in_the_same_segment_and_angle_in_a_semicircle",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "270_1",
+              "name": "Segment finder",
+              "implementationDetails": "Part identifier in circle",
+              "learningPoints": [
+                "segment identifier",
+                "circle segment knowledge",
+                "Circle and diagram relation formula"
+              ]
+            },
+            {
+              "id": "270_2",
+              "name": "What semicircle",
+              "implementationDetails": "If angle number then with help 90 degree identify this point for semi circle number",
+              "learningPoints": [
+                "Circle half rule",
+                "90 degree application in circle",
+                "segment  and angles application"
+              ]
+            },
+             {
+              "id": "270_3",
+              "name": "Find Equal Angles",
+              "implementationDetails": "Highlight circle cord at part then select one equal cord which is equal with this",
+              "learningPoints": [
+                "segment circle properies",
+                "Circle cord property",
+                "Chord application with cord formula"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 271,
+          "title": "Lesson 6: Introduction to Cyclic Quadrilaterals",
+          "slug": "lesson_6_introduction_to_cyclic_quadrilaterals",
+          "display_order": 6,
+          "games": [
+           
+            {
+              "id": "271_1",
+              "name": "Cyclic selector",
+              "implementationDetails": "What necessary condition to for cyclic quadr.",
+              "learningPoints": [
+                "Quadrilateral cycle and side condition",
+                "Circle point and liner knowledge",
+                "Cyclic quad property "
+              ]
+            },
+             {
+              "id": "271_2",
+              "name": "Cylic visualiser",
+              "implementationDetails": "Drag different kind to point and which form cylic and check this",
+              "learningPoints": [
+                "Line chain in cicrle",
+                "Property builder for side",
+                "Practicaly shape"
+              ]
+            }
+          ]
+        },
+        {
+            "id": 272,
+            "title": "Lesson 7: The Angle Sum Property of a Cyclic Quadrilateral",
+            "slug": "lesson_7_the_angle_sum_property_of_a_cyclic_quadrilateral",
+            "display_order": 7,
+            "games": [
+            
+              {
+                "id": "272_1",
+                "name": "Quadrilateral builder",
+                "implementationDetails": "If three is number what fourth must be that for cycil rule",
+                "learningPoints": [
+                  "Rule application",
+                  "The formula condition chain rule application",
+                  "Sum based theorem"
+                ]
+              },
+              {
+              "id": "272_2",
+              "name": "Which formula is equal",
+              "implementationDetails": "What side is for what opposite property then tell with formula ",
+              "learningPoints": [
+                "Side and other relation",
+                "Circle side angle rule",
+                "Opposite side relation building formula"
+              ]
+              
+            }
+            ],
+               
+        
+        },
+        {
+            "id": 273,
+            "title": "Lesson 8: Conditions for a Quadrilateral to be Cyclic",
+            "slug": "lesson_8_conditions_for_a_quadrilateral_to_be_cyclic",
+            "display_order": 8,
+            "games": [
+              {
+                "id": "273_1",
+                "name": "Cyclic quad check",
+                "implementationDetails": "With some prop what new shape is with 4th point",
+                "learningPoints": [
+                  "Rule of quad cyclic property",
+                  "Cycle building formula side or angle selector",
+                  "Geometric builder "
+                ]
+              },
+                 {
+                  "id": "273_2",
+                  "name": "Last formula to what ",
+                  "implementationDetails": " if use rule what type rule what if all side for one or two",
+                  "learningPoints": [
+                    "Rule of shape condition check",
+                    "Shape cycle with properties formula",
+                    "Geometric skill builder"
+                  ]
+                 }
+            ]
+        }
+      ]
+    }
+  ]
+}

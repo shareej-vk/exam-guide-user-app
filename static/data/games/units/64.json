@@ -1,0 +1,269 @@
+{
+  "subject": {
+    "id": 5,
+    "name": "science",
+    "label": "Science"
+  },
+  "units": [
+    {
+      "id": 64,
+      "name": "unit_7:_motion",
+      "label": "Unit 7: Motion",
+      "lessons": [
+        {
+          "id": 492,
+          "title": "Lesson 1: Introduction to Motion, Rest, and Reference Point",
+          "slug": "lesson_1_introduction_to_motion_rest_and_reference_point",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "492_1",
+              "name": "Relative Position",
+              "implementationDetails": "The game shows a scene with a car driving past a tree and a house. The player is asked, 'Is the car in motion?'. If they answer 'Yes', the game asks, 'Relative to what?'. The player must then select the tree or the house as the reference point. In a second stage, the game shifts the perspective to inside the car, showing a passenger. It asks, 'Is the passenger in motion?'. The correct answer is 'No' relative to the car, but 'Yes' relative to the tree outside. This interactive questioning teaches that motion is always relative to a reference point.",
+              "learningPoints": [
+                "Defining motion as a change in position with time.",
+                "Understanding that motion is a relative concept.",
+                "Identifying the need for a reference point (origin) to describe the position of an object."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 493,
+          "title": "Lesson 2: Describing Motion - Distance and Displacement",
+          "slug": "lesson_2_describing_motion_-_distance_and_displacement",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "493_1",
+              "name": "Pathfinder",
+              "implementationDetails": "The player must guide a character from a starting point (Home) to an endpoint (School) on a grid. The player can draw any path they want. As they draw, a 'Distance' counter tracks the total length of the path. Once they reach the school, a straight dashed line appears from Home to School, and a 'Displacement' value is displayed, showing the shortest straight-line distance. The game then challenges the player to create a path where the distance is 200m but the displacement is 0m (by returning to the start).",
+              "learningPoints": [
+                "Defining distance as the total path length covered.",
+                "Defining displacement as the shortest distance between the initial and final points.",
+                "Understanding that distance is a scalar quantity while displacement is a vector quantity (with direction).",
+                "Recognizing that displacement can be zero even when the distance covered is not."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 494,
+          "title": "Lesson 3: Uniform and Non-Uniform Motion",
+          "slug": "lesson_3_uniform_and_non-uniform_motion",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "494_1",
+              "name": "The Pacer",
+              "implementationDetails": "A two-lane race track is shown. The player controls Car A, and Car B is an AI. In 'Uniform Motion' mode, when the race starts, Car B moves by exactly one grid square every second. In 'Non-Uniform Motion' mode, Car B moves by a variable amount each second (e.g., 1 square, then 3, then 2). The player's car (Car A) always moves in uniform motion. The player's task is to identify which car is in uniform motion and which is not, based on observing whether it covers equal distances in equal intervals of time.",
+              "learningPoints": [
+                "Defining uniform motion as covering equal distances in equal time intervals.",
+                "Defining non-uniform motion as covering unequal distances in equal time intervals.",
+                "Visually identifying the difference between the two types of motion."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 495,
+          "title": "Lesson 4: Measuring the Rate of Motion - Speed and Average Speed",
+          "slug": "lesson_4_measuring_the_rate_of_motion_-_speed_and_average_speed",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "495_1",
+              "name": "Speed Tracker",
+              "implementationDetails": "The game shows a car journey from City A to City B (e.g., 240km). The journey takes 4 hours. An animated car moves along the road, but its speedometer fluctuates (e.g., 80 km/h, then 40 km/h in traffic, then 70 km/h). When the car reaches its destination, the game prompts the player to calculate the average speed. A calculator appears with the formula: Average Speed = Total Distance / Total Time. The player inputs 240km / 4h to get 60 km/h. This demonstrates that average speed is the overall rate, distinct from the instantaneous speed shown on the speedometer.",
+              "learningPoints": [
+                "Defining speed as the distance travelled per unit time.",
+                "Understanding the concept of average speed for non-uniform motion.",
+                "Calculating average speed as the total distance divided by the total time taken."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 496,
+          "title": "Lesson 5: Speed with Direction - Velocity and Average Velocity",
+          "slug": "lesson_5_speed_with_direction_-_velocity_and_average_velocity",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "496_1",
+              "name": "Round Trip",
+              "implementationDetails": "A character walks from point A to point B (100m east) in 100 seconds, then turns around and walks back to point A in 100 seconds. The game prompts the player to calculate the average speed and average velocity for the entire trip. For average speed, they calculate (100m + 100m) / 200s = 1 m/s. For average velocity, the game highlights that the initial and final positions are the same, making the total displacement 0m. They then calculate 0m / 200s = 0 m/s. This stark contrast powerfully illustrates the difference between speed and velocity.",
+              "learningPoints": [
+                "Defining velocity as speed in a specific direction.",
+                "Differentiating between average speed (based on total distance) and average velocity (based on total displacement).",
+                "Understanding how average velocity can be zero even when average speed is not."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 497,
+          "title": "Lesson 6: The Rate of Change of Velocity - Acceleration",
+          "slug": "lesson_6_the_rate_of_change_of_velocity_-_acceleration",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "497_1",
+              "name": "Velocity Changer",
+              "implementationDetails": "The player is shown a car with a speedometer and controls for 'Accelerate' and 'Brake'. When the player presses 'Accelerate', the car's speed increases, and an 'Acceleration' meter shows a positive value (e.g., +2 m/s²). When they press 'Brake', the car's speed decreases, and the meter shows a negative value (-3 m/s²). The game also includes a 'Turn' button, which keeps the speed constant but changes the car's direction, also registering on the acceleration meter. This teaches that acceleration is any change in velocity, whether in speed or direction.",
+              "learningPoints": [
+                "Defining acceleration as the rate of change of velocity.",
+                "Understanding that acceleration can be positive (speeding up) or negative (slowing down, deceleration).",
+                "Recognizing that a change in direction, even at constant speed, also constitutes acceleration."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 498,
+          "title": "Lesson 7: Uniform and Non-Uniform Acceleration",
+          "slug": "lesson_7_uniform_and_non-uniform_acceleration",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "498_1",
+              "name": "Acceleration Cruise Control",
+              "implementationDetails": "A simulation where the player observes a freely falling ball. A real-time data table shows time and velocity. The player will see that the velocity increases by the same amount every second (e.g., 9.8 m/s). This is contrasted with a car in traffic, where the velocity changes by unequal amounts in equal time intervals. The game defines the first case as uniform acceleration and the second as non-uniform acceleration.",
+              "learningPoints": [
+                "Defining uniform acceleration as an equal change in velocity in equal time intervals.",
+                "Defining non-uniform acceleration as an unequal change in velocity in equal time intervals.",
+                "Identifying free fall as a key example of uniform acceleration."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 499,
+          "title": "Lesson 8: Graphical Representation - Distance-Time Graphs",
+          "slug": "lesson_8_graphical_representation_-_distance-time_graphs",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "499_1",
+              "name": "Graph Drawer",
+              "implementationDetails": "An interactive canvas. On the left, a character can be moved by the player. On the right, a distance-time graph is plotted in real-time based on the character's position. If the player makes the character stand still, the graph plots a horizontal line. If they move the character at a steady pace, it plots a straight, sloped line (uniform motion). If they move the character with varying speed, it plots a curve (non-uniform motion). This gives the player a direct, tactile feel for how motion translates into a graph.",
+              "learningPoints": [
+                "Understanding how to represent motion on a distance-time graph.",
+                "Interpreting the shape of the graph: horizontal line for rest, straight sloped line for uniform motion.",
+                "Recognizing a curved line as representing non-uniform motion."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 500,
+          "title": "Lesson 9: Calculating Speed from a Distance-Time Graph",
+          "slug": "lesson_9_calculating_speed_from_a_distance-time_graph",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "500_1",
+              "name": "Slope Detective",
+              "implementationDetails": "The player is shown a distance-time graph with several straight-line segments of different steepness. A prompt asks, 'What is the speed during segment B?'. The player is given a virtual tool to draw a triangle on segment B, highlighting the 'rise' (change in distance) and the 'run' (change in time). The values are displayed, and the player must calculate the slope (rise/run) to find the speed. The game reinforces that a steeper slope means a higher speed.",
+              "learningPoints": [
+                "Understanding that the speed of an object can be determined from its distance-time graph.",
+                "Learning that the slope (or gradient) of the distance-time graph is equal to the speed.",
+                "Visually associating a steeper slope with a greater speed."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 501,
+          "title": "Lesson 10: Graphical Representation - Velocity-Time Graphs",
+          "slug": "lesson_10_graphical_representation_-_velocity-time_graphs",
+          "display_order": 10,
+          "games": [
+            {
+              "id": "501_1",
+              "name": "Velocity Grapher",
+              "implementationDetails": "Similar to 'Graph Drawer', but now for velocity. The player controls a car with an accelerator and a brake. On the right, a velocity-time graph is plotted in real-time. Constant velocity plots a horizontal line. Constant acceleration plots a straight, upward-sloping line. Constant deceleration (braking) plots a straight, downward-sloping line. This provides an intuitive link between acceleration and the shape of the velocity-time graph.",
+              "learningPoints": [
+                "Understanding how to represent motion on a velocity-time graph.",
+                "Interpreting a horizontal line as constant velocity (zero acceleration).",
+                "Recognizing a straight, sloped line as uniform acceleration."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 502,
+          "title": "Lesson 11: Calculating Displacement and Acceleration from a Velocity-Time Graph",
+          "slug": "lesson_11_calculating_displacement_and_acceleration_from_a_velocity-time_graph",
+          "display_order": 11,
+          "games": [
+            {
+              "id": "502_1",
+              "name": "Graph Analyst",
+              "implementationDetails": "A two-part puzzle based on a velocity-time graph. Part 1: 'Find the acceleration between t=2s and t=4s'. The player must use the 'slope tool' to calculate the gradient of that segment. Part 2: 'Find the distance travelled in the first 4s'. The player must use a 'shading tool' to select the area under the graph from t=0 to t=4. The game automatically calculates the area of the shaded shape (e.g., a trapezium) and shows it is equal to the distance travelled. This game teaches the two main uses of a V-T graph.",
+              "learningPoints": [
+                "Learning that the slope of a velocity-time graph gives acceleration.",
+                "Learning that the area under a velocity-time graph gives the displacement.",
+                "Practicing how to calculate both slope and area from a given graph."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 503,
+          "title": "Lesson 12: The Three Equations of Motion",
+          "slug": "lesson_12_the_three_equations_of_motion",
+          "display_order": 12,
+          "games": [
+            {
+              "id": "503_1",
+              "name": "Equation Matcher",
+              "implementationDetails": "The player is given a word problem (e.g., 'A ball starts from rest and accelerates uniformly for 5 seconds, reaching a final velocity of 10 m/s. How far did it travel?'). They are shown the list of known variables (u=0, t=5, v=10) and the unknown variable (s). Below are the three equations of motion. The player must drag the correct equation that connects these four variables (in this case, s = ½(u+v)t, which can be derived, or by solving for 'a' first) to a 'solver' area. The game is not about the final answer, but about selecting the correct tool for the job.",
+              "learningPoints": [
+                "Identifying the three main equations of motion for uniformly accelerated motion.",
+                "Understanding which variables are represented in each equation.",
+                "Developing the skill to select the appropriate equation based on the given and required quantities in a problem."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 504,
+          "title": "Lesson 13: Applying the Equations of Motion to Solve Problems",
+          "slug": "lesson_13_applying_the_equations_of_motion_to_solve_problems",
+          "display_order": 13,
+          "games": [
+            {
+              "id": "504_1",
+              "name": "Cannonball Commander",
+              "implementationDetails": "A physics puzzle game. The player must fire a cannonball to hit a target at a specific distance. The player can adjust the 'initial velocity' (u) and 'acceleration' (a, from gunpowder boost) of the cannonball. The time 't' is fixed. The player must use the equation s = ut + ½at² to calculate the required settings. They input their calculated 'u' and 'a' into the cannon's controls and fire. An animation shows the cannonball's flight. Hitting the target confirms their calculation was correct; missing shows they need to recalculate. This makes problem-solving a fun, goal-oriented activity.",
+              "learningPoints": [
+                "Applying the equations of motion to solve practical, real-world problems.",
+                "Practicing the step-by-step process of identifying variables, selecting an equation, and calculating the result.",
+                "Building confidence in using the formulae through an engaging trial-and-error process."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 505,
+          "title": "Lesson 14: Introduction to Uniform Circular Motion",
+          "slug": "lesson_14_introduction_to_uniform_circular_motion",
+          "display_order": 14,
+          "games": [
+            {
+              "id": "505_1",
+              "name": "The Velocity Vector",
+              "implementationDetails": "The player observes an object moving in a circle at a constant speed. A velocity vector (an arrow) is attached to the object, always pointing tangent to the circle. The player sees that while the length of the arrow (speed) remains the same, its direction continuously changes. A 'Release' button is available. When the player clicks it, the object flies off in a straight line, following the exact direction the velocity vector was pointing at that instant. This visually proves that velocity is constantly changing, and therefore, the motion is accelerated.",
+              "learningPoints": [
+                "Defining uniform circular motion as movement in a circle at a constant speed.",
+                "Understanding that velocity is continuously changing due to the change in direction.",
+                "Concluding that uniform circular motion is an example of accelerated motion."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

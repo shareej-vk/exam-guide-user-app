@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Step Sequencer - Square Root Construction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f0f8ff;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1200px;
+      width: 100%;
+      gap: 30px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      box-sizing: border-box;
+    }
+
+    .instructions {
+      flex: 3;
+    }
+
+    .game {
+      flex: 7;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #006064;
+    }
+
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+      color: #333;
+    }
+
+    .game h2 {
+      text-align: center;
+      color: #1a237e;
+    }
+
+    .steps-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .step {
+      background-color: #fff8e1;
+      padding: 12px 16px;
+      border: 2px dashed #ffb300;
+      border-radius: 10px;
+      cursor: move;
+      font-weight: 500;
+      user-select: none;
+    }
+
+    .step.dragging {
+      opacity: 0.6;
+    }
+
+    .drop-zone {
+      border: 2px solid #64b5f6;
+      padding: 12px;
+      border-radius: 10px;
+      background-color: #e3f2fd;
+      min-height: 300px;
+    }
+
+    .controls {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .controls button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      background-color: #ffcc80;
+      color: #bf360c;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .controls button:hover {
+      background-color: #ffe0b2;
+    }
+
+    .result {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .correct {
+      color: green;
+    }
+
+    .incorrect {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card instructions">
+      <h2>📘 Instructions</h2>
+      <p>Your task is to <strong>arrange the construction steps</strong> for finding <strong>√2 geometrically</strong> using the number line and the Pythagorean theorem.</p>
+      <p>Drag the steps from the left and drop them into the correct sequence on the right.</p>
+      <p>Click "Check Answer" when you're done to see how well you did!</p>
+    </div>
+
+    <div class="card game">
+      <h2>🧩 Step Sequencer Game</h2>
+      <div class="controls">
+        <button onclick="startGame()">Start</button>
+        <button onclick="resetGame()">Reset</button>
+        <button onclick="checkAnswer()">Check Answer</button>
+      </div>
+
+      <div class="steps-container" id="stepsContainer">
+        <!-- Shuffled steps will appear here -->
+      </div>
+
+      <div class="drop-zone" id="dropZone" ondragover="allowDrop(event)" ondrop="drop(event)">
+        <p style="text-align:center; color:#666;">Drop steps here in correct order ⬇️</p>
+      </div>
+
+      <div class="result" id="resultMsg"></div>
+    </div>
+  </div>
+
+  <script>
+    const stepsData = [
+      "Draw a number line and mark point O.",
+      "Take 1 unit length from O and mark point A.",
+      "From A, draw a perpendicular line of 1 unit to mark point B.",
+      "Join OB to form a right-angled triangle.",
+      "Use a compass to draw an arc from O with radius OB.",
+      "Mark the intersection on number line as √2."
+    ];
+
+    let shuffledSteps = [];
+    const stepsContainer = document.getElementById("stepsContainer");
+    const dropZone = document.getElementById("dropZone");
+    const resultMsg = document.getElementById("resultMsg");
+
+    function shuffle(array) {
+      let currentIndex = array.length, randomIndex;
+      while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+      }
+      return array;
+    }
+
+    function startGame() {
+      resetGame();
+      shuffledSteps = shuffle([...stepsData]);
+      shuffledSteps.forEach((stepText, index) => {
+        const step = document.createElement("div");
+        step.className = "step";
+        step.setAttribute("draggable", true);
+        step.setAttribute("id", "step-" + index);
+        step.innerText = stepText;
+        step.addEventListener("dragstart", drag);
+        stepsContainer.appendChild(step);
+      });
+    }
+
+    function resetGame() {
+      stepsContainer.innerHTML = "";
+      dropZone.innerHTML = '<p style="text-align:center; color:#666;">Drop steps here in correct order ⬇️</p>';
+      resultMsg.innerText = "";
+    }
+
+    function drag(event) {
+      event.dataTransfer.setData("text", event.target.id);
+      event.target.classList.add("dragging");
+    }
+
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    function drop(event) {
+      event.preventDefault();
+      const data = event.dataTransfer.getData("text");
+      const step = document.getElementById(data);
+      if (!Array.from(dropZone.children).includes(step)) {
+        dropZone.appendChild(step);
+        step.classList.remove("dragging");
+      }
+    }
+
+    function checkAnswer() {
+      const droppedSteps = Array.from(dropZone.querySelectorAll(".step")).map(el => el.innerText.trim());
+      if (droppedSteps.length !== stepsData.length) {
+        resultMsg.innerText = "❌ Please arrange all steps before checking!";
+        resultMsg.className = "result incorrect";
+        return;
+      }
+      const isCorrect = droppedSteps.every((text, i) => text === stepsData[i]);
+      resultMsg.innerText = isCorrect ? "✅ Great job! All steps are in the correct order!" : "❌ Some steps are incorrect. Try again!";
+      resultMsg.className = "result " + (isCorrect ? "correct" : "incorrect");
+    }
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

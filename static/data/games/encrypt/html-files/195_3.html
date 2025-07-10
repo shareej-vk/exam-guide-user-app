@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quadrant Symbol Identifier</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #8e24aa;
+      --correct: #4caf50;
+      --wrong: #f44336;
+      --bg: #f3e5f5;
+      --card-bg: #ffffff;
+      --border: #ccc;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .instructions {
+      width: 30%;
+      box-sizing: border-box;
+    }
+
+    .game-area {
+      width: 70%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    h2 {
+      font-family: 'Fredoka', cursive;
+      color: var(--accent);
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .step {
+      font-weight: 700;
+      color: #333;
+      margin-top: 10px;
+    }
+
+    .question {
+      font-size: 20px;
+      margin: 15px 0;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .option-button {
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+
+    .option-button:hover {
+      background-color: #6a1b9a;
+    }
+
+    .correct {
+      background-color: var(--correct) !important;
+    }
+
+    .wrong {
+      background-color: var(--wrong) !important;
+    }
+
+    .controls {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    button {
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #6a1b9a;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="instructions card">
+      <h2>🧭 Quadrant Symbol Identifier</h2>
+      <div class="step">🎯 Objective:</div>
+      <p>Identify the correct quadrant based on the sign configuration of a coordinate pair.</p>
+
+      <div class="step">🕹️ How to Play:</div>
+      <ul>
+        <li>Click "Start Game" to see a coordinate sign pattern.</li>
+        <li>Select the correct quadrant number (I, II, III, IV).</li>
+        <li>You will get instant feedback after answering.</li>
+        <li>Click "Reset" to try a new one!</li>
+      </ul>
+    </div>
+
+    <div class="game-area card">
+      <div class="question" id="questionText">Click "Start Game" to begin!</div>
+
+      <div class="options" id="optionsArea">
+        <button class="option-button" onclick="checkAnswer(this)">I</button>
+        <button class="option-button" onclick="checkAnswer(this)">II</button>
+        <button class="option-button" onclick="checkAnswer(this)">III</button>
+        <button class="option-button" onclick="checkAnswer(this)">IV</button>
+      </div>
+
+      <div class="controls">
+        <button onclick="startGame()">Start Game</button>
+        <button onclick="resetGame()">Reset</button>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+    </div>
+  </div>
+
+  <script>
+    const questionText = document.getElementById("questionText");
+    const optionsArea = document.getElementById("optionsArea");
+    const feedback = document.getElementById("feedback");
+
+    const signToQuadrant = {
+      "(+,+)": "I",
+      "(-,+)": "II",
+      "(-,-)": "III",
+      "(+,-)": "IV"
+    };
+
+    let currentSigns = "";
+
+    function startGame() {
+      const signOptions = Object.keys(signToQuadrant);
+      currentSigns = signOptions[Math.floor(Math.random() * signOptions.length)];
+      questionText.textContent = `🧮 Which quadrant has coordinate signs ${currentSigns}?`;
+      resetOptionColors();
+      feedback.textContent = "";
+    }
+
+    function checkAnswer(button) {
+      const userAnswer = button.textContent;
+      const correctAnswer = signToQuadrant[currentSigns];
+
+      resetOptionColors();
+
+      if (userAnswer === correctAnswer) {
+        button.classList.add("correct");
+        feedback.innerHTML = `<span class="correct">✅ Correct! ${currentSigns} is in Quadrant ${correctAnswer}.</span>`;
+      } else {
+        button.classList.add("wrong");
+        feedback.innerHTML = `<span class="wrong">❌ Wrong! The correct quadrant is ${correctAnswer}.</span>`;
+        highlightCorrect(correctAnswer);
+      }
+    }
+
+    function highlightCorrect(answer) {
+      const buttons = optionsArea.querySelectorAll(".option-button");
+      buttons.forEach(btn => {
+        if (btn.textContent === answer) {
+          btn.classList.add("correct");
+        }
+      });
+    }
+
+    function resetOptionColors() {
+      const buttons = optionsArea.querySelectorAll(".option-button");
+      buttons.forEach(btn => {
+        btn.classList.remove("correct", "wrong");
+      });
+    }
+
+    function resetGame() {
+      questionText.textContent = "Click \"Start Game\" to begin!";
+      feedback.textContent = "";
+      resetOptionColors();
+    }
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

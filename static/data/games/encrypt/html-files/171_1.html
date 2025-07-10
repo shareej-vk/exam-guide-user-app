@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometric Construction Simulator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@700&display=swap');
+
+        :root {
+            --bg-color: #f8f9fa;
+            --container-bg: #ffffff;
+            --header-color: #0077b6;
+            --text-color: #333;
+            --line-color: #adb5bd;
+            --base-color: #00b4d8;
+            --perp-color: #ef476f;
+            --hypo-color: #ffd166;
+            --arc-color: #06d6a0;
+            --success-color: #2a9d8f;
+            --error-color: #e63946;
+            --shadow: 0 8px 25px rgba(0, 0, 0, 0.09);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .game-wrapper {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        .game-container {
+            background-color: var(--container-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header { text-align: center; margin-bottom: 20px; }
+        .game-header h1 { color: var(--header-color); margin: 0; font-size: 2.5em; }
+        
+        #canvas-container {
+            width: 100%;
+            margin: auto;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            background-color: #fdfdfd;
+        }
+        #main-canvas {
+            cursor: crosshair;
+            display: block;
+        }
+        #main-canvas.disabled { cursor: not-allowed; }
+
+        .info-panel {
+            width: 350px; flex-shrink: 0;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .info-box { background: var(--container-bg); padding: 20px; border-radius: 20px; box-shadow: var(--shadow); }
+        .info-box h3 { margin-top: 0; color: var(--header-color); border-bottom: 2px solid #eafbff; padding-bottom: 10px; }
+        
+        #controls-box .selection-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .selection-btn {
+            padding: 10px; font-size: 1.2em; font-weight: 700;
+            border-radius: 8px; border: 2px solid; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .selection-btn.sqrt2 { border-color: #ef476f; color: #ef476f; }
+        .selection-btn.sqrt2:hover { background-color: #ef476f; color: white; }
+        .selection-btn.sqrt3 { border-color: #ffd166; color: #ffd166; }
+        .selection-btn.sqrt3:hover { background-color: #ffd166; color: white; }
+        .selection-btn.sqrt5 { border-color: #06d6a0; color: #06d6a0; }
+        .selection-btn.sqrt5:hover { background-color: #06d6a0; color: white; }
+        
+        #reset-btn { width: 100%; padding: 12px; font-size: 1.1em; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; color: white; background-color: #6c757d; }
+        #reset-btn:hover { background-color: #5a6268; }
+
+        #instructions-box p { line-height: 1.6; }
+        #instruction-text {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--header-color);
+            transition: color 0.3s;
+        }
+        #instruction-text.error { color: var(--error-color); }
+        
+        #pythagoras-helper { font-family: 'Roboto Mono', monospace; font-size: 1.1em; line-height: 1.7; }
+        
+        #final-message-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6); display: flex;
+            justify-content: center; align-items: center; z-index: 1000;
+            opacity: 0; visibility: hidden; transition: all 0.4s ease;
+        }
+        #final-message-overlay.visible { opacity: 1; visibility: visible; }
+        .message-content {
+            background: white; padding: 40px; border-radius: 20px;
+            text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: scale(0.7); transition: transform 0.4s ease;
+        }
+        #final-message-overlay.visible .message-content { transform: scale(1); }
+        .message-content h2 { color: var(--success-color); font-size: 2.5em; margin: 0 0 10px 0; }
+        .message-content p { font-size: 1.2em; margin: 5px 0; }
+
+    </style>
+</head>
+<body>
+
+    <div class="game-wrapper">
+        <div class="game-container">
+            <div class="game-header">
+                <h1>Geometric Construction Simulator</h1>
+            </div>
+            
+            <div id="canvas-container">
+                <canvas id="main-canvas" width="800" height="500"></canvas>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <div id="controls-box" class="info-box">
+                <h3>Start a Construction</h3>
+                <div class="selection-buttons">
+                    <button class="selection-btn sqrt2" data-target="2">Construct √2</button>
+                    <button class="selection-btn sqrt3" data-target="3">Construct √3</button>
+                    <button class="selection-btn sqrt5" data-target="5">Construct √5</button>
+                </div>
+                <button id="reset-btn">Reset</button>
+            </div>
+
+            <div id="instructions-box" class="info-box">
+                <h3>Current Task</h3>
+                <p id="instruction-text">Choose a number to construct!</p>
+            </div>
+
+            <div id="pythagoras-helper" class="info-box">
+                <h3>Pythagoras Helper</h3>
+                <p id="pythagoras-text">c² = a² + b²</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="final-message-overlay">
+        <div class="message-content">
+            <h2 id="final-title">Construction Complete!</h2>
+            <p id="final-text"></p>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById('main-canvas');
+        const ctx = canvas.getContext('2d');
+        const canvasContainer = document.getElementById('canvas-container');
+        
+        const instructionText = document.getElementById('instruction-text');
+        const pythagorasText = document.getElementById('pythagoras-text');
+        const finalMessageOverlay = document.getElementById('final-message-overlay');
+        const finalMessageText = document.getElementById('final-text');
+        
+        // --- State Management ---
+        let scale = 100; // 100 pixels = 1 unit on the number line
+        let origin = { x: 50, y: 400 };
+        let gameState = 'IDLE'; // IDLE, CONSTRUCTING, DONE
+        let currentStep = 0;
+        let constructionPlan = [];
+        let drawnElements = [];
+        let isDragging = false;
+        let startDrag = {}, endDrag = {};
+        
+        // --- Game Setup ---
+        const constructionPlans = {
+            '2': [
+                { type: 'line', from: [0, 0], to: [1, 0], color: 'var(--base-color)', task: 'Draw a 1 unit base from 0 to 1.', pythagoras: 'c² = 1² + ?' },
+                { type: 'line', from: [1, 0], to: [1, 1], color: 'var(--perp-color)', task: 'Draw a 1 unit perpendicular up from 1.', pythagoras: 'c² = 1² + 1²' },
+                { type: 'hypotenuse', from: [0, 0], to: [1, 1], value: 2, task: 'Connecting the hypotenuse...' , pythagoras: 'c = √2' },
+                { type: 'arc', from: [1, 1], to: [Math.sqrt(2), 0], value: 2, task: 'Swing the arc down to the number line.' }
+            ],
+            '3': [ // Based on sqrt(2)
+                { type: 'line', from: [0, 0], to: [Math.sqrt(2), 0], color: 'var(--base-color)', task: 'Draw a √2 unit base from 0.', pythagoras: 'c² = (√2)² + ?' },
+                { type: 'line', from: [Math.sqrt(2), 0], to: [Math.sqrt(2), 1], color: 'var(--perp-color)', task: 'Draw a 1 unit perpendicular up from √2.', pythagoras: 'c² = (√2)² + 1²' },
+                { type: 'hypotenuse', from: [0, 0], to: [Math.sqrt(2), 1], value: 3, task: 'Connecting the hypotenuse...', pythagoras: 'c = √3' },
+                { type: 'arc', from: [Math.sqrt(2), 1], to: [Math.sqrt(3), 0], value: 3, task: 'Swing the arc down to the number line.' }
+            ],
+            '5': [
+                { type: 'line', from: [0, 0], to: [2, 0], color: 'var(--base-color)', task: 'Draw a 2 unit base from 0 to 2.', pythagoras: 'c² = 2² + ?' },
+                { type: 'line', from: [2, 0], to: [2, 1], color: 'var(--perp-color)', task: 'Draw a 1 unit perpendicular up from 2.', pythagoras: 'c² = 2² + 1²' },
+                { type: 'hypotenuse', from: [0, 0], to: [2, 1], value: 5, task: 'Connecting the hypotenuse...', pythagoras: 'c = √5' },
+                { type: 'arc', from: [2, 1], to: [Math.sqrt(5), 0], value: 5, task: 'Swing the arc down to the number line.' }
+            ]
+        };
+        
+        // --- Coordinate Transformation ---
+        const toCanvas = (x, y) => ({ x: origin.x + x * scale, y: origin.y - y * scale });
+        const fromCanvas = (cx, cy) => ({ x: (cx - origin.x) / scale, y: (origin.y - cy) / scale });
+
+        // --- Drawing Functions ---
+        function drawGrid() {
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.lineWidth = 1;
+            for(let x = 0; x < canvas.width; x += scale/2) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+            for(let y = 0; y < canvas.height; y += scale/2) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+        }
+
+        function drawNumberLine() {
+            const { x: x1, y: y1 } = toCanvas(-0.5, 0);
+            const { x: x2 } = toCanvas(canvas.width/scale, 0);
+            ctx.strokeStyle = 'var(--line-color)';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y1);
+            ctx.stroke();
+
+            for (let i = 0; i <= 7; i++) {
+                const { x, y } = toCanvas(i, 0);
+                ctx.beginPath();
+                ctx.moveTo(x, y - 8);
+                ctx.lineTo(x, y + 8);
+                ctx.stroke();
+                ctx.font = "14px 'Poppins'";
+                ctx.textAlign = 'center';
+                ctx.fillText(i, x, y + 25);
+            }
+        }
+        
+        function drawElements() {
+            drawnElements.forEach(el => {
+                if (el.type === 'line' || el.type === 'hypotenuse') {
+                    const p1 = toCanvas(el.from[0], el.from[1]);
+                    const p2 = toCanvas(el.to[0], el.to[1]);
+                    ctx.beginPath();
+                    ctx.moveTo(p1.x, p1.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.strokeStyle = el.color || 'black';
+                    ctx.lineWidth = 4;
+                    ctx.stroke();
+                    if(el.type === 'hypotenuse') {
+                        ctx.fillStyle = el.color;
+                        ctx.font = "bold 16px 'Roboto Mono'";
+                        ctx.fillText(`√${el.value}`, (p1.x+p2.x)/2 + 10, (p1.y+p2.y)/2);
+                    }
+                } else if (el.type === 'arc') {
+                    const center = toCanvas(0,0);
+                    const p1 = toCanvas(el.from[0], el.from[1]);
+                    const radius = Math.hypot(p1.x - center.x, p1.y - center.y);
+                    const startAngle = Math.atan2(p1.y - center.y, p1.x - center.x);
+                    ctx.beginPath();
+                    ctx.arc(center.x, center.y, radius, startAngle, 0);
+                    ctx.strokeStyle = el.color;
+                    ctx.lineWidth = 4;
+                    ctx.stroke();
+                    
+                    const finalPoint = toCanvas(Math.sqrt(el.value), 0);
+                    ctx.fillStyle = el.color;
+                    ctx.font = "bold 16px 'Poppins'";
+                    ctx.fillText(`√${el.value} ≈ ${Math.sqrt(el.value).toFixed(2)}`, finalPoint.x, finalPoint.y + 25);
+                }
+            });
+        }
+
+        function redrawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawGrid();
+            drawNumberLine();
+            drawElements();
+        }
+
+        // --- Game Logic ---
+        function startConstruction(target) {
+            reset();
+            constructionPlan = constructionPlans[target];
+            gameState = 'CONSTRUCTING';
+            currentStep = 0;
+            nextStep();
+        }
+        
+        function nextStep() {
+            const stepData = constructionPlan[currentStep];
+            instructionText.textContent = stepData.task;
+            if(stepData.pythagoras) pythagorasText.textContent = stepData.pythagoras;
+
+            if (stepData.type === 'hypotenuse') { // Auto-draw hypotenuse
+                setTimeout(() => {
+                    drawnElements.push(stepData);
+                    redrawCanvas();
+                    currentStep++;
+                    nextStep();
+                }, 500);
+            }
+        }
+        
+        function checkStepCompletion(userLine) {
+            const stepData = constructionPlan[currentStep];
+            const tolerance = 0.15;
+            
+            let isCorrect = false;
+            if (stepData.type === 'line') {
+                const dist1 = Math.hypot(userLine.from[0] - stepData.from[0], userLine.from[1] - stepData.from[1]);
+                const dist2 = Math.hypot(userLine.to[0] - stepData.to[0], userLine.to[1] - stepData.to[1]);
+                isCorrect = dist1 < tolerance && dist2 < tolerance;
+            } else if (stepData.type === 'arc') {
+                const dist = Math.hypot(userLine.to[0] - stepData.to[0], userLine.to[1] - stepData.to[1]);
+                isCorrect = dist < tolerance;
+            }
+
+            if (isCorrect) {
+                instructionText.classList.remove('error');
+                drawnElements.push(stepData);
+                redrawCanvas();
+                currentStep++;
+                if (currentStep >= constructionPlan.length) {
+                    endGame();
+                } else {
+                    nextStep();
+                }
+            } else {
+                instructionText.classList.add('error');
+                setTimeout(() => instructionText.classList.remove('error'), 1500);
+            }
+        }
+        
+        function endGame() {
+            gameState = 'DONE';
+            canvas.classList.add('disabled');
+            const target = constructionPlan[0].type === 'hypotenuse' ? constructionPlan[0].value : constructionPlan[constructionPlan.length-1].value;
+            finalMessageText.textContent = `You have successfully constructed √${target}!`;
+            finalMessageOverlay.classList.add('visible');
+        }
+
+        function reset() {
+            gameState = 'IDLE';
+            currentStep = 0;
+            constructionPlan = [];
+            drawnElements = [];
+            instructionText.textContent = 'Choose a number to construct!';
+            pythagorasText.textContent = 'c² = a² + b²';
+            canvas.classList.remove('disabled');
+            finalMessageOverlay.classList.remove('visible');
+            redrawCanvas();
+        }
+
+        // --- Event Listeners ---
+        canvas.addEventListener('mousedown', e => {
+            if (gameState !== 'CONSTRUCTING') return;
+            isDragging = true;
+            startDrag = fromCanvas(e.offsetX, e.offsetY);
+        });
+
+        canvas.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            redrawCanvas();
+            const currentPos = toCanvas(startDrag.x, startDrag.y);
+            
+            const stepData = constructionPlan[currentStep];
+            if(stepData.type === 'arc'){
+                 const center = toCanvas(0,0);
+                 const p1 = toCanvas(stepData.from[0], stepData.from[1]);
+                 const radius = Math.hypot(p1.x - center.x, p1.y - center.y);
+                 const startAngle = Math.atan2(p1.y - center.y, p1.x - center.x);
+                 const currentAngle = Math.atan2(e.offsetY - center.y, e.offsetX - center.x);
+                 ctx.beginPath();
+                 ctx.arc(center.x, center.y, radius, startAngle, currentAngle);
+                 ctx.strokeStyle = 'gray';
+                 ctx.lineWidth = 3;
+                 ctx.setLineDash([5, 5]);
+                 ctx.stroke();
+                 ctx.setLineDash([]);
+            } else {
+                ctx.beginPath();
+                ctx.moveTo(currentPos.x, currentPos.y);
+                ctx.lineTo(e.offsetX, e.offsetY);
+                ctx.strokeStyle = 'gray';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+            }
+        });
+        
+        canvas.addEventListener('mouseup', e => {
+            if (!isDragging) return;
+            isDragging = false;
+            endDrag = fromCanvas(e.offsetX, e.offsetY);
+            
+            checkStepCompletion({ from: [startDrag.x, startDrag.y], to: [endDrag.x, endDrag.y] });
+            redrawCanvas();
+        });
+
+        document.querySelectorAll('.selection-btn').forEach(btn => {
+            btn.addEventListener('click', () => startConstruction(btn.dataset.target));
+        });
+        document.getElementById('reset-btn').addEventListener('click', reset);
+        finalMessageOverlay.addEventListener('click', () => finalMessageOverlay.classList.remove('visible'));
+
+        // Initial Draw
+        redrawCanvas();
+    });
+    </script>
+</body>
+</html>
+<!--end-of-code-block-->

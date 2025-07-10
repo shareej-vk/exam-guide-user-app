@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Real-Life Identity Puzzle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f8f9fd;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: auto;
+      display: flex;
+      gap: 20px;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .instructions {
+      width: 30%;
+    }
+
+    .game-area {
+      width: 70%;
+    }
+
+    h2 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 24px;
+      color: #1e293b;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 15px;
+      color: #334155;
+    }
+
+    .question-box {
+      margin-top: 20px;
+      background: #e0f2fe;
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 18px;
+      color: #0c4a6e;
+      font-weight: bold;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .option {
+      padding: 12px;
+      background: #f1f5f9;
+      border-radius: 10px;
+      cursor: pointer;
+      text-align: center;
+      font-weight: 600;
+      font-size: 16px;
+      border: 2px solid transparent;
+      transition: 0.3s;
+    }
+
+    .option.correct {
+      background-color: #dcfce7;
+      border-color: #22c55e;
+      color: #166534;
+    }
+
+    .option.wrong {
+      background-color: #fee2e2;
+      border-color: #ef4444;
+      color: #991b1b;
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    .buttons button {
+      background-color: #10b981;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .progress-track {
+      margin-top: 30px;
+      background: #e5e7eb;
+      height: 12px;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, #34d399, #3b82f6);
+      width: 0%;
+      transition: width 0.4s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card instructions">
+      <h2>🏗️ Real-Life Identity Puzzle</h2>
+      <p>
+        🧩 Use identities to solve real-life problems like<br>
+        - Garden areas<br>
+        - Volumes of boxes<br>
+        - Simplifying expressions<br><br>
+        ✍️ Choose the correct identity to apply.<br>
+        ✅ Correct answers highlighted in green.<br>
+        ❌ Wrong answers in red.<br><br>
+        Press Start to begin!
+      </p>
+      <div class="buttons">
+        <button onclick="startGame()">Start</button>
+        <button onclick="resetGame()">Reset</button>
+      </div>
+    </div>
+
+    <div class="card game-area">
+      <h2>📚 Apply the Right Identity</h2>
+      <div class="question-box" id="question">Press Start to begin!</div>
+      <div class="options" id="optionList"></div>
+      <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "A garden has side (x + 3). What identity will help find its area?",
+        a: "(a + b)² = a² + 2ab + b²",
+        options: ["(a + b)² = a² + 2ab + b²", "(a - b)² = a² - 2ab + b²"]
+      },
+      {
+        q: "A cube has edge (x - 4). What identity expands its volume?",
+        a: "(a - b)³ = a³ - 3a²b + 3ab² - b³",
+        options: ["(a + b)³ = a³ + 3a²b + 3ab² + b³", "(a - b)³ = a³ - 3a²b + 3ab² - b³"]
+      },
+      {
+        q: "You need to find (100 + x)² quickly. Choose the identity.",
+        a: "(a + b)² = a² + 2ab + b²",
+        options: ["(a + b)² = a² + 2ab + b²", "(a - b)² = a² - 2ab + b²"]
+      },
+      {
+        q: "Find volume of box with (x + y)(x² - xy + y²)",
+        a: "a³ + b³ = (a + b)(a² - ab + b²)",
+        options: ["a³ + b³ = (a + b)(a² - ab + b²)", "a³ - b³ = (a - b)(a² + ab + b²)"]
+      },
+      {
+        q: "A triangle is described with height (x + y + z). Expand the square.",
+        a: "(x + y + z)² = x² + y² + z² + 2xy + 2yz + 2zx",
+        options: ["(x + y + z)² = x² + y² + z² + 2xy + 2yz + 2zx", "(a + b)² = a² + 2ab + b²"]
+      }
+    ];
+
+    let currentIndex = 0;
+    let progress = 0;
+
+    const questionBox = document.getElementById("question");
+    const optionList = document.getElementById("optionList");
+    const progressBar = document.getElementById("progressBar");
+
+    function startGame() {
+      currentIndex = 0;
+      progress = 0;
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const current = questions[currentIndex];
+      questionBox.textContent = current.q;
+      optionList.innerHTML = "";
+
+      current.options.forEach(opt => {
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.textContent = opt;
+        btn.onclick = () => validateAnswer(opt, current.a, btn);
+        optionList.appendChild(btn);
+      });
+    }
+
+    function validateAnswer(selected, correct, btn) {
+      const allOptions = document.querySelectorAll('.option');
+      allOptions.forEach(o => o.onclick = null); // disable repeat selection
+
+      if (selected === correct) {
+        btn.classList.add("correct");
+        progress += 20;
+        currentIndex++;
+        setTimeout(() => {
+          if (currentIndex < questions.length) {
+            loadQuestion();
+          } else {
+            questionBox.textContent = "🎉 Well done! You've solved all puzzles!";
+            optionList.innerHTML = "";
+          }
+          updateProgress();
+        }, 800);
+      } else {
+        btn.classList.add("wrong");
+        progress -= 10;
+        updateProgress();
+      }
+    }
+
+    function updateProgress() {
+      if (progress < 0) progress = 0;
+      if (progress > 100) progress = 100;
+      progressBar.style.width = progress + "%";
+    }
+
+    function resetGame() {
+      currentIndex = 0;
+      progress = 0;
+      questionBox.textContent = "Press Start to begin!";
+      optionList.innerHTML = "";
+      updateProgress();
+    }
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Shifter: Heat - CBSE Class 9 Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fff1e6;
+            --card-bg: #ffffff;
+            --primary-color: #e5383b; /* Red for heat */
+            --accent-color: #fca311; /* Orange for slider */
+            --particle-color: #003049;
+            --text-color: #333;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --correct-color: #198754;
+            --incorrect-color: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font); background-color: var(--bg-color); color: var(--text-color);
+            padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;
+        }
+
+        .main-container { display: flex; gap: 20px; width: 100%; max-width: 1400px; }
+        .instructions-card {
+            flex: 3; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; align-self: flex-start;
+        }
+        .game-card {
+            flex: 7; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; display: flex;
+            flex-direction: column; align-items: center;
+        }
+        .card-header {
+            font-family: var(--heading-font); font-size: 28px; font-weight: 800; color: var(--primary-color);
+            margin-bottom: 20px; text-align: center; display: inline-block;
+            background: linear-gradient(45deg, #ffe5e5, #fff5f5); padding: 5px 20px; border-radius: 12px;
+        }
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 12px; line-height: 1.6; display: flex; align-items: flex-start;
+        }
+        .instructions-list li::before { content: '🔥'; margin-right: 10px; font-size: 16px; }
+        .instructions-list li b { color: var(--primary-color); }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .btn {
+            font-family: var(--heading-font); font-size: 18px; font-weight: 600;
+            padding: 12px 20px; border: none; border-radius: 12px; cursor: pointer;
+            transition: all 0.3s ease; flex-grow: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        
+        /* Game Area Styles */
+        #initial-message {
+            font-family: var(--heading-font); font-size: 24px; color: #999;
+            height: 450px;
+            display: flex; align-items: center; text-align: center;
+        }
+        .lab-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        
+        .simulation-and-meter-wrapper {
+            display: flex;
+            align-items: flex-end; /* Align bottom of sim and thermometer */
+            gap: 15px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .simulation-area {
+            position: relative;
+            flex-grow: 1;
+            height: 400px;
+            background-color: #f8f9fa; border: 3px solid #dee2e6; border-radius: 15px;
+            border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+        }
+        canvas { width: 100%; height: 100%; }
+        
+        #heater {
+            flex-grow: 1;
+            height: 30px;
+            border-radius: 0 0 15px 15px; border: 3px solid #dee2e6; border-top: none;
+            transition: background 0.3s;
+            width: 583px;
+        }
+        .heater-and-temp-wrapper {
+             display: flex; align-items: stretch; gap: 15px; width: 100%; max-width: 500px;
+        }
+
+        #heat-slider { width: 80%; margin: 20px 0; }
+        
+        /* NEW: Thermometer Styles */
+        #thermometer-container {
+            width: 40px; height: 380px; background: #e9ecef;
+            border: 3px solid #dee2e6; border-radius: 20px;
+            position: relative; display: flex; flex-direction: column;
+            justify-content: flex-end; align-items: center; padding-bottom: 30px;
+        }
+        #thermometer-fill {
+            position: absolute; bottom: 15px; left: 5px; right: 5px;
+            height: 0%; /* Controlled by JS */
+            background: var(--primary-color); border-radius: 10px 10px 0 0;
+            transition: height 0.3s ease, background-color 0.3s ease;
+        }
+        #thermometer-bulb {
+            width: 30px; height: 30px; background: var(--primary-color);
+            border-radius: 50%; position: absolute; bottom: 5px;
+            transition: background-color 0.3s ease;
+        }
+        #temp-display {
+            width: 50px; text-align: center; font-weight: bold; font-family: var(--heading-font);
+            color: var(--primary-color); font-size: 18px; margin-top: 5px;
+        }
+
+        #info-box {
+            margin-top: 20px; padding: 15px; background-color: #ffe8d6; border-radius: 12px;
+            width: 100%; min-height: 80px; text-align: center;
+            border: 2px solid #fec89a;
+        }
+        #info-box h3 { font-family: var(--heading-font); margin-bottom: 5px; color: #d95f02;}
+        #info-box p { font-size: 15px; line-height: 1.5; color: #5c2c01;}
+        
+        #quiz-container { display: none; margin-top: 20px; width: 100%; }
+        .quiz-options { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .quiz-btn { background-color: var(--card-bg); border: 2px solid var(--primary-color); color: var(--primary-color); }
+        .quiz-btn.correct { background-color: var(--correct-color); border-color: var(--correct-color); color: white; }
+        .quiz-btn.incorrect { background-color: var(--incorrect-color); border-color: var(--incorrect-color); color: white; }
+        
+        @media (max-width: 992px) { .main-container { flex-direction: column; } }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">🌡️ State Shifter: Heat</h2>
+            <p><strong>Lesson:</strong> How adding heat energy changes the state of matter.</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Science</h3>
+            <p style="margin-bottom: 15px;">Heat is energy! When you add it, particles gain kinetic energy and their temperature rises. With enough energy, they can break free and change state!</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to get your block of ice.</li>
+                <li>Use the <b>Heat Slider</b> to add or remove heat.</li>
+                <li>Notice how the <b>temperature meter</b> rises as you add heat.</li>
+                <li>Watch the particles vibrate, break free as a liquid, and escape as a gas!</li>
+                <li>The info box explains what's happening at each stage.</li>
+            </ul>
+             <div id="quiz-container">
+                <h3>Final Check!</h3>
+                <p style="text-align:center; margin-bottom:10px;">What is the correct order of states when you keep adding heat?</p>
+                <div class="quiz-options">
+                    <button class="btn quiz-btn" data-correct="false">Gas → Liquid → Solid</button>
+                    <button class="btn quiz-btn" data-correct="true">Solid → Liquid → Gas</button>
+                    <button class="btn quiz-btn" data-correct="false">Liquid → Solid → Gas</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-card">
+             <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to begin the experiment!</div>
+            <div class="lab-wrapper" id="lab-wrapper" style="display: none;">
+                <div class="simulation-and-meter-wrapper">
+                    <div class="simulation-area">
+                        <canvas id="simulation-canvas"></canvas>
+                    </div>
+                    <div id="thermometer-container">
+                        <div id="thermometer-fill"></div>
+                        <div id="thermometer-bulb"></div>
+                    </div>
+                </div>
+                <div class="heater-and-temp-wrapper">
+                    <div id="heater"></div>
+                    <div id="temp-display">0°C</div>
+                </div>
+                <input type="range" id="heat-slider" min="0" max="100" value="0">
+                <div id="info-box">
+                    <h3>Current State: Solid (Ice) 🧊</h3>
+                    <p>Particles are locked in a fixed lattice. They have low kinetic energy and just vibrate.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const canvas = document.getElementById('simulation-canvas');
+    const ctx = canvas.getContext('2d');
+    const heater = document.getElementById('heater');
+    const heatSlider = document.getElementById('heat-slider');
+    const infoBox = document.getElementById('info-box');
+    const quizContainer = document.getElementById('quiz-container');
+    const thermometerFill = document.getElementById('thermometer-fill');
+    const thermometerBulb = document.getElementById('thermometer-bulb');
+    const tempDisplay = document.getElementById('temp-display');
+
+    // --- Simulation Constants & State ---
+    const NUM_PARTICLES = 50;
+    const PARTICLE_RADIUS = 7; // Slightly smaller for better fit
+    const PARTICLE_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim();
+    const GRAVITY = 0.05;
+    const REPULSION = 0.1;
+    let particles = [];
+    let bonds = [];
+    let animationFrameId;
+    let heatLevel = 0;
+    let statesExplored = new Set();
+    
+    // --- Particle Class ---
+    class Particle {
+        constructor(x, y) {
+            this.x = x; this.y = y;
+            this.latticeX = x; this.latticeY = y;
+            this.vx = 0; this.vy = 0;
+            this.radius = PARTICLE_RADIUS;
+        }
+        update() {
+            const heatState = getHeatState(heatLevel);
+            if (heatState === 'solid') {
+                const vibration = heatLevel / 10;
+                this.x = this.latticeX + (Math.random() - 0.5) * vibration;
+                this.y = this.latticeY + (Math.random() - 0.5) * vibration;
+            } else if (heatState === 'liquid') {
+                this.vy += GRAVITY;
+                this.x += this.vx; this.y += this.vy;
+                this.vx *= 0.98; this.vy *= 0.98;
+                if (this.x < this.radius || this.x > canvas.width - this.radius) this.vx *= -0.8;
+                if (this.y > canvas.height - this.radius) { this.y = canvas.height - this.radius; this.vy *= -0.5; }
+            } else { // Gas
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < this.radius || this.x > canvas.width - this.radius) this.vx *= -1;
+                if (this.y < this.radius || this.y > canvas.height - this.radius) this.vy *= -1;
+                if (this.y < -this.radius) this.y = canvas.height + this.radius;
+            }
+        }
+        applyRepulsion(otherParticles) {
+            otherParticles.forEach(other => {
+                if (this === other) return;
+                const dx = other.x - this.x; const dy = other.y - this.y;
+                const dist = Math.hypot(dx, dy);
+                if (dist < this.radius * 2.5) {
+                    this.vx -= (dx / dist) * REPULSION; this.vy -= (dy / dist) * REPULSION;
+                }
+            });
+        }
+        draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = PARTICLE_COLOR; ctx.fill(); }
+    }
+    
+    // --- Core Functions ---
+    function initParticles() {
+        particles = []; bonds = [];
+        const cols = 8; const spacing = PARTICLE_RADIUS * 2.5;
+        const totalWidth = (cols - 1) * spacing;
+        const startX = (canvas.width - totalWidth) / 2;
+        const startY = canvas.height - 80;
+        for (let i = 0; i < NUM_PARTICLES; i++) {
+            const latticeX = startX + (i % cols) * spacing;
+            const latticeY = startY - Math.floor(i / cols) * spacing;
+            particles.push(new Particle(latticeX, latticeY));
+        }
+        for(let i=0; i<particles.length; i++) {
+            for(let j=i+1; j<particles.length; j++) {
+                if(Math.hypot(particles[i].x-particles[j].x, particles[i].y-particles[j].y) < spacing * 1.5) {
+                    bonds.push([i, j]);
+                }
+            }
+        }
+    }
+
+    function getHeatState(level) {
+        if (level < 33) return 'solid';
+        if (level < 66) return 'liquid';
+        return 'gas';
+    }
+    
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const heatState = getHeatState(heatLevel);
+        
+        if(heatState === 'solid') {
+            ctx.strokeStyle = 'rgba(0,0,0,0.2)'; ctx.lineWidth = 2;
+            bonds.forEach(b => {
+                ctx.beginPath();
+                ctx.moveTo(particles[b[0]].x, particles[b[0]].y);
+                ctx.lineTo(particles[b[1]].x, particles[b[1]].y);
+                ctx.stroke();
+            });
+        }
+        
+        particles.forEach(p => { 
+            if(heatState === 'liquid') p.applyRepulsion(particles);
+            p.update(); p.draw(); 
+        });
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    
+    function updateSystem(e) {
+        heatLevel = parseInt(e.target.value, 10);
+        const heatState = getHeatState(heatLevel);
+        statesExplored.add(heatState);
+        
+        // Update heater color and thermometer
+        const heatRatio = heatLevel / 100;
+        const red = Math.floor(255 * heatRatio);
+        const blue = Math.floor(200 * (1-heatRatio));
+        const color = `rgb(${red}, 0, ${blue})`;
+        heater.style.background = `linear-gradient(to right, #64b5f6, ${color})`;
+        thermometerFill.style.height = `${heatRatio * 90}%`; // 90% to not cover bulb fully
+        thermometerFill.style.backgroundColor = color;
+        thermometerBulb.style.backgroundColor = color;
+
+        // Update temperature display
+        const temperature = -10 + (heatRatio * 120); // Scale from -10°C to 110°C
+        tempDisplay.textContent = `${Math.round(temperature)}°C`;
+        
+        // Update particle velocities for gas state transition
+        if (heatState === 'gas') {
+            particles.forEach(p => {
+                p.vx = (Math.random() - 0.5) * (heatLevel / 8);
+                p.vy = (Math.random() - 0.5) * (heatLevel / 8);
+            });
+        }
+        
+        let title, description;
+        switch(heatState) {
+            case 'solid': title = "Solid (Ice) 🧊"; description = "Particles are locked in a fixed lattice. They have low kinetic energy and just vibrate."; break;
+            case 'liquid': title = "Liquid (Water) 💧"; description = "Particles have enough energy to break bonds and slide past each other. They take the shape of the container."; break;
+            case 'gas': title = "Gas (Steam) 💨"; description = "Particles have very high energy, moving rapidly and far apart, filling all available space."; break;
+        }
+        infoBox.innerHTML = `<h3>Current State: ${title}</h3><p>${description}</p>`;
+        
+        if (statesExplored.size === 3) quizContainer.style.display = 'block';
+    }
+    
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        quizContainer.style.display = 'none';
+        statesExplored.clear();
+        document.querySelectorAll('.quiz-btn').forEach(b => {
+            b.classList.remove('correct', 'incorrect');
+            b.disabled = false;
+        });
+        
+        const simArea = document.querySelector('.simulation-area');
+        canvas.width = simArea.clientWidth; canvas.height = simArea.clientHeight;
+
+        heatSlider.value = 0;
+        heatSlider.dispatchEvent(new Event('input')); 
+        initParticles();
+        if (!animationFrameId) animate();
+    }
+    
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', () => {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+        initialMessage.style.display = 'flex';
+        labWrapper.style.display = 'none';
+        quizContainer.style.display = 'none';
+    });
+    heatSlider.addEventListener('input', updateSystem);
+    document.querySelectorAll('.quiz-btn').forEach(btn => btn.addEventListener('click', e => {
+        document.querySelectorAll('.quiz-btn').forEach(b => {
+            b.disabled = true;
+            b.classList.add(b.dataset.correct === 'true' ? 'correct' : 'incorrect')
+        });
+    }));
+    
+    window.onload = () => { labWrapper.style.display = 'none'; };
+</script>
+</body>
+</html>

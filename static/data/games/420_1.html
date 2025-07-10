@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ammonium Chloride Rescue - Sublimation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --primary-color: #432818; /* Brown */
+            --accent-color: #99582a; /* Lighter Brown */
+            --heat-color: #e5383b;
+            --vapor-color: rgba(189, 195, 199, 0.5);
+            --text-color: #343a40;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            --correct-color: #2a9d8f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #ffe6a7, #fdf0d5);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 12px;
+            transition: background-color 0.3s;
+        }
+        .instructions-list li.active-step {
+            background-color: #fdf0d5;
+        }
+
+        .step-label {
+            font-family: var(--heading-font);
+            font-size: 20px;
+            color: white;
+            background-color: var(--accent-color);
+            padding: 0px 10px;
+            border-radius: 8px;
+            margin-right: 10px;
+            line-height: 1.2;
+        }
+        .instructions-list b { color: var(--primary-color); }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .lab-bench {
+            width: 100%;
+            height: 450px;
+            background-color: #6c757d;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            position: relative;
+        }
+        
+        .lab-item {
+            position: absolute;
+            transition: all 0.5s ease-in-out, box-shadow 0.3s, transform 0.3s;
+            cursor: grab;
+            opacity: 0.5; /* Items are dim by default */
+        }
+        .lab-item.active-item {
+            opacity: 1;
+            transform: scale(1.1);
+            box-shadow: 0 0 25px var(--correct-color);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1.1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1.1); }
+        }
+
+        .lab-item.dragging { cursor: grabbing; transform: scale(1.2); z-index: 10; animation: none; }
+        .lab-item img { pointer-events: none; width: 100%; height: 100%; }
+        
+        #funnel { left: 50px; bottom: 20px; width: 120px; height: 120px;}
+        #cotton-plug { left: 200px; bottom: 20px; width: 50px; height: 40px;}
+        #bunsen-burner { right: 50px; bottom: 20px; width: 100px; height: 140px;}
+        
+        .apparatus-station {
+            position: absolute;
+            left: 50%; bottom: 20px;
+            transform: translateX(-50%);
+            width: 200px; height: 350px;
+        }
+        
+        .placed-item {
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .placed-item.visible { opacity: 1; }
+        #placed-funnel { top: 100px; left: 20px; width: 160px; height: 160px;}
+        #placed-plug { top: 95px; left: 75px; width: 50px; height: 40px; transform: translateY(-5px); }
+        #placed-burner { bottom: -20px; left: 40px; width: 120px; height: 160px;}
+
+        .drop-zone {
+            position: absolute;
+            border: 4px dashed transparent;
+            border-radius: 20px;
+            transition: all 0.3s;
+            pointer-events: none; /* Inactive by default */
+        }
+        .drop-zone.active-zone {
+            pointer-events: all;
+            border-color: var(--correct-color);
+            background-color: rgba(42, 157, 143, 0.2);
+        }
+
+        #funnel-drop-zone { width: 160px; height: 100px; top: 130px; left: 20px; }
+        #plug-drop-zone { width: 60px; height: 50px; top: 95px; left: 70px; }
+        #burner-drop-zone { width: 120px; height: 80px; bottom: -20px; left: 40px; }
+
+        #tripod-stand { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 180px; }
+        #dish { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); width: 150px; }
+
+        #animation-canvas {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+        }
+
+        #completion-message {
+            margin-top: 20px; font-size: 22px; font-weight: 800;
+            color: var(--correct-color); display: none;
+            font-family: var(--heading-font); text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Ammonium Chloride Rescue</h2>
+            <p><strong>Lesson:</strong> Separation by Sublimation</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">Your Mission</h3>
+            <p style="margin-bottom: 15px;">You have a mixture of salt and ammonium chloride. Your goal is to rescue the pure ammonium chloride using its special ability to sublime (turn from a solid directly to a gas)!</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <ul class="instructions-list" id="instructions-list">
+                <li data-step="1"><span class="step-label">1</span> <b>Drag the Funnel</b> and place it over the dish of mixture.</li>
+                <li data-step="2"><span class="step-label">2</span> <b>Drag the Cotton Plug</b> to the top of the funnel to stop the vapor from escaping.</li>
+                <li data-step="3"><span class="step-label">3</span> <b>Drag the Bunsen Burner</b> under the dish to apply heat.</li>
+                <li data-step="4"><span class="step-label">4</span> Watch as the ammonium chloride sublimes into a vapor, then deposits as a pure solid!</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to begin the sublimation experiment!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="lab-bench">
+                    <div id="funnel" class="lab-item" draggable="true" data-item="funnel"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10 10 L50 90 L90 10 Z' fill='rgba(255,255,255,0.5)' stroke='%23333' stroke-width='3'/></svg>" alt="Funnel"></div>
+                    <div id="cotton-plug" class="lab-item" draggable="true" data-item="plug"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 40'><ellipse cx='25' cy='20' rx='24' ry='19' fill='%23FFF' stroke='%23EEE' stroke-width='1'/></svg>" alt="Cotton Plug"></div>
+                    <div id="bunsen-burner" class="lab-item" draggable="true" data-item="burner"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'><rect x='30' y='110' width='40' height='20' fill='%23495057'/><path d='M40 110 L60 110 L55 60 L45 60 Z' fill='%236c757d'/><path d='M50 60 Q 40 40 50 20 Q 60 40 50 60' fill='rgba(255,165,0,0.5)'/><path d='M50 50 Q 45 35 50 20 Q 55 35 50 50' fill='rgba(0,0,255,0.7)'/><rect x='0' y='130' width='100' height='10' fill='%23343a40'/></svg>" alt="Bunsen Burner"></div>
+
+                    <div class="apparatus-station">
+                        <div id="tripod-stand"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 100'><circle cx='90' cy='15' r='40' stroke='%23343a40' stroke-width='5' fill='none'/><path d='M90 15 L20 100 M90 15 L160 100 M70 15 L110 15' stroke='%23343a40' stroke-width='5'/></svg>" alt="Tripod Stand"></div>
+                        <div id="dish"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 150 40'><path d='M5 15 Q 75 50, 145 15 L 140 25 Q 75 60, 10 25 Z' fill='%23FFF' stroke='%23333' stroke-width='2'/><text x='75' y='20' text-anchor='middle' font-size='15' font-family='Arial' fill='white'>Salt + NH₄Cl</text></svg>" alt="Dish with mixture"></div>
+                        
+                        <div id="placed-funnel" class="placed-item"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M10 10 L50 90 L90 10 Z' fill='rgba(255,255,255,0.5)' stroke='%23333' stroke-width='3'/></svg>" alt="Funnel"></div>
+                        <div id="placed-plug" class="placed-item"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 40'><ellipse cx='25' cy='20' rx='24' ry='19' fill='%23FFF' stroke='%23EEE' stroke-width='1'/></svg>" alt="Cotton Plug"></div>
+                        <div id="placed-burner" class="placed-item"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140'><rect x='30' y='110' width='40' height='20' fill='%23495057'/><path d='M40 110 L60 110 L55 60 L45 60 Z' fill='%236c757d'/><path d='M50 60 Q 40 40 50 20 Q 60 40 50 60' fill='rgba(255,165,0,0.8)'/><path d='M50 50 Q 45 35 50 20 Q 55 35 50 50' fill='rgba(0,0,255,0.9)'/><rect x='0' y='130' width='100' height='10' fill='%23343a40'/></svg>" alt="Bunsen Burner"></div>
+
+                        <div id="funnel-drop-zone" class="drop-zone" data-target="funnel"></div>
+                        <div id="plug-drop-zone" class="drop-zone" data-target="plug"></div>
+                        <div id="burner-drop-zone" class="drop-zone" data-target="burner"></div>
+                        <canvas id="animation-canvas"></canvas>
+                    </div>
+                </div>
+                 <div id="completion-message">Success! The ammonium chloride has been separated!</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const labItems = document.querySelectorAll('.lab-item');
+    const dropZones = document.querySelectorAll('.drop-zone');
+    const placedItems = {
+        funnel: document.getElementById('placed-funnel'),
+        plug: document.getElementById('placed-plug'),
+        burner: document.getElementById('placed-burner')
+    };
+    const instructionsList = document.getElementById('instructions-list');
+    const canvas = document.getElementById('animation-canvas');
+    const ctx = canvas.getContext('2d');
+    const completionMessage = document.getElementById('completion-message');
+
+    // --- State ---
+    let currentStep = 1;
+    let particles = [];
+    let animationFrameId;
+
+    // --- Game Logic ---
+    function updateStep(step) {
+        currentStep = step;
+        // Update instruction highlight
+        document.querySelectorAll('#instructions-list li').forEach(li => {
+            li.classList.toggle('active-step', parseInt(li.dataset.step) === currentStep);
+        });
+
+        // Update active item and drop zone
+        labItems.forEach(item => item.classList.remove('active-item'));
+        dropZones.forEach(zone => zone.classList.remove('active-zone'));
+
+        if (currentStep === 1) {
+            document.querySelector('.lab-item[data-item="funnel"]').classList.add('active-item');
+            document.querySelector('.drop-zone[data-target="funnel"]').classList.add('active-zone');
+        } else if (currentStep === 2) {
+            document.querySelector('.lab-item[data-item="plug"]').classList.add('active-item');
+            document.querySelector('.drop-zone[data-target="plug"]').classList.add('active-zone');
+        } else if (currentStep === 3) {
+            document.querySelector('.lab-item[data-item="burner"]').classList.add('active-item');
+            document.querySelector('.drop-zone[data-target="burner"]').classList.add('active-zone');
+        } else if (currentStep === 4) {
+            startSublimation();
+        }
+    }
+    
+    function handleDrop(itemKey) {
+        if (itemKey === 'funnel' && currentStep === 1) {
+            placedItems.funnel.classList.add('visible');
+            document.querySelector('.lab-item[data-item="funnel"]').style.display = 'none';
+            updateStep(2);
+        } else if (itemKey === 'plug' && currentStep === 2) {
+            placedItems.plug.classList.add('visible');
+            document.querySelector('.lab-item[data-item="plug"]').style.display = 'none';
+            updateStep(3);
+        } else if (itemKey === 'burner' && currentStep === 3) {
+            placedItems.burner.classList.add('visible');
+            document.querySelector('.lab-item[data-item="burner"]').style.display = 'none';
+            updateStep(4);
+        }
+    }
+    
+    function resetGame() {
+        if(animationFrameId) cancelAnimationFrame(animationFrameId);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles = [];
+        
+        labItems.forEach(item => {
+            item.style.display = 'block';
+            item.classList.remove('active-item');
+        });
+        Object.values(placedItems).forEach(item => item.classList.remove('visible'));
+        completionMessage.style.display = 'none';
+        
+        updateStep(1);
+    }
+    
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        resetGame();
+    }
+    
+    // --- Animation Logic ---
+    function startSublimation() {
+        for (let i = 0; i < 150; i++) {
+            particles.push({
+                x: canvas.width / 2 + (Math.random() - 0.5) * 80,
+                y: canvas.height - 110,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: -Math.random() * 1.5 - 0.5,
+                radius: Math.random() * 1.5 + 1,
+                state: 'vapor' // vapor, solid
+            });
+        }
+        animate();
+
+        setTimeout(() => {
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            completionMessage.style.display = 'block';
+        }, 7000);
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        particles.forEach(p => {
+            if (p.state === 'vapor') {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.005; // Gentle rise then fall
+
+                // Collision with funnel walls (approximated as lines)
+                const funnelTopY = 100;
+                const funnelBottomY = 250;
+                const funnelTipX = canvas.width / 2;
+                const funnelTopRadius = 80;
+                
+                const progress = (p.y - funnelTopY) / (funnelBottomY - funnelTopY);
+                const currentRadius = funnelTopRadius * (1-progress);
+
+                if (p.y < funnelBottomY && Math.abs(p.x - funnelTipX) > currentRadius) {
+                    p.state = 'solid'; // Stick to the wall
+                }
+                if (p.y < funnelTopY) { // Hit the cotton plug
+                    p.state = 'solid';
+                }
+            }
+
+            // Draw particles
+            if (p.state === 'vapor') {
+                 ctx.globalAlpha = 0.5;
+                 ctx.fillStyle = '#e9ecef';
+                 ctx.beginPath();
+                 ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
+                 ctx.fill();
+                 ctx.globalAlpha = 1.0;
+            } else { // Solid
+                ctx.fillStyle = '#f8f9fa';
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius * 1.5, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        });
+        
+        animationFrameId = requestAnimationFrame(animate);
+    }
+
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+
+    labItems.forEach(item => {
+        item.addEventListener('dragstart', e => {
+            if (!item.classList.contains('active-item')) {
+                e.preventDefault();
+                return;
+            }
+            e.dataTransfer.setData('text/plain', item.dataset.item);
+            setTimeout(() => item.classList.add('dragging'), 0);
+        });
+        item.addEventListener('dragend', () => item.classList.remove('dragging'));
+    });
+
+    dropZones.forEach(zone => {
+        zone.addEventListener('dragover', e => {
+            if (zone.classList.contains('active-zone')) {
+                e.preventDefault();
+            }
+        });
+        zone.addEventListener('drop', e => {
+            if (zone.classList.contains('active-zone')) {
+                e.preventDefault();
+                const itemKey = e.dataTransfer.getData('text/plain');
+                if (zone.dataset.target === itemKey) {
+                    handleDrop(itemKey);
+                }
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

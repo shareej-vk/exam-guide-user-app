@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Square‑Root Construction Sequencer – Drag & Drop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --primary: #0059d1;
+      --card-bg: #ffffff;
+      --card-border: #d0d8e6;
+      --sequence-bg: #e8f0fe;
+      --correct-bg: #34a853;
+      --incorrect-bg: #ea4335;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem 0.5rem;
+      color: #333;
+    }
+    h1 { color: var(--primary); margin: 0 0 1rem; text-align:center; font-size:1.7rem; }
+
+    /* ---- overall two‑column layout ---- */
+    #layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 1.2rem;
+      width: 100%;
+      max-width: 1100px;
+    }
+    @media (max-width:768px){
+      #layout{ grid-template-columns:1fr; }
+    }
+
+    /* ---- instructions panel ---- */
+    #instructions {
+      background:#fff;
+      border:1px solid var(--card-border);
+      border-radius:8px;
+      padding:1rem 1.25rem;
+    }
+    #instructions h2{ margin:0 0 0.6rem; font-size:1.05rem; color:var(--primary); }
+    #instructions ol{ margin:0; padding-left:1.2rem; }
+    #instructions li{ margin-bottom:0.35rem; font-size:0.9rem; }
+
+    /* ---- controls ---- */
+    #controls{ display:flex; flex-wrap:wrap; gap:0.75rem; justify-content:center; margin-bottom:1rem; }
+    button{ border:none; padding:0.45rem 1rem; border-radius:6px; background:var(--primary); color:#fff; font-weight:600; cursor:pointer; transition:background 0.2s; }
+    button:hover{ background:#0048ae; }
+
+    /* ---- board ---- */
+    #board{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:1rem;
+    }
+    .column{
+      background:var(--sequence-bg);
+      padding:1rem;
+      border-radius:8px;
+      min-height:360px;
+      position:relative;
+    }
+    .column h3{ margin-top:0; font-size:1.05rem; color:var(--primary); text-align:center; }
+    .column.drag-over::after{
+      content:"";
+      position:absolute; inset:0; border:2px dashed var(--primary); border-radius:8px; pointer-events:none;
+    }
+
+    /* ---- cards ---- */
+    .card{
+      background:var(--card-bg);
+      border:1px solid var(--card-border);
+      border-radius:6px;
+      padding:0.6rem 0.8rem;
+      margin-bottom:0.6rem;
+      font-size:0.92rem;
+      cursor:grab;
+      user-select:none;
+    }
+    .card.dragging{ opacity:0.45; }
+
+    /* ---- feedback ---- */
+    #feedback{ margin-top:1rem; font-weight:600; text-align:center; }
+
+    /* ---- visual aid canvas ---- */
+    #visualAid{ display:none; background:#fff; border:1px solid #ccc; border-radius:6px; margin:1.2rem auto 0; }
+  </style>
+</head>
+<body>
+  <h1>Square‑Root Construction Sequencer</h1>
+
+  <!-- Controls -->
+  <div id="controls">
+    <button data-challenge="root2">Build √2</button>
+    <button data-challenge="root5">Build √5</button>
+    <button id="resetBtn">Reset</button>
+    <button id="checkBtn">Check Order</button>
+  </div>
+
+  <div id="layout">
+    <!-- Instructions -->
+    <aside id="instructions">
+      <h2>How to Play</h2>
+      <ol>
+        <li>Pick a challenge – shuffled steps appear in <strong>Unordered Steps</strong>.</li>
+        <li>Drag each card into <strong>Your Sequence</strong> in the correct order.</li>
+        <li>Re‑order by dragging within either column.</li>
+        <li>Press <strong>Check Order</strong> for feedback. A visual aid appears on success.</li>
+      </ol>
+    </aside>
+
+    <!-- Game -->
+    <section>
+      <div id="board">
+        <div class="column" id="pool"><h3>Unordered Steps</h3></div>
+        <div class="column" id="sequence"><h3>Your Sequence</h3></div>
+      </div>
+      <div id="feedback"></div>
+      <canvas id="visualAid" width="480" height="220"></canvas>
+    </section>
+  </div>
+
+  <script>
+    // ---------- DATA ----------
+    const challenges = {
+      root2:[
+        "Draw a horizontal line segment of length 1 unit.",
+        "Draw a perpendicular 1‑unit segment at the right end of that baseline.",
+        "Connect the free ends to form a right triangle.",
+        "The hypotenuse length equals √2 units.",
+        "Mark that length on the number line to locate √2."
+      ],
+      root5:[
+        "Draw a 2‑unit horizontal baseline (0 to 2).",
+        "At the 2‑unit mark, erect a perpendicular 1‑unit segment upward.",
+        "Connect the origin (0) to the top of that perpendicular.",
+        "The hypotenuse length equals √5 units.",
+        "Swing that length back to the baseline to mark √5."
+      ]
+    };
+
+    // ---------- ELEMENTS ----------
+    const pool = document.getElementById('pool');
+    const sequence = document.getElementById('sequence');
+    const feedback = document.getElementById('feedback');
+    const resetBtn = document.getElementById('resetBtn');
+    const checkBtn = document.getElementById('checkBtn');
+    const canvas = document.getElementById('visualAid');
+    const ctx = canvas.getContext('2d');
+    const challengeBtns = document.querySelectorAll('#controls button[data-challenge]');
+
+    let correctOrder = [];
+    let currentChallenge = '';
+    let draggingCard = null;
+
+    // ---------- HELPERS ----------
+    const shuffle = arr => [...arr].sort(()=>Math.random()-0.5);
+
+    function createCard(text){
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.textContent = text;
+      div.setAttribute('draggable','true');
+
+      div.addEventListener('dragstart', e=>{
+        draggingCard = div;
+        setTimeout(()=>div.classList.add('dragging'),0);
+      });
+      div.addEventListener('dragend', ()=>{
+        draggingCard = null;
+        div.classList.remove('dragging');
+      });
+      return div;
+    }
+
+    function getDragAfterElement(container, y){
+      const cards = [...container.querySelectorAll('.card:not(.dragging)')];
+      let closest = {offset: Number.NEGATIVE_INFINITY, element: null};
+      cards.forEach(card=>{
+        const rect = card.getBoundingClientRect();
+        const offset = y - rect.top - rect.height/2;
+        if(offset<0 && offset>closest.offset){
+          closest = {offset, element: card};
+        }
+      });
+      return closest.element;
+    }
+
+    function handleDragOver(e){
+      e.preventDefault();
+      const afterElement = getDragAfterElement(e.currentTarget, e.clientY);
+      if(!draggingCard) return;
+      if(afterElement==null){
+        e.currentTarget.appendChild(draggingCard);
+      } else {
+        e.currentTarget.insertBefore(draggingCard, afterElement);
+      }
+    }
+
+    function addColumnListeners(col){
+      col.addEventListener('dragover', handleDragOver);
+      col.addEventListener('dragenter', ()=>col.classList.add('drag-over'));
+      col.addEventListener('dragleave', e=>{
+        if(!col.contains(e.relatedTarget)) col.classList.remove('drag-over');
+      });
+      col.addEventListener('drop', ()=>col.classList.remove('drag-over'));
+    }
+
+    addColumnListeners(pool);
+    addColumnListeners(sequence);
+
+    function clearBoard(){
+      pool.innerHTML = '<h3>Unordered Steps</h3>';
+      sequence.innerHTML = '<h3>Your Sequence</h3>';
+      feedback.textContent='';
+      canvas.style.display='none';
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+    }
+
+    function startChallenge(key){
+      currentChallenge = key;
+      correctOrder = challenges[key];
+      clearBoard();
+      shuffle(correctOrder).forEach(step=>{
+        pool.appendChild(createCard(step));
+      });
+    }
+
+    // ---------- VISUAL AID ----------
+    function drawAid(key){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.lineWidth = 2;
+      ctx.font = '16px Poppins';
+      ctx.fillStyle = '#000';
+      ctx.strokeStyle = '#000';
+      if(key==='root2'){
+        // scale 80px per unit
+        const origin = {x:60, y:160};
+        const unit = 80;
+        // base
+        ctx.beginPath();
+        ctx.moveTo(origin.x, origin.y);
+        ctx.lineTo(origin.x+unit, origin.y);
+        ctx.lineTo(origin.x+unit, origin.y-unit);
+        ctx.closePath();
+        ctx.stroke();
+        // labels
+        ctx.fillText('1', origin.x+unit/2-5, origin.y+20);
+        ctx.fillText('1', origin.x+unit+10, origin.y-unit/2);
+        // hypotenuse label
+        ctx.fillText('√2', origin.x+unit/2, origin.y-unit/2-10);
+      } else if(key==='root5'){
+        const origin={x:40,y:160};
+        const unit=60;
+        ctx.beginPath();
+        ctx.moveTo(origin.x, origin.y);
+        ctx.lineTo(origin.x+2*unit, origin.y);
+        ctx.lineTo(origin.x+2*unit, origin.y-unit);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fillText('2', origin.x+unit-5, origin.y+20);
+        ctx.fillText('1', origin.x+2*unit+10, origin.y-unit/2);
+        ctx.fillText('√5', origin.x+unit, origin.y-unit/2-10);
+      }
+      canvas.style.display='block';
+    }
+
+    // ---------- FEEDBACK ----------
+    function checkOrder(){
+      const placed = [...sequence.querySelectorAll('.card')].map(c=>c.textContent.trim());
+      if(placed.length !== correctOrder.length){
+        feedback.textContent = 'Place all steps before checking!';
+        feedback.style.color = 'var(--incorrect-bg)';
+        return;
+      }
+      const isCorrect = placed.every((txt,idx)=>txt===correctOrder[idx]);
+      if(isCorrect){
+        feedback.textContent = 'Great job! Sequence is correct ✔';
+        feedback.style.color = 'var(--correct-bg)';
+        drawAid(currentChallenge);
+      } else {
+        feedback.textContent = 'Oops, that order is not correct. Try again.';
+        feedback.style.color = 'var(--incorrect-bg)';
+        canvas.style.display='none';
+      }
+    }
+
+    // ---------- EVENT HOOKS ----------
+    challengeBtns.forEach(btn=>{
+      btn.addEventListener('click', ()=>startChallenge(btn.dataset.challenge));
+    });
+    resetBtn.addEventListener('click', ()=>{
+      if(currentChallenge) startChallenge(currentChallenge);
+    });
+    checkBtn.addEventListener('click', checkOrder);
+
+    // auto‑start with √2 for demo
+    startChallenge('root2');
+  </script>
+</body>
+</html>

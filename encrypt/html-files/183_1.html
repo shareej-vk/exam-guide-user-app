@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Zero Hunter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f0f4ff;
+      padding: 20px;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: 30% 70%;
+      gap: 20px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      font-family: 'Baloo 2', cursive;
+      color: #3f51b5;
+      font-size: 24px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    .game-area {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    #polyText {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #1a237e;
+    }
+    input[type="number"] {
+      padding: 10px;
+      font-size: 16px;
+      border: 2px solid #90caf9;
+      border-radius: 8px;
+      width: 100px;
+    }
+    button {
+      background-color: #3949ab;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px 5px 10px 0;
+    }
+    button:hover {
+      background-color: #303f9f;
+    }
+    #result {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 10px;
+    }
+    .correct {
+      color: green;
+    }
+    .wrong {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h2>🧩 Zero Hunter</h2>
+      <ul>
+        <li>Each door is locked by a polynomial! 🔐</li>
+        <li>Your task is to find a value of x that makes the polynomial zero.</li>
+        <li>Type a number and hit "Unlock". If correct, you move forward!</li>
+        <li>Get it wrong? You’ll get a hint to help! 😉</li>
+      </ul>
+      <button onclick="startGame()">🔄 Start Game</button>
+    </div>
+
+    <div class="card game-area">
+      <h2>🎯 Find the Zero!</h2>
+      <div id="polyText">Loading...</div>
+      <input type="number" id="userInput" placeholder="Enter x" />
+      <button onclick="checkAnswer()">🔓 Unlock</button>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    const polynomials = [
+      { poly: "x - 3", func: x => x - 3 },
+      { poly: "x² - 4", func: x => x * x - 4 },
+      { poly: "x² - 5x + 6", func: x => x * x - 5 * x + 6 },
+      { poly: "x³ - 6x² + 11x - 6", func: x => x ** 3 - 6 * x * x + 11 * x - 6 },
+      { poly: "2x + 4", func: x => 2 * x + 4 },
+      { poly: "x² + 2x + 1", func: x => x * x + 2 * x + 1 }
+    ];
+    let currentIndex = 0;
+
+    function startGame() {
+      currentIndex = 0;
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("userInput").value = "";
+      loadPoly();
+    }
+
+    function loadPoly() {
+      const display = document.getElementById("polyText");
+      display.textContent = `p(x) = ${polynomials[currentIndex].poly}`;
+    }
+
+    function checkAnswer() {
+      const input = document.getElementById("userInput").value;
+      const resultBox = document.getElementById("result");
+      if (input === "") {
+        resultBox.textContent = "Please enter a value for x!";
+        resultBox.className = "wrong";
+        return;
+      }
+
+      const x = parseFloat(input);
+      const output = polynomials[currentIndex].func(x);
+
+      if (Math.abs(output) < 0.001) {
+        resultBox.textContent = `✅ Correct! x = ${x} is a zero of the polynomial.`;
+        resultBox.className = "correct";
+        currentIndex++;
+        if (currentIndex < polynomials.length) {
+          setTimeout(() => {
+            resultBox.innerHTML = "";
+            document.getElementById("userInput").value = "";
+            loadPoly();
+          }, 1500);
+        } else {
+          resultBox.textContent = "🎉 You've unlocked all the doors!";
+        }
+      } else {
+        resultBox.textContent = `❌ Not a zero. Try again! Hint: p(${x}) = ${output}`;
+        resultBox.className = "wrong";
+      }
+    }
+
+    window.onload = startGame;
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oil & Water Split - Separating Funnel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fef9ef;
+            --card-bg: #ffffff;
+            --primary-color: #003049;
+            --accent-color: #f77f00; /* Oil */
+            --water-color: #00a8e8;
+            --text-color: #003049;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            --correct-color: #2a9d8f;
+            --incorrect-color: #e76f51;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #f77f00, #fcbf49);
+            padding: 8px 25px;
+            border-radius: 16px;
+            color: white;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .step-label {
+            font-family: var(--heading-font);
+            font-size: 20px;
+            color: white;
+            background-color: var(--accent-color);
+            padding: 0px 10px;
+            border-radius: 8px;
+            margin-right: 10px;
+            line-height: 1.2;
+        }
+        .instructions-list b { color: var(--primary-color); }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .lab-bench {
+            width: 100%;
+            height: 450px;
+            background-color: #ced4da;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            position: relative;
+        }
+        
+        .lab-item {
+            position: absolute;
+            text-align: center;
+            transition: all 0.5s ease-in-out;
+        }
+        .lab-item p { font-weight: 600; margin-top: 5px; }
+
+        #beaker-initial {
+            width: 150px;
+            left: 50px; bottom: 20px;
+            cursor: grab;
+        }
+        #beaker-initial:active { cursor: grabbing; }
+
+        #separating-funnel-stand {
+            width: 250px;
+            left: 50%; transform: translateX(-50%);
+            bottom: 20px;
+        }
+        #separating-funnel-stand .drop-zone {
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 100px; height: 50px;
+            border: 4px dashed transparent;
+            border-radius: 10px;
+            transition: border-color 0.3s;
+        }
+        #separating-funnel-stand .drop-zone.active {
+            border-color: var(--accent-color);
+        }
+        #funnel-canvas { width: 150px; height: 300px; }
+        #stopcock {
+            width: 60px; height: 20px;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+            position: absolute;
+            bottom: 50px; left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid white;
+        }
+        #stopcock.open { transform: translateX(-50%) rotate(90deg); }
+
+        #beaker-final {
+             width: 150px;
+             left: 50%; transform: translateX(-50%);
+             bottom: -130px;
+        }
+        .beaker-canvas { width: 100%; height: 100px; }
+        
+        #feedback-message {
+            margin-top: 15px; font-size: 20px; font-weight: 800;
+            display: none; padding: 10px 20px; border-radius: 12px;
+        }
+        #feedback-message.correct { color: white; background-color: var(--correct-color); }
+        #feedback-message.incorrect { color: white; background-color: var(--incorrect-color); }
+        
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Oil & Water Split</h2>
+            <p><strong>Lesson:</strong> Separating Funnel</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Mission</h3>
+            <p style="margin-bottom: 15px;">You have a beaker with oil and water. These two liquids don't mix (they are immiscible). Your mission is to use a separating funnel to split them apart based on their different densities!</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <ul class="instructions-list">
+                <li><span class="step-label">1</span> Click <b>Start</b> to get your lab equipment.</li>
+                <li><span class="step-label">2</span> <b>Drag the Beaker</b> of mixed liquids and drop it onto the separating funnel to pour it in.</li>
+                <li><span class="step-label">3</span> Watch the liquids separate into layers. The denser water will be on the bottom!</li>
+                <li><span class="step-label">4</span> Click the <b>Stopcock</b> (the handle) to open it and drain the water.</li>
+                <li><span class="step-label">5</span> <b>Click the Stopcock again</b> to close it just before the oil starts to drain out. Timing is key!</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to separate the immiscible liquids!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="lab-bench">
+                    <div id="beaker-initial" class="lab-item" draggable="true">
+                        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><path d='M10 110 L10 20 L110 20 L110 110 Z' fill='none' stroke='%236c757d' stroke-width='4'/><rect x='12' y='22' width='96' height='42' fill='%23f77f00' opacity='0.7'/><rect x='12' y='64' width='96' height='44' fill='%2300a8e8' opacity='0.7'/></svg>" alt="Beaker with mixture">
+                        <p>Oil & Water Mixture</p>
+                    </div>
+                    <div id="separating-funnel-stand" class="lab-item">
+                        <div class="drop-zone"></div>
+                        <canvas id="funnel-canvas"></canvas>
+                        <div id="stopcock"></div>
+                        <p>Separating Funnel</p>
+                    </div>
+                    <div id="beaker-final" class="lab-item">
+                        <canvas id="final-beaker-canvas" class="beaker-canvas"></canvas>
+                        <p>Collected Water</p>
+                    </div>
+                </div>
+                <div id="feedback-message"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const beakerInitial = document.getElementById('beaker-initial');
+    const funnelStand = document.getElementById('separating-funnel-stand');
+    const dropZone = funnelStand.querySelector('.drop-zone');
+    const funnelCanvas = document.getElementById('funnel-canvas');
+    const funnelCtx = funnelCanvas.getContext('2d');
+    const stopcock = document.getElementById('stopcock');
+    const finalBeakerCanvas = document.getElementById('final-beaker-canvas');
+    const finalBeakerCtx = finalBeakerCanvas.getContext('2d');
+    const feedbackMessage = document.getElementById('feedback-message');
+
+    // --- State ---
+    let state = {};
+    const WATER_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--water-color').trim();
+    const OIL_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
+
+    // --- Drawing Functions ---
+    function drawFunnel() {
+        funnelCanvas.width = funnelStand.querySelector('#funnel-canvas').clientWidth;
+        funnelCanvas.height = funnelStand.querySelector('#funnel-canvas').clientHeight;
+        funnelCtx.clearRect(0, 0, funnelCanvas.width, funnelCanvas.height);
+        
+        // Glass outline
+        funnelCtx.beginPath();
+        funnelCtx.moveTo(10, 10);
+        funnelCtx.lineTo(funnelCanvas.width / 2, 200);
+        funnelCtx.lineTo(funnelCanvas.width - 10, 10);
+        funnelCtx.strokeStyle = '#6c757d';
+        funnelCtx.lineWidth = 4;
+        funnelCtx.stroke();
+        // Spout
+        funnelCtx.beginPath();
+        funnelCtx.moveTo(funnelCanvas.width/2 - 5, 200);
+        funnelCtx.lineTo(funnelCanvas.width/2 - 5, 250);
+        funnelCtx.lineTo(funnelCanvas.width/2 + 5, 250);
+        funnelCtx.lineTo(funnelCanvas.width/2 + 5, 200);
+        funnelCtx.stroke();
+
+        if (state.funnelFilled) {
+            const totalHeight = 180;
+            const waterHeight = totalHeight * state.waterLevel;
+            const oilHeight = totalHeight * state.oilLevel;
+            const topOfLiquid = 10 + (totalHeight - waterHeight - oilHeight);
+            
+            // Denser liquid at bottom: water
+            funnelCtx.fillStyle = WATER_COLOR;
+            funnelCtx.beginPath();
+            funnelCtx.moveTo(12, topOfLiquid + oilHeight);
+            funnelCtx.lineTo(funnelCanvas.width / 2, 200);
+            funnelCtx.lineTo(funnelCanvas.width - 12, topOfLiquid + oilHeight);
+            funnelCtx.closePath();
+            funnelCtx.fill();
+            
+            // Lighter liquid on top: oil
+            funnelCtx.fillStyle = OIL_COLOR;
+            funnelCtx.beginPath();
+            funnelCtx.moveTo(12, topOfLiquid);
+            funnelCtx.lineTo(funnelCanvas.width - 12, topOfLiquid);
+            funnelCtx.lineTo(funnelCanvas.width - 12, topOfLiquid + oilHeight);
+            funnelCtx.lineTo(12, topOfLiquid + oilHeight);
+            funnelCtx.closePath();
+            funnelCtx.fill();
+        }
+    }
+
+    function drawFinalBeaker() {
+        const canvas = finalBeakerCanvas;
+        const ctx = finalBeakerCtx;
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Glass
+        ctx.strokeStyle = '#6c757d';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 2);
+
+        // Water
+        if (state.waterCollected > 0) {
+            ctx.fillStyle = WATER_COLOR;
+            const fillHeight = (state.waterCollected / 1.0) * (canvas.height - 4);
+            ctx.fillRect(4, canvas.height - fillHeight, canvas.width - 8, fillHeight);
+        }
+    }
+    
+    // --- Game Logic ---
+    function resetGame() {
+        state = {
+            step: 0, // 0: initial, 1: poured, 2: draining, 3: done
+            funnelFilled: false,
+            waterLevel: 0.5,
+            oilLevel: 0.5,
+            waterCollected: 0,
+            animationFrameId: null
+        };
+        beakerInitial.style.display = 'block';
+        beakerInitial.style.left = '50px';
+        stopcock.classList.remove('open');
+        stopcock.style.pointerEvents = 'none';
+        feedbackMessage.style.display = 'none';
+        drawFunnel();
+        drawFinalBeaker();
+    }
+    
+    function pourIntoFunnel() {
+        state.step = 1;
+        state.funnelFilled = true;
+        beakerInitial.style.display = 'none';
+        
+        // Animate settling
+        let settleProgress = 0;
+        const settleAnimation = () => {
+            if (settleProgress >= 1) {
+                stopcock.style.pointerEvents = 'auto';
+                return;
+            }
+            settleProgress += 0.02;
+            state.waterLevel = 0.5 + 0.5 * settleProgress;
+            state.oilLevel = 0.5 - 0.5 * settleProgress;
+            drawFunnel();
+            requestAnimationFrame(settleAnimation);
+        };
+        settleAnimation();
+    }
+    
+    function toggleDrain() {
+        if (state.step !== 1 && state.step !== 2) return;
+
+        if (state.step === 1) { // Start draining
+            state.step = 2;
+            stopcock.classList.add('open');
+            state.animationFrameId = requestAnimationFrame(drainLoop);
+        } else { // Stop draining
+            state.step = 3;
+            stopcock.classList.remove('open');
+            stopcock.style.pointerEvents = 'none';
+            cancelAnimationFrame(state.animationFrameId);
+            checkResult();
+        }
+    }
+
+    function drainLoop() {
+        if(state.waterLevel > 0) {
+            state.waterLevel -= 0.005;
+            state.waterCollected += 0.005;
+            drawFunnel();
+            drawFinalBeaker();
+        } else {
+             // water is gone, now oil starts to drain
+             state.oilLevel -= 0.005;
+             drawFunnel();
+        }
+
+        if (state.step === 2) {
+             state.animationFrameId = requestAnimationFrame(drainLoop);
+        }
+    }
+
+    function checkResult() {
+        feedbackMessage.style.display = 'block';
+        if(state.waterLevel < 0.05 && state.oilLevel > 0.4) {
+            feedbackMessage.textContent = "Perfect separation!";
+            feedbackMessage.className = 'feedback-message correct';
+        } else {
+            feedbackMessage.textContent = "Oops! Some oil got mixed in. Try again!";
+            feedbackMessage.className = 'feedback-message incorrect';
+        }
+    }
+
+    // --- Event Listeners & Setup ---
+    function init() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        resetGame();
+    }
+
+    startBtn.addEventListener('click', init);
+    resetBtn.addEventListener('click', init);
+    
+    beakerInitial.addEventListener('dragstart', e => {
+        if (state.step !== 0) return e.preventDefault();
+        e.dataTransfer.setData('text/plain', 'beaker');
+    });
+
+    dropZone.addEventListener('dragover', e => {
+        if (state.step === 0) e.preventDefault();
+    });
+    dropZone.addEventListener('drop', e => {
+        if (state.step === 0) {
+            e.preventDefault();
+            pourIntoFunnel();
+        }
+    });
+    
+    stopcock.addEventListener('click', toggleDrain);
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

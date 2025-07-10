@@ -1,0 +1,307 @@
+{
+  "subject": {
+    "id": 1,
+    "name": "math",
+    "label": "Mathematics"
+  },
+  "units": [
+    {
+      "id": 24,
+      "name": "lines_and_angles",
+      "label": "Lines and Angles",
+      "lessons": [
+        {
+          "id": 236,
+          "title": "Lesson 1: Foundational Concepts: Line, Ray, and Types of Angles",
+          "slug": "lesson_1_foundational_concepts_line_ray_and_types_of_angles",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "236_1",
+              "name": "Angle Type Identifier",
+              "implementationDetails": "Present angles (visual representations or degree measures). Ask student to label which type of angle (AC,RA, OA,straight or reflex).",
+              "learningPoints": [
+                "Recognizing Acute Angles",
+                "Recognizing Obtuse Angles",
+                "Identifying Straight Angles",
+                "Identifying Reflex Angles"
+              ]
+            },
+            {
+              "id": "236_2",
+              "name": "Ray or segment builder",
+              "implementationDetails": "Use tools create line or ray by drawing number from one side",
+              "learningPoints": [
+                "Line properties",
+                "Ray identifier",
+                "Diagrammatic identification"
+              ]
+            }
+            , {
+              "id": "236_3",
+              "name": "What is the minimum number?",
+              "implementationDetails": "Multiple choice based questions regarding minimum number of points require for specific object in geometry",
+              "learningPoints": [
+                "Understanding properties of geometric objects",
+                "Line point concept",
+                "Ray origin"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 237,
+          "title": "Lesson 2: Important Angle Pairs: Adjacent, Linear, and Vertically Opposite",
+          "slug": "lesson_2_important_angle_pairs_adjacent_linear_and_vertically_opposite",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "237_1",
+              "name": "Pair Identifier",
+              "implementationDetails": "Present diagram and drag and drop, and select is these angle linear",
+              "learningPoints": [
+                "Adjacent identification ",
+                "Linear type recognization",
+                "Oppositeness"
+              ]
+            },
+            {
+              "id": "237_2",
+              "name": "Linear and pair identifier",
+              "implementationDetails": "Multiple select based answer with questions what relationship have in lines from multiple choice questions",
+              "learningPoints": [
+                "Angle application with properties",
+                "Visual relation recognizer",
+                "Line angle equation builder"
+              ]
+            },
+            {
+              "id": "237_3",
+              "name": "Vertically opposite angle matcher",
+              "implementationDetails": "Present picture and ask to match vertically oppisite angles or other linear equation",
+              "learningPoints": [
+                "Opposite angle recognizer",
+                "Multiple lines angle creation property",
+                "angle addition rules"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 238,
+          "title": "Lesson 3: The Linear Pair Axiom and its Converse",
+          "slug": "lesson_3_the_linear_pair_axiom_and_its_converse",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "238_1",
+              "name": "Angle predictor",
+              "implementationDetails": "Present one angel of the linear pair of number and students has to provide another angle and tell that the non common arm is line or not",
+              "learningPoints": [
+                "Understanding Axiom",
+                "Line relation",
+                "angle application"
+              ]
+            },
+            {
+              "id": "238_2",
+              "name": "Which is converse",
+              "implementationDetails": "Present statement which one converse statement",
+              "learningPoints": [
+                "Converse property",
+                "Reverse application property",
+                "Line angle conversion rule"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 239,
+          "title": "Lesson 4: Proving Vertically Opposite Angles are Equal",
+          "slug": "lesson_4_proving_vertically_opposite_angles_are_equal",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "239_1",
+              "name": "Equal side identifier",
+              "implementationDetails": "If there x shape how much angles are equal",
+              "learningPoints": [
+                "Opposite angle side equality",
+                "Vertical equal formula",
+                "Geometric representation"
+              ]
+            },
+             {
+              "id": "239_2",
+              "name": "Angle relation builder",
+              "implementationDetails": "From given options pick equation that represents relation with vertically opposite angle",
+              "learningPoints": [
+                "Geometric relation identification",
+                "Opposite angle equation relation",
+                "Mathermatical representation"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 240,
+          "title": "Lesson 5: Introduction to Parallel Lines and Transversals",
+          "slug": "lesson_5_introduction_to_parallel_lines_and_transversals",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "240_1",
+              "name": "Line Identification",
+              "implementationDetails": "How to drag a transversal line if have two",
+              "learningPoints": [
+                "Line transverse property",
+                "Parallel line application",
+                "Line relation"
+              ]
+            },
+             {
+              "id": "240_2",
+              "name": "Transverasl and angle builder",
+              "implementationDetails": "What the result in angle for particular transversal and parallel combination",
+              "learningPoints": [
+                "Geometriical manipulation skill",
+                "Line relation application",
+                "Transversal and side recognitiion"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 241,
+          "title": "Lesson 6: The Corresponding Angles Axiom and its Converse",
+          "slug": "lesson_6_the_corresponding_angles_axiom_and_its_converse",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "241_1",
+              "name": "Angle identifier",
+              "implementationDetails": "Show diagram and ask for that pair where  corresponding axioms applied",
+              "learningPoints": [
+                "Angle identification for axioms",
+                "Axiom relation to lines",
+                "Line relationship application"
+              ]
+            },
+            {
+              "id": "241_2",
+              "name": "Converse position",
+              "implementationDetails": "If these axiom for these side are different or side is same",
+              "learningPoints": [
+                "Transversal opposite and same side",
+                "Converse property identification",
+                "Line pair and axiomatic application"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 242,
+          "title": "Lesson 7: The Alternate Interior Angles Theorem and its Converse",
+          "slug": "lesson_7_the_alternate_interior_angles_theorem_and_its_converse",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "242_1",
+              "name": "Interior angle rule",
+              "implementationDetails": "If one transversal what other relations betwwen angles for lines",
+              "learningPoints": [
+                "Interior side identifier",
+                "Side identification on single transversal",
+                "Application of interior rules"
+              ]
+            },
+            {
+              "id": "242_2",
+              "name": "Side property identification",
+              "implementationDetails": "What type will property if switch property of internal angel in 2 same sides",
+              "learningPoints": [
+                "Theorem application",
+                "Interior side identifier",
+                "Rule application in different conditions"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 243,
+          "title": "Lesson 8: The Consecutive Interior Angles Theorem and its Converse",
+          "slug": "lesson_8_the_consecutive_interior_angles_theorem_and_its_converse",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "243_1",
+              "name": "Transversal on pair maker",
+              "implementationDetails": "Angle making for transversal side",
+              "learningPoints": [
+                "Angle construction",
+                "Transversals propery",
+                "Equal side formula"
+              ]
+            },
+            {
+              "id": "243_2",
+              "name": "Pair formation condition",
+              "implementationDetails": "By the application on converse of this theorem if lines are parallel or not",
+              "learningPoints": [
+                "Pair construction knowledge",
+                "Condition implementation",
+                "Theorems in application"
+              ]
+            }
+          ]
+        },
+        {
+            "id": 244,
+            "title": "Lesson 9: Theorem: Lines Parallel to the Same Line",
+            "slug": "lesson_9_theorem_lines_parallel_to_the_same_line",
+            "display_order": 9,
+            "games": [
+             {
+               "id": "244_1",
+               "name": "Chain creator",
+               "implementationDetails": "Given 2 lines are parallel select other set of parallel line to chain",
+               "learningPoints": [
+                  "Chain building",
+                  "Link identifion for theorems",
+                  "Application for same line"
+               ]
+             }
+            ]
+        },
+        {
+            "id": 245,
+            "title": "Lesson 10: Applying Properties of Parallel Lines to Solve Problems",
+            "slug": "lesson_10_applying_properties_of_parallel_lines_to_solve_problems",
+            "display_order": 10,
+            "games": [
+               {
+                "id": "245_1",
+                "name": "Angule calculator",
+                "implementationDetails": "By all angle concept find all angles at graph with transversal",
+                "learningPoints": [
+                   "Angele propertu application",
+                   "All rule knowledge check",
+                   "Problem solving"
+                ]
+              },
+              {
+              "id": "245_2",
+              "name": "Line distance check",
+              "implementationDetails": "At set of given point at line, from all which have same distance on a line",
+              "learningPoints": [
+                "Line and point distribution",
+                "Distant application",
+                "Real world application"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

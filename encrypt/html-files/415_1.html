@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colloid Classifier - Is Matter Around Us Pure?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdf0d5;
+            --card-bg: #ffffff;
+            --primary-color: #c1121f;
+            --accent-color: #fca311;
+            --text-color: #003049;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            --correct-color: #2a9d8f;
+            --incorrect-color: #e76f51;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #ffd6d5, #fff0f3);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .instructions-list li::before {
+            content: '🧩';
+            margin-right: 12px;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+        .instructions-list b { color: var(--primary-color); }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .btn:active:not(:disabled) { transform: translateY(0); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-board {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 20px;
+        }
+
+        .example-cards-container {
+            width: 30%;
+            background-color: #f8f9fa;
+            border-radius: 16px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .example-card {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            font-weight: 600;
+            font-size: 18px;
+            cursor: grab;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid transparent;
+        }
+        .example-card:active { cursor: grabbing; transform: scale(1.05); }
+        .example-card .hint {
+            display: none;
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+        .example-card:hover .hint { display: block; }
+        .example-card.correct { border-color: var(--correct-color); background-color: #e8f8f5; }
+        .example-card.incorrect { border-color: var(--incorrect-color); background-color: #fdedeb; }
+
+
+        .classification-grid {
+            width: 65%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .drop-zone {
+            background-color: #f8f9fa;
+            border-radius: 16px;
+            padding: 15px;
+            border: 3px dashed #ced4da;
+            transition: all 0.3s;
+        }
+        .drop-zone.drag-over {
+            border-color: var(--primary-color);
+            border-style: solid;
+            transform: scale(1.02);
+            background-color: #fff3f3;
+        }
+        .drop-zone h3 {
+            font-family: var(--heading-font);
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        .drop-zone .dropped-items {
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #completion-message {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--correct-color);
+            display: none;
+            font-family: var(--heading-font);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Colloid Classifier</h2>
+            <p><strong>Lesson:</strong> Classification of Colloids</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Challenge</h3>
+            <p style="margin-bottom: 15px;">Everyday items like fog, milk, and jelly are all colloids! Your mission is to classify them based on their type. Can you match each example to its correct category?</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to get the colloid examples and categories.</li>
+                <li><b>Drag</b> an example card from the left panel.</li>
+                <li><b>Drop</b> it onto the correct colloid type on the right.</li>
+                <li>Stuck? <b>Hover</b> over an example card to get a helpful hint about its composition (dispersed phase in dispersion medium).</li>
+                <li>When you place a card, it will instantly tell you if you're right or wrong!</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to become a Colloid Classifier!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="game-board">
+                    <div id="example-cards-container" class="example-cards-container"></div>
+                    <div id="classification-grid" class="classification-grid"></div>
+                </div>
+                <div id="completion-message">🎉 Great job! You've classified them all! 🎉</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const exampleCardsContainer = document.getElementById('example-cards-container');
+    const classificationGrid = document.getElementById('classification-grid');
+    const completionMessage = document.getElementById('completion-message');
+
+    // --- Data ---
+    const colloidTypes = [
+        { id: 'aerosol', name: 'Aerosol' },
+        { id: 'foam', name: 'Foam' },
+        { id: 'emulsion', name: 'Emulsion' },
+        { id: 'sol', name: 'Sol' },
+        { id: 'gel', name: 'Gel' },
+        { id: 'solid-sol', name: 'Solid Sol' }
+    ];
+
+    const examples = [
+        { id: 'ex1', name: 'Fog', type: 'aerosol', hint: 'Liquid in Gas' },
+        { id: 'ex2', name: 'Milk', type: 'emulsion', hint: 'Liquid in Liquid' },
+        { id: 'ex3', name: 'Paint', type: 'sol', hint: 'Solid in Liquid' },
+        { id: 'ex4', name: 'Jelly', type: 'gel', hint: 'Liquid in Solid' },
+        { id: 'ex5', name: 'Shaving Cream', type: 'foam', hint: 'Gas in Liquid' },
+        { id: 'ex6', name: 'Smoke', type: 'aerosol', hint: 'Solid in Gas' },
+        { id: 'ex7', name: 'Cheese', type: 'gel', hint: 'Liquid in Solid' },
+        { id: 'ex8', name: 'Ruby Glass', type: 'solid-sol', hint: 'Solid in Solid' }
+    ];
+    
+    let totalCorrect = 0;
+
+    // --- Game Logic ---
+    function createDropZone(type) {
+        const zone = document.createElement('div');
+        zone.id = `zone-${type.id}`;
+        zone.className = 'drop-zone';
+        zone.dataset.type = type.id;
+        zone.innerHTML = `<h3>${type.name}</h3><div class="dropped-items"></div>`;
+        classificationGrid.appendChild(zone);
+    }
+
+    function createExampleCard(example) {
+        const card = document.createElement('div');
+        card.id = example.id;
+        card.className = 'example-card';
+        card.draggable = true;
+        card.dataset.type = example.type;
+        card.innerHTML = `${example.name}<div class="hint">${example.hint}</div>`;
+        exampleCardsContainer.appendChild(card);
+    }
+    
+    function checkCompletion() {
+        if(totalCorrect === examples.length) {
+            completionMessage.style.display = 'block';
+        }
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        completionMessage.style.display = 'none';
+        
+        exampleCardsContainer.innerHTML = '';
+        classificationGrid.innerHTML = '';
+        totalCorrect = 0;
+
+        colloidTypes.forEach(createDropZone);
+        // Shuffle examples before creating cards
+        [...examples].sort(() => Math.random() - 0.5).forEach(createExampleCard);
+        addDragDropListeners();
+    }
+
+    // --- Drag and Drop Handlers ---
+    function addDragDropListeners() {
+        document.querySelectorAll('.example-card').forEach(card => {
+            card.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('text/plain', e.target.id);
+            });
+        });
+
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+            zone.addEventListener('dragover', e => {
+                e.preventDefault();
+                zone.classList.add('drag-over');
+            });
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('drag-over');
+            });
+            zone.addEventListener('drop', e => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+                
+                const cardId = e.dataTransfer.getData('text/plain');
+                const card = document.getElementById(cardId);
+                
+                if (card.dataset.type === zone.dataset.type) {
+                    card.classList.add('correct');
+                    card.draggable = false;
+                    zone.querySelector('.dropped-items').appendChild(card);
+                    totalCorrect++;
+                    checkCompletion();
+                } else {
+                    card.classList.add('incorrect');
+                    setTimeout(() => card.classList.remove('incorrect'), 1000);
+                }
+            });
+        });
+    }
+
+    // --- Initial Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

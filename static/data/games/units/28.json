@@ -1,0 +1,166 @@
+{
+  "subject": {
+    "id": 1,
+    "name": "math",
+    "label": "Mathematics"
+  },
+  "units": [
+    {
+      "id": 28,
+      "name": "heron’s_formula",
+      "label": "Heron’s Formula",
+      "lessons": [
+        {
+          "id": 274,
+          "title": "Lesson 1: Introduction to Heron's Formula and the Semi-Perimeter (s)",
+          "slug": "lesson_1_introduction_to_herons_formula_and_the_semi-perimeter_s",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "274_1",
+              "name": "Semi-perimeter Calculator",
+              "implementationDetails": "Present sides and input side if semi perimeter is what",
+              "learningPoints": [
+                "Semi-perimeter selection",
+                "Formula knowledge and application for sum",
+                "Understanding formula  for perimeter relation"
+              ]
+            },
+            {
+              "id": "274_2",
+              "name": "Term identifier",
+              "implementationDetails": "For some number tell if side of perimeter other part of",
+              "learningPoints": [
+                "Triangle type knowledge for equation selection",
+                "Understanding formula for perimeter",
+                "side application formula application"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 275,
+          "title": "Lesson 2: Calculating Area when all Three Sides of a Triangle are Known",
+          "slug": "lesson_2_calculating_area_when_all_three_sides_of_a_triangle_are_known",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "275_1",
+              "name": "Area Calculator",
+              "implementationDetails": "Show side calculate what will area formula for heron then implement formula to solve",
+              "learningPoints": [
+                "Heron formula identifier",
+                "Formula use equation application",
+                "Triangle area application"
+              ]
+            },
+            {
+              "id": "275_2",
+              "name": "Calculation path",
+              "implementationDetails": "Equation base step selector and by each step new image to understand for area",
+              "learningPoints": [
+                "Theorem identification step",
+                "Process knowledge equation based formula ",
+                "Number of number by theorem recognization"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 276,
+          "title": "Lesson 3: Applying Heron's Formula to Isosceles and Equilateral Triangles",
+          "slug": "lesson_3_applying_herons_formula_to_isosceles_and_equilateral_triangles",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "276_1",
+              "name": "Side checker",
+              "implementationDetails": "Side given which triangle can apply side ratio ",
+              "learningPoints": [
+                "Equal relation base application",
+                "formula indentifier",
+                "Theorems with numbers"
+              ]
+            },
+             {
+              "id": "276_2",
+              "name": "Area finder",
+              "implementationDetails": "Different measure of equal tri side given the use heron formula finding area ",
+              "learningPoints": [
+                "Isosceles triangle for property",
+                "Different side to same number rule formula application",
+                "Heron formula  side "
+              ]
+            },
+             {
+              "id": "276_3",
+              "name": "Equilateral calculator",
+              "implementationDetails": "Side  show area by heron formula what is minimum steps to get anwe",
+              "learningPoints": [
+                "Formula in steps",
+                "Equilateral Triangle propertym theorema",
+                "Formula property and side"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 277,
+          "title": "Lesson 4: Finding Area when the Perimeter is Given",
+          "slug": "lesson_4_finding_area_when_the_perimeter_is_given",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "277_1",
+              "name": "Missing side finder",
+              "implementationDetails": "Side equal side parameter but one are unknown then solve it",
+              "learningPoints": [
+                "Missing in diagram or data recognition",
+                "Formula finder by total size data",
+                "Parameter implementation"
+              ]
+            },
+             {
+              "id": "277_2",
+              "name": "Side side relation maker",
+              "implementationDetails": "Show how to perimeter and other parameter for this area",
+              "learningPoints": [
+                "Property relation ",
+                "Different form side with parameter relation",
+                "Area for formula property for theorems"
+              ]
+            }
+          ]
+        },
+        {
+            "id": 278,
+            "title": "Lesson 5: Solving Application-Based Word Problems",
+            "slug": "lesson_5_solving_application-based_word_problems",
+            "display_order": 5,
+            "games": [
+              {
+                "id": "278_1",
+                "name": "Formula selector",
+                "implementationDetails": "What data if that formula selection",
+                "learningPoints": [
+                  "Step name condition",
+                  "Theorems application type ",
+                  "Condition by theoream "
+                ]
+              },
+               {
+                "id": "278_2",
+                "name": "Area finder with formula step",
+                "implementationDetails": "Step to solve given world problem",
+                "learningPoints": [
+                  "Solution to problem application",
+                  "Formula application",
+                  "World  problem property application"
+                ]
+              }
+            ]
+        }
+      ]
+    }
+  ]
+}

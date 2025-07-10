@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approximate Location Identification</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@700&display=swap');
+
+        :root {
+            --bg-color: #fcfdfe;
+            --container-bg: #ffffff;
+            --header-color: #5d5d5d;
+            --text-color: #333;
+            --line-color: #ced4da;
+            --user-color: #007bff;
+            --correct-color: #28a745;
+            --error-color: #dc3545;
+            --shadow: 0 7px 30px rgba(0, 0, 0, 0.07);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .game-wrapper {
+            display: flex;
+            flex-direction: row-reverse;
+            gap: 25px;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        .game-container {
+            background-color: var(--container-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header { text-align: center; margin-bottom: 20px; }
+        .game-header h1 { color: var(--header-color); margin: 0; font-size: 2.5em; }
+        
+        #challenge-area {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #challenge-prompt { font-size: 1.3em; font-weight: 500; margin: 0; }
+        #challenge-value {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 4em;
+            color: var(--error-color);
+        }
+
+        #canvas-container {
+            width: 100%;
+            padding: 10px 0;
+            position: relative;
+        }
+        #number-line-canvas {
+            background-color: #fdfdfd;
+            border-radius: 10px;
+            cursor: pointer;
+            display: block;
+        }
+        #canvas-container.disabled #number-line-canvas {
+            cursor: not-allowed;
+        }
+
+        #feedback-area {
+            text-align: center;
+            min-height: 60px;
+            margin-top: 15px;
+        }
+        #feedback-text {
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        #next-btn {
+            margin-top: 10px;
+            padding: 10px 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #fff;
+            background-color: var(--correct-color);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: none; /* Hidden by default */
+        }
+        #next-btn.visible {
+            display: inline-block;
+        }
+
+        .info-panel {
+            width: 350px; flex-shrink: 0;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .info-box { background: var(--container-bg); padding: 20px; border-radius: 20px; box-shadow: var(--shadow); }
+        .info-box h3 { margin-top: 0; color: var(--header-color); border-bottom: 2px solid #f1f3f5; padding-bottom: 10px; }
+        .info-box ul { padding-left: 20px; margin: 0; }
+        .info-box li { margin-bottom: 10px; line-height: 1.5; }
+        
+        .stats-container { display: flex; justify-content: space-around; text-align: center; }
+        .stat-item h4 { margin: 0 0 5px 0; color: #6c757d; }
+        .stat-value { font-size: 2.5em; font-weight: 700; color: var(--header-color); }
+        
+        .controls { display: flex; gap: 10px; margin-top: 15px; }
+        .game-btn { flex-grow: 1; padding: 12px 20px; font-size: 1.1em; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; color: white; }
+        .game-btn:hover { transform: translateY(-2px); }
+        #start-btn { background-color: #17a2b8; }
+        #start-btn:hover { background-color: #138496; }
+        #reset-btn { background-color: #6c757d; }
+        #reset-btn:hover { background-color: #5a6268; }
+
+    </style>
+</head>
+<body>
+
+    <div class="game-wrapper">
+        <div class="game-container">
+            <div class="game-header">
+                <h1>Approximate Location Identification</h1>
+            </div>
+            
+            <div id="challenge-area">
+                <p id="challenge-prompt">Click on the number line to place the number:</p>
+                <h2 id="challenge-value">√?</h2>
+            </div>
+            
+            <div id="canvas-container">
+                <canvas id="number-line-canvas" width="800" height="150"></canvas>
+            </div>
+            
+            <div id="feedback-area">
+                <p id="feedback-text">Click "Start Game" to begin!</p>
+                <button id="next-btn">Next Challenge</button>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <div class="info-box">
+                <h3>Score</h3>
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <h4 id="score-label">Total Score</h4>
+                        <span id="score-value" class="stat-value">0</span>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button id="start-btn" class="game-btn">Start Game</button>
+                    <button id="reset-btn" class="game-btn">Reset</button>
+                </div>
+            </div>
+            <div class="info-box">
+                <h3>How to Play</h3>
+                <ul style="padding-left: 20px; text-align: left;">
+                    <li>Click <strong>Start Game</strong>.</li>
+                    <li>A square root challenge will appear (e.g., √18).</li>
+                    <li>Think about which two integers it lies between. (√16=4 and √25=5).</li>
+                    <li><strong>Click on the tick mark</strong> on the number line that you think is closest to the number's actual value.</li>
+                    <li>The game will show how close you were and award points!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const challenges = [
+            { number: 8, range: [2, 3] },
+            { number: 18, range: [4, 5] },
+            { number: 30, range: [5, 6] },
+            { number: 2, range: [1, 2] },
+            { number: 45, range: [6, 7] },
+            { number: 60, range: [7, 8] }
+        ];
+
+        let score = 0, currentChallengeIndex = 0;
+        let shuffledChallenges = [], activeChallenge = null;
+        let tickMarks = [];
+        let canvasClickHandler;
+
+        const canvas = document.getElementById('number-line-canvas');
+        const ctx = canvas.getContext('2d');
+        const canvasContainer = document.getElementById('canvas-container');
+        
+        const challengeValueEl = document.getElementById('challenge-value');
+        const feedbackTextEl = document.getElementById('feedback-text');
+        const nextBtn = document.getElementById('next-btn');
+        const scoreEl = document.getElementById('score-value');
+        const startBtn = document.getElementById('start-btn');
+        const resetBtn = document.getElementById('reset-btn');
+
+        function startGame() {
+            score = 0;
+            currentChallengeIndex = 0;
+            shuffledChallenges = [...challenges].sort(() => Math.random() - 0.5);
+            scoreEl.textContent = score;
+            loadNextChallenge();
+        }
+
+        function loadNextChallenge() {
+            if (currentChallengeIndex >= shuffledChallenges.length) {
+                endGame();
+                return;
+            }
+            activeChallenge = shuffledChallenges[currentChallengeIndex];
+            
+            challengeValueEl.innerHTML = `√${activeChallenge.number}`;
+            feedbackTextEl.textContent = 'Estimate the value and click a tick mark.';
+            
+            nextBtn.classList.remove('visible');
+            canvasContainer.classList.remove('disabled');
+            
+            drawNumberLine();
+            
+            // Remove old listener before adding a new one
+            if(canvasClickHandler) canvas.removeEventListener('click', canvasClickHandler);
+            canvasClickHandler = handleCanvasClick;
+            canvas.addEventListener('click', canvasClickHandler);
+        }
+        
+        function handleCanvasClick(event) {
+            canvas.removeEventListener('click', canvasClickHandler);
+            canvasContainer.classList.add('disabled');
+
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            
+            // Find the closest tick mark to the click
+            let closestTick = tickMarks.reduce((prev, curr) => {
+                return (Math.abs(curr.x - x) < Math.abs(prev.x - x) ? curr : prev);
+            });
+            
+            const actualValue = Math.sqrt(activeChallenge.number);
+            
+            // Find the tick mark closest to the actual value
+            const correctTick = tickMarks.reduce((prev, curr) => {
+                 return (Math.abs(curr.value - actualValue) < Math.abs(prev.value - actualValue) ? curr : prev);
+            });
+            
+            let roundScore = 0;
+            if (closestTick.value === correctTick.value) {
+                feedbackTextEl.textContent = `Perfect! You chose ${closestTick.value}, which is the closest tick.`;
+                roundScore = 100;
+            } else {
+                feedbackTextEl.textContent = `Close! You chose ${closestTick.value}, but ${correctTick.value} was closer.`;
+                const distance = Math.abs(closestTick.value - correctTick.value);
+                roundScore = Math.max(0, 50 - Math.floor(distance * 100)); // Score based on proximity
+            }
+            score += roundScore;
+            scoreEl.textContent = score;
+
+            drawNumberLine(closestTick, correctTick);
+            nextBtn.classList.add('visible');
+            currentChallengeIndex++;
+        }
+        
+        function drawNumberLine(userTick = null, correctTick = null) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            tickMarks = [];
+            const [min, max] = activeChallenge.range;
+            const padding = 50;
+            const y_line = 75;
+            
+            // Draw main line
+            ctx.beginPath();
+            ctx.moveTo(padding, y_line);
+            ctx.lineTo(canvas.width - padding, y_line);
+            // Get CSS variable values
+            const lineColor = getComputedStyle(document.documentElement).getPropertyValue('--line-color').trim();
+            const userColor = getComputedStyle(document.documentElement).getPropertyValue('--user-color').trim();
+            const correctColor = getComputedStyle(document.documentElement).getPropertyValue('--correct-color').trim();
+            
+            ctx.strokeStyle = lineColor || '#bdc3c7'; // Fallback color if variable not found
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Draw ticks and labels
+            for (let i = min; i <= max; i += 0.25) {
+                const x = mapValueToX(i, min, max, padding);
+                let tickHeight = 5;
+                if (i === Math.floor(i)) tickHeight = 15; // Major tick for integers
+                else if (i === Math.floor(i) + 0.5) tickHeight = 10; // Medium tick for .5
+
+                ctx.beginPath();
+                ctx.moveTo(x, y_line - tickHeight);
+                ctx.lineTo(x, y_line + tickHeight);
+                ctx.strokeStyle = '#343a40';
+                ctx.lineWidth = (i === Math.floor(i)) ? 3 : 2;
+                ctx.stroke();
+                
+                tickMarks.push({ value: i, x: x });
+                
+                if (i === Math.floor(i)) {
+                    ctx.font = "bold 16px 'Poppins'";
+                    ctx.textAlign = 'center';
+                    ctx.fillStyle = '#343a40';
+                    ctx.fillText(i, x, y_line + 35);
+                }
+            }
+
+            // Draw markers if provided
+            if (userTick) {
+                drawMarker(userTick.x, userColor || '#3498db', `You: ${userTick.value}`);
+            }
+            if (correctTick) {
+                drawMarker(correctTick.x, correctColor || '#2ecc71', `Correct: ${correctTick.value}`);
+            }
+        }
+        
+        function drawMarker(x, color, label) {
+            const y_line = 75;
+            // Line up from tick
+            ctx.beginPath();
+            ctx.moveTo(x, y_line);
+            ctx.lineTo(x, y_line - 40);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // Pointer
+            ctx.beginPath();
+            ctx.moveTo(x, y_line - 40);
+            ctx.lineTo(x - 5, y_line - 50);
+            ctx.lineTo(x + 5, y_line - 50);
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            // Label
+            ctx.font = "bold 14px 'Poppins'";
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = color;
+            ctx.fillText(label, x, y_line - 55);
+        }
+
+        const mapValueToX = (val, min, max, padding) => {
+            return padding + ((val - min) / (max - min)) * (canvas.width - 2 * padding);
+        };
+        
+        function endGame() {
+            challengeValueEl.innerHTML = "Done!";
+            feedbackTextEl.textContent = `Quiz Complete! Your final score is ${score}.`;
+            nextBtn.classList.remove('visible');
+            canvasContainer.classList.add('disabled');
+        }
+
+        startBtn.addEventListener('click', startGame);
+        resetBtn.addEventListener('click', startGame);
+        nextBtn.addEventListener('click', loadNextChallenge);
+    });
+    </script>
+</body>
+</html>
+<!--end-of-code-block-->

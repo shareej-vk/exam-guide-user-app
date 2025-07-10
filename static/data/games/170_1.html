@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Number Line Placement</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        :root {
+            --bg-color: #f7f9f9;
+            --container-bg: #ffffff;
+            --header-color: #2c3e50;
+            --line-color: #bdc3c7;
+            --rational-bg: #e0f2f1;
+            --rational-border: #00897b;
+            --irrational-bg: #fbe9e7;
+            --irrational-border: #ff7043;
+            --success-color: #43a047;
+            --error-color: #e53935;
+            --shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--header-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .game-wrapper {
+            display: flex;
+            flex-direction: row-reverse;
+            gap: 25px;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        .game-container {
+            background-color: var(--container-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            flex-grow: 1;
+        }
+
+        .game-header { text-align: center; margin-bottom: 20px; }
+        .game-header h1 { margin: 0; font-size: 2.5em; }
+
+        #number-pool-container {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            min-height: 80px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        #number-pool-container h3 { margin: 0 0 10px 0; color: #7f8c8d; }
+        #number-pool { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; min-height: 50px; }
+
+        .number-card {
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 1.3em;
+            font-weight: 600;
+            cursor: grab;
+            user-select: none;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid;
+        }
+        .number-card.rational { background-color: var(--rational-bg); border-color: var(--rational-border); color: var(--rational-border); }
+        .number-card.irrational { background-color: var(--irrational-bg); border-color: var(--irrational-border); color: var(--irrational-border); }
+        .number-card:hover { transform: scale(1.05); }
+        .number-card.dragging { opacity: 0.5; cursor: grabbing; box-shadow: none; }
+        .number-card.shake { animation: shake 0.5s ease-in-out; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+
+        #game-board {
+            position: relative;
+            width: 100%;
+            height: 150px;
+        }
+        #number-line-canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+        }
+        #drop-zone {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 5;
+            transition: background-color 0.3s;
+        }
+        #drop-zone.drag-over {
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+        
+        .placed-number {
+            position: absolute;
+            transform: translateX(-50%);
+            z-index: 10;
+            padding: 5px 12px;
+            font-size: 1em;
+            font-weight: 600;
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+        .placed-number.rational { background-color: var(--rational-border); }
+        .placed-number.irrational { background-color: var(--irrational-border); }
+        .placed-number .pointer {
+            width: 0; height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            position: absolute;
+            bottom: -6px; left: 50%;
+            transform: translateX(-50%);
+        }
+        .placed-number.rational .pointer { border-top: 6px solid var(--rational-border); }
+        .placed-number.irrational .pointer { border-top: 6px solid var(--irrational-border); }
+
+        #final-message { text-align: center; font-size: 1.2em; font-weight: 600; margin-top: 20px; min-height: 30px; }
+
+        .info-panel { width: 350px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+        .info-box { background: var(--container-bg); padding: 20px; border-radius: 15px; box-shadow: var(--shadow); }
+        .info-box h3 { margin-top: 0; color: #555; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+        .info-box ul { padding-left: 20px; margin: 0; }
+        .info-box li { margin-bottom: 10px; line-height: 1.5; }
+        .info-box .rational-tag { background-color: var(--rational-bg); color: var(--rational-border); padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+        .info-box .irrational-tag { background-color: var(--irrational-bg); color: var(--irrational-border); padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+        
+        #score-board { text-align: center; }
+        #score-value { font-size: 3em; font-weight: 700; color: #444; }
+        
+        .controls { display: flex; gap: 10px; }
+        .game-btn { flex-grow: 1; padding: 12px 20px; font-size: 1.1em; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; color: white; }
+        .game-btn:hover { transform: translateY(-2px); }
+        #start-btn { background-color: #0097a7; }
+        #start-btn:hover { background-color: #00838f; }
+        #reset-btn { background-color: #d32f2f; }
+        #reset-btn:hover { background-color: #c62828; }
+
+    </style>
+</head>
+<body>
+
+    <div class="game-wrapper">
+        <div class="game-container">
+            <div class="game-header">
+                <h1>Real Number Line Placement</h1>
+            </div>
+            <div id="number-pool-container">
+                <h3>Drag the numbers to their correct place on the line</h3>
+                <div id="number-pool"></div>
+            </div>
+
+            <div id="game-board">
+                <canvas id="number-line-canvas"></canvas>
+                <div id="drop-zone"></div>
+            </div>
+
+            <div id="final-message"></div>
+        </div>
+
+        <div class="info-panel">
+            <div class="info-box controls-box">
+                <div id="score-board">
+                     <h3>Score</h3>
+                     <span id="score-value">0</span>
+                </div>
+                 <div class="controls">
+                    <button id="start-btn" class="game-btn">Start Game</button>
+                    <button id="reset-btn" class="game-btn">Reset</button>
+                </div>
+            </div>
+            <div class="info-box instructions">
+                <h3>How to Play</h3>
+                <ul>
+                    <li>Click <strong>Start Game</strong>.</li>
+                    <li>Drag a number from the pool. <span class="rational-tag">Rational</span> numbers and <span class="irrational-tag">Irrational</span> numbers are color-coded!</li>
+                    <li>Drop it on the number line where you estimate it belongs.</li>
+                    <li><strong>Correct placement:</strong> +10 points!</li>
+                    <li><strong>Incorrect placement:</strong> The card will shake and return to the pool.</li>
+                    <li>Place all numbers to finish the game.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const numberData = [
+            { display: '1/2', value: 0.5, type: 'rational' },
+            { display: '√2', value: Math.sqrt(2), type: 'irrational' },
+            { display: '-1', value: -1, type: 'rational' },
+            { display: 'π', value: Math.PI, type: 'irrational' },
+            { display: '-3/2', value: -1.5, type: 'rational' },
+            { display: '√8', value: Math.sqrt(8), type: 'irrational' },
+            { display: '-√3', value: -Math.sqrt(3), type: 'irrational' },
+            { display: '2.75', value: 2.75, type: 'rational' }
+        ];
+
+        let score = 0;
+        let numbersLeft = 0;
+        let draggedElement = null;
+
+        const lineRange = { min: -4, max: 4 };
+        const tolerance = (lineRange.max - lineRange.min) * 0.05; // 5% tolerance
+
+        const canvas = document.getElementById('number-line-canvas');
+        const dropZone = document.getElementById('drop-zone');
+        const numberPool = document.getElementById('number-pool');
+        const scoreValue = document.getElementById('score-value');
+        const startBtn = document.getElementById('start-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const finalMessage = document.getElementById('final-message');
+
+        function resizeCanvas() {
+            const container = document.getElementById('game-board');
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            drawNumberLine();
+        }
+
+        function drawNumberLine() {
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const y_line = canvas.height * 0.6;
+            
+            // Draw main line
+            ctx.beginPath();
+            ctx.moveTo(0, y_line);
+            ctx.lineTo(canvas.width, y_line);
+            // Get the CSS variable value
+            const lineColor = getComputedStyle(document.documentElement).getPropertyValue('--line-color').trim();
+            ctx.strokeStyle = lineColor || '#bdc3c7'; // Fallback color if variable not found
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Draw ticks and labels
+            for (let i = lineRange.min; i <= lineRange.max; i++) {
+                const x = mapValueToX(i);
+                ctx.beginPath();
+                ctx.moveTo(x, y_line - 10);
+                ctx.lineTo(x, y_line + 10);
+                ctx.stroke();
+                
+                ctx.font = "bold 14px 'Poppins'";
+                ctx.textAlign = 'center';
+                ctx.fillStyle = '#34495e';
+                ctx.fillText(i, x, y_line + 30);
+            }
+        }
+
+        const mapValueToX = (value) => {
+            const range = lineRange.max - lineRange.min;
+            return ((value - lineRange.min) / range) * canvas.width;
+        };
+
+        const mapXToValue = (x) => {
+            const range = lineRange.max - lineRange.min;
+            return (x / canvas.width) * range + lineRange.min;
+        };
+        
+        function startGame() {
+            score = 0;
+            updateScore();
+            finalMessage.textContent = '';
+            numberPool.innerHTML = '';
+            dropZone.innerHTML = '';
+
+            const shuffledNumbers = [...numberData].sort(() => 0.5 - Math.random());
+            numbersLeft = shuffledNumbers.length;
+            
+            shuffledNumbers.forEach((num, index) => {
+                const numberEl = document.createElement('div');
+                numberEl.className = `number-card ${num.type}`;
+                numberEl.textContent = num.display;
+                numberEl.draggable = true;
+                numberEl.id = `num-${index}`;
+                numberEl.dataset.value = num.value;
+                numberEl.dataset.type = num.type;
+                numberPool.appendChild(numberEl);
+            });
+            
+            addDragListeners();
+            resizeCanvas();
+        }
+        
+        function addDragListeners() {
+            const draggables = document.querySelectorAll('.number-card');
+            draggables.forEach(draggable => {
+                draggable.addEventListener('dragstart', handleDragStart);
+            });
+        }
+        
+        function handleDragStart(e) {
+            draggedElement = e.target;
+            e.dataTransfer.setData('text/plain', e.target.id);
+            setTimeout(() => e.target.classList.add('dragging'), 0);
+        }
+        
+        dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+        dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+        dropZone.addEventListener('drop', handleDrop);
+
+        function handleDrop(e) {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            
+            if (!draggedElement) return;
+
+            draggedElement.classList.remove('dragging');
+            
+            const rect = dropZone.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const droppedValue = mapXToValue(x);
+            const correctValue = parseFloat(draggedElement.dataset.value);
+
+            if (Math.abs(droppedValue - correctValue) <= tolerance) {
+                // Correct drop
+                score += 10;
+                numbersLeft--;
+                placeNumberOnLine(draggedElement);
+                draggedElement.remove();
+            } else {
+                // Incorrect drop
+                draggedElement.classList.add('shake');
+                draggedElement.addEventListener('animationend', () => draggedElement.classList.remove('shake'), { once: true });
+            }
+            updateScore();
+            checkGameCompletion();
+        }
+        
+        function placeNumberOnLine(card) {
+             const value = parseFloat(card.dataset.value);
+             const type = card.dataset.type;
+             const x = mapValueToX(value);
+             const y = canvas.height * 0.6 - 50;
+             
+             const placedEl = document.createElement('div');
+             placedEl.className = `placed-number ${type}`;
+             placedEl.textContent = card.textContent;
+             placedEl.style.left = `${x}px`;
+             placedEl.style.top = `${y}px`;
+             
+             const pointer = document.createElement('div');
+             pointer.className = 'pointer';
+             placedEl.appendChild(pointer);
+             
+             dropZone.appendChild(placedEl);
+        }
+
+        function updateScore() {
+            scoreValue.textContent = score;
+        }
+
+        function checkGameCompletion() {
+            if (numbersLeft === 0) {
+                finalMessage.textContent = `Congratulations! You placed all numbers. Final Score: ${score}`;
+            }
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        
+        startBtn.addEventListener('click', startGame);
+        resetBtn.addEventListener('click', startGame);
+        
+        // Initial state
+        numberPool.innerHTML = '<p style="color:#888;">Click "Start Game" to begin!</p>';
+        resizeCanvas();
+    });
+    </script>
+</body>
+</html>
+<!--end-of-code-block-->

@@ -1,0 +1,250 @@
+{
+  "subject": {
+    "id": 5,
+    "name": "science",
+    "label": "Science"
+  },
+  "units": [
+    {
+      "id": 60,
+      "name": "unit_3:_atoms_and_molecules",
+      "label": "Unit 3: Atoms and molecules",
+      "lessons": [
+        {
+          "id": 430,
+          "title": "Lesson 1: The Law of Conservation of Mass",
+          "slug": "lesson_1_the_law_of_conservation_of_mass",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "430_1",
+              "name": "The Chemical Scale",
+              "implementationDetails": "The game displays a sensitive digital balance scale. On the left pan, the player places a sealed conical flask containing a solution of sodium carbonate and a hanging ignition tube with copper sulphate solution, as shown in the textbook. The scale displays a total mass (e.g., 300.23 g). The player then clicks a 'Tilt Flask' button. An animation shows the two solutions mixing, forming a precipitate and changing color. Throughout the animation, the mass on the scale remains fixed at 300.23 g, visually demonstrating that no mass was lost or gained during the chemical reaction. The player can try different sets of reactants.",
+              "learningPoints": [
+                "Understanding that mass is conserved in a chemical reaction.",
+                "Visualizing that the total mass of reactants equals the total mass of products.",
+                "Recognizing the importance of a closed system for proving the law."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 431,
+          "title": "Lesson 2: The Law of Constant Proportions",
+          "slug": "lesson_2_the_law_of_constant_proportions",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "431_1",
+              "name": "Molecule Factory",
+              "implementationDetails": "The player runs a 'Water Molecule Factory'. They have a conveyor belt supplying Hydrogen atoms (mass 1u) and Oxygen atoms (mass 16u). The goal is to drag and combine atoms to form valid water molecules (H₂O). A display shows the 'Mass Ratio' of the current combination. If the player combines 2 H and 1 O, the ratio shows 2:16 (simplified to 1:8) and the factory produces a water molecule. If they try to combine 1 H and 1 O (1:16 ratio) or 2 H and 2 O (1:8 ratio), the factory rejects it with a 'Wrong Proportions!' message. The player wins by successfully creating several molecules, internalizing the fixed 1:8 mass ratio.",
+              "learningPoints": [
+                "Defining the Law of Constant Proportions.",
+                "Understanding that elements in a chemical compound are always present in definite proportions by mass.",
+                "Applying the concept to calculate and verify the mass ratio for a given compound like water."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 432,
+          "title": "Lesson 3: Dalton's Atomic Theory and its Postulates",
+          "slug": "lesson_3_daltons_atomic_theory_and_its_postulates",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "432_1",
+              "name": "Dalton's Evidence Match",
+              "implementationDetails": "The game presents the player with short animations depicting chemical principles. For example, one animation shows a balanced scale during a reaction. Another shows that all 'copper' atoms look identical, but different from 'oxygen' atoms. A third shows atoms combining in a simple 1:1 ratio. On the side of the screen is a list of Dalton's postulates. The player must drag the correct postulate to match the animated evidence. Correct matches lock into place, building a complete picture of his theory.",
+              "learningPoints": [
+                "Identifying the key postulates of Dalton's atomic theory.",
+                "Connecting each postulate to the chemical laws it explains (e.g., conservation of mass, constant proportions).",
+                "Understanding the historical significance of Dalton's theory in explaining the nature of matter."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 433,
+          "title": "Lesson 4: Introduction to Atoms - Size and Symbols",
+          "slug": "lesson_4_introduction_to_atoms_-_size_and_symbols",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "433_1",
+              "name": "Symbol Sleuth",
+              "implementationDetails": "A matching game where players are shown cards with element names like 'Sodium', 'Potassium', 'Iron', and 'Gold'. They must drag the correct modern chemical symbol (Na, K, Fe, Au) onto the card. To help them learn, a 'Hint' button can be clicked, which reveals the element's name in its original language (e.g., Natrium, Kalium, Ferrum), explaining the origin of the symbol. The game also enforces the rule of capitalization (e.g., accepting 'Co' but rejecting 'co' or 'CO' for Cobalt).",
+              "learningPoints": [
+                "Recognizing the modern symbols for common elements.",
+                "Understanding the convention for writing symbols (e.g., first letter capitalized).",
+                "Learning the historical Latin or Greek origins for certain element symbols."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 434,
+          "title": "Lesson 5: Understanding Atomic Mass and the Atomic Mass Unit (u)",
+          "slug": "lesson_5_understanding_atomic_mass_and_the_atomic_mass_unit_u",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "434_1",
+              "name": "The Carbon-12 Scale",
+              "implementationDetails": "A virtual balance scale is presented. On the left pan is a single atom (e.g., an Oxygen atom). The right pan is empty. The player has an unlimited supply of '1/12th Carbon-12 units' (which look like small weights labeled '1u'). The player must drag the '1u' weights onto the right pan until the scale balances. For Oxygen, it will take 16 units to balance the scale, visually demonstrating that the relative atomic mass of Oxygen is 16 u. The game provides different atoms like Hydrogen, Nitrogen, and Sodium to test.",
+              "learningPoints": [
+                "Understanding that atomic mass is relative, not absolute.",
+                "Defining the atomic mass unit (u) as 1/12th the mass of a Carbon-12 atom.",
+                "Visually determining the relative atomic mass of an element by comparing it to the Carbon-12 standard."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 435,
+          "title": "Lesson 6: Introduction to Molecules and Atomicity",
+          "slug": "lesson_6_introduction_to_molecules_and_atomicity",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "435_1",
+              "name": "Atomicity Assembler",
+              "implementationDetails": "The player is given challenges like 'Construct a Nitrogen molecule' or 'Construct a Helium molecule'. They are provided with a bin of individual atoms for that element. They must drag the atoms together to form a stable molecule. For Helium (monoatomic), a single atom is stable. For Nitrogen (diatomic), they must combine two atoms to form N₂. For Phosphorus (tetra-atomic), they must combine four to form P₄. The game provides feedback on the correct atomicity for various common elements.",
+              "learningPoints": [
+                "Defining a molecule as a group of two or more atoms chemically bonded together.",
+                "Defining atomicity as the number of atoms in a molecule.",
+                "Differentiating between monoatomic, diatomic, and polyatomic molecules."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 436,
+          "title": "Lesson 7: Understanding Ions - Cations, Anions, and Polyatomic Ions",
+          "slug": "lesson_7_understanding_ions_-_cations_anions_and_polyatomic_ions",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "436_1",
+              "name": "Ion Architect",
+              "implementationDetails": "The game shows a neutral atom with its electrons in shells (e.g., Sodium with 2,8,1). The player can physically drag the outermost electron away from the atom. When they do, the atom glows, a '+' sign appears, and it is labeled 'Cation (Na⁺)'. The reverse is shown for a Chlorine atom (2,8,7); the player drags an electron towards it, it glows, a '-' sign appears, and it is labeled 'Anion (Cl⁻)'. A third level introduces polyatomic ions like SO₄²⁻ as pre-built charged groups.",
+              "learningPoints": [
+                "Understanding that an ion is a charged particle.",
+                "Differentiating between a cation (formed by losing electrons, positively charged) and an anion (formed by gaining electrons, negatively charged).",
+                "Recognizing that polyatomic ions are groups of atoms that act as a single unit with an overall charge."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 437,
+          "title": "Lesson 8: Introduction to Valency",
+          "slug": "lesson_8_introduction_to_valency",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "437_1",
+              "name": "Valency Link-Up",
+              "implementationDetails": "A game based on the 'octopus arms' analogy. An atom appears in the center with a number of 'arms' equal to its valency (e.g., Magnesium has 2 arms, Chlorine has 1). The player's goal is to satisfy all the arms by dragging other atoms and linking them. To satisfy Magnesium's 2 arms, they will discover they need to link two Chlorine atoms, each with 1 arm. This visually leads them to the concept of MgCl₂. The game challenges them with various combinations, like Oxygen (2 arms) and Hydrogen (1 arm).",
+              "learningPoints": [
+                "Defining valency as the combining capacity of an element.",
+                "Visualizing how valency determines the ratio in which atoms combine.",
+                "Using valency to predict the formation of simple compounds."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 438,
+          "title": "Lesson 9: Rules for Writing Chemical Formulae",
+          "slug": "lesson_9_rules_for_writing_chemical_formulae",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "438_1",
+              "name": "Formula Forge",
+              "implementationDetails": "A visual tool for writing formulae. The player selects a metal (e.g., 'Aluminium') and a non-metal (e.g., 'Oxygen'). Their symbols (Al and O) appear with their valencies/charges displayed above them (3+ and 2-). The core mechanic involves the player physically dragging the number '3' from Al down to the subscript position of O, and the number '2' from O down to the subscript position of Al. An animation then shows the final formula being assembled: Al₂O₃. The game provides immediate feedback and reinforces the criss-cross rule.",
+              "learningPoints": [
+                "Understanding the rule that the symbol of the metal is written first.",
+                "Learning to apply the 'criss-cross' method to determine the subscripts in a chemical formula.",
+                "Reinforcing the concept that the overall charge of the compound must be neutral."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 439,
+          "title": "Lesson 10: Writing Chemical Formulae using the Criss-Cross Method",
+          "slug": "lesson_10_writing_chemical_formulae_using_the_criss-cross_method",
+          "display_order": 10,
+          "games": [
+            {
+              "id": "439_1",
+              "name": "Criss-Cross Challenge",
+              "implementationDetails": "A rapid-fire version of 'Formula Forge'. The game presents pairs of ions (e.g., Ca²⁺ and Cl⁻; Mg²⁺ and S²⁻; Na⁺ and O²⁻) and the player must quickly type or assemble the correct formula. A key part of this game is handling ions with the same valency, like Mg²⁺ and S²⁻. The game will show that criss-crossing gives Mg₂S₂, but then an animation will highlight that the ratio must be simplified to its simplest form, MgS. A timer adds a challenge element, encouraging mastery of the method.",
+              "learningPoints": [
+                "Mastering the application of the criss-cross method for various ion pairs.",
+                "Learning the rule of simplifying the subscripts to the lowest whole-number ratio.",
+                "Developing speed and accuracy in writing formulae for binary compounds."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 440,
+          "title": "Lesson 11: Writing Formulae for Compounds with Polyatomic Ions",
+          "slug": "lesson_11_writing_formulae_for_compounds_with_polyatomic_ions",
+          "display_order": 11,
+          "games": [
+            {
+              "id": "440_1",
+              "name": "Bracket Master",
+              "implementationDetails": "This game extends the 'Formula Forge' mechanic to include polyatomic ions. The player selects an ion like 'Magnesium (Mg²⁺)' and a polyatomic ion like 'Hydroxide (OH⁻)'. When they perform the criss-cross method, the number '2' needs to be applied to the entire OH group. The game will prompt the player to first drag parentheses '()' around the 'OH' before they can place the '2' as a subscript. This visually enforces the rule for using brackets, resulting in the correct formula Mg(OH)₂. It will also show cases like Sodium Nitrate (NaNO₃) where no brackets are needed.",
+              "learningPoints": [
+                "Understanding when and why parentheses are required in chemical formulae.",
+                "Correctly applying the criss-cross method to compounds containing polyatomic ions.",
+                "Differentiating between cases that need brackets and those that do not."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 441,
+          "title": "Lesson 12: Calculating Molecular Mass",
+          "slug": "lesson_12_calculating_molecular_mass",
+          "display_order": 12,
+          "games": [
+            {
+              "id": "441_1",
+              "name": "Molecule Weigher",
+              "implementationDetails": "The player is given a chemical formula of a molecular compound, like CH₄ or HNO₃. Below, there is a virtual scale and a bin of all elements, each labeled with its atomic mass. The player must deconstruct the formula and drag the correct number of each type of atom onto the scale. For HNO₃, they would drag 1 H atom, 1 N atom, and 3 O atoms. As each atom is added, its mass is added to a running total displayed on the screen. The final sum is the molecular mass. This turns the calculation into a hands-on assembly process.",
+              "learningPoints": [
+                "Defining molecular mass as the sum of atomic masses of all atoms in a molecule.",
+                "Learning to correctly interpret the subscripts in a formula to count atoms.",
+                "Practicing the step-by-step calculation of molecular mass for various compounds."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 442,
+          "title": "Lesson 13: Calculating Formula Unit Mass",
+          "slug": "lesson_13_calculating_formula_unit_mass",
+          "display_order": 13,
+          "games": [
+            {
+              "id": "442_1",
+              "name": "Ionic Weigher",
+              "implementationDetails": "This game uses the exact same mechanic as 'Molecule Weigher' but is themed for ionic compounds. The title is 'Calculate the Formula Unit Mass' and the player is given ionic formulae like ZnO, CaCl₂, or K₂CO₃. The gameplay of dragging atoms onto a scale and summing their masses is identical. This intentionally reinforces the key idea that the calculation process for formula unit mass is the same as for molecular mass; only the terminology differs because ionic compounds form crystal lattices rather than discrete molecules.",
+              "learningPoints": [
+                "Defining formula unit mass and its application to ionic compounds.",
+                "Understanding that the method of calculation is identical to that of molecular mass.",
+                "Reinforcing the skill of calculating mass for any given chemical formula."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

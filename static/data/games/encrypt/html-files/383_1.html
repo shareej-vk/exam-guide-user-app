@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Dilution Detective - CBSE Class 9 Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f7ff;
+            --card-bg: #ffffff;
+            --primary-color: #8A2BE2; /* A nice purple for Potassium Permanganate */
+            --accent-color: #0dcaf0;
+            --text-color: #333;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --correct-color: #198754;
+            --incorrect-color: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --beaker-border: #adb5bd;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .instructions-card {
+            flex: 3;
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e0e0e0;
+            align-self: flex-start;
+        }
+
+        .game-card {
+            flex: 7;
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #f3e8ff, #e9ecef);
+            padding: 5px 20px;
+            border-radius: 12px;
+        }
+
+        .instructions-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .instructions-list li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .instructions-list li::before {
+            content: '🔎';
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        .instructions-list li b {
+            color: var(--primary-color);
+        }
+
+        .game-controls {
+            width: 100%;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .controls-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-grow: 1;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        #start-btn {
+            background-color: var(--correct-color);
+            color: white;
+        }
+        
+        #reset-btn {
+            background-color: #ffc107;
+            color: #333;
+        }
+        
+        #conclusion-area {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+            margin-top: 15px;
+        }
+        
+        #conclusion-area h3 {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            color: #495057;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .answer-btn {
+            width: 100%;
+            margin: 8px 0;
+            background-color: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .answer-btn.correct {
+            background-color: var(--correct-color);
+            border-color: var(--correct-color);
+            color: white;
+            transform: scale(1.05);
+        }
+        .answer-btn.incorrect {
+            background-color: var(--incorrect-color);
+            border-color: var(--incorrect-color);
+            color: white;
+        }
+
+        #feedback-text {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            visibility: hidden;
+        }
+        
+        #feedback-text.visible {
+            visibility: visible;
+        }
+
+        .feedback-correct {
+            color: var(--correct-color);
+            background-color: #d1e7dd;
+        }
+        
+        .feedback-incorrect {
+            color: var(--incorrect-color);
+            background-color: #f8d7da;
+        }
+        
+        /* Game Area Styles */
+        .beakers-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .beaker-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .beaker {
+            width: 100px;
+            height: 120px;
+            border: 5px solid var(--beaker-border);
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+            position: relative;
+            background-color: white; /* Initially white */
+            overflow: hidden; /* To clip the colored liquid */
+        }
+        
+        .beaker canvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .beaker-label {
+            font-family: var(--heading-font);
+            margin-top: 8px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        #action-button-container {
+            height: 60px; /* Reserve space for the button */
+        }
+
+        #dilute-btn {
+            background: linear-gradient(45deg, var(--accent-color), #0891b2);
+            color: white;
+            font-size: 20px;
+            padding: 15px 30px;
+            display: none; /* Initially hidden */
+        }
+
+        #dilute-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        
+        #dilute-btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 300px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">🧬 The Dilution Detective</h2>
+            <p><strong>Lesson:</strong> Proving that particles of matter are incredibly small!</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Case</h3>
+            <p style="margin-bottom: 15px;">We start with a few 'crystals' of a purple chemical. How can we prove they are made of MILLIONS of tiny particles?</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">Your Mission</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to begin the experiment.</li>
+                <li>Press the <b>"Perform Dilution"</b> button to take 10mL of solution from one beaker and add it to the next.</li>
+                <li>Watch how the color gets fainter with each step, but the purple tint remains visible!</li>
+                <li>After the final dilution, solve the case by answering the question!</li>
+            </ul>
+
+        </div>
+
+        <div class="game-card">
+             <div id="initial-message">Click 'Start' to set up the lab!</div>
+             <div class="beakers-container" id="beakers-container"></div>
+             <div class="game-controls">
+                 <div class="controls-row">
+                     <button id="start-btn" class="btn">Start</button>
+                     <button id="reset-btn" class="btn">Reset</button>
+                     <button id="dilute-btn" class="btn">Perform Dilution</button>
+                 </div>
+                 <div id="conclusion-area">
+                     <h3>The Final Clue!</h3>
+                     <p>Even after 4 dilutions, the last beaker still shows a faint purple tint. What does this prove?</p>
+                     <div id="answer-options">
+                         <button class="btn answer-btn" data-correct="false">The particles are actually quite large.</button>
+                         <button class="btn answer-btn" data-correct="true">A few crystals must contain millions of tiny particles.</button>
+                         <button class="btn answer-btn" data-correct="false">Water turns purple on its own over time.</button>
+                     </div>
+                     <div id="feedback-text"></div>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+    <script>
+        const NUM_BEAKERS = 5;
+        const INITIAL_PARTICLES = 10000;
+        const PARTICLE_RADIUS = 1.5;
+        const PURPLE_COLOR_BASE = [138, 43, 226]; // RGB for 'BlueViolet'
+
+        let beakersData = [];
+        let currentDilutionStep = 0;
+
+        // DOM Elements
+        const startBtn = document.getElementById('start-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const diluteBtn = document.getElementById('dilute-btn');
+        const beakersContainer = document.getElementById('beakers-container');
+        const initialMessage = document.getElementById('initial-message');
+        const conclusionArea = document.getElementById('conclusion-area');
+        const answerButtons = document.querySelectorAll('.answer-btn');
+        const feedbackText = document.getElementById('feedback-text');
+        
+        function setupBeakers() {
+            beakersContainer.innerHTML = '';
+            beakersData = [];
+            for (let i = 0; i < NUM_BEAKERS; i++) {
+                const beakerWrapper = document.createElement('div');
+                beakerWrapper.className = 'beaker-wrapper';
+
+                const beakerDiv = document.createElement('div');
+                beakerDiv.className = 'beaker';
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = 100;
+                canvas.height = 120;
+                beakerDiv.appendChild(canvas);
+                
+                const label = document.createElement('div');
+                label.className = 'beaker-label';
+                label.textContent = `Beaker ${i + 1}`;
+                
+                beakerWrapper.appendChild(beakerDiv);
+                beakerWrapper.appendChild(label);
+                beakersContainer.appendChild(beakerWrapper);
+                
+                beakersData.push({
+                    id: i,
+                    particles: 0,
+                    canvas: canvas,
+                    ctx: canvas.getContext('2d'),
+                    colorAlpha: 0 // Represents the intensity of the purple color
+                });
+            }
+        }
+
+        function drawBeaker(index) {
+            const beaker = beakersData[index];
+            const { ctx, canvas, particles, colorAlpha } = beaker;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw colored liquid based on colorAlpha
+            const [r, g, b] = PURPLE_COLOR_BASE;
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${colorAlpha})`;
+            // The liquid should fill the bottom part of the beaker up to a certain level
+            const liquidHeight = canvas.height * 0.8;
+            ctx.fillRect(0, canvas.height - liquidHeight, canvas.width, liquidHeight);
+
+            // Particle drawing is removed to focus on the color intensity.
+            // The particle count is still tracked for calculations.
+        }
+
+        function startGame() {
+            initialMessage.style.display = 'none';
+            beakersContainer.style.display = 'flex';
+            currentDilutionStep = 0;
+            
+            setupBeakers();
+
+            // Setup initial beaker
+            beakersData[0].particles = INITIAL_PARTICLES;
+            beakersData[0].colorAlpha = 0.8; // Start with a strong purple
+            drawBeaker(0);
+
+            for(let i = 1; i < NUM_BEAKERS; i++) {
+                drawBeaker(i); // Draw empty beakers (white background)
+            }
+            
+            diluteBtn.style.display = 'block';
+            diluteBtn.disabled = false;
+            diluteBtn.textContent = `Dilute Beaker 1 ➔ 2`;
+            conclusionArea.style.display = 'none';
+            feedbackText.classList.remove('visible');
+            answerButtons.forEach(btn => {
+                btn.classList.remove('correct', 'incorrect');
+                btn.disabled = false;
+            });
+        }
+
+        function performDilution() {
+            if (currentDilutionStep >= NUM_BEAKERS - 1) return;
+            
+            diluteBtn.disabled = true;
+
+            const sourceIndex = currentDilutionStep;
+            const targetIndex = currentDilutionStep + 1;
+            
+            const sourceBeaker = beakersData[sourceIndex];
+            const targetBeaker = beakersData[targetIndex];
+
+            // 10ml from 100ml is 1/10th
+            const particlesToTransfer = Math.floor(sourceBeaker.particles /2 );
+            
+            sourceBeaker.particles -= particlesToTransfer;
+            targetBeaker.particles += particlesToTransfer;
+            // Calculate new color intensity (alpha) based on particle count
+            const maxInitialParticles = INITIAL_PARTICLES; // Particles in beaker 1
+            const newAlpha = 0.8 * (targetBeaker.particles / maxInitialParticles); 
+            targetBeaker.colorAlpha = Math.max(0.05, newAlpha); // Ensure a minimum alpha so it's visible
+            
+            // Animate the color change
+            setTimeout(() => {
+                drawBeaker(sourceIndex); // Update source beaker visually
+                drawBeaker(targetIndex);
+                
+                currentDilutionStep++;
+                
+                if (currentDilutionStep >= NUM_BEAKERS - 1) {
+                    diluteBtn.style.display = 'none';
+                    conclusionArea.style.display = 'block';
+                } else {
+                    diluteBtn.disabled = false;
+                    diluteBtn.textContent = `Dilute Beaker ${currentDilutionStep + 1} ➔ ${currentDilutionStep + 2}`;
+                }
+            }, 500);
+        }
+
+        function handleAnswer(e) {
+            const chosenButton = e.target;
+            const isCorrect = chosenButton.dataset.correct === 'true';
+
+            answerButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.dataset.correct === 'true') {
+                    btn.classList.add('correct');
+                } else {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            feedbackText.classList.add('visible');
+            if (isCorrect) {
+                feedbackText.textContent = '✅ Absolutely! A tiny crystal must hold millions of particles to still be visible after so much dilution. Great work, Detective!';
+                feedbackText.className = 'feedback-correct visible';
+            } else {
+                feedbackText.textContent = '❌ Think again! The correct conclusion is that the original substance must have been made of a vast number of particles.';
+                feedbackText.className = 'feedback-incorrect visible';
+            }
+        }
+
+        // Event Listeners
+        startBtn.addEventListener('click', startGame);
+        resetBtn.addEventListener('click', () => {
+             initialMessage.style.display = 'block';
+             beakersContainer.style.display = 'none';
+             diluteBtn.style.display = 'none';
+             conclusionArea.style.display = 'none';
+        });
+        diluteBtn.addEventListener('click', performDilution);
+        answerButtons.forEach(btn => btn.addEventListener('click', handleAnswer));
+
+        // Initial state
+        window.onload = () => {
+            beakersContainer.style.display = 'none';
+        };
+
+    </script>
+</body>
+</html>
+<!--end-of-code-block-->

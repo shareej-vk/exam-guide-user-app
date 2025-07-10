@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Tester - Classification of Elements</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f3f5;
+            --card-bg: #ffffff;
+            --primary-color: #3d348b; /* Deep Purple */
+            --metal-color: #f7b801;   /* Gold */
+            --nonmetal-color: #7678ed; /* Indigo */
+            --metalloid-color: #f94144; /* Red */
+            --text-color: #1e2a3b;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            --correct-color: #4CAF50;
+            --incorrect-color: #F44336;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #e2eafc, #e3d5ff);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .instructions-list li::before {
+            content: '🧪';
+            margin-right: 12px;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+        .instructions-list b { color: var(--primary-color); }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        #next-btn { background-color: var(--primary-color); color: white; display: none; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .testing-area {
+            width: 100%; height: 200px;
+            background-color: #e9ecef;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        #element-sample {
+            width: 100px; height: 100px;
+            cursor: grab;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        #element-sample.shiny::after {
+            content: '✨';
+            position: absolute;
+            top: 0; right: 0;
+            font-size: 24px;
+            animation: sparkle 1s infinite;
+        }
+        @keyframes sparkle { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 1; transform: scale(1); } }
+        
+        .tool-shelf {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .tool {
+            width: 80px; text-align: center;
+            cursor: pointer; transition: transform 0.2s;
+        }
+        .tool:hover { transform: scale(1.1); }
+        .tool img { width: 50px; height: 50px; }
+        .tool p { font-weight: 600; font-size: 14px; }
+        
+        .classification-bins { display: flex; width: 100%; gap: 15px; }
+        .bin {
+            flex: 1; height: 120px;
+            border: 4px dashed #ced4da;
+            border-radius: 16px;
+            display: flex; justify-content: center; align-items: center;
+            font-family: var(--heading-font); font-size: 24px;
+            transition: all 0.3s;
+        }
+        .bin.drag-over { border-style: solid; transform: translateY(-5px); }
+        #metal-bin { color: var(--metal-color); }
+        #metal-bin.drag-over { border-color: var(--metal-color); background-color: #fffbeb; }
+        #nonmetal-bin { color: var(--nonmetal-color); }
+        #nonmetal-bin.drag-over { border-color: var(--nonmetal-color); background-color: #f0f0ff; }
+        #metalloid-bin { color: var(--metalloid-color); }
+        #metalloid-bin.drag-over { border-color: var(--metalloid-color); background-color: #fff0f0; }
+        
+        #results-log {
+            width: 100%; margin-top: 15px;
+            background-color: #e9ecef; padding: 15px;
+            border-radius: 12px;
+        }
+        #results-log h3 { text-align: center; margin-bottom: 10px; color: var(--primary-color); }
+        #results-list { list-style: none; padding: 0; }
+        
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Property Tester</h2>
+            <p><strong>Lesson:</strong> Classification of Elements</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Mission</h3>
+            <p style="margin-bottom: 15px;">You've discovered a new, unknown element! Your job is to test its properties and figure out if it's a metal, non-metal, or a metalloid. Use the tools on your lab bench to investigate.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to get your first unknown element.</li>
+                <li>Use the <b>Tools</b> to test its properties. Click on a tool to see what happens to the element.</li>
+                <li>Check the <b>Results Log</b> to keep track of your findings.</li>
+                <li>Based on the properties, <b>drag the element</b> into the correct bin: <b>Metal</b>, <b>Non-metal</b>, or <b>Metalloid</b>.</li>
+                <li>Get it right, and you'll get a new element to test!</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+                <button id="next-btn" class="btn">Next Element</button>
+            </div>
+            <div id="initial-message">Click 'Start' to begin testing elements!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="testing-area">
+                    <div id="element-sample" draggable="true"></div>
+                </div>
+                <div class="tool-shelf">
+                    <div class="tool" data-tool="lustre"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23F9A825' d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/></svg>" alt="Shine"><p>Lustre</p></div>
+                    <div class="tool" data-tool="malleability"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%2378909C' d='M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-8-2h4v2h-4V4z'/></svg>" alt="Hammer"><p>Malleability</p></div>
+                    <div class="tool" data-tool="ductility"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23BDBDBD' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-12h2v4h-2zm0 6h2v2h-2z'/></svg>" alt="Wire"><p>Ductility</p></div>
+                    <div class="tool" data-tool="conductivity"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23D32F2F' d='M7 2v11h3v9l7-12h-4l4-8z'/></svg>" alt="Circuit"><p>Conductivity</p></div>
+                </div>
+                <div class="classification-bins">
+                    <div id="metal-bin" class="bin" data-type="Metal">Metal</div>
+                    <div id="nonmetal-bin" class="bin" data-type="Non-metal">Non-metal</div>
+                    <div id="metalloid-bin" class="bin" data-type="Metalloid">Metalloid</div>
+                </div>
+                <div id="results-log">
+                    <h3>Results Log</h3>
+                    <ul id="results-list"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const elementSample = document.getElementById('element-sample');
+    const tools = document.querySelectorAll('.tool');
+    const bins = document.querySelectorAll('.bin');
+    const resultsList = document.getElementById('results-list');
+
+    // --- Data ---
+    const elements = [
+        { name: 'Copper', type: 'Metal', color: '#b87333', props: { lustre: true, malleability: true, ductility: true, conductivity: true } },
+        { name: 'Sulfur', type: 'Non-metal', color: '#fddb3a', props: { lustre: false, malleability: false, ductility: false, conductivity: false } },
+        { name: 'Silicon', type: 'Metalloid', color: '#adb5bd', props: { lustre: true, malleability: false, ductility: false, conductivity: 'semi' } },
+        { name: 'Carbon', type: 'Non-metal', color: '#343a40', props: { lustre: false, malleability: false, ductility: false, conductivity: false } },
+        { name: 'Aluminum', type: 'Metal', color: '#d3d3d3', props: { lustre: true, malleability: true, ductility: true, conductivity: true } }
+    ];
+    let currentElement;
+    let testsDone = new Set();
+    
+    // --- Game Logic ---
+    function setupNewElement() {
+        currentElement = elements[Math.floor(Math.random() * elements.length)];
+        elementSample.style.backgroundColor = currentElement.color;
+        elementSample.style.borderRadius = '15px';
+        elementSample.style.border = `3px solid ${darkenColor(currentElement.color)}`;
+        elementSample.style.width = '100px';
+        elementSample.style.height = '100px';
+        elementSample.style.transform = 'none';
+        elementSample.classList.remove('shiny');
+        elementSample.draggable = true;
+        
+        resultsList.innerHTML = '';
+        testsDone.clear();
+        nextBtn.style.display = 'none';
+    }
+
+    function darkenColor(color) {
+        let r = parseInt(color.slice(1, 3), 16);
+        let g = parseInt(color.slice(3, 5), 16);
+        let b = parseInt(color.slice(5, 7), 16);
+        r = Math.max(0, r - 40); g = Math.max(0, g - 40); b = Math.max(0, b - 40);
+        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    }
+
+    function logResult(property, resultText) {
+        if(testsDone.has(property)) return;
+        testsDone.add(property);
+        const li = document.createElement('li');
+        li.innerHTML = `<b>${property.charAt(0).toUpperCase() + property.slice(1)}:</b> ${resultText}`;
+        resultsList.appendChild(li);
+    }
+    
+    function testProperty(tool) {
+        const prop = currentElement.props[tool];
+        
+        switch (tool) {
+            case 'lustre':
+                if (prop) {
+                    elementSample.classList.add('shiny');
+                    logResult(tool, 'Shiny!');
+                } else logResult(tool, 'Dull.');
+                break;
+            case 'malleability':
+                 elementSample.style.transition = 'all 0.2s';
+                if (prop) {
+                    elementSample.style.transform = 'scale(1.5, 0.5)';
+                    logResult(tool, 'Malleable (flattens).');
+                } else {
+                    elementSample.style.transform = 'rotate(15deg)';
+                     logResult(tool, 'Brittle (shatters).');
+                }
+                setTimeout(() => elementSample.style.transform = 'none', 500);
+                break;
+            case 'ductility':
+                if (prop) {
+                     elementSample.style.transform = 'scale(0.5, 2.0)';
+                     logResult(tool, 'Ductile (can be drawn into a wire).');
+                } else logResult(tool, 'Not ductile.');
+                setTimeout(() => elementSample.style.transform = 'none', 500);
+                break;
+            case 'conductivity':
+                let result = '';
+                if (prop === true) result = 'Conducts electricity.';
+                else if (prop === 'semi') result = 'Semi-conductive.';
+                else result = 'Does not conduct.';
+                logResult(tool, result);
+                break;
+        }
+    }
+
+    function handleDrop(binType) {
+        const correct = binType === currentElement.type;
+        const bin = document.querySelector(`.bin[data-type="${binType}"]`);
+        const styles = getComputedStyle(document.documentElement);
+        
+        bin.style.borderColor = correct 
+            ? styles.getPropertyValue('--correct-color').trim() 
+            : styles.getPropertyValue('--incorrect-color').trim();
+        bin.style.backgroundColor = correct ? '#e8f8f5' : '#fdedeb';
+        
+        elementSample.draggable = false;
+        
+        setTimeout(() => {
+             bin.style.borderColor = '#ced4da';
+             bin.style.backgroundColor = 'transparent';
+        }, 1500);
+        
+        if (correct) {
+            nextBtn.style.display = 'inline-block';
+        }
+    }
+
+    // --- Event Listeners & Setup ---
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        setupNewElement();
+    }
+    
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    nextBtn.addEventListener('click', setupNewElement);
+
+    tools.forEach(tool => {
+        tool.addEventListener('click', () => testProperty(tool.dataset.tool));
+    });
+
+    elementSample.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', 'element');
+    });
+
+    bins.forEach(bin => {
+        bin.addEventListener('dragover', e => {
+            e.preventDefault();
+            bin.classList.add('drag-over');
+        });
+        bin.addEventListener('dragleave', () => {
+            bin.classList.remove('drag-over');
+        });
+        bin.addEventListener('drop', e => {
+            e.preventDefault();
+            bin.classList.remove('drag-over');
+            handleDrop(bin.dataset.type);
+        });
+    });
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

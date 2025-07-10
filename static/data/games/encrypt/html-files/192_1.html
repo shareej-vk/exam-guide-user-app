@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Real-World Coordinate Hunt</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #3f51b5;
+      --correct: #4caf50;
+      --wrong: #f44336;
+      --bg: #f4f7fb;
+      --card-bg: #fff;
+      --border: #ddd;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .instructions {
+      width: 30%;
+      box-sizing: border-box;
+    }
+
+    .game-area {
+      width: 70%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    h2 {
+      font-family: 'Fredoka', cursive;
+      color: var(--accent);
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .step {
+      font-weight: 700;
+      color: #333;
+      margin-top: 10px;
+    }
+
+    canvas {
+      border: 1px solid #ccc;
+      background-color: #fff;
+      border-radius: 10px;
+    }
+
+    .controls {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #303f9f;
+    }
+
+    .feedback {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .correct {
+      color: var(--correct);
+    }
+
+    .wrong {
+      color: var(--wrong);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="instructions card">
+      <h2>🧭 Real-World Coordinate Hunt</h2>
+      <div class="step">🎯 Goal:</div>
+      <p>Understand how coordinates help locate objects in real life, like maps or seating charts!</p>
+
+      <div class="step">🕹️ How to Play:</div>
+      <ul>
+        <li>A house will be highlighted on the map.</li>
+        <li>Click the correct coordinate from the grid based on its location.</li>
+        <li>One try per house – see if you’re right!</li>
+        <li>Click "Start Game" to begin.</li>
+        <li>Click "Reset" to play again.</li>
+      </ul>
+    </div>
+
+    <div class="game-area card">
+      <canvas id="gameCanvas" width="600" height="400"></canvas>
+      <div class="controls">
+        <button onclick="startGame()">Start Game</button>
+        <button onclick="resetGame()">Reset</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const feedback = document.getElementById("feedback");
+
+    const gridSize = 50;
+    const rows = 8;
+    const cols = 10;
+
+    let target = null;
+    let gameStarted = false;
+
+    function drawGrid() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = "14px Poppins";
+      ctx.fillStyle = "#333";
+
+      for (let i = 0; i <= cols; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * gridSize, 0);
+        ctx.lineTo(i * gridSize, rows * gridSize);
+        ctx.strokeStyle = "#ccc";
+        ctx.stroke();
+      }
+
+      for (let j = 0; j <= rows; j++) {
+        ctx.beginPath();
+        ctx.moveTo(0, j * gridSize);
+        ctx.lineTo(cols * gridSize, j * gridSize);
+        ctx.strokeStyle = "#ccc";
+        ctx.stroke();
+      }
+
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          ctx.fillText(`(${i+1},${rows-j})`, i * gridSize + 5, j * gridSize + 15);
+        }
+      }
+
+      if (target) {
+        ctx.fillStyle = "#ff9800";
+        ctx.fillRect(target.x * gridSize, (rows - target.y) * gridSize - gridSize, gridSize, gridSize);
+        ctx.fillStyle = "#fff";
+        ctx.fillText("🏠", target.x * gridSize + 15, (rows - target.y) * gridSize - 15);
+      }
+    }
+
+    function getMousePos(evt) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+      };
+    }
+
+    canvas.addEventListener("click", function(evt) {
+      if (!gameStarted) return;
+
+      const pos = getMousePos(evt);
+      const col = Math.floor(pos.x / gridSize);
+      const row = Math.floor(pos.y / gridSize);
+
+      const clickedX = col + 1;
+      const clickedY = rows - row;
+
+      if (clickedX === target.x + 1 && clickedY === target.y) {
+        feedback.innerHTML = `<span class="correct">🎉 Correct! The coordinate is (${clickedX}, ${clickedY})</span>`;
+        ctx.fillStyle = "rgba(76, 175, 80, 0.4)";
+      } else {
+        feedback.innerHTML = `<span class="wrong">❌ Oops! You clicked (${clickedX}, ${clickedY}). Try again!</span>`;
+        ctx.fillStyle = "rgba(244, 67, 54, 0.4)";
+      }
+
+      ctx.fillRect(col * gridSize, row * gridSize, gridSize, gridSize);
+    });
+
+    function startGame() {
+      const x = Math.floor(Math.random() * cols);
+      const y = Math.floor(Math.random() * rows) + 1;
+      target = { x, y };
+      gameStarted = true;
+      feedback.innerHTML = "";
+      drawGrid();
+    }
+
+    function resetGame() {
+      gameStarted = false;
+      target = null;
+      feedback.innerHTML = "";
+      drawGrid();
+    }
+
+    drawGrid();
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

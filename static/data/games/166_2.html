@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>True/False: Number Systems</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+        :root {
+            --bg-color: #f4f7f6;
+            --container-bg: #ffffff;
+            --header-color: #00796b;
+            --text-color: #333;
+            --true-color: #4CAF50;
+            --false-color: #f44336;
+            --neutral-color: #2196F3;
+            --border-color: #e0e0e0;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .game-wrapper {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .game-container {
+            background-color: var(--container-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 550px;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .game-header h1 {
+            color: var(--header-color);
+            margin: 0;
+            font-size: 2.5em;
+        }
+        
+        #progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            height: 10px;
+            margin-bottom: 25px;
+        }
+
+        #progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: var(--neutral-color);
+            border-radius: 20px;
+            transition: width 0.4s ease-in-out;
+        }
+
+        #game-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        #question-card {
+            background: #fff;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            width: 90%;
+            min-height: 150px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        #question-card.correct {
+            background-color: #e8f5e9;
+            border-color: var(--true-color);
+        }
+
+        #question-card.incorrect {
+            background-color: #ffebee;
+            border-color: var(--false-color);
+        }
+
+        #statement-text {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin: 0;
+            color: #333;
+        }
+        
+        #feedback-container {
+            margin-top: 15px;
+            min-height: 40px;
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        #feedback-text {
+             opacity: 0;
+             transition: opacity 0.5s ease;
+        }
+        
+        #feedback-text.visible {
+            opacity: 1;
+        }
+
+        #feedback-text.correct {
+            color: var(--true-color);
+        }
+
+        #feedback-text.incorrect {
+            color: var(--false-color);
+        }
+
+        #answer-buttons {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .answer-btn {
+            padding: 15px 40px;
+            font-size: 1.4em;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: white;
+            min-width: 150px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-bottom: 4px solid;
+        }
+        .answer-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .answer-btn:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+
+        .answer-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        #true-btn {
+            background-color: var(--true-color);
+            border-color: #388E3C;
+        }
+
+        #false-btn {
+            background-color: var(--false-color);
+            border-color: #D32F2F;
+        }
+        
+        #next-question-btn {
+            background-color: var(--neutral-color);
+            color: white;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s, transform 0.2s;
+        }
+        
+        #next-question-btn.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+        #next-question-btn:hover {
+            background-color: #1976D2;
+            transform: scale(1.05);
+        }
+
+        .info-panel {
+            width: 320px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-box {
+            background: var(--container-bg);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+        
+        .info-box h3 {
+            margin-top: 0;
+            color: var(--header-color);
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 10px;
+        }
+
+        .info-box ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+        
+        .info-box li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        #score-board {
+            text-align: center;
+        }
+        
+        #score-value {
+            font-size: 3em;
+            font-weight: 700;
+            color: var(--true-color);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .game-btn {
+            flex-grow: 1;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            color: white;
+        }
+        
+        .game-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        #start-btn {
+            background-color: #00897b;
+        }
+        #start-btn:hover {
+            background-color: #00695c;
+        }
+
+        #reset-btn {
+            background-color: #ffa000;
+        }
+        #reset-btn:hover {
+            background-color: #ef6c00;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-wrapper">
+        <div class="game-container">
+            <div class="game-header">
+                <h1>True or False?</h1>
+            </div>
+             <div id="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+            <div id="game-area">
+                <div id="question-card">
+                    <p id="statement-text">Click "Start Game" to begin!</p>
+                     <div id="feedback-container">
+                        <p id="feedback-text"></p>
+                    </div>
+                </div>
+                <div id="answer-buttons">
+                    <button class="answer-btn" id="true-btn" disabled><i class="fas fa-check"></i> True</button>
+                    <button class="answer-btn" id="false-btn" disabled><i class="fas fa-times"></i> False</button>
+                </div>
+                 <button id="next-question-btn">Next Question <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <div class="info-box controls-box">
+                <div id="score-board">
+                     <h3>Score</h3>
+                     <span id="score-value">0</span>
+                </div>
+                 <div class="controls">
+                    <button id="start-btn" class="game-btn">Start Game</button>
+                    <button id="reset-btn" class="game-btn">Reset</button>
+                </div>
+            </div>
+            <div class="info-box instructions">
+                <h3>How to Play</h3>
+                <ul>
+                    <li>Click <strong>Start Game</strong>.</li>
+                    <li>Read the statement in the card.</li>
+                    <li>Decide if it's <strong>True</strong> or <strong>False</strong> and click the corresponding button.</li>
+                    <li>Read the explanation to reinforce your learning.</li>
+                    <li>Click <strong>Next Question</strong> to continue.</li>
+                </ul>
+            </div>
+            <div class="info-box definitions">
+                <h3>Key Definitions</h3>
+                 <ul>
+                    <li><strong>Natural (N):</strong> Counting numbers {1, 2, 3, ...}.</li>
+                    <li><strong>Whole (W):</strong> Natural numbers plus zero {0, 1, 2, ...}.</li>
+                    <li><strong>Integers (Z):</strong> Whole numbers and their opposites {..., -2, -1, 0, 1, 2, ...}.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const questions = [
+                { statement: "Every natural number is a whole number.", answer: true, explanation: "Correct! The set of Whole numbers {0, 1, 2,..} contains all the Natural numbers {1, 2, 3,..}." },
+                { statement: "Every whole number is a natural number.", answer: false, explanation: "Incorrect! 0 is a whole number but it is not a natural number." },
+                { statement: "Every integer is a whole number.", answer: false, explanation: "Incorrect! Negative numbers like -3 are integers, but they are not whole numbers." },
+                { statement: "Every integer is a rational number.", answer: true, explanation: "Correct! Any integer 'm' can be written as m/1, which fits the definition of a rational number." },
+                { statement: "Zero is a natural number.", answer: false, explanation: "Incorrect! Natural numbers are counting numbers, which start from 1." },
+                { statement: "Zero is the smallest integer.", answer: false, explanation: "Incorrect! Integers extend infinitely in the negative direction (-1, -2, -3...), so there is no smallest integer." },
+                { statement: "The number -7 is a whole number.", answer: false, explanation: "Incorrect! Whole numbers cannot be negative." },
+                { statement: "Every rational number is an integer.", answer: false, explanation: "Incorrect! For example, 3/5 is a rational number but not an integer." }
+            ];
+
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let shuffledQuestions = [];
+
+            const statementText = document.getElementById('statement-text');
+            const feedbackText = document.getElementById('feedback-text');
+            const scoreValue = document.getElementById('score-value');
+            const trueBtn = document.getElementById('true-btn');
+            const falseBtn = document.getElementById('false-btn');
+            const nextBtn = document.getElementById('next-question-btn');
+            const startBtn = document.getElementById('start-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const questionCard = document.getElementById('question-card');
+            const progressBar = document.getElementById('progress-bar');
+
+            function startGame() {
+                score = 0;
+                currentQuestionIndex = 0;
+                shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+                
+                scoreValue.textContent = score;
+                nextBtn.classList.remove('visible');
+                feedbackText.classList.remove('visible');
+                
+                displayQuestion();
+                
+                trueBtn.disabled = false;
+                falseBtn.disabled = false;
+            }
+
+            function displayQuestion() {
+                // Reset styles
+                questionCard.className = 'question-card';
+                feedbackText.className = 'feedback-text';
+                
+                if (currentQuestionIndex < shuffledQuestions.length) {
+                    const question = shuffledQuestions[currentQuestionIndex];
+                    statementText.textContent = question.statement;
+                    feedbackText.textContent = '';
+                    
+                    trueBtn.disabled = false;
+                    falseBtn.disabled = false;
+                    nextBtn.classList.remove('visible');
+                    
+                    // Update progress bar
+                    const progress = ((currentQuestionIndex) / shuffledQuestions.length) * 100;
+                    progressBar.style.width = `${progress}%`;
+                } else {
+                    endGame();
+                }
+            }
+
+            function handleAnswer(userAnswer) {
+                trueBtn.disabled = true;
+                falseBtn.disabled = true;
+
+                const question = shuffledQuestions[currentQuestionIndex];
+                const isCorrect = userAnswer === question.answer;
+                
+                feedbackText.textContent = question.explanation;
+                feedbackText.classList.add('visible');
+
+                if (isCorrect) {
+                    score++;
+                    scoreValue.textContent = score;
+                    questionCard.classList.add('correct');
+                    feedbackText.classList.add('correct');
+                } else {
+                    questionCard.classList.add('incorrect');
+                    feedbackText.classList.add('incorrect');
+                }
+
+                nextBtn.classList.add('visible');
+                
+                const progress = ((currentQuestionIndex + 1) / shuffledQuestions.length) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+
+            function nextQuestion() {
+                currentQuestionIndex++;
+                displayQuestion();
+            }
+
+            function endGame() {
+                statementText.textContent = `Game Over! Your final score is ${score} out of ${questions.length}.`;
+                trueBtn.disabled = true;
+                falseBtn.disabled = true;
+                nextBtn.classList.remove('visible');
+                feedbackText.classList.remove('visible');
+            }
+
+            trueBtn.addEventListener('click', () => handleAnswer(true));
+            falseBtn.addEventListener('click', () => handleAnswer(false));
+            nextBtn.addEventListener('click', nextQuestion);
+            startBtn.addEventListener('click', startGame);
+            resetBtn.addEventListener('click', startGame);
+        });
+    </script>
+</body>
+</html>
+<!--end-of-code-block-->

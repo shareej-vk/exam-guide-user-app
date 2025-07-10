@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Axes Identifier Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #673ab7;
+      --correct: #4caf50;
+      --wrong: #f44336;
+      --bg: #f3f4f8;
+      --card-bg: #ffffff;
+      --border: #ddd;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .instructions {
+      width: 30%;
+      box-sizing: border-box;
+    }
+
+    .game-area {
+      width: 70%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    h2 {
+      font-family: 'Fredoka', cursive;
+      color: var(--accent);
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .step {
+      font-weight: 700;
+      color: #333;
+      margin-top: 10px;
+    }
+
+    canvas {
+      border: 1px solid #ccc;
+      background-color: #fff;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .draggables {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+
+    .label {
+      padding: 10px 16px;
+      border: 2px dashed var(--accent);
+      border-radius: 8px;
+      font-weight: bold;
+      background: #e9e6f7;
+      cursor: grab;
+    }
+
+    .drop-zone {
+      position: absolute;
+      padding: 4px 8px;
+      background-color: #eeeeee;
+      border-radius: 6px;
+      border: 2px dashed transparent;
+      font-size: 14px;
+      text-align: center;
+      min-width: 80px;
+    }
+
+    .controls {
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #512da8;
+    }
+
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .correct {
+      border-color: var(--correct);
+      color: var(--correct);
+    }
+
+    .wrong {
+      border-color: var(--wrong);
+      color: var(--wrong);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="instructions card">
+      <h2>🧭 Axes Identifier</h2>
+      <div class="step">🎯 Goal:</div>
+      <p>Learn to identify the x-axis, y-axis, and origin on a Cartesian plane!</p>
+
+      <div class="step">🕹️ How to Play:</div>
+      <ul>
+        <li>Drag each label and drop it on the correct position on the graph.</li>
+        <li>Labels: x-axis, y-axis, origin.</li>
+        <li>Click "Check" to see how you did!</li>
+        <li>Click "Reset" to try again.</li>
+      </ul>
+    </div>
+
+    <div class="game-area card">
+      <canvas id="gameCanvas" width="500" height="400"></canvas>
+
+      <div class="draggables">
+        <div class="label" draggable="true" id="label-x-axis">x-axis</div>
+        <div class="label" draggable="true" id="label-y-axis">y-axis</div>
+        <div class="label" draggable="true" id="label-origin">origin</div>
+      </div>
+
+      <div class="controls">
+        <button onclick="checkAnswers()">Check</button>
+        <button onclick="resetGame()">Reset</button>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const feedback = document.getElementById("feedback");
+
+    const dropZones = {
+      'x-axis': { x: 250, y: 205, label: null },
+      'y-axis': { x: 45, y: 100, label: null },
+      'origin': { x: 240, y: 190, label: null }
+    };
+
+    function drawPlane() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // x-axis
+      ctx.beginPath();
+      ctx.moveTo(0, 200);
+      ctx.lineTo(500, 200);
+      ctx.strokeStyle = "#000";
+      ctx.stroke();
+
+      // y-axis
+      ctx.beginPath();
+      ctx.moveTo(250, 0);
+      ctx.lineTo(250, 400);
+      ctx.strokeStyle = "#000";
+      ctx.stroke();
+
+      // origin dot
+      ctx.beginPath();
+      ctx.arc(250, 200, 4, 0, Math.PI * 2);
+      ctx.fillStyle = "#000";
+      ctx.fill();
+    }
+
+    function createDropZones() {
+      for (const key in dropZones) {
+        const zone = document.createElement('div');
+        zone.className = 'drop-zone';
+        zone.style.left = dropZones[key].x + 'px';
+        zone.style.top = dropZones[key].y + 'px';
+        zone.dataset.expected = key;
+        document.body.appendChild(zone);
+
+        zone.addEventListener('dragover', (e) => e.preventDefault());
+        zone.addEventListener('drop', (e) => {
+          const draggedId = e.dataTransfer.getData("text/plain");
+          const draggedEl = document.getElementById(draggedId);
+          zone.textContent = draggedEl.textContent;
+          zone.classList.remove("correct", "wrong");
+          dropZones[key].label = draggedEl.id;
+        });
+      }
+    }
+
+    function checkAnswers() {
+      let score = 0;
+      for (const key in dropZones) {
+        const zone = [...document.querySelectorAll('.drop-zone')].find(z => z.dataset.expected === key);
+        const placed = dropZones[key].label;
+
+        if ((key === 'x-axis' && placed === 'label-x-axis') ||
+            (key === 'y-axis' && placed === 'label-y-axis') ||
+            (key === 'origin' && placed === 'label-origin')) {
+          zone.classList.add("correct");
+          score++;
+        } else {
+          zone.classList.add("wrong");
+        }
+      }
+
+      if (score === 3) {
+        feedback.innerHTML = `<span class="correct">✅ Great! All labels are correctly placed.</span>`;
+      } else {
+        feedback.innerHTML = `<span class="wrong">❌ Some labels are incorrect. Try again!</span>`;
+      }
+    }
+
+    function resetGame() {
+      document.querySelectorAll(".drop-zone").forEach(z => {
+        z.textContent = "";
+        z.classList.remove("correct", "wrong");
+      });
+      for (const key in dropZones) {
+        dropZones[key].label = null;
+      }
+      feedback.textContent = "";
+    }
+
+    // Drag events
+    document.querySelectorAll('.label').forEach(label => {
+      label.addEventListener('dragstart', e => {
+        e.dataTransfer.setData("text/plain", e.target.id);
+      });
+    });
+
+    drawPlane();
+    createDropZones();
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

@@ -1,0 +1,232 @@
+{
+  "subject": {
+    "id": 5,
+    "name": "science",
+    "label": "Science"
+  },
+  "units": [
+    {
+      "id": 69,
+      "name": "unit_12:_improvement_in_food_resources",
+      "label": "Unit 12: Improvement in Food resources",
+      "lessons": [
+        {
+          "id": 548,
+          "title": "Lesson 1: The Need for Improvement in Food Resources",
+          "slug": "lesson_1_the_need_for_improvement_in_food_resources",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "548_1",
+              "name": "Sustainable Farmer",
+              "implementationDetails": "A resource management simulation where the player acts as a national agriculture minister over several decades. Each round, the population increases, raising the 'Food Demand' meter. The player must make policy choices: Option A is to heavily use fertilizers and intensive farming, which increases 'Food Production' quickly but depletes the 'Environmental Health' meter. Option B is to invest in sustainable practices, which improves production more slowly but preserves environmental health. The goal is to feed the growing population without causing an ecological collapse, teaching the core conflict between production and sustainability.",
+              "learningPoints": [
+                "Connecting population growth with the increasing demand for food.",
+                "Understanding the impact of the Green Revolution on food production.",
+                "Recognizing the need for sustainable practices to avoid long-term environmental damage."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 549,
+          "title": "Lesson 2: Crop Variety Improvement: Goals and Methods",
+          "slug": "lesson_2_crop_variety_improvement_goals_and_methods",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "549_1",
+              "name": "Hybridization Lab",
+              "implementationDetails": "A puzzle game where the player needs to create a 'super crop'. They are given two parent plants with different desirable traits shown on meters (e.g., Parent A: High Yield, Low Disease Resistance; Parent B: Low Yield, High Disease Resistance). The player drags both parents into a 'Hybridizer' machine. The resulting offspring will have a combination of these traits. The player's goal is to run several generations of crosses to eventually breed a new variety that has high scores in all desirable traits, such as yield, quality, and biotic/abiotic resistance.",
+              "learningPoints": [
+                "Understanding hybridization as a method for incorporating desirable characters into crop varieties.",
+                "Identifying key desirable traits like high yield, disease resistance, and wider adaptability.",
+                "Learning that variety improvement is a goal-oriented process of selective breeding."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 550,
+          "title": "Lesson 3: Crop Production Management: Nutrient Supply (Manure & Fertilizers)",
+          "slug": "lesson_3_crop_production_management_nutrient_supply_manure_fertilizers",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "550_1",
+              "name": "Fertilizer vs. Manure",
+              "implementationDetails": "A farm simulation game over multiple seasons. The player has a field and can choose to apply either chemical fertilizers or organic manure. Fertilizers give a large, immediate boost to the 'Yield' meter but cause the 'Soil Health' meter to decline over time. Manure improves the 'Yield' meter more slowly but steadily increases the 'Soil Health' meter. The player must manage their farm sustainably, learning that short-term gains from fertilizers can lead to long-term soil degradation, while manure builds healthy soil for the future.",
+              "learningPoints": [
+                "Differentiating between manure and fertilizers as nutrient sources.",
+                "Understanding the benefits of manure in improving soil structure and fertility.",
+                "Recognizing the potential for environmental pollution and soil damage from excessive fertilizer use."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 551,
+          "title": "Lesson 4: Crop Production Management: Irrigation",
+          "slug": "lesson_4_crop_production_management_irrigation",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "551_1",
+              "name": "Irrigation Engineer",
+              "implementationDetails": "A top-down map-based puzzle. The player is shown a landscape with a river, a groundwater source (well), and several farm plots. They have a limited budget and must choose the best irrigation system to water all the farms. They can build canals from the river (expensive, but covers a large area), dig wells (cheaper, but with a limited radius), or set up a river lift system for farms close to the river. The game teaches that the choice of irrigation system depends on the availability of water resources and the local geography.",
+              "learningPoints": [
+                "Identifying various irrigation systems like wells, canals, and river lift systems.",
+                "Understanding that different systems are suited to different water sources and terrains.",
+                "Recognizing the importance of irrigation for increasing crop yields."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 552,
+          "title": "Lesson 5: Crop Production Management: Cropping Patterns",
+          "slug": "lesson_5_crop_production_management_cropping_patterns",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "552_1",
+              "name": "Smart Cropping",
+              "implementationDetails": "A tile-based farming game with three levels. Level 1 (Mixed Cropping): The player plants two crops like wheat and gram randomly in the same field to insure against the failure of one. Level 2 (Intercropping): The player must plant crops like soyabean and maize in specific, alternating rows, which is shown to reduce pest spread. Level 3 (Crop Rotation): The player plans crops over several seasons, learning to plant a legume crop after a cereal crop to naturally replenish soil nitrogen. Success is measured by overall yield and soil fertility.",
+              "learningPoints": [
+                "Differentiating between mixed cropping, intercropping, and crop rotation.",
+                "Understanding the specific benefits of each cropping pattern.",
+                "Learning how cropping patterns can improve nutrient utilization, pest control, and soil health."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 553,
+          "title": "Lesson 6: Crop Protection Management: Controlling Weeds, Pests, and Diseases",
+          "slug": "lesson_6_crop_protection_management_controlling_weeds_pests_and_diseases",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "553_1",
+              "name": "Crop Defender",
+              "implementationDetails": "A real-time strategy game where waves of weeds, insect pests, and diseases attack the player's field. The player must choose from a variety of defense methods: chemical pesticides (fast-acting but have a high environmental cost), mechanical removal like weeding (slower, requires more effort), and preventive biological methods like introducing pest-resistant crop varieties or beneficial insects. The player must find a balanced, integrated approach to protect their crops without causing excessive pollution.",
+              "learningPoints": [
+                "Identifying weeds, pests, and diseases as major threats to crops.",
+                "Understanding various methods of crop protection.",
+                "Evaluating the advantages and disadvantages of chemical pesticides versus preventive and biological methods."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 554,
+          "title": "Lesson 7: Safe Storage of Grains",
+          "slug": "lesson_7_safe_storage_of_grains",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "554_1",
+              "name": "Silo Supervisor",
+              "implementationDetails": "A management simulation where the player must prepare a harvested batch of grain for long-term storage. The process is a series of steps: 1. Clean the grain to remove debris. 2. Dry the grain to the optimal moisture level using either sun-drying or a machine. 3. Store the grain in a clean, fumigated silo. If any step is done incorrectly (e.g., moisture is too high), an animation shows the grain spoiling over time due to mold or pests. The goal is to successfully store the grain for one year with minimal loss.",
+              "learningPoints": [
+                "Identifying biotic and abiotic factors that cause storage losses.",
+                "Understanding the critical importance of cleaning and proper drying before storage.",
+                "Learning about preventive and control measures for safe grain storage."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 555,
+          "title": "Lesson 8: Introduction to Animal Husbandry",
+          "slug": "lesson_8_introduction_to_animal_husbandry",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "555_1",
+              "name": "Farm Manager",
+              "implementationDetails": "An introductory farm simulation where the player oversees a small, mixed farm (cattle, poultry, and fish). The core gameplay involves maintaining three key meters for each animal group: 'Food', 'Shelter', and 'Health'. The player must drag the correct feed to each group, click to clean their shelters, and use a 'vet' tool to address disease outbreaks. This game introduces the main scientific management practices involved in raising livestock.",
+              "learningPoints": [
+                "Defining animal husbandry as the scientific management of livestock.",
+                "Identifying the main aspects: proper feeding, breeding, disease control, and shelter.",
+                "Understanding its importance in producing milk, eggs, and meat."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 556,
+          "title": "Lesson 9: Cattle Farming for Milk and Draught Labour",
+          "slug": "lesson_9_cattle_farming_for_milk_and_draught_labour",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "556_1",
+              "name": "Cattle Breed Selector",
+              "implementationDetails": "The player is starting a dairy farm and must choose a breed. They can compare 'Local Breeds' (e.g., Red Sindhi) which have high disease resistance but lower, shorter lactation periods, and 'Exotic Breeds' (e.g., Jersey) which have long lactation periods but are more susceptible to local diseases. The player can then manage their chosen herd, experiencing the pros and cons firsthand. A later level allows them to 'cross-breed' the two to create a hybrid with both resistance and high yield.",
+              "learningPoints": [
+                "Differentiating between milch animals (for milk) and draught animals (for labour).",
+                "Comparing the characteristics of indigenous and exotic cattle breeds.",
+                "Understanding how cross-breeding is used to combine desirable qualities."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 557,
+          "title": "Lesson 10: Poultry Farming for Eggs and Meat",
+          "slug": "lesson_10_poultry_farming_for_eggs_and_meat",
+          "display_order": 10,
+          "games": [
+            {
+              "id": "557_1",
+              "name": "Layer vs. Broiler",
+              "implementationDetails": "A side-by-side management game. The player manages two poultry houses. House A is for 'Layers' (egg production) and House B is for 'Broilers' (meat production). The player must provide the correct diet for each. They learn that broilers require protein-rich feed for rapid muscle growth, while layers have different dietary needs for high-quality egg production. The goal is to optimize feed and housing conditions to meet production targets for both eggs and meat, highlighting their different management requirements.",
+              "learningPoints": [
+                "Differentiating between 'layers' for eggs and 'broilers' for meat.",
+                "Understanding that layers and broilers have different nutritional and housing needs.",
+                "Learning about cross-breeding to develop improved varieties for both egg and meat production."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 558,
+          "title": "Lesson 11: Fish Production (Fisheries)",
+          "slug": "lesson_11_fish_production_fisheries",
+          "display_order": 11,
+          "games": [
+            {
+              "id": "558_1",
+              "name": "Composite Fish Farm",
+              "implementationDetails": "A simulation of a fish pond ecosystem. The player must stock a pond to get the highest possible yield. They can choose from different fish species with different feeding habits: 'Catla' (surface feeder), 'Rohu' (middle-zone feeder), and 'Mrigal' (bottom feeder). If the player only stocks one type, much of the pond's food resources go to waste. Through experimentation, they discover that stocking a combination of all three (composite culture) utilizes the entire ecosystem, prevents competition, and results in a much larger total harvest.",
+              "learningPoints": [
+                "Differentiating between marine and inland fisheries, and capture vs. culture fishing.",
+                "Understanding the principle of composite fish culture.",
+                "Learning how selecting fish with different food habits increases the overall yield of a fish farm."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 559,
+          "title": "Lesson 12: Bee-Keeping (Apiculture)",
+          "slug": "lesson_12_bee-keeping_apiculture",
+          "display_order": 12,
+          "games": [
+            {
+              "id": "559_1",
+              "name": "The Perfect Honey",
+              "implementationDetails": "A map-based strategy game where the player manages an apiary (bee farm). The player must choose a bee variety (e.g., the high-yielding Italian bee, A. mellifera). The core gameplay involves moving their beehives to different locations on the map based on the season. Placing hives near a blooming mustard field yields one type of honey, while a sunflower field yields another. The quality and quantity of honey produced are directly tied to the availability and type of flowers (pasturage). The player learns to manage their hives to follow the blooms and maximize production.",
+              "learningPoints": [
+                "Understanding the practice of bee-keeping for producing honey and wax.",
+                "Defining pasturage as the availability of flowers for nectar and pollen.",
+                "Recognizing that the quality and taste of honey depend on the type of pasturage available."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ion Architect - Cations and Anions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --primary-color: #6d597a; /* Muted Purple */
+            --cation-color: #3d8bfd; /* Blue for Positive */
+            --anion-color: #f46036;  /* Orange for Negative */
+            --text-color: #354f52;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            --electron-color: #fca311;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #e9d8a6, #fefae0);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .instructions-list li::before {
+            content: '💡';
+            margin-right: 12px;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+        .instructions-list .cation { color: var(--cation-color); }
+        .instructions-list .anion { color: var(--anion-color); }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: #2a9d8f; color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        #next-btn { background-color: var(--primary-color); color: white; display: none;}
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        #task-display {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            font-family: var(--heading-font);
+            font-size: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .simulation-area {
+            width: 100%;
+            height: 450px;
+            background-color: #e9ecef;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        .simulation-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        #feedback-message {
+            margin-top: 15px; font-size: 22px; font-weight: 800;
+            display: none; padding: 10px 20px; border-radius: 12px;
+            font-family: var(--heading-font);
+            color: white; text-align: center;
+        }
+        #feedback-message.cation { background-color: var(--cation-color); }
+        #feedback-message.anion { background-color: var(--anion-color); }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Ion Architect</h2>
+            <p><strong>Lesson:</strong> Understanding Ions</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">Your Mission</h3>
+            <p style="margin-bottom: 15px;">Atoms are usually neutral, but they can become charged particles called ions. Your mission is to create different ions by giving or taking away their outermost electrons!</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to get your first atom.</li>
+                <li>To make a <b class="cation">CATION (+)</b>, drag an electron <b>AWAY</b> from the atom's outer shell.</li>
+                <li>To make an <b class="anion">ANION (-)</b>, drag an electron from the supply <b>ONTO</b> an empty spot in the atom's outer shell.</li>
+                <li>Watch the atom transform into an ion and reveal its new name and charge!</li>
+                <li>Click "Next Challenge" to try different atoms.</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+                <button id="next-btn" class="btn">Next Challenge</button>
+            </div>
+            <div id="initial-message">Click 'Start' to become an Ion Architect!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div id="task-display"></div>
+                <div class="simulation-area">
+                    <canvas id="simulation-canvas" class="simulation-canvas"></canvas>
+                </div>
+                <div id="feedback-message"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const taskDisplay = document.getElementById('task-display');
+    const canvas = document.getElementById('simulation-canvas');
+    const ctx = canvas.getContext('2d');
+    const feedbackMessage = document.getElementById('feedback-message');
+
+    // --- Data ---
+    const challenges = [
+        { name: 'Sodium', symbol: 'Na', shells: [2, 8, 1], type: 'cation' },
+        { name: 'Chlorine', symbol: 'Cl', shells: [2, 8, 7], type: 'anion' },
+        { name: 'Magnesium', symbol: 'Mg', shells: [2, 8, 2], type: 'cation' },
+        { name: 'Oxygen', symbol: 'O', shells: [2, 6], type: 'anion' }
+    ];
+    let currentChallenge;
+    let particles = [];
+    let draggedParticle = null;
+    let supplyElectron = null;
+
+    // --- Particle Class ---
+    class Particle {
+        constructor(x, y, radius, type) {
+            this.x = x; this.y = y; this.radius = radius;
+            this.type = type; // 'nucleus', 'electron', 'supply'
+            this.isDraggable = type === 'electron' || type === 'supply';
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, 2*Math.PI);
+            if (this.type === 'electron' || this.type === 'supply') {
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--electron-color').trim();
+            } else {
+                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
+            }
+            ctx.fill();
+            if(this.type === 'nucleus') {
+                 ctx.fillStyle = 'white';
+                 ctx.font = 'bold 30px Baloo 2';
+                 ctx.textAlign = 'center';
+                 ctx.textBaseline = 'middle';
+                 ctx.fillText(currentChallenge.symbol, this.x, this.y);
+            }
+        }
+        isMouseOver(mx, my) {
+            return Math.hypot(mx - this.x, my - this.y) < this.radius;
+        }
+    }
+
+    // --- Game Logic ---
+    function setupChallenge() {
+        currentChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+        taskDisplay.textContent = `Challenge: Form an ion from a ${currentChallenge.name} atom.`;
+        
+        feedbackMessage.style.display = 'none';
+        nextBtn.style.display = 'none';
+        particles = [];
+        
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        // Nucleus
+        particles.push(new Particle(centerX, centerY, 50, 'nucleus'));
+
+        // Electrons in shells
+        currentChallenge.shells.forEach((electronCount, shellIndex) => {
+            const shellRadius = 80 + shellIndex * 50;
+            for (let i = 0; i < electronCount; i++) {
+                const angle = (i / electronCount) * 2 * Math.PI;
+                const x = centerX + shellRadius * Math.cos(angle);
+                const y = centerY + shellRadius * Math.sin(angle);
+                particles.push(new Particle(x, y, 8, 'electron'));
+            }
+        });
+        
+        // Supply electron for anions
+        if (currentChallenge.type === 'anion') {
+            supplyElectron = new Particle(50, canvas.height/2, 12, 'supply');
+            particles.push(supplyElectron);
+        } else {
+            supplyElectron = null;
+        }
+    }
+    
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        
+        // Draw shells
+        ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+        ctx.lineWidth = 2;
+        currentChallenge.shells.forEach((_, shellIndex) => {
+            const shellRadius = 80 + shellIndex * 50;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, shellRadius, 0, 2*Math.PI);
+            ctx.stroke();
+        });
+
+        particles.forEach(p => p.draw());
+        requestAnimationFrame(draw);
+    }
+    
+    function showFeedback(text, type) {
+        feedbackMessage.textContent = text;
+        feedbackMessage.className = `feedback-message ${type}`;
+        feedbackMessage.style.display = 'block';
+        nextBtn.style.display = 'inline-block';
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        setupChallenge();
+        requestAnimationFrame(draw);
+    }
+
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    nextBtn.addEventListener('click', setupChallenge);
+
+    canvas.addEventListener('mousedown', e => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        
+        for (let p of particles) {
+            if (p.isDraggable && p.isMouseOver(mx, my)) {
+                draggedParticle = p;
+                break;
+            }
+        }
+    });
+
+    canvas.addEventListener('mousemove', e => {
+        if (draggedParticle) {
+            const rect = canvas.getBoundingClientRect();
+            draggedParticle.x = e.clientX - rect.left;
+            draggedParticle.y = e.clientY - rect.top;
+        }
+    });
+    
+    canvas.addEventListener('mouseup', e => {
+        if (!draggedParticle) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        const centerX = canvas.width/2;
+        const centerY = canvas.height/2;
+
+        if(currentChallenge.type === 'cation' && draggedParticle.type === 'electron') {
+            const distFromCenter = Math.hypot(mx - centerX, my - centerY);
+            if (distFromCenter > 200) { // Dragged far away
+                particles = particles.filter(p => p !== draggedParticle);
+                showFeedback(`Correct! ${currentChallenge.name} lost an electron to become a Cation (${currentChallenge.symbol}⁺).`, 'cation');
+            }
+        } else if(currentChallenge.type === 'anion' && draggedParticle.type === 'supply') {
+            const outerShellRadius = 80 + (currentChallenge.shells.length - 1) * 50;
+            const distFromCenter = Math.hypot(mx - centerX, my - centerY);
+            if (Math.abs(distFromCenter - outerShellRadius) < 25) { // Dropped on outer shell
+                 particles = particles.filter(p => p !== draggedParticle);
+                 showFeedback(`Correct! ${currentChallenge.name} gained an electron to become an Anion (${currentChallenge.symbol}⁻).`, 'anion');
+            }
+        }
+        
+        draggedParticle = null;
+    });
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

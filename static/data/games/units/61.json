@@ -1,0 +1,270 @@
+{
+  "subject": {
+    "id": 5,
+    "name": "science",
+    "label": "Science"
+  },
+  "units": [
+    {
+      "id": 61,
+      "name": "unit_4:_structure_of_the_atom",
+      "label": "Unit 4: Structure of the atom",
+      "lessons": [
+        {
+          "id": 443,
+          "title": "Lesson 1: Charged Particles in Matter - Discovery of Electron and Proton",
+          "slug": "lesson_1_charged_particles_in_matter_-_discovery_of_electron_and_proton",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "443_1",
+              "name": "Static Lab",
+              "implementationDetails": "The game shows two objects, like a glass rod and a silk cloth. The player physically drags the cloth to rub it against the rod. An animation shows tiny negative particles (electrons) transferring from the rod to the cloth, making the rod positive and the cloth negative. In a second stage, the player can bring this charged rod near neutral paper bits, which then get attracted and stick to the rod, demonstrating the existence of charged particles within neutral matter.",
+              "learningPoints": [
+                "Understanding that rubbing objects can cause a transfer of charge.",
+                "Visualizing that atoms contain smaller charged particles (electrons).",
+                "Concluding that matter is divisible and not fundamentally indivisible as Dalton first proposed."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 444,
+          "title": "Lesson 2: Thomson's Model of an Atom and its Postulates",
+          "slug": "lesson_2_thomsons_model_of_an_atom_and_its_postulates",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "444_1",
+              "name": "Plum Pudding Builder",
+              "implementationDetails": "The player is presented with a sphere of positive charge ('the pudding'). A counter shows the total positive charge (e.g., +7). The player has a supply of electrons ('the plums'). They must drag and embed the correct number of electrons into the positive sphere. A 'Net Charge' meter updates in real-time. The goal is to make the atom electrically neutral (Net Charge = 0). This game interactively teaches the two main postulates of Thomson's model: a sphere of positive charge with electrons embedded in it, and the equality of positive and negative charges.",
+              "learningPoints": [
+                "Visualizing the 'plum pudding' or 'watermelon' model of the atom.",
+                "Understanding the postulate that an atom consists of a positively charged sphere with electrons embedded within.",
+                "Grasping the concept that the atom as a whole is electrically neutral because the positive and negative charges are equal."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 445,
+          "title": "Lesson 3: Rutherford's Alpha-Particle Scattering Experiment",
+          "slug": "lesson_3_rutherfords_alpha-particle_scattering_experiment",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "445_1",
+              "name": "Alpha Particle Cannon",
+              "implementationDetails": "An interactive simulation where the player can fire alpha particles from a source towards a thin gold foil. The player can switch the model of the gold atoms between 'Thomson's Model' (a diffuse positive charge) and 'Rutherford's Model' (a tiny, dense, positive nucleus). When firing at Thomson's model, all particles pass through with very minor deflections. When they switch to Rutherford's model, they observe the three key outcomes: most pass straight through, some are deflected by small angles, and a very small number (e.g., 1 in 12,000) are deflected by large angles or bounce straight back. This directly contrasts the two models and shows how the experimental evidence led to a new understanding.",
+              "learningPoints": [
+                "Understanding the setup of Rutherford's gold foil experiment.",
+                "Observing the three key experimental results: most particles undeflected, some deflected, very few rebounded.",
+                "Concluding from the results that the atom is mostly empty space with a small, dense, positively-charged nucleus."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 446,
+          "title": "Lesson 4: Rutherford's Nuclear Model of an Atom and its Drawbacks",
+          "slug": "lesson_4_rutherfords_nuclear_model_of_an_atom_and_its_drawbacks",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "446_1",
+              "name": "The Unstable Atom",
+              "implementationDetails": "The game starts by letting the player build a Rutherford atom: placing a nucleus in the center and an electron in orbit. Initially, the orbit is stable. A tooltip explains the model's features (positive nucleus, orbiting electrons). Then, a 'Apply Classical Physics' button appears. When clicked, the game explains that an accelerating charged particle should radiate energy. An animation then shows the electron glowing, losing energy, and spiraling inwards until it collides with the nucleus. This visually and dramatically demonstrates the major drawback of Rutherford's model: its instability.",
+              "learningPoints": [
+                "Summarizing the features of Rutherford's nuclear model.",
+                "Understanding the key drawback: the model cannot explain the stability of atoms.",
+                "Visualizing why a classical orbiting electron would lose energy and spiral into the nucleus."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 447,
+          "title": "Lesson 5: Bohr's Model of an Atom",
+          "slug": "lesson_5_bohrs_model_of_an_atom",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "447_1",
+              "name": "Bohr's Quantum Leap",
+              "implementationDetails": "The player is shown a nucleus with defined, glowing circular orbits (shells) around it, labeled K, L, M. The player's task is to place an electron. They will find that the electron can only 'snap' into one of the allowed orbits, not in the space between. When an electron is in an orbit, it is shown as stable. A second part of the game allows the player to shoot a 'photon' of energy at the electron. If the energy is correct, the electron will 'jump' to a higher, discrete orbit. After a moment, it will jump back down, emitting a photon of a specific color. This teaches the concepts of discrete energy levels and stability.",
+              "learningPoints": [
+                "Understanding that electrons can only revolve in special, discrete orbits.",
+                "Grasping the concept that electrons do not radiate energy while in these stable orbits.",
+                "Visualizing that these orbits are associated with specific energy levels."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 448,
+          "title": "Lesson 6: The Discovery of the Neutron",
+          "slug": "lesson_6_the_discovery_of_the_neutron",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "448_1",
+              "name": "The Mass Puzzle",
+              "implementationDetails": "The player is presented with a Helium nucleus on a virtual scale. The nucleus clearly contains 2 protons. A display shows 'Atomic Number (Z) = 2'. The scale, however, shows a 'Total Mass = 4u'. The player sees a problem: the 2 protons only account for 2u of mass. A bin of available particles contains protons, electrons, and a new, unlabelled 'neutral particle'. The player must solve the puzzle by dragging particles into the nucleus. Adding a proton changes the element. Adding an electron does nothing to the mass. Only by adding two of the neutral particles will the mass on the scale correctly read 4u, leading to the discovery of the neutron.",
+              "learningPoints": [
+                "Understanding that the mass of protons alone could not account for the total atomic mass.",
+                "Identifying the neutron as a subatomic particle with no charge but a mass approximately equal to a proton.",
+                "Locating the neutron within the nucleus of the atom."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 449,
+          "title": "Lesson 7: Electron Distribution in Shells - The Bohr-Bury Rules",
+          "slug": "lesson_7_electron_distribution_in_shells_-_the_bohr-bury_rules",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "449_1",
+              "name": "Shell Filler",
+              "implementationDetails": "The player is given an element, for example, Chlorine (17 electrons), and a Bohr model diagram with empty shells (K, L, M, N). They have a bin of 17 electrons to place. The game enforces the Bohr-Bury rules: 1) The player tries to put a 3rd electron in the K shell, but it's rejected as the K shell's max capacity (2n² = 2*1² = 2) is reached. 2) The L shell fills up to 8. 3) The game ensures inner shells are filled before outer shells. The player succeeds by correctly placing 2 electrons in K, 8 in L, and the remaining 7 in M, internalizing the step-wise filling process.",
+              "learningPoints": [
+                "Learning the 2n² rule for the maximum number of electrons in a shell.",
+                "Understanding the octet rule for the outermost shell (max capacity of 8).",
+                "Mastering the principle that shells are filled in a step-wise manner from the inside out."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 450,
+          "title": "Lesson 8: Understanding Valency and Valence Electrons",
+          "slug": "lesson_8_understanding_valency_and_valence_electrons",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "450_1",
+              "name": "Valence Visualizer",
+              "implementationDetails": "The player selects an element from the first 18 (e.g., 'Magnesium'). The game automatically draws the correct Bohr model (2 electrons in K, 8 in L, 2 in M). The outermost shell (M shell) and the 2 electrons within it are highlighted. A display reads 'Valence Electrons: 2'. The game then explains that to achieve a stable octet, it is easier to lose these 2 electrons. A 'Lose Electrons' button animates the two valence electrons flying away, and a display shows 'Valency: 2'. The game repeats this for a non-metal like Oxygen (6 valence electrons), where it's easier to gain 2 electrons, also resulting in a valency of 2.",
+              "learningPoints": [
+                "Identifying valence electrons as the electrons in the outermost shell.",
+                "Understanding that valency is determined by the number of electrons an atom must gain, lose, or share to achieve a stable octet.",
+                "Relating the number of valence electrons to the combining capacity of the element."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 451,
+          "title": "Lesson 9: Atomic Number (Z)",
+          "slug": "lesson_9_atomic_number_z",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "451_1",
+              "name": "Element Identifier",
+              "implementationDetails": "A game where a nucleus of an unknown element is shown. The player has a 'Proton Counter' tool they can click on the nucleus with. It counts the number of protons (e.g., 'Protons = 6'). A mini periodic table is displayed on the side. The player must find the element with the atomic number 6 and click on it ('Carbon'). Correct identification reveals the element's full symbol and name. This game directly reinforces that the atomic number is equal to the number of protons and uniquely identifies an element.",
+              "learningPoints": [
+                "Defining Atomic Number (Z) as the number of protons in the nucleus.",
+                "Understanding that the Atomic Number is the unique identifier for an element.",
+                "Practicing how to identify an element from its proton count."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 452,
+          "title": "Lesson 10: Mass Number (A)",
+          "slug": "lesson_10_mass_number_a",
+          "display_order": 10,
+          "games": [
+            {
+              "id": "452_1",
+              "name": "Nucleon Counter",
+              "implementationDetails": "The player is shown the nucleus of an atom containing distinct proton and neutron particles. The player's task is to click on each particle to count them. A counter updates: 'Protons: 11', 'Neutrons: 12'. Below this, an equation is shown: 'Mass Number (A) = Protons + Neutrons'. The player must input the correct numbers into the equation (11 + 12) to calculate the Mass Number, 23. This interactive counting and calculation solidifies the definition of Mass Number.",
+              "learningPoints": [
+                "Defining Mass Number (A) as the total number of protons and neutrons in the nucleus.",
+                "Recognizing protons and neutrons collectively as 'nucleons'.",
+                "Practicing the calculation of Mass Number from the composition of a nucleus."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 453,
+          "title": "Lesson 11: Isotopes and Average Atomic Mass",
+          "slug": "lesson_11_isotopes_and_average_atomic_mass",
+          "display_order": 11,
+          "games": [
+            {
+              "id": "453_1",
+              "name": "Isotope Lab",
+              "implementationDetails": "The player is shown a nucleus of Carbon (6 protons). A display shows 'Atomic Number: 6', 'Element: Carbon'. The player has bins of protons and neutrons. If they add a proton, the element changes to Nitrogen. If they add a neutron, the element remains Carbon, but the 'Mass Number' display changes from 12 to 13. The game labels this 'Carbon-13'. They can add another to create 'Carbon-14'. This demonstrates that isotopes of an element have the same number of protons but different numbers of neutrons. A second mode could introduce natural abundance to calculate average atomic mass.",
+              "learningPoints": [
+                "Defining isotopes as atoms of the same element with the same atomic number but different mass numbers.",
+                "Understanding that isotopes differ in their number of neutrons.",
+                "Recognizing that the chemical properties remain the same because the proton and electron numbers are unchanged."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 454,
+          "title": "Lesson 12: Applications of Isotopes",
+          "slug": "lesson_12_applications_of_isotopes",
+          "display_order": 12,
+          "games": [
+            {
+              "id": "454_1",
+              "name": "Isotope Mission",
+              "implementationDetails": "A scenario-based puzzle game. The player is presented with a series of missions. Mission 1: 'A patient has a thyroid disorder. Select the correct isotope for treatment.' The player chooses from a list (Iodine-131, Cobalt-60, Uranium-235). Mission 2: 'Power a nuclear submarine.' The player must select Uranium-235. Mission 3: 'A team of archaeologists needs to date an ancient wooden artifact.' The player must select Carbon-14. Each correct choice triggers a short animation showing the application, connecting the abstract concept to real-world uses.",
+              "learningPoints": [
+                "Identifying the application of Uranium isotopes in nuclear reactors.",
+                "Learning that Cobalt isotopes are used in cancer treatment.",
+                "Understanding the use of Iodine isotopes in the treatment of goitre.",
+                "Recognizing Carbon-14's role in carbon dating."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 455,
+          "title": "Lesson 13: Isobars",
+          "slug": "lesson_13_isobars",
+          "display_order": 13,
+          "games": [
+            {
+              "id": "455_1",
+              "name": "Isobar Linker",
+              "implementationDetails": "The game presents a grid of several different atoms, with their proton and neutron counts displayed (e.g., Argon: 18p, 22n; Calcium: 20p, 20n; Potassium: 19p, 20n). A display for each atom also shows its calculated Atomic Number (Z) and Mass Number (A). The player's task is to find and draw a line connecting two atoms that are isobars. They will succeed by connecting Argon (A=40) and Calcium (A=40), demonstrating that isobars are different elements (different Z) with the same mass number (same A).",
+              "learningPoints": [
+                "Defining isobars as atoms of different elements with different atomic numbers but the same mass number.",
+                "Differentiating isobars (same mass, different element) from isotopes (same element, different mass).",
+                "Practicing the identification of isobars from a set of given atoms."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 456,
+          "title": "Lesson 14: Comparing the Properties of Protons, Neutrons, and Electrons",
+          "slug": "lesson_14_comparing_the_properties_of_protons_neutrons_and_electrons",
+          "display_order": 14,
+          "games": [
+            {
+              "id": "456_1",
+              "name": "Subatomic Sorter",
+              "implementationDetails": "A drag-and-drop game where players sort properties onto the correct subatomic particles. Three columns are labeled 'Proton', 'Neutron', and 'Electron'. A conveyor belt delivers property tiles like 'Charge: +1', 'Charge: 0', 'Charge: -1', 'Relative Mass: ~1 u', 'Relative Mass: ~1/1840 u', 'Location: Nucleus', and 'Location: Outside Nucleus'. The player must quickly drag each property tile into the correct column before it falls off the belt. This serves as a rapid-fire review of the key characteristics of each particle.",
+              "learningPoints": [
+                "Comparing the relative charge of protons, neutrons, and electrons.",
+                "Contrasting the relative mass of the three subatomic particles.",
+                "Identifying the location of each particle within the atom.",
+                "Consolidating all the fundamental properties in a single activity."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

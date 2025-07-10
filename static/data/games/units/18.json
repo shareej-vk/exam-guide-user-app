@@ -1,0 +1,292 @@
+{
+  "subject": {
+    "id": 1,
+    "name": "math",
+    "label": "Mathematics"
+  },
+  "units": [
+    {
+      "id": 18,
+      "name": "polynomials",
+      "label": "Polynomials",
+      "lessons": [
+        {
+          "id": 180,
+          "title": "Lesson 1: Introduction to Polynomials in One Variable",
+          "slug": "lesson_1_introduction_to_polynomials_in_one_variable",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "180_1",
+              "name": "Polynomial Explorer",
+              "implementationDetails": "Students enter a virtual lab where they test various expressions to determine if they qualify as polynomials. Each time an expression is dropped into the 'Polynomial Analyzer', the game visually checks for whole number exponents and single-variable consistency. Students can modify expressions interactively to correct issues and resubmit. Bonus rounds involve fixing incorrect terms (like fractional or negative exponents) to transform non-polynomials into valid ones.",
+              "learningPoints": [
+                "Identify key features that define a polynomial in one variable",
+                "Differentiate between valid and invalid algebraic expressions",
+                "Understand the role of whole number exponents and one-variable constraint"
+              ]
+            },
+            {
+              "id": "180_2",
+              "name": "Build-a-Polynomial",
+              "implementationDetails": "In this construction game, students are given a target type (e.g., monomial, binomial, trinomial) and must build valid polynomials from a set of coefficients and variables. As they assemble terms, the system checks term count, degree, and form, providing real-time feedback. The challenge increases as students try to match target polynomial types within time or step limits.",
+              "learningPoints": [
+                "Compose polynomials of various term structures",
+                "Recognize and differentiate monomial, binomial, and trinomial forms",
+                "Understand the structure and parts of a polynomial expression"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 181,
+          "title": "Lesson 2: Terms, Coefficients, and Degree of a Polynomial",
+          "slug": "lesson_2_terms_coefficients_and_degree_of_a_polynomial",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "181_1",
+              "name": "Term Dissector",
+              "implementationDetails": "In this interactive breakdown game, students are given complete polynomial expressions and must drag labels to mark the coefficient, variable, and exponent of each term. The terms are highlighted one at a time, and a timer adds pressure. Visual feedback shows correct and incorrect matches. Special attention is paid to hidden coefficients like -1 and constants like x\u2070.",
+              "learningPoints": [
+                "Identify coefficients in each term of a polynomial",
+                "Distinguish variables, powers, and constants clearly",
+                "Recognize implicit coefficients such as 1 or -1"
+              ]
+            },
+            {
+              "id": "181_2",
+              "name": "Degree Hunter Adventure",
+              "implementationDetails": "A maze-style game where students must unlock gates by identifying the degree of given polynomials. Each room represents a polynomial; the player must choose the highest degree correctly to proceed. False paths appear if students confuse degree with the number of terms or misread exponents.",
+              "learningPoints": [
+                "Understand how to determine the degree of a polynomial",
+                "Compare and locate the highest power of the variable",
+                "Avoid common misconceptions (e.g., mixing degree with number of terms)"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 182,
+          "title": "Lesson 3: Classification of Polynomials (Linear, Quadratic, Cubic, etc.)",
+          "slug": "lesson_3_classification_of_polynomials_linear_quadratic_cubic_etc",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "182_1",
+              "name": "Degree Detective",
+              "implementationDetails": "Students play as math detectives sorting 'mystery expressions' into their correct categories: linear, quadratic, cubic, or higher degree. Clues are given such as the number of turns in a graph, or the form of terms. Students must analyze and classify. Special 'twist' levels include zero and constant polynomials, challenging their understanding of defined vs undefined degree.",
+              "learningPoints": [
+                "Identify degree-based classification of polynomials",
+                "Understand how structure relates to classification",
+                "Recognize exceptions like constant and zero polynomials"
+              ]
+            },
+            {
+              "id": "182_2",
+              "name": "Polynomial Zoo",
+              "implementationDetails": "A visual sorting game where each polynomial type is represented as a creature in a zoo. Linear lions, quadratic quokkas, cubic camels, etc. Students must drag expressions into the correct pens. Later levels involve constructing example expressions to populate empty habitats.",
+              "learningPoints": [
+                "Classify polynomials based on degree",
+                "Visual reinforcement through pattern-based sorting",
+                "Build intuition about form and number of terms"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 183,
+          "title": "Lesson 4: Zeroes of a Polynomial",
+          "slug": "lesson_4_zeroes_of_a_polynomial",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "183_1",
+              "name": "Zero Hunter",
+              "implementationDetails": "A dungeon puzzle game where each door is locked by a polynomial. To open it, students must find a value of x that makes the polynomial zero. Each wrong answer leads to clues or partial evaluations. Later levels require identifying multiple zeroes or interpreting graphically why p(c) = 0 means the graph touches x-axis.",
+              "learningPoints": [
+                "Understand the definition of zero of a polynomial",
+                "Apply substitution to find zeroes",
+                "Interpret zeroes graphically and algebraically"
+              ]
+            },
+            {
+              "id": "183_2",
+              "name": "Function Machine Puzzle",
+              "implementationDetails": "Students feed different x-values into a mysterious machine (polynomial function). Their goal is to find inputs that result in 0 output. The game uses sliders, number lines, and traceable arrows to visualize how output depends on x. Visual charts update dynamically as students test values.",
+              "learningPoints": [
+                "Explore input-output behavior of polynomials",
+                "Discover zeroes through systematic substitution",
+                "Visualize roots using number lines and motion"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 184,
+          "title": "Lesson 5: The Remainder Theorem and Factor Theorem",
+          "slug": "lesson_5_the_remainder_theorem_and_factor_theorem",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "184_1",
+              "name": "Factor Quest",
+              "implementationDetails": "In this adventure puzzle, students are given a polynomial and must discover all binomial factors of the form (x - a). To do so, they explore a map with hidden keys (values of 'a'), test each by evaluating p(a), and open doors only if the remainder is 0. Once a factor is found, the remaining polynomial updates, and the quest continues until the full factorisation is revealed.",
+              "learningPoints": [
+                "Apply the Remainder Theorem to check potential factors",
+                "Use the Factor Theorem logically to test for zeroes",
+                "Understand factorisation as a multi-step process"
+              ]
+            },
+            {
+              "id": "184_2",
+              "name": "Divisor Decoder",
+              "implementationDetails": "Students are given a polynomial and a candidate binomial divisor. They enter the zero value 'a', and visualize how (x - a) affects the original polynomial. Correct choices trigger animations showing the factor being 'extracted', while incorrect ones animate division remainders and block progress.",
+              "learningPoints": [
+                "Link evaluation p(a) = 0 to the concept of divisibility",
+                "Visualize how factoring 'removes' a term from a polynomial",
+                "Develop intuition on how testing zeroes leads to factorisation"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 185,
+          "title": "Lesson 6: Factorisation of Quadratic Polynomials by Splitting the Middle Term",
+          "slug": "lesson_6_factorisation_of_quadratic_polynomials_by_splitting_the_middle_term",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "185_1",
+              "name": "Split the Middle",
+              "implementationDetails": "Students are given a quadratic expression ax\u00b2 + bx + c and must identify two numbers that multiply to ac and add to b. The game visualizes number pairs as tiles, and the player splits the middle term into two steps and groups terms to factorise completely. Hints include color-coded visual aids to show product and sum relationships.",
+              "learningPoints": [
+                "Understand the logic behind splitting the middle term",
+                "Find factor pairs of ac that sum to b",
+                "Apply grouping to complete factorisation"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 186,
+          "title": "Lesson 7: Factorisation of Cubic Polynomials using the Factor Theorem",
+          "slug": "lesson_7_factorisation_of_cubic_polynomials_using_the_factor_theorem",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "186_1",
+              "name": "Cubic Lockdown",
+              "implementationDetails": "Players are challenged with a cubic polynomial and a set of potential factors. Using the Factor Theorem, they test values to find a valid zero. Each correct factor 'unlocks' one part of a vault. The remaining quadratic is then shown, and students complete the factorisation using the middle-term method or quadratic identity. Visual animations represent each transformation step in the polynomial.",
+              "learningPoints": [
+                "Use Factor Theorem to find first root of cubic polynomial",
+                "Reduce cubic polynomial using one known factor",
+                "Apply quadratic factorisation to finish decomposition"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 187,
+          "title": "Lesson 8: Algebraic Identity I: (x + y + z)\u00b2",
+          "slug": "lesson_8_algebraic_identity_i_x_y_z",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "187_1",
+              "name": "Identity Builder 3D",
+              "implementationDetails": "In this 3D grid-based game, students visually expand the square of (x + y + z) using interactive blocks. Each block represents a product term like x\u00b2, 2xy, or yz. The player must place them correctly on a spatial board to reconstruct the full identity. Hints visually show symmetry and product logic to reinforce understanding of square expansion.",
+              "learningPoints": [
+                "Expand (x + y + z)\u00b2 using identity",
+                "Understand the role of cross terms (2xy, 2yz, 2zx)",
+                "Visualize the square of a trinomial algebraically and geometrically"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 188,
+          "title": "Lesson 9: Algebraic Identity II: (x + y)\u00b3 and (x - y)\u00b3",
+          "slug": "lesson_9_algebraic_identity_ii_x_y_and_x_-_y",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "188_1",
+              "name": "Cube Pattern Crafter",
+              "implementationDetails": "Students explore (x + y)\u00b3 and (x - y)\u00b3 by arranging colored tiles in cube structures. Each layer of the cube visually represents a term in the identity. Students must calculate the total expression by summing up volume slices corresponding to x\u00b3, y\u00b3, 3xy(x+y), etc. For (x - y)\u00b3, negative tiles represent subtracted volume.",
+              "learningPoints": [
+                "Understand and expand cube identities (x + y)\u00b3 and (x - y)\u00b3",
+                "Relate algebraic identities to 3D geometric volume representation",
+                "Recognize the structure of each term visually"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 189,
+          "title": "Lesson 10: Algebraic Identity III: x\u00b3 + y\u00b3 + z\u00b3 \u2013 3xyz",
+          "slug": "lesson_10_algebraic_identity_iii_x_y_z_3xyz",
+          "display_order": 10,
+          "games": [
+            {
+              "id": "189_1",
+              "name": "Symmetry Cube Unlock",
+              "implementationDetails": "Students must match algebraic expressions to the identity x\u00b3 + y\u00b3 + z\u00b3 \u2013 3xyz. They are given scrambled identities, and must build factorised forms like (x + y + z)(x\u00b2 + y\u00b2 + z\u00b2 \u2013 xy \u2013 yz \u2013 zx) using drag-and-drop pieces. Each correct structure 'unlocks' a geometric vault showing a symmetric arrangement of cube parts.",
+              "learningPoints": [
+                "Recognize and apply the identity x\u00b3 + y\u00b3 + z\u00b3 \u2013 3xyz",
+                "Understand the symmetric nature of this identity's expansion",
+                "Translate between factored and expanded forms visually"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 190,
+          "title": "Lesson 11: Factorisation using Sum and Difference of Cubes (x\u00b3 + y\u00b3 and x\u00b3 - y\u00b3)",
+          "slug": "lesson_11_factorisation_using_sum_and_difference_of_cubes_x_y_and_x_-_y",
+          "display_order": 11,
+          "games": [
+            {
+              "id": "190_1",
+              "name": "Cube Split Challenge",
+              "implementationDetails": "Students encounter expressions like x\u00b3 \u00b1 y\u00b3 and must identify and apply the correct identity to factorise. A visual aid shows the full cube and the subtraction/addition of pieces to form factors. Students drag components like (x + y)(x\u00b2 - xy + y\u00b2) into place. Puzzle levels increase with mixed variables and signs.",
+              "learningPoints": [
+                "Apply the sum and difference of cubes identities",
+                "Understand structure of cube factorisation",
+                "Visualize cube breakdown geometrically and algebraically"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 191,
+          "title": "Lesson 12: Applications of Polynomials and Identities",
+          "slug": "lesson_12_applications_of_polynomials_and_identities",
+          "display_order": 12,
+          "games": [
+            {
+              "id": "191_1",
+              "name": "Identity Calculator Race",
+              "implementationDetails": "A fast-paced race game where students must quickly choose the correct identity (e.g., (a + b)\u00b2, (a - b)\u00b2, (a + b)\u00b3, etc.) to simplify large expressions like 99\u00b2, 104\u00b3, etc. The faster and more accurately they apply identities, the faster their racer moves. Wrong identity selection slows down their progress, requiring correction.",
+              "learningPoints": [
+                "Apply algebraic identities to compute expressions mentally",
+                "Choose appropriate identities for given formats",
+                "Develop speed and accuracy with identity usage"
+              ]
+            },
+            {
+              "id": "191_2",
+              "name": "Real-Life Identity Puzzle",
+              "implementationDetails": "Students solve practical scenarios (e.g., area of a square garden with side x+3, or volume of a box) by modeling them using polynomials. They must then simplify or evaluate using identities. Puzzle themes include architecture, physics, and coding circuits.",
+              "learningPoints": [
+                "Connect polynomial identities to real-world applications",
+                "Translate verbal scenarios into algebraic expressions",
+                "Apply identities meaningfully in contextual problems"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

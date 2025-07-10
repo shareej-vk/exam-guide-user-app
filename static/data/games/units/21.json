@@ -1,0 +1,242 @@
+{
+  "subject": {
+    "id": 1,
+    "name": "math",
+    "label": "Mathematics"
+  },
+  "units": [
+    {
+      "id": 21,
+      "name": "coordinate_geometry",
+      "label": "Coordinate Geometry",
+      "lessons": [
+        {
+          "id": 192,
+          "title": "Lesson 1: Introduction to the Coordinate Plane",
+          "slug": "lesson_1_introduction_to_the_coordinate_plane",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "192_1",
+              "name": "Real-World Coordinate Hunt",
+              "implementationDetails": "Present real-world scenarios (map, seating chart) and ask students to identify locations using coordinate pairs.",
+              "learningPoints": [
+                "Understanding the need for coordinate systems",
+                "Relating coordinates to real-world positions",
+                "Visualizing coordinate pairs"
+              ]
+            },
+            {
+              "id": "192_2",
+              "name": "Point description",
+              "implementationDetails": "Describe position of point using sentences to other students in game",
+              "learningPoints": [
+                "Communicating position to peer",
+                "Understanding need of points of reference",
+                "Identifying appropriate reference objects"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 193,
+          "title": "Lesson 2: The Cartesian System: Axes and Origin",
+          "slug": "lesson_2_the_cartesian_system_axes_and_origin",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "193_1",
+              "name": "Axes Identifier",
+              "implementationDetails": "Present a Cartesian plane (canvas or SVG). Ask the player to label the axes (x-axis, y-axis) and the origin. Use drag-and-drop or multiple-choice options. Provide immediate feedback.",
+              "learningPoints": [
+                "Identifying the x-axis",
+                "Identifying the y-axis",
+                "Understanding the Origin"
+              ]
+            },
+            {
+              "id": "193_2",
+              "name": "Origin identifier",
+              "implementationDetails": "Present lines crossing each other in multiple orientations. Ask the student to identify the cartesian coordinate representation",
+              "learningPoints": [
+                "Knowing coordinate representation",
+                "Applying definition of axes",
+                "Cartesian plane assessment"
+              ]
+            },
+            {
+              "id": "193_3",
+              "name": "Cartesian plane component labeler",
+              "implementationDetails": "Present unlabelled cartesian plane components like axis, quadrant with drag and drop functionality to label them",
+              "learningPoints": [
+                "Understanding different components of cartesian plane",
+                "Application of cartesian plane components",
+                "Fundamentals of coordinate system"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 194,
+          "title": "Lesson 3: Coordinates of a Point: Abscissa and Ordinate",
+          "slug": "lesson_3_coordinates_of_a_point_abscissa_and_ordinate",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "194_1",
+              "name": "Abscissa and Ordinate Identifier",
+              "implementationDetails": "Display a point on the Cartesian plane. Ask the player to identify the abscissa and ordinate (input fields or multiple-choice). Highlight x and y coordinates, check values",
+              "learningPoints": [
+                "Definition of Abscissa",
+                "Definition of Ordinate",
+                "Understanding Coordinates"
+              ]
+            },
+            {
+              "id": "194_2",
+              "name": "Coordinate Builder",
+              "implementationDetails": "Use input fields for x and y coordinates. Display the point on the plane after input. Provide visual feedback. Validate input (only numbers).",
+              "learningPoints": [
+                "Forming Coordinates",
+                "Understanding Ordered Pairs",
+                "Coordinate Representation"
+              ]
+            },
+            {
+              "id": "194_3",
+              "name": "Component identifier",
+              "implementationDetails": "Provide coordinates ask the students which is ordinate and abscissa number",
+              "learningPoints": [
+                "Abscissa identification",
+                "Ordinate identification",
+                "Coordinate component knowledge"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 195,
+          "title": "Lesson 4: Quadrants and Sign Conventions",
+          "slug": "lesson_4_quadrants_and_sign_conventions",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "195_1",
+              "name": "Quadrant Identifier",
+              "implementationDetails": "Display a Cartesian plane. Highlight a quadrant. Ask the player to identify the quadrant (I, II, III, IV) using buttons or multiple choice. Store answer, provide feedback.",
+              "learningPoints": [
+                "Understanding Quadrants",
+                "Identifying Quadrants",
+                "Cartesian Plane Structure"
+              ]
+            },
+            {
+              "id": "195_2",
+              "name": "Sign Match",
+              "implementationDetails": "Display a quadrant name. ask Student to select the sign with which coordinate in that quadrant starts",
+              "learningPoints": [
+                "Sign conventions quadrant",
+                "Quadrant identifier",
+                "Analysing the quadrants"
+              ]
+            },
+             {
+              "id": "195_3",
+              "name": "Quadrant symbol identifier",
+              "implementationDetails": "Present quadrant sign configuration and ask students quadrant number",
+              "learningPoints": [
+                "Quadrant number identification",
+                "Number symbol application",
+                "Coordinate sign knowledge"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 196,
+          "title": "Lesson 5: Identifying the Coordinates of a Point from a Graph",
+          "slug": "lesson_5_identifying_the_coordinates_of_a_point_from_a_graph",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "196_1",
+              "name": "Coordinate Identifier",
+              "implementationDetails": "Display a point on the plane. Ask the player to enter the coordinates (input fields). Check the input against the point's location. Feedback and points.",
+              "learningPoints": [
+                "Reading Coordinates",
+                "Relating Position to Coordinates",
+                "Understanding Signs in Quadrants"
+              ]
+            },
+             {
+              "id": "196_2",
+              "name": "Coordinate multiplier",
+              "implementationDetails": "Show coordinate plot and multiple choice question",
+              "learningPoints": [
+                "Coordinate knowledge",
+                "Application in graphs",
+                "Graph coordinate application"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 197,
+          "title": "Lesson 6: Plotting Points in the Cartesian Plane",
+          "slug": "lesson_6_plotting_points_in_the_cartesian_plane",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "197_1",
+              "name": "Point Plotter",
+              "implementationDetails": "Display coordinates (x, y). Allow player to click on the plane to plot the point. Check the plotted location for accuracy (within a tolerance). Provide feedback. Scoring system based on accuracy and speed.",
+              "learningPoints": [
+                "Plotting Points",
+                "Coordinate Plane Navigation",
+                "Relating Coordinates to Position"
+              ]
+            },
+            {
+              "id": "197_2",
+              "name": "Plotter number builder",
+              "implementationDetails": "Plot multiple points on coordinate and draw shape",
+              "learningPoints": [
+                "Graph and plotter relation",
+                "Application of plotter number",
+                "Graph plotter knowledge"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 198,
+          "title": "Lesson 7: Coordinates of Points on the Axes",
+          "slug": "lesson_7_coordinates_of_points_on_the_axes",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "198_1",
+              "name": "Axis selector",
+              "implementationDetails": "Coordinate selector for plotter",
+              "learningPoints": [
+                "Coordinate knowledge in axis",
+                "Axis based number finding",
+                "Plotter based math application"
+              ]
+            },
+            {
+              "id": "198_2",
+              "name": "Axiom identifier",
+              "implementationDetails": "Present coordinates and ask whether this coordinate lies on this axis or not",
+              "learningPoints": [
+                "Cartesian plane based coordinate",
+                "Application of axiom",
+                "Axel coordinate application"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

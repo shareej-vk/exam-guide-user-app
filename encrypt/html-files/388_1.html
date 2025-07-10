@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Explorer - CBSE Class 9 Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0faff;
+            --card-bg: #ffffff;
+            --primary-color: #0096c7; /* A neutral, scientific blue */
+            --solid-color: #6c757d;
+            --liquid-color: #0077b6;
+            --gas-color: #90be6d;
+            --particle-color: #480ca8;
+            --text-color: #333;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --correct-color: #198754;
+            --incorrect-color: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font); background-color: var(--bg-color); color: var(--text-color);
+            padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;
+        }
+
+        .main-container { display: flex; gap: 20px; width: 100%; max-width: 1400px; }
+        .instructions-card {
+            flex: 3; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; align-self: flex-start;
+        }
+        .game-card {
+            flex: 7; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; display: flex;
+            flex-direction: column; align-items: center;
+        }
+        .card-header {
+            font-family: var(--heading-font); font-size: 28px; font-weight: 800; color: var(--primary-color);
+            margin-bottom: 20px; text-align: center; display: inline-block;
+            background: linear-gradient(45deg, #e0f7fa, #f0faff); padding: 5px 20px; border-radius: 12px;
+        }
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 12px; line-height: 1.6; display: flex; align-items: flex-start;
+        }
+        .instructions-list li::before { content: '🧊'; margin-right: 10px; font-size: 16px; }
+        .instructions-list li b { color: var(--primary-color); }
+
+        .controls { margin-top: -18px; display: flex; gap: 10px; margin-bottom: 10px; }
+        .btn {
+            font-family: var(--heading-font); font-size: 18px; font-weight: 600;
+            padding: 12px 20px; border: none; border-radius: 12px; cursor: pointer;
+            transition: all 0.3s ease; flex-grow: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        
+        /* Game Area Styles */
+        #initial-message {
+            font-family: var(--heading-font); font-size: 24px; color: #999; height: 500px;
+            display: flex; align-items: center; text-align: center;
+        }
+        .simulation-container {
+            width: 100%;
+            height: 400px; /* Reduced from auto/500px */
+            border: 3px solid #ced4da;
+            border-radius: 15px;
+            background-color: #f8f9fa;
+            overflow: hidden; /* Ensure content doesn't overflow */
+        }
+        canvas { 
+            width: 100%; 
+            height: 100%; /* Make canvas fill container */
+            display: block; 
+            border-radius: 12px;
+        }
+
+        .state-controls {
+            display: flex; 
+            gap: 10px; 
+            margin: 20px 0; 
+            width: 100%;
+            justify-content: center; /* Center the buttons */
+        }
+        .state-btn {
+            background-color: #f1f1f1; border: 2px solid #ddd;
+        }
+        .state-btn.active {
+            transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.2); color: white;
+        }
+        #solid-btn.active { background-color: var(--solid-color); border-color: var(--solid-color); }
+        #liquid-btn.active { background-color: var(--liquid-color); border-color: var(--liquid-color); }
+        #gas-btn.active { background-color: var(--gas-color); border-color: var(--gas-color); }
+        
+        #info-box {
+            margin: 20px 0; 
+            padding: 15px; 
+            background-color: #e9ecef; 
+            border-radius: 12px;
+            width: 100%; 
+            min-height: 100px; 
+            text-align: center;
+        }
+        #info-box h3 { font-family: var(--heading-font); margin-bottom: 5px; }
+        #info-box p { font-size: 15px; line-height: 1.5; }
+        
+        /* Question Area */
+        #quiz-container { display: none; margin-top: 20px; width: 100%; }
+        #quiz-container h3 { font-family: var(--heading-font); color: var(--primary-color); text-align: center; margin-bottom: 15px; }
+        .quiz-options { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .quiz-btn { background-color: var(--card-bg); border: 2px solid var(--primary-color); color: var(--primary-color); }
+        .quiz-btn.correct { background-color: var(--correct-color); border-color: var(--correct-color); color: white; }
+        .quiz-btn.incorrect { background-color: var(--incorrect-color); border-color: var(--incorrect-color); color: white; }
+
+        @media (max-width: 992px) {
+            .main-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">🔬 State Explorer</h2>
+            <p><strong>Lesson:</strong> An introduction to the three states of matter: Solid, Liquid, and Gas.</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">Your Lab</h3>
+            <p style="margin-bottom: 15px;">Welcome to the particle sandbox! Here you can see how the tiny particles of matter behave in different states.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Use</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to begin.</li>
+                <li>Press the <b>Solid</b>, <b>Liquid</b>, and <b>Gas</b> buttons to change the state of matter in the container.</li>
+                <li>Observe how the particles arrange themselves and move around.</li>
+                <li>Read the "Magnified View" info box to learn about each state.</li>
+                <li>After exploring all three, a quiz question will appear!</li>
+            </ul>
+         
+             <div id="quiz-container">
+                <h3>Quiz Time!</h3>
+                <p style="text-align:center; margin-bottom:10px;">In which state do particles have high energy, are far apart, and fill the container?</p>
+                <div class="quiz-options">
+                    <button id="quiz-solid" class="btn quiz-btn">Solid</button>
+                    <button id="quiz-liquid" class="btn quiz-btn">Liquid</button>
+                    <button id="quiz-gas" class="btn quiz-btn">Gas</button>
+                </div>
+            </div>
+        </div>
+    
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="solid-btn" class="btn state-btn">Solid 🧊</button>
+                <button id="liquid-btn" class="btn state-btn">Liquid 💧</button>
+                <button id="gas-btn" class="btn state-btn">Gas 💨</button>
+           
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+        
+            <div id="initial-message">Click 'Start' to enter the particle lab!</div>
+            <div id="simulation-wrapper" style="display: none;">
+                <div class="simulation-container">
+                    
+                    <canvas id="simulation-canvas" width="700" height="400"></canvas>
+                </div>
+                <div id="info-box">
+                    <h3>🔬 Magnified View</h3>
+                    <p>Select a state to learn about it!</p>
+                </div>
+                <div class="state-controls">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const simWrapper = document.getElementById('simulation-wrapper');
+    const canvas = document.getElementById('simulation-canvas');
+    const ctx = canvas.getContext('2d');
+    const solidBtn = document.getElementById('solid-btn');
+    const liquidBtn = document.getElementById('liquid-btn');
+    const gasBtn = document.getElementById('gas-btn');
+    const infoBox = document.getElementById('info-box');
+    const quizContainer = document.getElementById('quiz-container');
+    const quizBtns = document.querySelectorAll('.quiz-btn');
+
+    // Simulation Constants
+    const NUM_PARTICLES = 40;
+    const PARTICLE_RADIUS = 10;
+    const PARTICLE_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim();
+    const GRAVITY = 0.1;
+    const REPULSION_FORCE = 0.2;
+
+    // Game State
+    let particles = [];
+    let currentState = 'none';
+    let animationFrameId;
+    let exploredStates = new Set();
+
+    class Particle {
+        constructor(x, y, index) {
+            this.x = x;
+            this.y = y;
+            this.radius = PARTICLE_RADIUS;
+            this.vx = (Math.random() - 0.5) * 4;
+            this.vy = (Math.random() - 0.5) * 4;
+            // For solid state
+            const cols = 8;
+            this.latticeX = (index % cols) * 40 + canvas.width / 2 - (cols/2 * 40) + 20;
+            this.latticeY = Math.floor(index / cols) * 40 + canvas.height - 80; // Adjusted for reduced height
+        }
+
+        update() {
+            switch (currentState) {
+                case 'solid':
+                    // Vibrate around lattice position
+                    this.x += (this.latticeX - this.x) * 0.1 + (Math.random() - 0.5);
+                    this.y += (this.latticeY - this.y) * 0.1 + (Math.random() - 0.5);
+                    break;
+                case 'liquid':
+                    this.vy += GRAVITY; // Gravity
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    // Friction
+                    this.vx *= 0.99;
+                    this.vy *= 0.99;
+                    // Wall collision
+                    if (this.x < this.radius || this.x > canvas.width - this.radius) this.vx *= -1;
+                    if (this.y > canvas.height - this.radius) {
+                        this.y = canvas.height - this.radius;
+                        this.vy *= -0.5; // Lose energy on bounce
+                    }
+                    if (this.y < this.radius) this.vy *= -1;
+                    break;
+                case 'gas':
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    // Wall collision
+                    if (this.x < this.radius || this.x > canvas.width - this.radius) this.vx *= -1;
+                    if (this.y < this.radius || this.y > canvas.height - this.radius) this.vy *= -1;
+                    break;
+            }
+        }
+        
+        applyRepulsion(otherParticles) {
+            if (currentState !== 'liquid') return;
+            otherParticles.forEach(other => {
+                if (this === other) return;
+                const dx = other.x - this.x;
+                const dy = other.y - this.y;
+                const distance = Math.hypot(dx, dy);
+                if (distance < this.radius * 2) {
+                    const force = REPULSION_FORCE;
+                    this.vx -= (dx / distance) * force;
+                    this.vy -= (dy / distance) * force;
+                }
+            });
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = PARTICLE_COLOR;
+            ctx.fill();
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        for (let i = 0; i < NUM_PARTICLES; i++) {
+            const x = Math.random() * canvas.width;
+            const y = Math.random() * canvas.height;
+            particles.push(new Particle(x, y, i));
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            if(currentState === 'liquid') p.applyRepulsion(particles);
+            p.update();
+            p.draw();
+        });
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    
+    function setState(newState) {
+        currentState = newState;
+        // Update button styles
+        [solidBtn, liquidBtn, gasBtn].forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`${newState}-btn`).classList.add('active');
+        
+        // Update info box
+        let title, description;
+        switch(newState) {
+            case 'solid':
+                title = "Solid State 🧊";
+                description = "Particles are tightly packed in a fixed, orderly pattern (a lattice). They have low kinetic energy and can only vibrate in place.";
+                break;
+            case 'liquid':
+                title = "Liquid State 💧";
+                description = "Particles are closely packed but can slide past one another. They have more kinetic energy than solids and take the shape of their container.";
+                break;
+            case 'gas':
+                title = "Gas State 💨";
+                description = "Particles are far apart and move randomly and rapidly. They have high kinetic energy and will expand to fill any container.";
+                break;
+        }
+        infoBox.innerHTML = `<h3>🔬 ${title}</h3><p>${description}</p>`;
+        
+        // Handle transitions
+        if (newState === 'gas') {
+             particles.forEach(p => {
+                p.vx = (Math.random() - 0.5) * 8;
+                p.vy = (Math.random() - 0.5) * 8;
+            });
+        }
+        if (newState === 'liquid') {
+             particles.forEach(p => {
+                p.vx = (Math.random() - 0.5) * 2;
+             });
+        }
+        
+        // Check for quiz
+        exploredStates.add(newState);
+        if (exploredStates.size === 3) {
+            quizContainer.style.display = 'block';
+        }
+    }
+    
+    function startGame() {
+        initialMessage.style.display = 'none';
+        simWrapper.style.display = 'block';
+        quizContainer.style.display = 'none';
+        exploredStates.clear();
+        quizBtns.forEach(b => b.classList.remove('correct', 'incorrect'));
+
+        initParticles();
+        if(!animationFrameId) {
+            animate();
+        }
+        setState('solid');
+    }
+    
+    function handleQuizAnswer(e) {
+        const selectedId = e.target.id;
+        quizBtns.forEach(btn => {
+            if (btn.id === 'quiz-gas') {
+                btn.classList.add('correct');
+            } else {
+                btn.classList.add('incorrect');
+            }
+        });
+    }
+
+    // Event Listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', () => {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+        initialMessage.style.display = 'flex';
+        simWrapper.style.display = 'none';
+        quizContainer.style.display = 'none';
+    });
+    solidBtn.addEventListener('click', () => setState('solid'));
+    liquidBtn.addEventListener('click', () => setState('liquid'));
+    gasBtn.addEventListener('click', () => setState('gas'));
+    quizBtns.forEach(btn => btn.addEventListener('click', handleQuizAnswer));
+
+    window.onload = () => { simWrapper.style.display = 'none'; };
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

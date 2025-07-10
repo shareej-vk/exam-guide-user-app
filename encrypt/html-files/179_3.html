@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Law Application Identifier</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f1f6fb;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      display: flex;
+      gap: 30px;
+      max-width: 1200px;
+      width: 100%;
+    }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      box-sizing: border-box;
+    }
+    .instructions {
+      flex: 3;
+    }
+    .game {
+      flex: 7;
+    }
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #0d47a1;
+      margin-bottom: 15px;
+    }
+    p {
+      font-size: 16px;
+      color: #333;
+      line-height: 1.5;
+    }
+    .expression-box {
+      background: #e3f2fd;
+      padding: 20px;
+      border: 2px solid #64b5f6;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+    .choice-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #bbdefb;
+      color: #0d47a1;
+      cursor: pointer;
+      width: 80%;
+      max-width: 400px;
+      transition: background-color 0.3s ease;
+    }
+    .choice-btn:hover {
+      background-color: #90caf9;
+    }
+    .correct {
+      background-color: #c8e6c9 !important;
+      border: 2px solid green;
+    }
+    .wrong {
+      background-color: #ffcdd2 !important;
+      border: 2px solid red;
+    }
+    .button-row {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 25px;
+    }
+    .button-row button {
+      padding: 10px 18px;
+      font-size: 15px;
+      font-weight: bold;
+      background: #90caf9;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #0d47a1;
+    }
+    .button-row button:hover {
+      background: #64b5f6;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card instructions">
+      <h2>📘 Instructions</h2>
+      <p>In this game, you’ll see an exponential expression.</p>
+      <p>🎯 Your goal is to identify which exponent law is applied: Product Law, Quotient Law, or Power Law.</p>
+      <p>👇 Click on the correct law. You’ll get immediate feedback on your selection.</p>
+      <p>🔄 Click "New Problem" to try a new expression.</p>
+    </div>
+
+    <div class="card game">
+      <h2>🧪 Law Application Identifier</h2>
+      <div class="expression-box" id="expressionBox">
+        <!-- Expression appears here -->
+      </div>
+      <div class="choices">
+        <button class="choice-btn" onclick="checkAnswer(this)" data-law="product">📌 Product Law (a<sup>m</sup> × a<sup>n</sup> = a<sup>m+n</sup>)</button>
+        <button class="choice-btn" onclick="checkAnswer(this)" data-law="quotient">📌 Quotient Law (a<sup>m</sup> ÷ a<sup>n</sup> = a<sup>m−n</sup>)</button>
+        <button class="choice-btn" onclick="checkAnswer(this)" data-law="power">📌 Power Law ((a<sup>m</sup>)<sup>n</sup> = a<sup>m×n</sup>)</button>
+      </div>
+      <div class="button-row">
+        <button onclick="newProblem()">New Problem</button>
+        <button onclick="resetGame()">Reset</button>
+      </div>
+      <div id="result" class="result"></div>
+    </div>
+  </div>
+
+  <script>
+    const problems = [
+      { expression: "x^2 × x^3 = x^5", law: "product" },
+      { expression: "a^6 ÷ a^2 = a^4", law: "quotient" },
+      { expression: "(y^2)^3 = y^6", law: "power" },
+      { expression: "m^4 × m^5 = m^9", law: "product" },
+      { expression: "(z^3)^2 = z^6", law: "power" },
+      { expression: "b^7 ÷ b^4 = b^3", law: "quotient" },
+    ];
+
+    let currentProblem = null;
+
+    function newProblem() {
+      const allButtons = document.querySelectorAll('.choice-btn');
+      allButtons.forEach(btn => {
+        btn.classList.remove('correct', 'wrong');
+      });
+      const randomIndex = Math.floor(Math.random() * problems.length);
+      currentProblem = problems[randomIndex];
+      document.getElementById('expressionBox').innerText = currentProblem.expression;
+      document.getElementById('result').innerText = '';
+    }
+
+    function resetGame() {
+      newProblem();
+    }
+
+    function checkAnswer(button) {
+      const selectedLaw = button.getAttribute("data-law");
+      const allButtons = document.querySelectorAll('.choice-btn');
+
+      allButtons.forEach(btn => btn.disabled = true);
+
+      if (selectedLaw === currentProblem.law) {
+        button.classList.add("correct");
+        document.getElementById('result').innerText = "✅ Correct! Well spotted!";
+      } else {
+        button.classList.add("wrong");
+        document.getElementById('result').innerText = "❌ Oops! That’s not the right law.";
+        const correctBtn = document.querySelector(`[data-law="${currentProblem.law}"]`);
+        correctBtn.classList.add("correct");
+      }
+    }
+
+    window.onload = newProblem;
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

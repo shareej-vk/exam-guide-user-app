@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Jumper - CBSE Class 9 Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f3e9d2;
+            --card-bg: #ffffff;
+            --primary-color: #4a4e69; 
+            --solid-color: #6c757d;
+            --liquid-color: #0077b6;
+            --gas-color: #6a994e;
+            --text-color: #212529;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --correct-color: #198754;
+            --incorrect-color: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font); background-color: var(--bg-color); color: var(--text-color);
+            padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;
+        }
+
+        .main-container { display: flex; gap: 20px; width: 100%; max-width: 1500px; }
+        .instructions-card {
+            flex: 3; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; align-self: flex-start;
+        }
+        .game-card {
+            flex: 7; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; display: flex;
+            flex-direction: column; align-items: center;
+        }
+        .card-header {
+            font-family: var(--heading-font); font-size: 28px; font-weight: 800; color: var(--primary-color);
+            margin-bottom: 20px; text-align: center; display: inline-block;
+            background: linear-gradient(45deg, #f3e9d2, #f8f9fa); padding: 5px 20px; border-radius: 12px;
+        }
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li { margin-bottom: 12px; line-height: 1.6; display: flex; align-items: flex-start; }
+        .instructions-list li::before { content: '✨'; margin-right: 10px; font-size: 16px; }
+        .instructions-list li b { color: var(--primary-color); }
+
+        .controls { margin-top: 25px; display: flex; gap: 10px; }
+        .btn {
+            font-family: var(--heading-font); font-size: 18px; font-weight: 600;
+            padding: 12px 20px; border: none; border-radius: 12px; cursor: pointer;
+            transition: all 0.3s ease; flex-grow: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        
+        #game-area { width: 100%; display: none; flex-direction: column; align-items: center; }
+        
+        .process-bank { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; padding: 15px; background: #e9ecef; border-radius: 12px; margin-bottom: 20px; width: 100%; }
+        .process-tile { padding: 8px 15px; background-color: #fff; border-radius: 8px; font-weight: 600; cursor: grab; box-shadow: 0 2px 4px rgba(0,0,0,0.1); user-select: none; transition: all 0.3s ease; }
+        .process-tile:active { cursor: grabbing; transform: scale(1.1); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .process-tile.dragging { opacity: 0.5; }
+        .process-tile.used { opacity: 0.4; background-color: #e9ecef; cursor: not-allowed; }
+        
+        #diagram-container { position: relative; width: 100%; height: 400px; }
+        #diagram-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        
+        .state-box {
+            position: absolute; width: 120px; height: 120px; border-radius: 15px; z-index: 10;
+            display: flex; justify-content: center; align-items: center;
+            font-family: var(--heading-font); font-size: 24px; color: white;
+            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+            border: 4px solid white;
+        }
+        .state-box.selected { transform: scale(1.1); box-shadow: 0 0 20px var(--primary-color); }
+        #solid-box { background-color: var(--solid-color); top: 50%; left: 10%; transform: translateY(-50%); }
+        #liquid-box { background-color: var(--liquid-color); top: 10%; left: 50%; transform: translateX(-50%); }
+        #gas-box { background-color: var(--gas-color); top: 50%; right: 10%; transform: translateY(-50%); }
+
+        .arrow-label-dropzone {
+            position: absolute; width: 120px; height: 40px; border: 2px dashed #ccc; border-radius: 8px;
+            background-color: rgba(255,255,255,0.7); display: flex; justify-content: center; align-items: center; z-index: 5;
+            transform: translate(-50%, -50%); transition: all 0.3s ease;
+        }
+        .arrow-label-dropzone.drag-over { background-color: rgba(220, 220, 255, 0.9); border-color: var(--primary-color); }
+        .arrow-label-dropzone.correct { border-color: var(--correct-color); background-color: #d1e7dd; }
+        .arrow-label-dropzone.incorrect { border-color: var(--incorrect-color); background-color: #f8d7da; }
+        
+        #feedback-message {
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            font-family: var(--heading-font); font-size: 20px; font-weight: 800;
+            padding: 8px 16px; border-radius: 12px; color: white; opacity: 0;
+            transition: opacity 0.3s ease; pointer-events: none;
+        }
+        #feedback-message.show { opacity: 1; }
+        #feedback-message.correct { background-color: var(--correct-color); }
+        #feedback-message.incorrect { background-color: var(--incorrect-color); }
+        
+        #animation-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        #animation-modal { background: white; padding: 20px; border-radius: 20px; text-align: center; }
+        #anim-canvas { background: #f0f0f0; border-radius: 10px; }
+        #animation-description { margin-top: 10px; font-size: 14px; max-width: 300px; }
+        #close-animation-btn { margin-top: 15px; background-color: var(--primary-color); color: white; }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">🚀 State Jumper</h2>
+            <p><strong>Lesson:</strong> Learning about sublimation and deposition, the special jumps between states!</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play (New & Simple!)</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to begin.</li>
+                <li>Click a <b>start state</b> (e.g., Solid), then an <b>end state</b> (e.g., Liquid).</li>
+                <li>An arrow and a single box will appear for you to test.</li>
+                <li><b>Drag</b> the correct process name from the bank into the box.</li>
+                <li>The game will instantly tell you if you're right or wrong!</li>
+                <li>After a moment, the board will clear, ready for your next test.</li>
+            </ul>
+   
+        </div>
+        <div class="game-card">
+            <div id="initial-message">Click 'Start' to map the state changes!</div>
+            <div id="game-area">
+                <div class="process-bank"></div>
+                <div id="diagram-container">
+                    <canvas id="diagram-canvas"></canvas>
+                    <div id="solid-box" class="state-box" data-state="solid">Solid 🧊</div>
+                    <div id="liquid-box" class="state-box" data-state="liquid">Liquid 💧</div>
+                    <div id="gas-box" class="state-box" data-state="gas">Gas 💨</div>
+                    <div id="feedback-message"></div>
+                </div>
+            </div>
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+        </div>
+    </div>
+    <div id="animation-modal-overlay">
+        <div id="animation-modal">
+            <h3 id="animation-title"></h3>
+            <canvas id="anim-canvas" width="300" height="200"></canvas>
+            <p id="animation-description"></p>
+            <button id="close-animation-btn" class="btn">Got it!</button>
+        </div>
+    </div>
+<script>
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const gameArea = document.getElementById('game-area');
+    const diagramContainer = document.getElementById('diagram-container');
+    const canvas = document.getElementById('diagram-canvas');
+    const ctx = canvas.getContext('2d');
+    const stateBoxes = document.querySelectorAll('.state-box');
+    const processBank = document.querySelector('.process-bank');
+    const feedbackMessage = document.getElementById('feedback-message');
+    const animModalOverlay = document.getElementById('animation-modal-overlay');
+    
+    const PROCESSES = {
+        melting: { name: 'Melting', from: 'solid', to: 'liquid' },
+        freezing: { name: 'Freezing', from: 'liquid', to: 'solid' },
+        vaporization: { name: 'Vaporization', from: 'liquid', to: 'gas' },
+        condensation: { name: 'Condensation', from: 'gas', to: 'liquid' },
+        sublimation: { name: 'Sublimation', from: 'solid', to: 'gas' },
+        deposition: { name: 'Deposition', from: 'gas', to: 'solid' }
+    };
+    let startState = null, activeProcessKey = null, draggedItem = null;
+    let isLocked = false; 
+
+    function resizeCanvas() {
+        canvas.width = diagramContainer.clientWidth;
+        canvas.height = diagramContainer.clientHeight;
+    }
+    
+    function createProcessTiles() {
+        processBank.innerHTML = '';
+        Object.entries(PROCESSES).forEach(([key, val]) => {
+            const tile = document.createElement('div');
+            tile.className = 'process-tile';
+            tile.dataset.process = key;
+            tile.id = `tile-${key}`;
+            tile.draggable = true;
+            tile.textContent = val.name;
+            tile.addEventListener('dragstart', e => {
+                if(tile.classList.contains('used')) {
+                    e.preventDefault();
+                    return;
+                }
+                draggedItem = e.target;
+                setTimeout(() => e.target.classList.add('dragging'), 0);
+            });
+            tile.addEventListener('dragend', () => draggedItem?.classList.remove('dragging'));
+            processBank.appendChild(tile);
+        });
+    }
+
+    function handleStateClick(e) {
+        if (isLocked) return;
+        const clickedState = e.currentTarget.dataset.state;
+        if (!startState) {
+            startState = clickedState;
+            e.currentTarget.classList.add('selected');
+        } else {
+            if (startState !== clickedState) {
+                activateProcess(startState, clickedState);
+            }
+            document.querySelector('.state-box.selected')?.classList.remove('selected');
+            startState = null;
+        }
+    }
+
+    function activateProcess(from, to) {
+        clearActiveProcess();
+        const processKey = Object.keys(PROCESSES).find(k => PROCESSES[k].from === from && PROCESSES[k].to === to);
+        if (processKey) {
+            activeProcessKey = processKey;
+            addArrowAndDropzone(from, to);
+            if (processKey === 'sublimation' || processKey === 'deposition') {
+                playAnimation(processKey);
+            }
+        }
+    }
+    
+    function addArrowAndDropzone(fromState, toState) {
+        drawArrow(fromState, toState);
+        const fromBox = document.getElementById(`${fromState}-box`);
+        const toBox = document.getElementById(`${toState}-box`);
+        const midX = (fromBox.offsetLeft + toBox.offsetLeft + fromBox.offsetWidth) / 2;
+        const midY = (fromBox.offsetTop + toBox.offsetTop + fromBox.offsetHeight) / 2;
+        
+        const dropzone = document.createElement('div');
+        dropzone.className = 'arrow-label-dropzone';
+        dropzone.id = 'active-dropzone';
+        dropzone.style.left = `${midX}px`;
+        dropzone.style.top = `${midY}px`;
+        
+        dropzone.addEventListener('dragover', e => e.preventDefault());
+        dropzone.addEventListener('drop', handleDrop);
+        diagramContainer.appendChild(dropzone);
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        const dropzone = e.currentTarget;
+        if (draggedItem) {
+            isLocked = true;
+            const droppedProcessKey = draggedItem.dataset.process;
+            dropzone.appendChild(draggedItem);
+
+            if (droppedProcessKey === activeProcessKey) {
+                showFeedback(true, `Correct! That's ${PROCESSES[activeProcessKey].name}.`);
+                draggedItem.classList.add('used');
+                dropzone.classList.add('correct');
+            } else {
+                showFeedback(false, "Not quite, try again!");
+                dropzone.classList.add('incorrect');
+                setTimeout(() => processBank.appendChild(draggedItem), 500);
+            }
+            setTimeout(clearActiveProcess, 2000);
+        }
+    }
+
+    function showFeedback(isCorrect, message) {
+        feedbackMessage.textContent = message;
+        feedbackMessage.className = `feedback-message show ${isCorrect ? 'correct' : 'incorrect'}`;
+    }
+
+    function clearActiveProcess() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById('active-dropzone')?.remove();
+        feedbackMessage.className = 'feedback-message';
+        activeProcessKey = null;
+        isLocked = false;
+    }
+
+    // --- NEW, ROBUST ARROW DRAWING LOGIC ---
+    function getIntersectionPoint(box, externalPoint) {
+        const center = { x: box.offsetLeft + box.offsetWidth / 2, y: box.offsetTop + box.offsetHeight / 2 };
+        const halfWidth = box.offsetWidth / 2;
+        const halfHeight = box.offsetHeight / 2;
+
+        const dx = externalPoint.x - center.x;
+        const dy = externalPoint.y - center.y;
+
+        const slope = Math.abs(dy / dx);
+        const diagSlope = halfHeight / halfWidth;
+
+        let x, y;
+
+        if (slope < diagSlope) { // Intersects left or right side
+            if (dx > 0) { // Point is to the right
+                x = center.x + halfWidth;
+                y = center.y + halfWidth * (dy / dx);
+            } else { // Point is to the left
+                x = center.x - halfWidth;
+                y = center.y - halfWidth * (dy / dx);
+            }
+        } else { // Intersects top or bottom side
+            if (dy > 0) { // Point is below
+                y = center.y + halfHeight;
+                x = center.x + halfHeight * (dx / dy);
+            } else { // Point is above
+                y = center.y - halfHeight;
+                x = center.x - halfHeight * (dx / dy);
+            }
+        }
+        return { x, y };
+    }
+
+    function drawArrow(fromState, toState) {
+        const fromBox = document.getElementById(`${fromState}-box`);
+        const toBox = document.getElementById(`${toState}-box`);
+
+        const fromCenter = { x: fromBox.offsetLeft + fromBox.offsetWidth / 2, y: fromBox.offsetTop + fromBox.offsetHeight / 2 };
+        const toCenter = { x: toBox.offsetLeft + toBox.offsetWidth / 2, y: toBox.offsetTop + toBox.offsetHeight / 2 };
+
+        const startPoint = getIntersectionPoint(fromBox, toCenter);
+        const endPoint = getIntersectionPoint(toBox, fromCenter);
+        
+        const headlen = 15;
+        const angle = Math.atan2(endPoint.y - startPoint.y, endPoint.x - startPoint.x-10);
+        ctx.beginPath();
+        ctx.strokeStyle = '#6a4c93';
+        ctx.lineWidth = 4;
+        ctx.moveTo(startPoint.x, startPoint.y);
+        ctx.lineTo(endPoint.x, endPoint.y);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.moveTo(endPoint.x, endPoint.y);
+        ctx.lineTo(endPoint.x - headlen * Math.cos(angle - Math.PI / 6), endPoint.y - headlen * Math.sin(angle - Math.PI / 6));
+        ctx.moveTo(endPoint.x, endPoint.y);
+        ctx.lineTo(endPoint.x - headlen * Math.cos(angle + Math.PI / 6), endPoint.y - headlen * Math.sin(angle + Math.PI / 6));
+        ctx.stroke();
+    }
+    
+    function startGame() {
+        initialMessage.style.display = 'none';
+        gameArea.style.display = 'flex';
+        clearActiveProcess();
+        createProcessTiles();
+        resizeCanvas();
+    }
+    
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    stateBoxes.forEach(box => box.addEventListener('click', handleStateClick));
+    window.addEventListener('resize', resizeCanvas);
+    
+    window.onload = () => { gameArea.style.display = 'none'; };
+
+    function playAnimation(type) {
+        const animCanvas = document.getElementById('anim-canvas');
+        const animCtx = animCanvas.getContext('2d');
+        const title = document.getElementById('animation-title');
+        const desc = document.getElementById('animation-description');
+        animModalOverlay.style.display = 'flex';
+        let animationId;
+        const processInfo = PROCESSES[type];
+        title.textContent = `${processInfo.name}!`;
+        if (type === 'sublimation') {
+            desc.textContent = 'The solid (like dry ice) turns directly into a gas, skipping the liquid phase.';
+        } else {
+            desc.textContent = 'The gas (like water vapor) turns directly into a solid (like frost), skipping the liquid phase.';
+        }
+        let frame = 0;
+        function animLoop() {
+            frame++;
+            animCtx.clearRect(0, 0, 300, 200);
+            if (type === 'sublimation') {
+                const blockHeight = Math.max(0, 50 - frame * 0.2);
+                animCtx.fillStyle = '#6c757d'; 
+                animCtx.fillRect(125, 200 - blockHeight, 50, blockHeight);
+                animCtx.fillStyle = '#6a994e'; 
+                for (let i = 0; i < frame/2; i++) {
+                    animCtx.beginPath();
+                    animCtx.arc(150 + Math.sin(i)*i*2, 180-i*2.5, 3, 0, 2 * Math.PI);
+                    animCtx.fill();
+                }
+            } else { 
+                animCtx.fillStyle = '#6c757d'; 
+                const frostHeight = Math.min(50, frame * 0.2);
+                animCtx.fillRect(125, 200 - frostHeight, 50, frostHeight);
+                 animCtx.fillStyle = '#6a994e'; 
+                 for (let i = 0; i < 50-frame/2; i++) {
+                    animCtx.beginPath();
+                    animCtx.arc(150 + Math.sin(i)*i*2, 20+i*2.5, 3, 0, 2 * Math.PI);
+                    animCtx.fill();
+                }
+            }
+            if (frame < 250) {
+                animationId = requestAnimationFrame(animLoop);
+            }
+        }
+        animLoop();
+        document.getElementById('close-animation-btn').onclick = () => {
+            cancelAnimationFrame(animationId);
+            animModalOverlay.style.display = 'none';
+        }
+    }
+</script>
+</body>
+</html>

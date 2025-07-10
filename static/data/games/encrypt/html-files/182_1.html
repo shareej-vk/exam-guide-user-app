@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Degree Detective</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background-color: #e1f5fe;
+      font-family: 'Poppins', sans-serif;
+    }
+    .container {
+      max-width: 1400px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 30% 70%;
+      gap: 20px;
+    }
+    .card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+      font-family: 'Baloo 2', cursive;
+      color: #1e88e5;
+      margin-bottom: 15px;
+    }
+    .instructions ul {
+      padding-left: 20px;
+    }
+    .instructions li {
+      margin-bottom: 12px;
+    }
+    .case {
+      border: 2px dashed #64b5f6;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #f1f8e9;
+      margin-bottom: 20px;
+    }
+    .expression {
+      font-size: 24px;
+      font-weight: bold;
+      color: #0d47a1;
+      margin-bottom: 20px;
+    }
+    .choices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .choice {
+      background-color: #fff;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 2px solid #90a4ae;
+      cursor: pointer;
+      font-size: 18px;
+      transition: 0.3s ease;
+    }
+    .choice:hover {
+      background-color: #c5e1a5;
+    }
+    .choice.correct {
+      background-color: #a5d6a7;
+      border-color: #388e3c;
+      color: #1b5e20;
+    }
+    .choice.wrong {
+      background-color: #ef9a9a;
+      border-color: #c62828;
+      color: #b71c1c;
+    }
+    .feedback {
+      font-size: 18px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    button {
+      padding: 10px 18px;
+      font-size: 16px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #4caf50;
+      color: white;
+    }
+    button:hover {
+      background-color: #388e3c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card instructions">
+      <h2>🕵️ Degree Detective</h2>
+      <ul>
+        <li>Study the given expression or clue.</li>
+        <li>Select the correct classification: Linear, Quadratic, Cubic, etc.</li>
+        <li>Careful! Constants and zero polynomials are tricky!</li>
+        <li>Correct options turn green ✅ and wrong ones red ❌</li>
+      </ul>
+      <button onclick="startGame()">🔁 Start Investigation</button>
+    </div>
+
+    <div class="card game-area">
+      <h2>🔍 Investigate the Expression</h2>
+      <div class="case" id="caseBox">
+        <div class="expression" id="expressionText">Loading...</div>
+        <div class="choices" id="classificationOptions"></div>
+        <div class="feedback" id="feedbackText"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const clues = [
+      { exp: "2x + 5", classification: "Linear" },
+      { exp: "x² - 4x + 4", classification: "Quadratic" },
+      { exp: "0", classification: "Zero Polynomial" },
+      { exp: "x³ + 3x² - 2", classification: "Cubic" },
+      { exp: "7", classification: "Constant" },
+      { exp: "x⁴ - x + 2", classification: "Polynomial of Degree 4" },
+      { exp: "-3x", classification: "Linear" },
+      { exp: "4x³ + x", classification: "Cubic" },
+      { exp: "5x²", classification: "Quadratic" },
+      { exp: "x⁵ + x³ + 1", classification: "Polynomial of Degree 5" }
+    ];
+
+    const allChoices = ["Zero Polynomial", "Constant", "Linear", "Quadratic", "Cubic", "Polynomial of Degree 4", "Polynomial of Degree 5"];
+
+    let current = 0;
+    let currentClue = {};
+
+    function startGame() {
+      current = 0;
+      loadNext();
+    }
+
+    function loadNext() {
+      if (current >= clues.length) {
+        document.getElementById("expressionText").innerText = "🎉 Investigation Complete!";
+        document.getElementById("classificationOptions").innerHTML = "";
+        document.getElementById("feedbackText").innerText = "";
+        return;
+      }
+
+      currentClue = clues[current];
+      document.getElementById("expressionText").innerText = `Expression: ${currentClue.exp}`;
+      document.getElementById("feedbackText").innerText = "";
+      const area = document.getElementById("classificationOptions");
+      area.innerHTML = "";
+
+      const shuffled = [...allChoices].sort(() => Math.random() - 0.5);
+      shuffled.forEach(choice => {
+        const btn = document.createElement("div");
+        btn.className = "choice";
+        btn.innerText = choice;
+        btn.onclick = () => evaluate(btn, choice);
+        area.appendChild(btn);
+      });
+    }
+
+    function evaluate(button, selected) {
+      const correct = currentClue.classification;
+      const all = document.querySelectorAll(".choice");
+      all.forEach(c => c.onclick = null);
+
+      if (selected === correct) {
+        button.classList.add("correct");
+        document.getElementById("feedbackText").innerHTML = `<span style="color:green;">✅ Well done! '${correct}' is correct.</span>`;
+      } else {
+        button.classList.add("wrong");
+        all.forEach(c => {
+          if (c.innerText === correct) c.classList.add("correct");
+        });
+        document.getElementById("feedbackText").innerHTML = `<span style="color:red;">❌ Oops! The correct classification is '${correct}'.</span>`;
+      }
+
+      setTimeout(() => {
+        current++;
+        loadNext();
+      }, 2000);
+    }
+
+    window.onload = startGame;
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

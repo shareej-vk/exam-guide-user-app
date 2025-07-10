@@ -1,0 +1,233 @@
+{
+  "subject": {
+    "id": 5,
+    "name": "science",
+    "label": "Science"
+  },
+  "units": [
+    {
+      "id": 66,
+      "name": "unit_9:_gravity",
+      "label": "Unit 9: Gravity",
+      "lessons": [
+        {
+          "id": 516,
+          "title": "Lesson 1: Introduction to Gravitation and Centripetal Force",
+          "slug": "lesson_1_introduction_to_gravitation_and_centripetal_force",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "516_1",
+              "name": "Orbit Keeper",
+              "implementationDetails": "A simulation showing a moon moving in a straight line through space. In the center is a planet. The player must continuously apply a 'centripetal force' by holding down a button, which creates a force vector pulling the moon towards the planet. By applying the force correctly, the player can guide the moon into a stable circular orbit. If they release the force at any point, the moon immediately flies off in a straight line tangent to the orbit, demonstrating that a continuous, center-seeking force is required to maintain circular motion.",
+              "learningPoints": [
+                "Understanding that a force is required to change an object's direction of motion.",
+                "Defining centripetal force as the center-directed force that keeps an object in a circular path.",
+                "Visualizing that without centripetal force, an orbiting object would move in a straight line."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 517,
+          "title": "Lesson 2: The Universal Law of Gravitation",
+          "slug": "lesson_2_the_universal_law_of_gravitation",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "517_1",
+              "name": "Gravity Sandbox",
+              "implementationDetails": "An interactive sandbox with two celestial bodies (e.g., planets). The player can use sliders to adjust the 'Mass' of each planet and can drag them closer or farther apart. As they make changes, force vectors appear on each body, and a 'Gravitational Force' meter updates in real-time. Through experimentation, the player discovers the core principles: doubling a mass doubles the force, while doubling the distance quarters the force. This allows for discovery-based learning of the proportionalities in the law.",
+              "learningPoints": [
+                "Understanding that the force of gravitation is directly proportional to the product of the masses.",
+                "Learning that the force is inversely proportional to the square of the distance between the objects.",
+                "Recognizing that every object in the universe attracts every other object."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 518,
+          "title": "Lesson 3: The Gravitational Constant (G) and the Importance of the Universal Law",
+          "slug": "lesson_3_the_gravitational_constant_g_and_the_importance_of_the_universal_law",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "518_1",
+              "name": "Cosmic Calculator",
+              "implementationDetails": "The player is tasked with calculating the gravitational force in different scenarios. Scenario 1: Between the Earth and the Moon. Scenario 2: Between two students sitting in a classroom. The game provides all the necessary data (masses, distance, and the value of G). The player inputs these values into a virtual calculator using the formula F = G(M₁M₂/d²). They will find the Earth-Moon force is enormous, while the force between the students is minuscule, explaining why we only perceive gravity from astronomically massive objects and why G is such a small constant.",
+              "learningPoints": [
+                "Understanding the role of the universal gravitational constant (G) in the formula.",
+                "Applying the full formula to calculate gravitational force.",
+                "Appreciating the 'weakness' of gravity at a small scale and its importance at a cosmic scale (tides, orbits)."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 519,
+          "title": "Lesson 4: Free Fall and Acceleration Due to Gravity (g)",
+          "slug": "lesson_4_free_fall_and_acceleration_due_to_gravity_g",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "519_1",
+              "name": "Galileo's Experiment",
+              "implementationDetails": "The player is at the top of the Leaning Tower of Pisa. They can drop two items simultaneously: a heavy cannonball and a light feather. The game has two modes. In 'Air Resistance ON' mode, the cannonball falls quickly while the feather flutters down slowly. The player can then switch to 'Air Resistance OFF' (vacuum mode). Now, when dropped, both objects are shown to accelerate downwards at the exact same rate and land at the same time. This visually proves that acceleration in free fall is independent of an object's mass.",
+              "learningPoints": [
+                "Defining free fall as the motion of an object solely under the influence of gravity.",
+                "Understanding that all objects in free fall experience the same acceleration, regardless of their mass.",
+                "Recognizing that air resistance is what causes objects of different shapes to fall at different rates in real life."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 520,
+          "title": "Lesson 5: Calculating the Value of 'g'",
+          "slug": "lesson_5_calculating_the_value_of_g",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "520_1",
+              "name": "Planet Explorer",
+              "implementationDetails": "The player is a space explorer who can visit different planets (e.g., Earth, Mars, Jupiter). A dashboard for each planet displays its Mass (M) and Radius (R). The player must use the formula g = GM/R² in an on-screen calculator to determine the acceleration due to gravity on that planet's surface. After submitting their answer, a 'Test' button drops an apple, and a sensor measures its acceleration, confirming if the player's calculation was correct. This turns the formula into a tool for exploration.",
+              "learningPoints": [
+                "Understanding the formula g = GM/R².",
+                "Learning how the value of 'g' depends on the mass and radius of the planet.",
+                "Calculating and comparing the value of 'g' on different celestial bodies."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 521,
+          "title": "Lesson 6: Equations of Motion for Freely Falling Bodies",
+          "slug": "lesson_6_equations_of_motion_for_freely_falling_bodies",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "521_1",
+              "name": "Freefall Drop",
+              "implementationDetails": "A physics puzzle where the player must drop a package from a helicopter to land on a moving target below. The player is given the height 's' and knows that u=0 and a=g. They must use the correct equation of motion (s = ut + ½gt²) to calculate the time 't' it will take for the package to fall. They must then release the package when the target is 't' seconds away from the drop point. Success depends on correctly applying the equation of motion.",
+              "learningPoints": [
+                "Recognizing that the standard equations of motion apply to free fall, with acceleration 'a' replaced by 'g'.",
+                "Selecting the appropriate equation to solve for an unknown variable (like time or final velocity).",
+                "Applying the equations in a predictive, goal-oriented scenario."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 522,
+          "title": "Lesson 7: The Difference Between Mass and Weight",
+          "slug": "lesson_7_the_difference_between_mass_and_weight",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "522_1",
+              "name": "Interplanetary Transporter",
+              "implementationDetails": "The player places a 50kg crate on a special platform. The platform has two digital displays: 'Mass' and 'Weight'. The platform starts on Earth, where the Mass reads '50 kg' and the Weight reads '490 N' (W=mg, where g=9.8 m/s²). The player then clicks a 'Transport to Moon' button. An animation plays, and the platform appears on the Moon. The player observes that the Mass display still reads '50 kg', but the Weight display has changed to '~81.5 N' (g=1.63 m/s²). This directly and powerfully illustrates that mass is constant while weight is variable.",
+              "learningPoints": [
+                "Defining mass as the amount of matter in an object (constant).",
+                "Defining weight as the force of gravity acting on an object (variable).",
+                "Understanding that weight changes depending on the gravitational field strength (g)."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 523,
+          "title": "Lesson 8: Calculating the Weight of an Object on the Moon",
+          "slug": "lesson_8_calculating_the_weight_of_an_object_on_the_moon",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "523_1",
+              "name": "Lunar Leap",
+              "implementationDetails": "A simple simulation comparing an astronaut's jump on Earth and the Moon. The player presses a 'Jump' button. On Earth, the astronaut jumps to a certain height. On the Moon, using the same jump force, the astronaut leaps six times higher and stays in the air longer. A text overlay explains: 'Your mass is the same, but your weight on the Moon is only 1/6th of your weight on Earth. With the same muscle force, you can overcome your weight much more easily!'",
+              "learningPoints": [
+                "Understanding that the weight of an object on the Moon is about one-sixth of its weight on Earth.",
+                "Relating this difference to the lower mass and radius of the Moon.",
+                "Explaining real-world phenomena like why astronauts can jump higher on the Moon."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 524,
+          "title": "Lesson 9: Thrust and Pressure",
+          "slug": "lesson_9_thrust_and_pressure",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "524_1",
+              "name": "Pressure Pad",
+              "implementationDetails": "The player is given a block weighing 100N (this is the thrust). They must place it on a pressure-sensitive pad. The game has two modes. In Mode 1, the block has a large base area (e.g., 1 m²). The pressure gauge reads 100 Pa (100N/1m²). In Mode 2, the player flips the block onto its narrow edge (e.g., 0.1 m²). The thrust is still 100N, but the pressure gauge now reads 1000 Pa. This allows the player to directly explore the inverse relationship between area and pressure for a constant force.",
+              "learningPoints": [
+                "Defining thrust as the force acting perpendicular to a surface.",
+                "Defining pressure as thrust per unit area (P = F/A).",
+                "Understanding that for the same force, pressure increases as the area of contact decreases."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 525,
+          "title": "Lesson 10: Buoyancy and Buoyant Force",
+          "slug": "lesson_10_buoyancy_and_buoyant_force",
+          "display_order": 10,
+          "games": [
+            {
+              "id": "525_1",
+              "name": "Water's Upthrust",
+              "implementationDetails": "The player has a beach ball and a tub of water. When they place the ball on the water, it floats. The player must then try to push the ball underwater with their finger (cursor). As they push it deeper, a visible upward-pointing arrow labeled 'Buoyant Force' grows stronger, resisting their push. If they release the ball, the buoyant force shoots it back to the surface. This creates an intuitive, interactive understanding of the existence and direction of the buoyant force exerted by a fluid.",
+              "learningPoints": [
+                "Understanding that fluids exert an upward force on objects immersed in them.",
+                "Defining this upward force as upthrust or buoyant force.",
+                "Recognizing that the buoyant force acts in the direction opposite to the force of gravity."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 526,
+          "title": "Lesson 11: Archimedes' Principle",
+          "slug": "lesson_11_archimedes_principle",
+          "display_order": 11,
+          "games": [
+            {
+              "id": "526_1",
+              "name": "Eureka Lab",
+              "implementationDetails": "A virtual lab setup. An object hangs from a spring balance, showing its weight (e.g., 5 N). Next to it is a beaker of water filled to the brim with a spout, which leads to a smaller measuring cylinder. The player slowly lowers the object into the water. As they do, two things happen simultaneously: (1) the reading on the spring balance decreases, and (2) water is displaced through the spout into the measuring cylinder. When the object is fully submerged, the game freezes and highlights the data: 'Loss in weight = 2 N'. It then weighs the displaced water in the cylinder, which also reads '2 N'. This visually proves that the buoyant force equals the weight of the fluid displaced.",
+              "learningPoints": [
+                "Stating Archimedes' Principle.",
+                "Understanding that the buoyant force is equal to the weight of the fluid displaced by the object.",
+                "Observing the relationship between apparent weight, true weight, and buoyant force."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 527,
+          "title": "Lesson 12: Understanding Why Objects Float or Sink using Density",
+          "slug": "lesson_12_understanding_why_objects_float_or_sink_using_density",
+          "display_order": 12,
+          "games": [
+            {
+              "id": "527_1",
+              "name": "Density Diver",
+              "implementationDetails": "The player is given a tank of water (Density: 1.0 g/cm³). A conveyor belt delivers objects, each clearly labeled with its name and density (e.g., Cork: 0.2 g/cm³, Iron: 7.8 g/cm³, Plastic: 0.9 g/cm³, Glass: 2.5 g/cm³). The player must drag each object into one of two bins: 'Floats' or 'Sinks'. After making their choice, an animation shows the object being placed in the water, confirming their prediction. The core mechanic reinforces the simple rule: if object density is less than fluid density, it floats; if greater, it sinks.",
+              "learningPoints": [
+                "Defining density as mass per unit volume.",
+                "Understanding that an object floats if its density is less than the density of the fluid.",
+                "Understanding that an object sinks if its density is greater than the density of the fluid.",
+                "Applying the concept of density to predict the behavior of objects in water."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

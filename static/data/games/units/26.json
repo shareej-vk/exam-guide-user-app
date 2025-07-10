@@ -1,0 +1,299 @@
+{
+  "subject": {
+    "id": 1,
+    "name": "math",
+    "label": "Mathematics"
+  },
+  "units": [
+    {
+      "id": 26,
+      "name": "quadrilaterals",
+      "label": "Quadrilaterals",
+      "lessons": [
+        {
+          "id": 256,
+          "title": "Lesson 1: The Diagonal of a Parallelogram and Congruent Triangles",
+          "slug": "lesson_1_the_diagonal_of_a_parallelogram_and_congruent_triangles",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "256_1",
+              "name": "Congruent parts identifier",
+              "implementationDetails": "Display a picture and given condition by diagonal ahow triangles and part are congruent or not and select property from multiple option",
+              "learningPoints": [
+                "Diagonal identification",
+                "Congurency condition for triangles",
+                "Geometric properties from visualization"
+              ]
+            },
+             {
+              "id": "256_2",
+              "name": "Diagonal plotter",
+              "implementationDetails": "If one diagonal have side then if other have what change ",
+              "learningPoints": [
+                "Diagonal impact and congreuncy",
+                "Part property application",
+                "Geometric formula builder"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 257,
+          "title": "Lesson 2: Property: Opposite Sides of a Parallelogram are Equal",
+          "slug": "lesson_2_property_opposite_sides_of_a_parallelogram_are_equal",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "257_1",
+              "name": "Opposite identifier",
+              "implementationDetails": "In given condition length of opposite side same then which one",
+              "learningPoints": [
+                "Opposite side knowledge",
+                "Application in triangle formula",
+                "Equal side finder"
+              ]
+            },
+            {
+              "id": "257_2",
+              "name": "Equal side theorem tester",
+              "implementationDetails": "In multiple chain of sides which is side of equal in part after",
+              "learningPoints": [
+                "side  property side  identification",
+                "theorem implementation",
+                "Triangles theorems for app"
+              ]
+            },
+            {
+              "id": "257_3",
+              "name": "Missing side calculator",
+              "implementationDetails": "Find missing part of theogram based equation if side known",
+              "learningPoints": [
+                "side  calculating",
+                "Application in numerical property",
+                "Equation based properties for side"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 258,
+          "title": "Lesson 3: Property: Opposite Angles of a Parallelogram are Equal",
+          "slug": "lesson_3_property_opposite_angles_of_a_parallelogram_are_equal",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "258_1",
+              "name": "Angle equal selector",
+              "implementationDetails": "Side angle is there what equal angle in properties are their",
+              "learningPoints": [
+                "angle  identification",
+                "application for equal angle relation",
+                "Side based equal properties"
+              ]
+            },
+            {
+              "id": "258_2",
+              "name": "Missing anggle calculator",
+              "implementationDetails": "If other three angle known which is missig",
+              "learningPoints": [
+                "Angle calculation power",
+                "application of 360 rules",
+                "Theorems in application"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 259,
+          "title": "Lesson 4: Property: Diagonals of a Parallelogram Bisect Each Other",
+          "slug": "lesson_4_property_diagonals_of_a_parallelogram_bisect_each_other",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "259_1",
+              "name": "Diagonal idenifier",
+              "implementationDetails": "Diagnoal of quadrilaateral do part of triangle in what reatio",
+              "learningPoints": [
+                "Diagonal side and triangles",
+                "Transersal base formula",
+                "Application in triangle sides"
+              ]
+            },
+            {
+              "id": "259_2",
+              "name": "Point locator",
+              "implementationDetails": "Draw all digonal and make point so what number and how are",
+              "learningPoints": [
+                "Diagonal drawing",
+                "Point number understanding",
+                "Visual number understanding"
+              ]
+            },
+             {
+              "id": "259_3",
+              "name": "Mid pointer",
+              "implementationDetails": "Given coordinate and select in graph what is the mid coordinate",
+              "learningPoints": [
+                "Cordinate property applicaion",
+                "Cordinate based visualization",
+                "Mid point finding"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 260,
+          "title": "Lesson 5: Condition for a Parallelogram: Equal Opposite Sides",
+          "slug": "lesson_5_condition_for_a_parallelogram_equal_opposite_sides",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "260_1",
+              "name": "What minimum condition",
+              "implementationDetails": " what minimum line combination reqiure to form side",
+              "learningPoints": [
+                "Minimum data understanding",
+                "Sides selection",
+                "Line side relations "
+              ]
+            },
+            {
+              "id": "260_2",
+              "name": "Construction game",
+              "implementationDetails": "Build quadrilateral with equal property and draw what other condition needed with minimum lines",
+              "learningPoints": [
+                "Property condition",
+                "Application of line requirement",
+                "Quadrilateral builder concept"
+              ]
+            }
+          ]
+        },
+        {
+            "id": 261,
+            "title": "Lesson 6: Condition for a Parallelogram: Equal Opposite Angles",
+            "slug": "lesson_6_condition_for_a_parallelogram_equal_opposite_angles",
+            "display_order": 6,
+            "games": [
+              
+              {
+                "id": "261_1",
+                "name": "Pair matching",
+                "implementationDetails": "Given two side and select is angle that side can from parallelogram",
+                "learningPoints": [
+                  "Parallelogram selection in conditions",
+                  "Triangle properties selector",
+                  "Equal rule on shape"
+                ]
+              }
+            ]
+        },
+        {
+            "id": 262,
+            "title": "Lesson 7: Condition for a Parallelogram: Bisecting Diagonals",
+            "slug": "lesson_7_condition_for_a_parallelogram_bisecting_diagonals",
+            "display_order": 7,
+            "games": [
+              {
+                "id": "262_1",
+                "name": "Which condition give diognal bisector",
+                "implementationDetails": "multiple conditions for quad and select one which show  diagonal bi ",
+                "learningPoints": [
+                  "Equal diagnoal rule",
+                  "Bisector point application",
+                  "Parallel rule "
+                ]
+              }
+            ]
+        },
+        {
+            "id": 263,
+            "title": "Lesson 8: Properties of Special Quadrilaterals: Rectangle, Rhombus, and Square",
+            "slug": "lesson_8_properties_of_special_quadrilaterals_rectangle_rhombus_and_square",
+            "display_order": 8,
+            "games": [
+            
+              {
+                "id": "263_1",
+                "name": "Propertry selectr",
+                "implementationDetails": "For multiple conditions or property for which",
+                "learningPoints": [
+                  "Type indentifier",
+                  "Application of types",
+                  "Special condition knowledge"
+                ]
+              },
+               {
+                "id": "263_2",
+                "name": "Visual identifier",
+                "implementationDetails": "Multiple picture which is from quadrilateral",
+                "learningPoints": [
+                  "Shape identifires",
+                  "Geometric applications",
+                  "Visual property recognizarion"
+                ]
+              }
+            ]
+        },
+        {
+            "id": 264,
+            "title": "Lesson 9: The Mid-point Theorem",
+            "slug": "lesson_9_the_mid-point_theorem",
+            "display_order": 9,
+            "games": [
+              {
+                "id": "264_1",
+                "name": "Middle point formula relation",
+                "implementationDetails": "If join middle poinst what relation with long line what with side relation with number and equal value from point name property from other parts",
+                "learningPoints": [
+                  "Line mid point knowledge",
+                  "Relation builder for points",
+                  "Point connection relation"
+                ]
+              },
+              {
+              "id": "264_2",
+              "name": "Minimum data formula",
+              "implementationDetails": "What minimal info requred to for middle point selection from",
+              "learningPoints": [
+                "Mid property identification",
+                "Minimum information identification",
+                "Line mid position determination"
+              ]
+              
+            }
+            ]
+        },
+        {
+            "id": 265,
+            "title": "Lesson 10: The Converse of the Mid-point Theorem",
+            "slug": "lesson_10_the_converse_of_the_mid-point_theorem",
+            "display_order": 10,
+            "games": [
+              {
+                "id": "265_1",
+                "name": "Which propertu make midpoint",
+                "implementationDetails": "In multiple options for side and angle where from middle property build",
+                "learningPoints": [
+                  "Mid-point theorem property",
+                  "Identification rule",
+                  "Property rule for theorem"
+                ]
+              },
+               {
+                "id": "265_2",
+                "name": "Minimum chain selector",
+                "implementationDetails": "Chain for point selector what minimal combination required for mid prope",
+                "learningPoints": [
+                  "Point condition recognition",
+                  "Property minimum requirement",
+                  "Theorems knowledge and application"
+                ]
+              }
+            ]
+        }
+      ]
+    }
+  ]
+}

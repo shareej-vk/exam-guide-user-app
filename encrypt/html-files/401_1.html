@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaporation Optimizer - CBSE Class 9 Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #e9f5db;
+            --card-bg: #ffffff;
+            --primary-color: #4361ee;
+            --accent-color: #f77f00;
+            --particle-color: #0077b6;
+            --text-color: #212529;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --correct-color: #198754;
+            --incorrect-color: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font); background-color: var(--bg-color); color: var(--text-color);
+            padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;
+        }
+
+        .main-container { display: flex; gap: 20px; width: 100%; max-width: 1500px; }
+        .instructions-card {
+            flex: 3; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; align-self: flex-start;
+        }
+        .game-card {
+            flex: 7; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; display: flex;
+            flex-direction: column; align-items: center;
+        }
+        .card-header {
+            font-family: var(--heading-font); font-size: 28px; font-weight: 800; color: var(--primary-color);
+            margin-bottom: 20px; text-align: center; display: inline-block;
+            background: linear-gradient(45deg, #e0fbfc, #caf0f8); padding: 5px 20px; border-radius: 12px;
+        }
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li { margin-bottom: 12px; line-height: 1.6; display: flex; align-items: flex-start; }
+        .instructions-list li::before { content: '🧪'; margin-right: 10px; font-size: 16px; }
+        .instructions-list li b { color: var(--primary-color); }
+        .controls { margin-top: -15px; margin-bottom: 35px; display: flex; gap: 10px; }
+        .btn {
+            font-family: var(--heading-font); font-size: 18px; font-weight: 600;
+            padding: 12px 20px; border: none; border-radius: 12px; cursor: pointer;
+            transition: all 0.3s ease; flex-grow: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .button-group { display: flex; gap: 10px; }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        #check-btn { background: linear-gradient(45deg, #4cc9f0, #4361ee); color: white; padding: 15px 30px; font-size: 20px; margin-top: 20px; }
+
+        .score-box { background-color: #e9ecef; padding: 15px; border-radius: 12px; text-align: center; margin-top: 20px; }
+        .score-box h3 { font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 5px; }
+        #best-time { font-size: 20px; font-weight: bold; }
+        
+        /* Game Area Styles */
+        #initial-message { font-family: var(--heading-font); font-size: 24px; color: #999; height: 500px; display: flex; align-items: center; text-align: center; }
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        
+        .simulation-area {
+            position: relative; width: 100%; max-width: 700px; aspect-ratio: 2 / 1;
+            background-color: #f8f9fa; border: 3px solid #dee2e6; border-radius: 15px;
+        }
+        canvas { width: 100%; height: 100%; }
+        .visual-effects { position: absolute; top: 10px; left: 10px; font-size: 40px; }
+        #sun-effect { transition: text-shadow 0.3s; }
+        #fan-effect { transition: transform 0.3s; display: inline-block; }
+
+        .control-panel { display: flex; justify-content: space-around; flex-wrap: wrap; width: 100%; padding: 15px; background: #e9ecef; border-radius: 12px; margin-top: 20px; gap: 15px; }
+        .slider-group { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+        .slider-group label { font-weight: 600; font-size: 16px; }
+        .slider-group input[type="range"] { width: 120px; }
+        
+        #timer-display { font-family: var(--heading-font); font-size: 24px; color: var(--accent-color); margin-top: 20px; }
+        
+        #quiz-container { display: none; margin-top: 20px; width: 100%; background: #e9f5db; padding: 20px; border-radius: 15px; }
+        #quiz-container h3 { font-family: var(--heading-font); color: var(--correct-color); text-align: center; margin-bottom: 15px; }
+        .quiz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .quiz-item p { font-weight: bold; margin-bottom: 5px; }
+        .quiz-option { display: inline-block; padding: 5px 10px; border: 2px solid #ccc; border-radius: 8px; margin-right: 5px; cursor: pointer; }
+        .quiz-option.selected { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+        .quiz-option.correct { background-color: var(--correct-color); border-color: var(--correct-color); color: white; }
+        .quiz-option.incorrect { background-color: var(--incorrect-color); border-color: var--incorrect-color); color: white; }
+        
+        @media (max-width: 992px) { .main-container { flex-direction: column; } }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">💨 Evaporation Optimizer</h2>
+            <p><strong>Lesson:</strong> Mastering the factors that speed up evaporation!</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Goal</h3>
+            <p style="margin-bottom: 15px;">Your mission is to dry the puddle of water as fast as you can! You have complete control over the weather.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to begin.</li>
+                <li>Use the four <b>sliders</b> to change the conditions: Surface Area, Temperature, Wind Speed, and Humidity.</li>
+                <li>Watch the timer. A lower time is better!</li>
+                <li>After the puddle evaporates, a challenge appears. Try to beat your best time!</li>
+            </ul>
+           
+            <div class="score-box">
+                <h3>🏆 Best Time</h3>
+                <div id="best-time">--.-- s</div>
+            </div>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <div class="button-group">
+                   <button id="start-btn" class="btn">Start</button>
+                   <button id="reset-btn" class="btn">Reset</button>
+               </div>
+           </div>
+            <div id="initial-message">Click 'Start' to begin the evaporation challenge!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="simulation-area" id="simulation-area">
+                    <div class="visual-effects">
+                        <span id="sun-effect">☀️</span>
+                        <span id="fan-effect">🌬️</span>
+                    </div>
+                    <canvas id="simulation-canvas"></canvas>
+                </div>
+                <div id="timer-display">Time: 0.00s</div>
+                <div class="control-panel">
+                    <div class="slider-group">
+                        <label for="area-slider">Surface Area</label>
+                        <input type="range" id="area-slider" min="20" max="100" value="50">
+                    </div>
+                    <div class="slider-group">
+                        <label for="temp-slider">Temperature</label>
+                        <input type="range" id="temp-slider" min="0" max="100" value="50">
+                    </div>
+                    <div class="slider-group">
+                        <label for="wind-slider">Wind Speed</label>
+                        <input type="range" id="wind-slider" min="0" max="100" value="20">
+                    </div>
+                    <div class="slider-group">
+                        <label for="humidity-slider">Humidity</label>
+                        <input type="range" id="humidity-slider" min="0" max="100" value="50">
+                    </div>
+                </div>
+                <div id="quiz-container">
+                    <h3>Final Challenge!</h3>
+                    <p style="text-align:center; margin-bottom:10px;">Set the ideal conditions for the FASTEST evaporation.</p>
+                    <div class="quiz-grid">
+                        <div class="quiz-item" id="q-area"><p>Surface Area</p><span class="quiz-option" data-value="low">Low</span><span class="quiz-option" data-value="high">High</span></div>
+                        <div class="quiz-item" id="q-temp"><p>Temperature</p><span class="quiz-option" data-value="low">Low</span><span class="quiz-option" data-value="high">High</span></div>
+                        <div class="quiz-item" id="q-wind"><p>Wind Speed</p><span class="quiz-option" data-value="low">Low</span><span class="quiz-option" data-value="high">High</span></div>
+                        <div class="quiz-item" id="q-humidity"><p>Humidity</p><span class="quiz-option" data-value="low">Low</span><span class="quiz-option" data-value="high">High</span></div>
+                    </div>
+                    <button id="check-btn" class="btn">Check My Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const canvas = document.getElementById('simulation-canvas');
+    const ctx = canvas.getContext('2d');
+    const sliders = {
+        area: document.getElementById('area-slider'),
+        temp: document.getElementById('temp-slider'),
+        wind: document.getElementById('wind-slider'),
+        humidity: document.getElementById('humidity-slider')
+    };
+    const timerDisplay = document.getElementById('timer-display');
+    const bestTimeDisplay = document.getElementById('best-time');
+    const quizContainer = document.getElementById('quiz-container');
+    const checkBtn = document.getElementById('check-btn');
+
+    // --- Sim State & Constants ---
+    const TOTAL_PARTICLES = 1000;
+    const PARTICLE_RADIUS = 2;
+    let particles = [], airHumidityParticles = [];
+    let animationFrameId, startTime, bestTime = Infinity;
+    let puddleBounds = { x: 0, y: 0, width: 0, height: 0 };
+    
+    // --- Particle Class ---
+    class Particle {
+        constructor(x, y, isHumidity=false) {
+            this.x = x; this.y = y; this.radius = PARTICLE_RADIUS;
+            this.isHumidity = isHumidity;
+            this.vx = (Math.random() - 0.5) * 2; this.vy = (Math.random() - 0.5) * 2;
+        }
+        update() {
+            if(!this.isHumidity) { // Puddle particle
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < puddleBounds.x || this.x > puddleBounds.x + puddleBounds.width) this.vx *= -1;
+                if (this.y < puddleBounds.y || this.y > puddleBounds.y + puddleBounds.height) this.vy *= -1;
+            }
+        }
+        draw(ctx) {
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, 2*Math.PI); 
+            ctx.fillStyle = this.isHumidity ? 'rgba(0,119,182,0.3)' : '#0077b6';
+            ctx.fill();
+        }
+    }
+    
+    // --- Core Functions ---
+    function updateVisuals() {
+        const temp = parseInt(sliders.temp.value, 10);
+        const wind = parseInt(sliders.wind.value, 10);
+        // Sun
+        document.getElementById('sun-effect').style.textShadow = `0 0 ${temp / 5}px #fca311`;
+        // Fan
+        document.getElementById('fan-effect').style.transform = `rotate(${wind * 3.6}deg)`;
+        // Puddle Shape
+        const area = parseInt(sliders.area.value, 10);
+        const aspectRatio = (area / 100) * 4 + 1; // From 1 to 5
+        const totalArea = TOTAL_PARTICLES * 15;
+        puddleBounds.width = Math.sqrt(totalArea * aspectRatio);
+        puddleBounds.height = totalArea / puddleBounds.width;
+        puddleBounds.x = (canvas.width - puddleBounds.width) / 2;
+        puddleBounds.y = canvas.height - puddleBounds.height;
+        // Humidity particles
+        const humidity = parseInt(sliders.humidity.value, 10);
+        airHumidityParticles = [];
+        for(let i = 0; i < humidity; i++) {
+            airHumidityParticles.push(new Particle(Math.random()*canvas.width, Math.random()*puddleBounds.y, true));
+        }
+    }
+
+    function initParticles() {
+        particles = [];
+        updateVisuals();
+        for(let i = 0; i < TOTAL_PARTICLES; i++) {
+            const x = puddleBounds.x + Math.random() * puddleBounds.width;
+            const y = puddleBounds.y + Math.random() * puddleBounds.height;
+            particles.push(new Particle(x,y));
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(ctx); });
+        airHumidityParticles.forEach(p => p.draw(ctx));
+
+        // Evaporation Logic
+        const tempFactor = 1 + (parseInt(sliders.temp.value, 10) / 100) * 4; // 1 to 5
+        const windFactor = 1 + (parseInt(sliders.wind.value, 10) / 100);    // 1 to 2
+        const humidityFactor = 1 - (parseInt(sliders.humidity.value, 10) / 100) * 0.9; // 1 to 0.1
+        const surfaceAreaFactor = puddleBounds.width / 200; // Larger width, more evaporation
+        
+        const evaporationRate = Math.floor(tempFactor * windFactor * humidityFactor * surfaceAreaFactor);
+        
+        for(let i=0; i < evaporationRate && particles.length > 0; i++) {
+            particles.pop();
+        }
+        
+        // Timer update
+        const elapsed = (Date.now() - startTime) / 1000;
+        timerDisplay.textContent = `Time: ${elapsed.toFixed(2)}s`;
+
+        if (particles.length === 0) {
+            cancelAnimationFrame(animationFrameId);
+            if (elapsed < bestTime) {
+                bestTime = elapsed;
+                bestTimeDisplay.textContent = `${elapsed.toFixed(2)} s`;
+            }
+            quizContainer.style.display = 'block';
+        } else {
+            animationFrameId = requestAnimationFrame(animate);
+        }
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none'; labWrapper.style.display = 'flex';
+        quizContainer.style.display = 'none';
+        document.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('correct', 'incorrect'));
+        
+        const simAreaEl = document.querySelector('.simulation-area');
+        canvas.width = simAreaEl.clientWidth; canvas.height = simAreaEl.clientHeight;
+        
+        initParticles();
+        startTime = Date.now();
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        animate();
+    }
+    
+    // --- Event Listeners ---
+    Object.values(sliders).forEach(slider => slider.addEventListener('input', updateVisuals));
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+
+    document.querySelectorAll('.quiz-option').forEach(option => {
+        option.addEventListener('click', (e) => {
+            const parent = e.target.parentElement;
+            parent.querySelectorAll('.quiz-option').forEach(o => o.classList.remove('selected'));
+            e.target.classList.add('selected');
+        });
+    });
+
+    checkBtn.addEventListener('click', () => {
+        const answers = { area: 'high', temp: 'high', wind: 'high', humidity: 'low' };
+        for(const key in answers) {
+            const item = document.getElementById(`q-${key}`);
+            const selected = item.querySelector('.quiz-option.selected');
+            if (selected) {
+                if (selected.dataset.value === answers[key]) {
+                    selected.classList.add('correct');
+                    selected.classList.remove('incorrect');
+                } else {
+                    selected.classList.add('incorrect');
+                    selected.classList.remove('correct');
+                }
+            }
+        }
+    });
+
+    window.onload = () => { labWrapper.style.display = 'none'; };
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

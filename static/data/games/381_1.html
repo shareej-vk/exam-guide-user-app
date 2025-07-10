@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matter Sorter Game - CBSE Class 9 Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f7ff;
+            --card-bg: #ffffff;
+            --primary-color: #007bff;
+            --accent-color: #ffc107;
+            --text-color: #333;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --correct-color: #28a745;
+            --incorrect-color: #dc3545;
+            --correct-glow: 0 0 15px rgba(40, 167, 69, 0.7);
+            --incorrect-glow: 0 0 15px rgba(220, 53, 69, 0.7);
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .instructions-card {
+            flex: 3; /* 30% */
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e0e0e0;
+        }
+
+        .game-card {
+            flex: 7; /* 70% */
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 550px;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #e3f2fd, #bbdefb);
+            padding: 5px 20px;
+            border-radius: 12px;
+        }
+
+        .instructions-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .instructions-list li {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .instructions-list li::before {
+            content: '👉';
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        
+        .instructions-list li b {
+            color: var(--primary-color);
+        }
+
+        .game-controls {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-grow: 1;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        #start-btn {
+            background-color: var(--correct-color);
+            color: white;
+        }
+        #start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+        }
+        
+        #reset-btn {
+            background-color: var(--accent-color);
+            color: #333;
+        }
+        #reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+        }
+        
+        .score-container {
+            background: #e9ecef;
+            padding: 10px 25px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 200px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .score-container h3 {
+            font-family: var(--heading-font);
+            font-size: 22px;
+            color: #495057;
+        }
+        
+        #score {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        /* Game Area Styles */
+        #conveyor-belt {
+            width: 100%;
+            height: 120px;
+            background: #d1e7dd;
+            border: 3px dashed #a3cfbb;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+
+        .item {
+            padding: 15px 25px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: grab;
+            user-select: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: center;
+            border: 2px solid #e6a700;
+        }
+
+        .item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .bins-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .bin {
+            width: 45%;
+            height: 150px;
+            border: 3px dashed grey;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .bin h2 {
+            font-family: var(--heading-font);
+            font-size: 32px;
+            color: grey;
+            transition: color 0.3s;
+        }
+        
+        .bin.drag-over {
+            border-style: solid;
+            transform: scale(1.05);
+        }
+        
+        #matter-bin.drag-over {
+            border-color: var(--primary-color);
+            background-color: #e3f2fd;
+        }
+        #matter-bin.drag-over h2 {
+            color: var(--primary-color);
+        }
+        
+        #not-matter-bin.drag-over {
+            border-color: #fd7e14;
+            background-color: #fff3e0;
+        }
+        #not-matter-bin.drag-over h2 {
+            color: #fd7e14;
+        }
+        
+        .bin.correct {
+            border-color: var(--correct-color);
+            background-color: #d4edda;
+            box-shadow: var(--correct-glow);
+        }
+        
+        .bin.incorrect {
+            border-color: var(--incorrect-color);
+            background-color: #f8d7da;
+            box-shadow: var(--incorrect-glow);
+        }
+        
+        #feedback-area {
+            width: 100%;
+            min-height: 80px;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+
+        .feedback-correct {
+            color: var(--correct-color);
+            background-color: #e2f9e6;
+        }
+        
+        .feedback-incorrect {
+            color: var(--incorrect-color);
+            background-color: #fbe5e7;
+        }
+        
+        #game-over-message {
+            font-family: var(--heading-font);
+            font-size: 36px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">🧪 Matter Sorter</h2>
+            <p><strong>Lesson:</strong> Defining matter as anything that has mass and occupies volume.</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to begin the challenge!</li>
+                <li>An item will appear on the conveyor belt.</li>
+                <li><b>Drag</b> the item and <b>drop</b> it into the correct bin: is it 'Matter' or 'Not Matter'?</li>
+                <li>Remember: <b>Matter</b> is anything that has mass and takes up space.</li>
+                <li>Good luck, Scientist! 👩‍🔬</li>
+            </ul>
+
+        </div>
+
+        <div class="game-card">
+            <div id="conveyor-belt">
+                <div id="start-message">Click 'Start Game' to begin!</div>
+            </div>
+            
+            <div class="bins-container">
+                <div id="matter-bin" class="bin"><h2>Matter</h2></div>
+                <div id="not-matter-bin" class="bin"><h2>Not Matter</h2></div>
+            </div>
+
+            <div id="feedback-area"></div>
+            <div class="game-controls">
+                <div class="controls">
+                    <button id="start-btn" class="btn">Start Game</button>
+                    <button id="reset-btn" class="btn">Reset</button>
+                </div>
+                <div class="score-container">
+                    <h3>Your Score</h3>
+                    <p id="score">0 / 0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const gameItems = [
+            { id: 'item1', name: 'A Rock', type: 'matter', explanation: 'Correct! A rock has weight (mass) and takes up space, so it is matter.' },
+            { id: 'item2', name: 'Air in a Balloon', type: 'matter', explanation: 'You got it! Air is a gas. It has mass and fills the volume of the balloon.' },
+            { id: 'item3', name: 'A Glass of Water', type: 'matter', explanation: 'Exactly! Water is a liquid that has mass and takes up space in the glass.' },
+            { id: 'item4', name: 'Smell of Perfume', type: 'matter', explanation: 'Great! The smell comes from tiny, invisible particles of the perfume that spread in the air. These particles are matter!' },
+            { id: 'item5', name: 'A Beam of Light', type: 'not-matter', explanation: 'Correct! Light is a form of energy. It does not have mass or take up volume.' },
+            { id: 'item6', name: 'Love', type: 'not-matter', explanation: 'Right! Love is an emotion or a feeling. You can\'t weigh it or measure its volume.' },
+            { id: 'item7', name: 'An Idea', type: 'not-matter', explanation: 'Perfect! An idea is a thought. It doesn\'t have mass or occupy space.' },
+            { id: 'item8', name: 'Heat from a Fire', type: 'not-matter', explanation: 'Exactly! Heat is a form of energy, not matter. It has no mass.' }
+        ];
+
+        let currentItemIndex = 0;
+        let score = 0;
+        let shuffledItems = [];
+
+        const startBtn = document.getElementById('start-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const conveyorBelt = document.getElementById('conveyor-belt');
+        const matterBin = document.getElementById('matter-bin');
+        const notMatterBin = document.getElementById('not-matter-bin');
+        const feedbackArea = document.getElementById('feedback-area');
+        const scoreDisplay = document.getElementById('score');
+        
+        startBtn.addEventListener('click', startGame);
+        resetBtn.addEventListener('click', startGame);
+
+        function startGame() {
+            currentItemIndex = 0;
+            score = 0;
+            shuffledItems = [...gameItems].sort(() => Math.random() - 0.5);
+            updateScore();
+            feedbackArea.innerHTML = '';
+            feedbackArea.className = '';
+            displayNextItem();
+            
+            // Add drag listeners to bins
+            [matterBin, notMatterBin].forEach(bin => {
+                bin.addEventListener('dragover', handleDragOver);
+                bin.addEventListener('dragleave', handleDragLeave);
+                bin.addEventListener('drop', handleDrop);
+            });
+        }
+
+        function displayNextItem() {
+            conveyorBelt.innerHTML = '';
+            if (currentItemIndex < shuffledItems.length) {
+                const item = shuffledItems[currentItemIndex];
+                const itemElement = document.createElement('div');
+                itemElement.id = item.id;
+                itemElement.className = 'item';
+                itemElement.draggable = true;
+                itemElement.innerText = item.name;
+                itemElement.addEventListener('dragstart', handleDragStart);
+                conveyorBelt.appendChild(itemElement);
+            } else {
+                conveyorBelt.innerHTML = `<div id="game-over-message">🎉 Well Done! Game Over! 🎉</div>`;
+                feedbackArea.innerHTML = `You correctly sorted ${score} out of ${shuffledItems.length} items.`;
+                feedbackArea.className = 'feedback-correct';
+            }
+        }
+
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.id);
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('drag-over');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const droppedItemId = e.dataTransfer.getData('text/plain');
+            const draggedElement = document.getElementById(droppedItemId);
+            draggedElement.classList.remove('dragging');
+            
+            const dropZone = e.currentTarget;
+            dropZone.classList.remove('drag-over');
+
+            const item = shuffledItems.find(i => i.id === droppedItemId);
+            const correctBinId = item.type === 'matter' ? 'matter-bin' : 'not-matter-bin';
+
+            if (dropZone.id === correctBinId) {
+                score++;
+                feedbackArea.innerHTML = `✅ ${item.explanation}`;
+                feedbackArea.className = 'feedback-correct';
+                dropZone.classList.add('correct');
+            } else {
+                feedbackArea.innerHTML = `❌ Oops! ${item.name} is ${item.type === 'matter' ? '' : 'not '}matter. <br> ${item.explanation}`;
+                feedbackArea.className = 'feedback-incorrect';
+                dropZone.classList.add('incorrect');
+            }
+            
+            currentItemIndex++;
+            updateScore();
+            
+            // Remove the item visual and prepare for the next
+            draggedElement.style.display = 'none';
+
+            setTimeout(() => {
+                dropZone.classList.remove('correct', 'incorrect');
+                feedbackArea.innerHTML = '';
+                feedbackArea.className = '';
+                displayNextItem();
+            }, 3000);
+        }
+
+        function updateScore() {
+            scoreDisplay.textContent = `${score} / ${shuffledItems.length}`;
+        }
+
+    </script>
+</body>
+</html>
+<!--end-of-code-block-->

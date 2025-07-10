@@ -1,0 +1,149 @@
+{
+  "subject": {
+    "id": 1,
+    "name": "math",
+    "label": "Mathematics"
+  },
+  "units": [
+    {
+      "id": 30,
+      "name": "statistics",
+      "label": "Statistics",
+      "lessons": [
+        {
+          "id": 285,
+          "title": "Lesson 1: Bar Graphs",
+          "slug": "lesson_1_bar_graphs",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "285_1",
+              "name": "Graph the selector",
+              "implementationDetails": "Given type to bar graph and draw appropriate length and correct bar",
+              "learningPoints": [
+                "What side to map with value",
+                "Application properties bar",
+                "Graph propertional rules"
+              ]
+            },
+              {
+              "id": "285_2",
+              "name": "Data identifier",
+              "implementationDetails": "Multiple bar graph set what correct data",
+              "learningPoints": [
+                "Bar relation in length data recognition",
+                "Value identification on axis application",
+                "Visually check power"
+              ]
+              
+            }
+          ]
+        },
+        {
+          "id": 286,
+          "title": "Lesson 2: Histograms with Uniform Width",
+          "slug": "lesson_2_histograms_with_uniform_width",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "286_1",
+              "name": "Width data generator",
+              "implementationDetails": "Minimum range of data with value give graph size for all bar by number data to set max and other",
+              "learningPoints": [
+                "Range calculation histogram",
+                "Data mapping",
+                "Equal part calculation formula"
+              ]
+            },
+            {
+              "id": "286_2",
+              "name": "Axe builder",
+              "implementationDetails": "Which axis what type value",
+              "learningPoints": [
+                "Axis property recognization",
+                "Scale application for mapping",
+                "Variable and fix relation check"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 287,
+          "title": "Lesson 3: Histograms with Varying Widths",
+          "slug": "lesson_3_histograms_with_varying_widths",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "287_1",
+              "name": "Histogram property finder",
+              "implementationDetails": "What changes in line need to show data",
+              "learningPoints": [
+                "Frequency check",
+                "Line and data propertiy application ",
+                "Length relation in theorem"
+              ]
+            },
+            {
+              "id": "287_2",
+              "name": "Minimum base identifier",
+              "implementationDetails": "By calculation with value and all info get what is minimum for that and all",
+              "learningPoints": [
+                "Number recognizatiin",
+                "Minimum base requirement",
+                "Width side to line number"
+              ]
+            },
+            {
+              "id": "287_3",
+              "name": "What will side of rec",
+              "implementationDetails": "Select that ratio",
+              "learningPoints": [
+                "Side relation to number",
+                "Rectangle properties application by rule",
+                "Theorem of recangle and number selection "
+              ]
+            }
+          ]
+        },
+        {
+          "id": 288,
+          "title": "Lesson 4: Frequency Polygons",
+          "slug": "lesson_4_frequency_polygons",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "288_1",
+              "name": "Polygon path",
+              "implementationDetails": "If all line from how shape make",
+              "learningPoints": [
+                "Understanding shape type",
+                "Angle to segment",
+                "Shape name for properties in lines "
+              ]
+            },
+            {
+              "id": "288_2",
+              "name": "Triangle shape recognition",
+              "implementationDetails": "How area same with triangle shape recognation with same chain or link theorem",
+              "learningPoints": [
+                "Area understanding",
+                "Shape recognition",
+                "Chain theorem property"
+              ]
+            },
+            {
+              "id": "288_3",
+              "name": "What middle line can add side for new shape",
+              "implementationDetails": "Select best line in middle for triangle to find",
+              "learningPoints": [
+                "Triangles properties",
+                "Middle selection chain relation formula",
+                "Triangle base visual application"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

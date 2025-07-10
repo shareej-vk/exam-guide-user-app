@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liquid Flow Lab - CBSE Class 9 Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f8ff;
+            --card-bg: #ffffff;
+            --primary-color: #0077b6; /* Blue for liquid */
+            --accent-color: #00b4d8; /* Brighter blue for pressure */
+            --particle-color: #03045e;
+            --text-color: #333;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --correct-color: #198754;
+            --incorrect-color: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            --mark-color: #d90429; /* Red for volume mark */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font); background-color: var(--bg-color); color: var(--text-color);
+            padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;
+        }
+
+        .main-container { display: flex; gap: 20px; width: 100%; max-width: 1400px; }
+        .instructions-card {
+            flex: 3; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; align-self: flex-start;
+        }
+        .game-card {
+            flex: 7; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; display: flex;
+            flex-direction: column; align-items: center;
+        }
+        .card-header {
+            font-family: var(--heading-font); font-size: 28px; font-weight: 800; color: var(--primary-color);
+            margin-bottom: 20px; text-align: center; display: inline-block;
+            background: linear-gradient(45deg, #e0f7fa, #caf0f8); padding: 5px 20px; border-radius: 12px;
+        }
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 12px; line-height: 1.6; display: flex; align-items: flex-start;
+        }
+        .instructions-list li::before { content: '💧'; margin-right: 10px; font-size: 16px; }
+        .instructions-list li b { color: var(--primary-color); }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 450px; /* Match new sim area width */
+        }
+        .btn {
+            font-family: var(--heading-font); font-size: 18px; font-weight: 600;
+            padding: 12px 20px; border: none; border-radius: 12px; cursor: pointer;
+            transition: all 0.3s ease; flex-grow: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        
+        /* Game Area Styles */
+        #initial-message {
+            font-family: var(--heading-font); font-size: 24px; color: #999;
+            height: 450px; /* Match new sim area height */
+            display: flex; align-items: center; text-align: center;
+        }
+        .lab-wrapper {
+            width: 100%; display: flex; flex-direction: column; align-items: center;
+        }
+        .main-simulation-area {
+            position: relative;
+            width: 100%;
+            max-width: 450px; /* Reduced from 500px */
+            aspect-ratio: 1/1;
+            background-color: #f8f9fa;
+            border: 3px solid #dee2e6;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        canvas { width: 100%; height: 100%; }
+        #piston {
+            position: absolute; top: -100px; left: 5%; width: 90%; height: 50px;
+            background: linear-gradient(#c6c6c6, #a1a1a1); border: 4px solid #555;
+            border-radius: 10px; transition: top 0.5s ease-out;
+        }
+        
+        .shaking {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both infinite;
+        }
+        @keyframes shake {
+          10%, 90% { transform: translate3d(-1px, 0, 0); }
+          20%, 80% { transform: translate3d(2px, 0, 0); }
+          30%, 50%, 70% { transform: translate3d(-2px, 0, 0); }
+          40%, 60% { transform: translate3d(2px, 0, 0); }
+        }
+
+        .lab-bench {
+            width: 100%; margin-top: 20px; display: flex; justify-content: space-around; align-items: center;
+            padding: 15px; background: #e9ecef; border-radius: 12px;
+        }
+        .lab-bench .btn {
+            background-color: var(--accent-color); color: white;
+        }
+        .lab-bench .btn:disabled { background-color: #999; cursor: not-allowed; }
+        .volume-meter { font-family: var(--heading-font); font-size: 20px; color: var(--primary-color); }
+
+        #feedback-box {
+            margin-top: 20px; padding: 15px; background-color: #e0f7fa; border-radius: 12px;
+            width: 100%; min-height: 50px; text-align: center; visibility: hidden;
+            font-weight: 600; color: #003049;
+        }
+        #feedback-box.visible { visibility: visible; }
+        
+        /* Question Area */
+        #quiz-container { display: none; margin-top: 20px; width: 100%; }
+        #quiz-container h3 { font-family: var(--heading-font); color: var(--primary-color); text-align: center; margin-bottom: 15px; }
+        .quiz-options { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .quiz-btn { background-color: var(--card-bg); border: 2px solid var(--primary-color); color: var(--primary-color); }
+        .quiz-btn.correct { background-color: var(--correct-color); border-color: var(--correct-color); color: white; }
+        .quiz-btn.incorrect { background-color: var(--incorrect-color); border-color: var(--incorrect-color); color: white; }
+
+        @media (max-width: 992px) {
+            .main-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">🧪 Liquid Flow Lab</h2>
+            <p><strong>Lesson:</strong> Uncovering the secrets of liquids!</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Experiment</h3>
+            <p style="margin-bottom: 15px;">Liquids are fascinating! They can flow and change shape, but they always take up the same amount of space (volume). Let's find out why.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start Lab</b> to begin.</li>
+                <li>Use the <b>"Pour Into..."</b> buttons to see the liquid in different containers.</li>
+                <li>Watch how the particles settle at the <b>100 mL mark</b> each time. The level changes, but the volume doesn't!</li>
+                <li>Use the <b>"Compress"</b> tool to see what happens when you apply pressure.</li>
+                <li>After you've tested everything, a final quiz will pop up!</li>
+            </ul>
+             <div id="quiz-container">
+                <h3>Lab Report!</h3>
+                <p style="text-align:center; margin-bottom:10px;">Based on your experiment, which is true for liquids?</p>
+                <div class="quiz-options">
+                    <button class="btn quiz-btn" data-correct="false">Fixed shape, fixed volume</button>
+                    <button class="btn quiz-btn" data-correct="true">No fixed shape, but fixed volume</button>
+                    <button class="btn quiz-btn" data-correct="false">No fixed shape, no fixed volume</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start Lab</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start Lab' to get the equipment ready!</div>
+            <div class="lab-wrapper" id="lab-wrapper" style="display: none;">
+                <div class="main-simulation-area">
+                    <canvas id="simulation-canvas"></canvas>
+                    <div id="piston"></div>
+                </div>
+                <div class="lab-bench">
+                    <div class="volume-meter">Volume: 100 mL</div>
+                    <div class="tool-controls" id="tool-controls" style="margin-right: 72px;">
+                        <button id="pour-beaker" class="btn" data-shape="beaker">Pour into Beaker</button>
+                        <button id="pour-flask" class="btn" data-shape="flask">Pour into Flask</button>
+                        <button id="pour-tube" class="btn" data-shape="tube">Pour into Tube</button>
+                    </div>
+                     <button id="compress-btn" class="btn">Compress</button>
+                </div>
+                <div id="feedback-box"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const canvas = document.getElementById('simulation-canvas');
+    const ctx = canvas.getContext('2d');
+    const piston = document.getElementById('piston');
+    const compressBtn = document.getElementById('compress-btn');
+    
+    const pourBtns = document.querySelectorAll('.tool-controls .btn');
+    const feedbackBox = document.getElementById('feedback-box');
+    const quizContainer = document.getElementById('quiz-container');
+
+    // --- Simulation Constants & State ---
+    const NUM_PARTICLES = 170; 
+    const PARTICLE_RADIUS = 5; 
+    const PARTICLE_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim();
+    const PRESSED_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim();
+    const MARK_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--mark-color').trim();
+    const GRAVITY = 0.05;
+    const REPULSION = 0.1;
+    let particles = [];
+    let animationFrameId;
+    let currentContainerShape = 'beaker';
+    let toolsUsed = { pour: false, compress: false };
+    let isCompressing = false; 
+
+    // --- Container Shape Definitions (as boundaries) ---
+    const containerShapes = {
+        beaker: (p, w, h) => {
+            if (p.x < p.radius) { p.x = p.radius; p.vx *= -0.5; }
+            if (p.x > w - p.radius) { p.x = w - p.radius; p.vx *= -0.5; }
+            if (p.y > h - p.radius) { p.y = h - p.radius; p.vy *= -0.5; }
+        },
+        flask: (p, w, h) => {
+            const bottomY = h - p.radius;
+            const neckX1 = w * 0.4; const neckX2 = w * 0.6; const neckY = h * 0.4;
+            if (p.y > bottomY) { p.y = bottomY; p.vy *= -0.5; }
+            if (p.y > neckY) { 
+                const slopeLeft = (neckY - h) / (neckX1 - 0);
+                const boundaryXLeft = (p.y - h) / slopeLeft;
+                if (p.x < boundaryXLeft + p.radius) { p.x = boundaryXLeft + p.radius; p.vx *= -0.8; }
+                const slopeRight = (neckY - h) / (neckX2 - w);
+                const boundaryXRight = (p.y - h) / slopeRight + w;
+                 if (p.x > boundaryXRight - p.radius) { p.x = boundaryXRight - p.radius; p.vx *= -0.8; }
+            } else { 
+                if (p.x < neckX1 + p.radius) { p.x = neckX1 + p.radius; p.vx *= -0.5; }
+                if (p.x > neckX2 - p.radius) { p.x = neckX2 - p.radius; p.vx *= -0.5; }
+            }
+        },
+        tube: (p, w, h) => {
+            if (p.x < w * 0.3 + p.radius) { p.x = w * 0.3 + p.radius; p.vx *= -0.5; }
+            if (p.x > w * 0.7 - p.radius) { p.x = w * 0.7 - p.radius; p.vx *= -0.5; }
+            if (p.y > h - p.radius) { p.y = h - p.radius; p.vy *= -0.5; }
+        }
+    };
+
+    // --- Particle Class ---
+    class Particle {
+        constructor(x, y) { this.x = x; this.y = y; this.vx = 0; this.vy = 0; this.radius = PARTICLE_RADIUS; }
+        update() {
+            this.vy += GRAVITY;
+            this.x += this.vx; this.y += this.vy;
+            this.vx *= 0.99; this.vy *= 0.99;
+
+            if (isCompressing) {
+                const pistonBottomY = 5 + 50 + this.radius; 
+                if (this.y < pistonBottomY) { this.y = pistonBottomY; this.vy *= -0.8; }
+                this.x += (Math.random() - 0.5) * 2;
+                this.y += (Math.random() - 0.5) * 2;
+            }
+            containerShapes[currentContainerShape](this, canvas.width, canvas.height);
+        }
+        applyRepulsion(otherParticles) {
+            const currentRepulsion = isCompressing ? REPULSION * 2 : REPULSION;
+            otherParticles.forEach(other => {
+                if (this === other) return;
+                const dx = other.x - this.x; const dy = other.y - this.y;
+                const dist = Math.hypot(dx, dy);
+                if (dist < this.radius * 2) {
+                    this.vx -= (dx / dist) * currentRepulsion; 
+                    this.vy -= (dy / dist) * currentRepulsion;
+                }
+            });
+        }
+        draw(ctx) {
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = isCompressing ? PRESSED_COLOR : PARTICLE_COLOR; 
+            ctx.fill();
+        }
+    }
+    
+    // --- Core Functions ---
+    function resetParticlesForPour(shape) {
+        const w = canvas.width;
+        let pourXStart, pourWidth;
+        switch (shape) {
+            case 'flask': pourXStart = w * 0.4; pourWidth = w * 0.2; break;
+            case 'tube': pourXStart = w * 0.3; pourWidth = w * 0.4; break;
+            default: pourXStart = 0; pourWidth = w; break;
+        }
+        particles.forEach(p => {
+            p.x = pourXStart + Math.random() * pourWidth;
+            p.y = Math.random() * -50; 
+            p.vx = (Math.random() - 0.5); p.vy = Math.random();
+        });
+    }
+    
+    function drawLabware(ctx, w, h) {
+        ctx.strokeStyle = '#adb5bd'; ctx.lineWidth = 6; ctx.lineCap = 'round';
+        ctx.beginPath();
+        switch(currentContainerShape) {
+            case 'beaker':
+                ctx.moveTo(1, h); ctx.lineTo(1, h * 0.1);
+                ctx.moveTo(w-1, h); ctx.lineTo(w-1, h * 0.1);
+                ctx.moveTo(1, h-1); ctx.lineTo(w-1, h-1);
+                break;
+            case 'flask':
+                const neckX1 = w * 0.4; const neckX2 = w * 0.6; const neckY = h * 0.4;
+                ctx.moveTo(1, h); ctx.lineTo(neckX1, neckY); ctx.lineTo(neckX1, 0);
+                ctx.moveTo(neckX2, 0); ctx.lineTo(neckX2, neckY); ctx.lineTo(w-1, h);
+                ctx.moveTo(1, h-1); ctx.lineTo(w-1, h-1);
+                break;
+            case 'tube':
+                 const tubeX1 = w * 0.3; const tubeX2 = w * 0.7;
+                 ctx.moveTo(tubeX1, h); ctx.lineTo(tubeX1, 0);
+                 ctx.moveTo(tubeX2, h); ctx.lineTo(tubeX2, 0);
+                 ctx.moveTo(tubeX1, h-1); ctx.lineTo(tubeX2, h-1);
+                break;
+        }
+        ctx.stroke();
+
+        ctx.strokeStyle = MARK_COLOR; ctx.fillStyle = MARK_COLOR; ctx.lineWidth = 3;
+        ctx.font = 'bold 16px "Poppins"'; ctx.textAlign = 'left';
+        let markY, markXStart, markXEnd, textX;
+        switch(currentContainerShape) {
+            case 'beaker': markY = h * 0.6; markXStart = w * 0.8; markXEnd = w; textX = w * 0.65; break;
+            case 'tube': markY = h * 0.25; markXStart = w * 0.7; markXEnd = w * 0.75; textX = w * 0.4; break;
+            case 'flask': markY = h * 0.55; markXStart = w * 0.8; markXEnd = w; textX = w * 0.65; break;
+        }
+        ctx.beginPath();
+        ctx.moveTo(markXStart, markY); ctx.lineTo(markXEnd, markY);
+        ctx.stroke();
+        ctx.fillText('100 mL', textX, markY + 5);
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawLabware(ctx, canvas.width, canvas.height); 
+        particles.forEach(p => { p.applyRepulsion(particles); });
+        particles.forEach(p => { p.update(); p.draw(ctx); });
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    
+    function setContainer(shape) {
+        currentContainerShape = shape;
+        resetParticlesForPour(shape); 
+        pourBtns.forEach(btn => btn.disabled = (btn.dataset.shape === shape));
+        feedbackBox.innerHTML = `The liquid takes the new shape. Notice how the particles settle right at the <b>100 mL mark</b>! The shape and level change, but the volume stays the same.`;
+        feedbackBox.classList.add('visible');
+        toolsUsed.pour = true;
+        checkShowQuiz();
+    }
+
+    function tryCompress() {
+        compressBtn.disabled = true;
+        isCompressing = true; 
+        piston.style.top = '5px';
+        piston.classList.add('shaking'); 
+        
+        feedbackBox.textContent = "It barely compresses! The agitated particles push back, showing how liquids resist compression.";
+        feedbackBox.classList.add('visible');
+
+        setTimeout(() => {
+            piston.style.top = '-100px';
+            piston.classList.remove('shaking'); 
+            compressBtn.disabled = false;
+            isCompressing = false;
+            toolsUsed.compress = true;
+            checkShowQuiz();
+        }, 2500);
+    }
+    
+    function checkShowQuiz() {
+        if (toolsUsed.pour && toolsUsed.compress) {
+            quizContainer.style.display = 'block';
+        }
+    }
+    
+    function handleQuizAnswer(e) {
+        const isCorrect = e.target.dataset.correct === 'true';
+        document.querySelectorAll('.quiz-btn').forEach(btn => {
+            btn.disabled = true;
+            if (btn.dataset.correct === 'true') btn.classList.add('correct');
+            else btn.classList.add('incorrect');
+        });
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        quizContainer.style.display = 'none';
+        feedbackBox.classList.remove('visible');
+        document.querySelectorAll('.quiz-btn').forEach(b => {
+            b.classList.remove('correct', 'incorrect'); b.disabled = false;
+        });
+        toolsUsed = { pour: false, compress: false };
+
+        const simArea = document.querySelector('.main-simulation-area');
+        canvas.width = simArea.clientWidth; canvas.height = simArea.clientHeight;
+
+        if (particles.length === 0) {
+            for (let i = 0; i < NUM_PARTICLES; i++) {
+                particles.push(new Particle(0,0));
+            }
+        }
+
+        setContainer('beaker');
+        if (!animationFrameId) animate();
+    }
+    
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', () => {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null; particles = []; 
+        isCompressing = false;
+        initialMessage.style.display = 'flex';
+        labWrapper.style.display = 'none';
+        quizContainer.style.display = 'none';
+        piston.classList.remove('shaking');
+    });
+    pourBtns.forEach(btn => btn.addEventListener('click', () => setContainer(btn.dataset.shape)));
+    compressBtn.addEventListener('click', tryCompress);
+    document.querySelectorAll('.quiz-btn').forEach(btn => btn.addEventListener('click', handleQuizAnswer));
+    
+    window.onload = () => { labWrapper.style.display = 'none'; };
+</script>
+</body>
+</html>

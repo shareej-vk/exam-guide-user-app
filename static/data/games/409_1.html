@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light Path Lab - Properties of a Solution</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #343a40;
+            --card-bg: #f8f9fa;
+            --text-color: #212529;
+            --primary-color: #d90429; /* Laser Red */
+            --accent-color: #ffc300; /* Light Beam Yellow */
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+            --solution-bg: rgba(0, 180, 216, 0.1);
+            --colloid-bg: rgba(233, 236, 239, 0.6);
+            --suspension-bg: rgba(198, 172, 143, 0.5);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #ffccd5, #fff0f3);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .instructions-list li::before {
+            content: '🔦';
+            margin-right: 12px;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+        .instructions-list b { color: var(--primary-color); }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: #2a9d8f; color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .btn:active { transform: translateY(0); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lab-bench {
+            width: 100%;
+            height: 400px;
+            background-color: #495057;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: relative;
+        }
+        
+        .beaker {
+            width: 180px;
+            height: 220px;
+            border: 5px solid #6c757d;
+            border-top: none;
+            border-radius: 0 0 20px 20px;
+            position: relative;
+            /* overflow: hidden; <-- REMOVED FROM HERE */
+        }
+        
+        /* --- FIX START --- */
+        /* This new container holds the canvas and clips it */
+        .beaker-contents {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 0 0 15px 15px; /* Match inner rounding */
+            overflow: hidden; /* This now clips the canvas only */
+        }
+        /* --- FIX END --- */
+
+        .beaker-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #beaker-solution .beaker-contents { background-color: var(--solution-bg); }
+        #beaker-colloid .beaker-contents { background-color: var(--colloid-bg); }
+        #beaker-suspension .beaker-contents { background-color: var(--suspension-bg); }
+
+        .beaker-label {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--heading-font);
+            font-size: 18px;
+            color: white;
+            padding: 5px 15px;
+            background-color: #6c757d;
+            border-radius: 8px;
+        }
+        
+        #laser-pointer {
+            width: 100px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 20px;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: grab;
+            border: 3px solid #f8f9fa;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+        }
+        #laser-pointer::before { /* The laser lens */
+            content: '';
+            width: 20px; height: 20px;
+            background: black;
+            border-radius: 50%;
+            border: 2px solid #6c757d;
+        }
+        #laser-pointer:active { cursor: grabbing; }
+
+        #laser-beam {
+            position: absolute;
+            height: 4px;
+            background: linear-gradient(to right, var(--accent-color), rgba(255, 195, 0, 0));
+            top: 50%;
+            left: 120px;
+            width: 0;
+            transform: translateY(-50%);
+            display: none;
+            border-radius: 2px;
+        }
+
+        .quiz-section {
+            width: 100%;
+            margin-top: 25px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 16px;
+        }
+        .quiz-section h3 {
+            font-family: var(--heading-font);
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        .quiz-options { display: flex; gap: 15px; }
+        .quiz-btn {
+            background-color: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        .quiz-btn.correct { background-color: #2a9d8f; color: white; border-color: #2a9d8f;}
+        .quiz-btn.incorrect { background-color: #e76f51; color: white; border-color: #e76f51;}
+        #feedback-text {
+            margin-top: 15px;
+            font-weight: 600;
+            font-size: 16px;
+            min-height: 24px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Light Path Lab</h2>
+            <p><strong>Lesson:</strong> Properties of a Solution</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">Your Mission</h3>
+            <p style="margin-bottom: 15px;">Some mixtures are hiding a secret! We're going to use a laser to find out which ones scatter light and which ones let it pass right through. This is called the Tyndall Effect! Watch the particles in the suspension settle over time.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to prepare the lab bench and see the mixtures.</li>
+                <li><b>Drag the Laser Pointer</b> up and down to aim it at the different beakers.</li>
+                <li>Watch the light beam. Does its path become visible inside the liquid?</li>
+                <li>Notice how the particles in the Suspension slowly settle to the bottom.</li>
+                <li>After you've tested all three, answer the quiz question below.</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to power up the laser!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="lab-bench" id="lab-bench">
+                    <!-- --- FIX: Updated HTML structure for each beaker --- -->
+                    <div class="beaker" id="beaker-solution">
+                        <div class="beaker-contents">
+                            <canvas class="beaker-canvas" id="canvas-solution"></canvas>
+                        </div>
+                        <div class="beaker-label">Solution</div>
+                    </div>
+                    <div class="beaker" id="beaker-colloid">
+                        <div class="beaker-contents">
+                            <canvas class="beaker-canvas" id="canvas-colloid"></canvas>
+                        </div>
+                        <div class="beaker-label">Colloid</div>
+                    </div>
+                    <div class="beaker" id="beaker-suspension">
+                        <div class="beaker-contents">
+                           <canvas class="beaker-canvas" id="canvas-suspension"></canvas>
+                        </div>
+                        <div class="beaker-label">Suspension</div>
+                    </div>
+                    <div id="laser-pointer"></div>
+                    <div id="laser-beam"></div>
+                </div>
+                <div class="quiz-section" id="quiz-section">
+                    <h3>Which mixture shows the Tyndall Effect but doesn't have particles that settle down?</h3>
+                    <div class="quiz-options">
+                        <button class="btn quiz-btn" data-answer="solution">Solution</button>
+                        <button class="btn quiz-btn" data-answer="colloid">Colloid</button>
+                        <button class="btn quiz-btn" data-answer="suspension">Suspension</button>
+                    </div>
+                    <p id="feedback-text"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const laserPointer = document.getElementById('laser-pointer');
+    const laserBeam = document.getElementById('laser-beam');
+    const labBench = document.getElementById('lab-bench');
+    
+    // Canvas elements
+    const canvases = {
+        solution: document.getElementById('canvas-solution'),
+        colloid: document.getElementById('canvas-colloid'),
+        suspension: document.getElementById('canvas-suspension')
+    };
+    const contexts = {
+        solution: canvases.solution.getContext('2d'),
+        colloid: canvases.colloid.getContext('2d'),
+        suspension: canvases.suspension.getContext('2d')
+    };
+    
+    const quizSection = document.getElementById('quiz-section');
+    const quizBtns = document.querySelectorAll('.quiz-btn');
+    const feedbackText = document.getElementById('feedback-text');
+
+    // --- Simulation State ---
+    let isDragging = false;
+    let startY, initialTop;
+    let testedBeakers = new Set();
+    let particles = { solution: [], colloid: [], suspension: [] };
+    let animationFrameId;
+    let laserState = { y: 0, showIn: { solution: false, colloid: false, suspension: false } };
+
+    // --- Simulation Physics ---
+    const gravity = 0.03;
+
+    // A class to represent a single particle
+    class Particle {
+        constructor(x, y, radius, color, type, ctx) {
+            this.x = x;
+            this.y = y;
+            this.radius = radius;
+            this.color = color;
+            this.type = type; // 'solution', 'colloid', 'suspension'
+            this.ctx = ctx;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+        }
+
+        draw() {
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            this.ctx.fillStyle = this.color;
+            this.ctx.fill();
+        }
+
+        update() {
+            // Add random "Brownian" motion
+            this.vx += (Math.random() - 0.5) * 0.1;
+            this.vy += (Math.random() - 0.5) * 0.1;
+
+            // Apply gravity only to suspension particles that are not settled
+            if (this.type === 'suspension' && this.y < this.ctx.canvas.height - this.radius * 2) {
+                this.vy += gravity;
+            }
+
+            // Max speed
+            this.vx = Math.max(-1, Math.min(1, this.vx));
+            this.vy = Math.max(-2, Math.min(2, this.vy));
+
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Wall collision
+            if (this.x < this.radius || this.x > this.ctx.canvas.width - this.radius) this.vx *= -1;
+            if (this.y < this.radius) this.vy *= -1;
+            
+            // Bottom "settling" collision for suspension
+            if (this.type === 'suspension' && this.y > this.ctx.canvas.height - this.radius) {
+                this.y = this.ctx.canvas.height - this.radius;
+                this.vy *= -0.1; // Lose energy
+                this.vx *= 0.9;  // Friction
+            } else if (this.y > this.ctx.canvas.height - this.radius) { // For others
+                 this.vy *= -1;
+            }
+        }
+    }
+    
+    // --- Particle Creation ---
+    function createParticles(type, count) {
+        const canvas = canvases[type];
+        const ctx = contexts[type];
+        const particleArray = [];
+        let radius, color;
+
+        switch (type) {
+            case 'solution':
+                radius = 0.5; color = 'rgba(255, 255, 255, 0.5)'; break;
+            case 'colloid':
+                radius = 1.5; color = 'rgba(255, 255, 255, 0.7)'; break;
+            case 'suspension':
+                radius = 3; color = 'rgba(100, 80, 60, 0.8)'; break;
+        }
+        
+        for (let i = 0; i < count; i++) {
+            let x = Math.random() * canvas.width;
+            let y = Math.random() * canvas.height;
+            particleArray.push(new Particle(x, y, radius, color, type, ctx));
+        }
+        return particleArray;
+    }
+
+    // --- Animation Loop ---
+    function animate() {
+        for (const type in contexts) {
+            const ctx = contexts[type];
+            const canvas = canvases[type];
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Tyndall effect if active
+            if (laserState.showIn[type]) {
+                const beaker = canvas.closest('.beaker');
+                const beakerRect = beaker.getBoundingClientRect();
+                const labBenchRect = labBench.getBoundingClientRect();
+                const beakerTop = beakerRect.top - labBenchRect.top;
+                
+                const relativeLaserY = laserState.y - beakerTop;
+                const gradient = ctx.createRadialGradient(
+                    canvas.width / 2, relativeLaserY, 0,
+                    canvas.width / 2, relativeLaserY, 40
+                );
+                
+                let opacity = type === 'colloid' ? 0.4 : 0.8;
+                gradient.addColorStop(0, `rgba(255, 195, 0, ${opacity})`);
+                gradient.addColorStop(1, `rgba(255, 195, 0, 0)`);
+
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, relativeLaserY - 40, canvas.width, 80);
+            }
+
+            // Update and draw particles
+            particles[type].forEach(p => {
+                p.update();
+                p.draw();
+            });
+        }
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    
+    // --- Drag and Drop Logic ---
+    function startDrag(e) {
+        isDragging = true;
+        startY = e.clientY || e.touches[0].clientY;
+        initialTop = laserPointer.offsetTop;
+        laserPointer.style.cursor = 'grabbing';
+        laserBeam.style.display = 'block';
+    }
+
+    function onDrag(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        
+        const currentY = e.clientY || e.touches[0].clientY;
+        const deltaY = currentY - startY;
+        let newTop = initialTop + deltaY;
+
+        const benchRect = labBench.getBoundingClientRect();
+        const laserRect = laserPointer.getBoundingClientRect();
+        const minTop = 0;
+        const maxTop = benchRect.height - laserRect.height;
+        newTop = Math.max(minTop, Math.min(newTop, maxTop));
+        
+        laserPointer.style.top = `${newTop}px`;
+        laserBeam.style.top = `${newTop + laserPointer.clientHeight / 2}px`;
+        laserBeam.style.width = `${labBench.clientWidth - laserPointer.offsetLeft - laserPointer.clientWidth}px`;
+        
+        updateLaserInteraction(newTop);
+    }
+    
+    function endDrag() {
+        isDragging = false;
+        laserPointer.style.cursor = 'grab';
+        laserBeam.style.display = 'none';
+        laserState.showIn = { solution: false, colloid: false, suspension: false };
+    }
+
+    function updateLaserInteraction(laserTop) {
+        const laserCenterY = laserTop + laserPointer.clientHeight / 2;
+        laserState.y = laserCenterY;
+        
+        laserState.showIn = { solution: false, colloid: false, suspension: false };
+
+        for (const key in canvases) {
+            const beaker = canvases[key].closest('.beaker');
+            const beakerRect = beaker.getBoundingClientRect();
+            const labBenchRect = labBench.getBoundingClientRect();
+            const beakerTop = beakerRect.top - labBenchRect.top;
+            const beakerBottom = beakerTop + beakerRect.height;
+
+            if (laserCenterY > beakerTop && laserCenterY < beakerBottom) {
+                testedBeakers.add(key);
+                if (key !== 'solution') {
+                    laserState.showIn[key] = true;
+                }
+            }
+        }
+        
+        if (testedBeakers.size === 3) {
+            quizSection.style.display = 'flex';
+        }
+    }
+
+    // --- Game Setup ---
+    function setupCanvases() {
+         for (const key in canvases) {
+            const canvas = canvases[key];
+            const beakerContents = canvas.parentElement;
+            canvas.width = beakerContents.clientWidth;
+            canvas.height = beakerContents.clientHeight;
+        }
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        quizSection.style.display = 'none';
+        feedbackText.textContent = '';
+        testedBeakers.clear();
+
+        quizBtns.forEach(btn => {
+            btn.classList.remove('correct', 'incorrect');
+            btn.disabled = false;
+        });
+        
+        laserPointer.style.top = '50%';
+        laserBeam.style.top = '50%';
+        
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+
+        setupCanvases();
+        particles.solution = createParticles('solution', 150);
+        particles.colloid = createParticles('colloid', 100);
+        particles.suspension = createParticles('suspension', 50);
+        animate();
+    }
+
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+
+    laserPointer.addEventListener('mousedown', startDrag);
+    laserPointer.addEventListener('touchstart', startDrag);
+
+    window.addEventListener('mousemove', onDrag);
+    window.addEventListener('touchmove', onDrag, { passive: false });
+
+    window.addEventListener('mouseup', endDrag);
+    window.addEventListener('touchend', endDrag);
+    
+    quizBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const selectedAnswer = btn.dataset.answer;
+            const isCorrect = selectedAnswer === 'colloid';
+
+            if (isCorrect) {
+                btn.classList.add('correct');
+                feedbackText.textContent = 'Correct! Colloids scatter light but are stable.';
+                feedbackText.style.color = '#2a9d8f';
+            } else {
+                btn.classList.add('incorrect');
+                feedbackText.textContent = 'Not quite. Try to remember which one shows the effect and is stable.';
+                feedbackText.style.color = '#e76f51';
+                document.querySelector('.quiz-btn[data-answer="colloid"]').classList.add('correct');
+            }
+            
+            quizBtns.forEach(b => b.disabled = true);
+        });
+    });
+
+</script>
+</body>
+</html>

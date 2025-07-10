@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Factor Constructor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f5faff;
+      --card-bg: #ffffff;
+      --primary: #4a90e2;
+      --success: #4caf50;
+      --error: #e53935;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      --heading-font: 'Fredoka', sans-serif;
+      --body-font: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--body-font);
+      background: var(--bg-color);
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .container {
+      display: flex;
+      width: 100%;
+      max-width: 1300px;
+      gap: 20px;
+    }
+
+    .instructions, .game-area {
+      background: var(--card-bg);
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .instructions {
+      width: 30%;
+      min-width: 280px;
+    }
+
+    .instructions h2 {
+      font-family: var(--heading-font);
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .instructions ul {
+      padding-left: 20px;
+    }
+
+    .instructions li {
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .game-area {
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .game-header {
+      font-family: var(--heading-font);
+      font-size: 1.8em;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+
+    .prompt-box {
+      font-size: 1.2em;
+      font-weight: 600;
+      background: #e3f2fd;
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .options-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .option {
+      background: #f5f5f5;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .option:hover {
+      background: #e0f7fa;
+    }
+
+    .option.correct {
+      background-color: var(--success);
+      color: white;
+      border-color: var(--success);
+    }
+
+    .option.incorrect {
+      background-color: var(--error);
+      color: white;
+      border-color: var(--error);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .controls button {
+      padding: 10px 20px;
+      font-weight: 600;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    #start-btn {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    #reset-btn {
+      background-color: #ffc107;
+      color: #333;
+    }
+
+    .feedback {
+      font-weight: 600;
+      font-size: 1.1em;
+      min-height: 30px;
+    }
+
+    .feedback.correct {
+      color: var(--success);
+    }
+
+    .feedback.incorrect {
+      color: var(--error);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="instructions">
+      <h2>🧱 How to Play</h2>
+      <ul>
+        <li>Click <strong>Start Game</strong> to get a pair of factors.</li>
+        <li>Select the correct expanded polynomial that matches the given factors.</li>
+        <li>Correct answers turn <span style="color:green;">green</span>, wrong ones <span style="color:red;">red</span>.</li>
+        <li>Click <strong>Reset</strong> to try another.</li>
+      </ul>
+    </div>
+
+    <div class="game-area">
+      <div class="game-header">Factor Constructor</div>
+      <div class="prompt-box" id="prompt-box">Click "Start Game" to begin!</div>
+      <div class="options-area" id="options-area"></div>
+      <div class="controls">
+        <button id="start-btn">Start Game</button>
+        <button id="reset-btn">Reset</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+  </div>
+
+  <script>
+    const promptBox = document.getElementById("prompt-box");
+    const optionsArea = document.getElementById("options-area");
+    const feedback = document.getElementById("feedback");
+
+    const questions = [
+      {
+        factors: "(x + 2)(x + 3)",
+        correct: "x² + 5x + 6",
+        options: ["x² + 5x + 6", "x² + 3x + 2", "x² + 4x + 5", "x² + 6x + 9"]
+      },
+      {
+        factors: "(x - 1)(x - 4)",
+        correct: "x² - 5x + 4",
+        options: ["x² - 5x + 4", "x² - 3x + 4", "x² - 4x + 1", "x² - 5x - 4"]
+      },
+      {
+        factors: "(x + 1)(x + 1)",
+        correct: "x² + 2x + 1",
+        options: ["x² + 2x + 1", "x² + x + 1", "x² + 1", "x² + 2x"]
+      },
+      {
+        factors: "(x - 2)(x + 2)",
+        correct: "x² - 4",
+        options: ["x² - 4", "x² - 2x + 2", "x² + 4", "x² - 2"]
+      },
+      {
+        factors: "(x - 3)(x - 3)",
+        correct: "x² - 6x + 9",
+        options: ["x² - 6x + 9", "x² - 3x + 9", "x² + 6x + 9", "x² - 3x - 9"]
+      }
+    ];
+
+    let currentQuestion = null;
+
+    document.getElementById("start-btn").addEventListener("click", startGame);
+    document.getElementById("reset-btn").addEventListener("click", resetGame);
+
+    function startGame() {
+      resetGame();
+      currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+      promptBox.textContent = `Which of the following is the expanded form of ${currentQuestion.factors}?`;
+      const shuffledOptions = [...currentQuestion.options].sort(() => 0.5 - Math.random());
+      shuffledOptions.forEach(opt => {
+        const div = document.createElement("div");
+        div.className = "option";
+        div.textContent = opt;
+        div.addEventListener("click", () => checkAnswer(div, opt));
+        optionsArea.appendChild(div);
+      });
+    }
+
+    function resetGame() {
+      promptBox.textContent = "Click \"Start Game\" to begin!";
+      optionsArea.innerHTML = "";
+      feedback.textContent = "";
+      feedback.className = "feedback";
+      currentQuestion = null;
+    }
+
+    function checkAnswer(element, selected) {
+      const allOptions = document.querySelectorAll(".option");
+      allOptions.forEach(opt => opt.removeEventListener("click", () => {}));
+      if (selected === currentQuestion.correct) {
+        element.classList.add("correct");
+        feedback.textContent = "✅ Correct!";
+        feedback.className = "feedback correct";
+      } else {
+        element.classList.add("incorrect");
+        feedback.textContent = `❌ Wrong! Correct answer is: ${currentQuestion.correct}`;
+        feedback.className = "feedback incorrect";
+      }
+    }
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

@@ -1,0 +1,236 @@
+{
+  "subject": {
+    "id": 5,
+    "name": "science",
+    "label": "Science"
+  },
+  "units": [
+    {
+      "id": 68,
+      "name": "unit_11:_sound",
+      "label": "Unit 11: Sound",
+      "lessons": [
+        {
+          "id": 536,
+          "title": "Lesson 1: The Production and Propagation of Sound",
+          "slug": "lesson_1_the_production_and_propagation_of_sound",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "536_1",
+              "name": "The Sound Lab",
+              "implementationDetails": "A virtual lab with two experiments. Experiment 1 (Production): The player has a tuning fork. Clicking it makes it vibrate visually. If they touch it to a suspended ball, the ball is knocked away. If they dip it in water, ripples form. This proves sound is produced by vibration. Experiment 2 (Propagation): The player places the vibrating tuning fork inside a glass bell jar. They can hear the sound. Then, they use a 'Vacuum Pump' tool to remove the air from the jar. The player can still see the fork vibrating, but the sound fades to silence, demonstrating that sound requires a medium to travel.",
+              "learningPoints": [
+                "Understanding that sound is produced by vibrating objects.",
+                "Recognizing that sound needs a material medium (like air, water, or solid) to propagate.",
+                "Concluding that sound cannot travel through a vacuum."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 537,
+          "title": "Lesson 2: Sound as a Longitudinal Wave - Compressions and Rarefactions",
+          "slug": "lesson_2_sound_as_a_longitudinal_wave_-_compressions_and_rarefactions",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "537_1",
+              "name": "Slinky Wave Simulator",
+              "implementationDetails": "The player sees a long slinky spring. They can give one end a sharp push. This creates a pulse that travels down the slinky, showing a region where the coils are bunched up. The game labels this a 'Compression'. In a second mode, the player can oscillate the end of the slinky back and forth, creating a continuous series of bunched-up regions (Compressions) and spread-out regions (Rarefactions). The game highlights that the individual coils only move back and forth, while the wave itself travels forward, defining a longitudinal wave.",
+              "learningPoints": [
+                "Visualizing sound as a longitudinal wave.",
+                "Defining compressions as regions of high pressure/density.",
+                "Defining rarefactions as regions of low pressure/density.",
+                "Understanding that particles of the medium oscillate parallel to the direction of wave propagation."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 538,
+          "title": "Lesson 3: Characteristics of a Sound Wave - Wavelength, Frequency, and Time Period",
+          "slug": "lesson_3_characteristics_of_a_sound_wave_-_wavelength_frequency_and_time_period",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "538_1",
+              "name": "Waveform Analyzer",
+              "implementationDetails": "The game displays a sound wave on a pressure-distance graph. The player has a virtual measuring tool. They can measure the distance from one compression (crest) to the next, which the game then labels as 'Wavelength (λ)'. In a second view (pressure-time graph), the game shows waves passing a fixed point. A timer runs, and the player must count how many full waves pass in one second to determine the 'Frequency (ν)'. The game then shows that the 'Time Period (T)' is the time for one full wave, demonstrating the relationship T = 1/ν.",
+              "learningPoints": [
+                "Defining wavelength as the distance between two consecutive compressions or rarefactions.",
+                "Defining frequency as the number of oscillations per unit time.",
+                "Defining time period as the time taken for one complete oscillation.",
+                "Understanding the inverse relationship between frequency and time period."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 539,
+          "title": "Lesson 4: Characteristics of a Sound Wave - Amplitude and Pitch",
+          "slug": "lesson_4_characteristics_of_a_sound_wave_-_amplitude_and_pitch",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "539_1",
+              "name": "Sound Mixer",
+              "implementationDetails": "An interactive soundboard. The player has two sliders. The 'Pitch' slider controls the frequency of the wave shown on screen; moving it to the right increases the frequency (waves get closer) and the sound played becomes higher-pitched. The 'Amplitude' slider controls the height of the wave; moving it up increases the wave's height, and the sound played becomes louder. By experimenting with the sliders, the player directly links the visual characteristics of the wave to the auditory experience of pitch and loudness.",
+              "learningPoints": [
+                "Associating the frequency of a sound wave with its pitch.",
+                "Understanding that higher frequency means higher pitch.",
+                "Associating the amplitude of a sound wave with its loudness.",
+                "Understanding that greater amplitude means a louder sound."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 540,
+          "title": "Lesson 5: The Loudness and Quality (Timber) of Sound",
+          "slug": "lesson_5_the_loudness_and_quality_timber_of_sound",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "540_1",
+              "name": "Orchestra Inspector",
+              "implementationDetails": "The player is shown a guitar and a flute. The player can click to play a note (e.g., middle C) on each instrument. The game shows that both sounds have the same fundamental frequency (pitch) and the same amplitude (loudness). However, the 'Waveform' display for each is different: the guitar's wave is complex and jagged, while the flute's is smoother. A tooltip explains that this difference in waveform, caused by different overtones, is called 'quality' or 'timbre', and it's what allows us to distinguish between two instruments playing the same note.",
+              "learningPoints": [
+                "Defining quality or timbre as the characteristic that distinguishes two sounds of the same pitch and loudness.",
+                "Understanding that timbre is determined by the complexity of the sound wave (presence of overtones).",
+                "Differentiating a single-frequency 'tone' from a multi-frequency 'note'."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 541,
+          "title": "Lesson 6: The Relationship Between Speed, Frequency, and Wavelength (v = λν)",
+          "slug": "lesson_6_the_relationship_between_speed_frequency_and_wavelength_v",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "541_1",
+              "name": "Wave Equation Explorer",
+              "implementationDetails": "A simulation where a sound wave is traveling through a medium. The 'Speed of Sound (v)' in the medium is fixed (e.g., 340 m/s). The player has a slider to adjust the 'Frequency (ν)'. As the player increases the frequency, they will observe the 'Wavelength (λ)' of the wave automatically decreasing. The equation v = ν × λ is displayed, with the values updating in real-time. This allows the player to discover the inverse relationship between frequency and wavelength for a constant speed, and to use the formula to predict outcomes.",
+              "learningPoints": [
+                "Understanding the relationship between speed, frequency, and wavelength.",
+                "Applying the formula v = νλ to see how variables relate.",
+                "Recognizing that for a given medium (constant speed), frequency and wavelength are inversely proportional."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 542,
+          "title": "Lesson 7: The Speed of Sound in Different Media",
+          "slug": "lesson_7_the_speed_of_sound_in_different_media",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "542_1",
+              "name": "Medium Race",
+              "implementationDetails": "The player creates a sound pulse (like a clap) at a starting point. The sound wave then travels simultaneously through three parallel lanes, each representing a different medium: 'Air', 'Water', and 'Steel'. The player watches as the wave in the steel lane reaches the finish line first, followed by the wave in water, and finally the wave in air. The game visually demonstrates that the speed of sound is fastest in solids, slower in liquids, and slowest in gases.",
+              "learningPoints": [
+                "Understanding that the speed of sound depends on the medium it is traveling through.",
+                "Comparing the relative speed of sound in solids, liquids, and gases.",
+                "Learning that sound travels fastest in solids and slowest in gases."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 543,
+          "title": "Lesson 8: The Reflection of Sound",
+          "slug": "lesson_8_the_reflection_of_sound",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "543_1",
+              "name": "Sound Reflector",
+              "implementationDetails": "A puzzle game set in a 2D room. The player has a sound source and a 'detector' placed at different locations. They must place one or more movable 'reflective panels' to guide the sound from the source to the detector. When the player clicks 'Play', the game animates the sound wave traveling and bouncing off the panels. A 'protractor' tool allows the player to measure the angles of incidence and reflection, helping them discover that the two are always equal.",
+              "learningPoints": [
+                "Understanding that sound waves reflect off surfaces, similar to light.",
+                "Learning the law of reflection: the angle of incidence equals the angle of reflection.",
+                "Applying the law of reflection to direct sound in a desired path."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 544,
+          "title": "Lesson 9: Echo and the Conditions for Hearing It",
+          "slug": "lesson_9_echo_and_the_conditions_for_hearing_it",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "544_1",
+              "name": "Echo Canyon",
+              "implementationDetails": "The player stands in a canyon and can move a cliff (the reflecting surface) closer or farther away using a slider. The player clicks a 'Shout' button. An animation shows the sound wave traveling to the cliff and back. A timer displays the time interval between the original sound and the reflected sound (echo). The player will discover that if the cliff is too close, the time interval is less than 0.1s and the 'Echo' is not heard (it just sounds like a blur). They must move the cliff far enough away (beyond 17.2m) for the time to exceed 0.1s and a distinct echo to be heard.",
+              "learningPoints": [
+                "Defining an echo as a reflected sound.",
+                "Understanding the condition for hearing a distinct echo: the time interval between the original and reflected sound must be at least 0.1 seconds.",
+                "Relating this time interval to the minimum distance required from a reflecting surface."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 545,
+          "title": "Lesson 10: Reverberation and its Applications",
+          "slug": "lesson_10_reverberation_and_its_applications",
+          "display_order": 10,
+          "games": [
+            {
+              "id": "545_1",
+              "name": "Concert Hall Designer",
+              "implementationDetails": "A room design simulation. The player must design a concert hall. They start with a room with hard, reflective walls. When they play a sound, it creates a cacophony of overlapping echoes (reverberation). The player is given a budget to 'buy' and place sound-absorbent materials like carpets, curtains, and special acoustic panels on the walls and ceiling. As they add these materials, the reverberation time decreases, and the sound becomes clearer. This game teaches the concept of reverberation and how it is controlled in architecture.",
+              "learningPoints": [
+                "Defining reverberation as the persistence of sound due to repeated reflections.",
+                "Understanding that excessive reverberation is undesirable.",
+                "Learning how sound-absorbent materials are used to reduce reverberation."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 546,
+          "title": "Lesson 11: The Range of Hearing - Audible, Infrasound, and Ultrasound",
+          "slug": "lesson_11_the_range_of_hearing_-_audible_infrasound_and_ultrasound",
+          "display_order": 11,
+          "games": [
+            {
+              "id": "546_1",
+              "name": "Frequency Detector",
+              "implementationDetails": "The player is shown a scene with a human, a dog, an elephant, and a bat. The player controls a frequency generator and can sweep the frequency from 1 Hz up to 100,000 Hz. As the frequency changes, the game highlights which of the creatures can hear it. The human hears between 20 Hz and 20,000 Hz (audible range). The elephant responds to frequencies below 20 Hz (infrasound). The dog hears up to 25,000 Hz, and the bat responds to very high frequencies (ultrasound). This provides a clear, comparative visualization of the different ranges of hearing.",
+              "learningPoints": [
+                "Defining the audible range for humans (20 Hz to 20 kHz).",
+                "Defining infrasound as sound with frequencies below 20 Hz.",
+                "Defining ultrasound as sound with frequencies above 20 kHz.",
+                "Recognizing that different animals have different ranges of hearing."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 547,
+          "title": "Lesson 12: Applications of Ultrasound",
+          "slug": "lesson_12_applications_of_ultrasound",
+          "display_order": 12,
+          "games": [
+            {
+              "id": "547_1",
+              "name": "Ultrasound Technician",
+              "implementationDetails": "A scenario-based game with multiple levels. Level 1 (Industrial): The player uses an ultrasound device to scan a metal block. An animation shows the waves passing through, but reflecting back from an internal crack, revealing the flaw on a monitor. Level 2 (Medical): The player uses an ultrasound scanner on a patient to locate a kidney stone. The game shows the waves reflecting differently from the stone compared to the surrounding tissue. Level 3 (SONAR): The player is on a ship and uses SONAR to map the seabed, sending a pulse down and measuring the time it takes for the echo to return.",
+              "learningPoints": [
+                "Understanding how ultrasound is used to detect flaws in metal blocks.",
+                "Learning about medical applications like ultrasonography to image internal organs.",
+                "Recognizing the use of ultrasound in SONAR for navigation and mapping."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

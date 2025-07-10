@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Grid - CBSE Class 9 Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f4f9;
+            --card-bg: #ffffff;
+            --primary-color: #5a189a; /* Deep Purple */
+            --solid-header: #6c757d;
+            --liquid-header: #0077b6;
+            --gas-header: #6a994e;
+            --text-color: #333;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --correct-color: #198754;
+            --incorrect-color: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font); background-color: var(--bg-color); color: var(--text-color);
+            padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;
+        }
+
+        .main-container { display: flex; gap: 20px; width: 100%; max-width: 1400px; }
+        .instructions-card {
+            flex: 3; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; align-self: flex-start;
+        }
+        .game-card {
+            flex: 7; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; display: flex;
+            flex-direction: column; align-items: center;
+        }
+        .card-header {
+            font-family: var(--heading-font); font-size: 28px; font-weight: 800; color: var(--primary-color);
+            margin-bottom: 20px; text-align: center; display: inline-block;
+            background: linear-gradient(45deg, #f3e8ff, #e9ecef); padding: 5px 20px; border-radius: 12px;
+        }
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 12px; line-height: 1.6; display: flex; align-items: flex-start;
+        }
+        .instructions-list li::before { content: '✅'; margin-right: 10px; font-size: 16px; }
+        .instructions-list li b { color: var(--primary-color); }
+
+        .controls { margin-top: -10px; margin-bottom: 10px; display: flex; gap: 10px; }
+        .btn {
+            font-family: var(--heading-font); font-size: 18px; font-weight: 600;
+            padding: 12px 20px; border: none; border-radius: 12px; cursor: pointer;
+            transition: all 0.3s ease; flex-grow: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        
+        /* Game Area Styles */
+        #initial-message {
+            font-family: var(--heading-font); font-size: 24px; color: #999; height: 500px;
+            display: flex; align-items: center; text-align: center;
+        }
+        #game-area { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        
+        #tile-bank {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+            padding: 15px; background: #e9ecef; border-radius: 12px; margin-bottom: 25px;
+            width: 100%; min-height: 70px;
+        }
+        .tile {
+            padding: 8px 15px; background-color: #fff; border-radius: 8px;
+            font-weight: 600; cursor: grab; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 2px solid transparent; transition: all 0.2s ease-in-out;
+        }
+        .tile:active { cursor: grabbing; transform: scale(1.1); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .tile.dragging { opacity: 0.5; }
+        
+        #property-table { width: 100%; border-collapse: separate; border-spacing: 5px; }
+        #property-table th, #property-table td {
+            padding: 10px; text-align: center; border-radius: 8px;
+        }
+        #property-table th { font-family: var(--heading-font); font-size: 20px; color: white; }
+        #property-table th.solid { background-color: var(--solid-header); }
+        #property-table th.liquid { background-color: var(--liquid-header); }
+        #property-table th.gas { background-color: var(--gas-header); }
+        
+        #property-table td {
+            background-color: #f8f9fa; border: 2px dashed #ced4da;
+            height: 60px; vertical-align: middle;
+        }
+        #property-table td.drag-over { border-style: solid; background-color: #e0eaff; }
+
+        .tile.correct { background-color: #d1e7dd; border-color: var(--correct-color); color: var(--correct-color); }
+        .tile.incorrect { background-color: #f8d7da; border-color: var(--incorrect-color); color: var(--incorrect-color); }
+        
+        #check-btn {
+            margin-top: 25px; background: linear-gradient(45deg, #9b5de5, #f15bb5); color: white;
+            padding: 15px 30px; font-size: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .main-container { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">📊 Property Grid</h2>
+            <p><strong>Lesson:</strong> Comparing the amazing properties of Solids, Liquids, and Gases!</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">Your Task</h3>
+            <p style="margin-bottom: 15px;">It's time to organize your knowledge! Build a complete comparison table by matching the right property to the right state of matter.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to get your tiles.</li>
+                <li><b>Drag</b> a tile from the top bank and <b>drop</b> it into a cell in the table where you think it belongs.</li>
+                <li>Fill the entire grid with your best guesses.</li>
+                <li>Once you're done, hit the <b>"Check Answers"</b> button to see how you did!</li>
+            </ul>
+           
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to begin building the property grid!</div>
+            <div id="game-area" style="display: none;">
+                <div id="tile-bank"></div>
+                <table id="property-table">
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th class="solid">Solid 🧊</th>
+                            <th class="liquid">Liquid 💧</th>
+                            <th class="gas">Gas 💨</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Shape</b></td>
+                            <td class="drop-zone" id="shape-solid"></td>
+                            <td class="drop-zone" id="shape-liquid"></td>
+                            <td class="drop-zone" id="shape-gas"></td>
+                        </tr>
+                        <tr>
+                            <td><b>Volume</b></td>
+                            <td class="drop-zone" id="volume-solid"></td>
+                            <td class="drop-zone" id="volume-liquid"></td>
+                            <td class="drop-zone" id="volume-gas"></td>
+                        </tr>
+                        <tr>
+                            <td><b>Compressibility</b></td>
+                            <td class="drop-zone" id="compressibility-solid"></td>
+                            <td class="drop-zone" id="compressibility-liquid"></td>
+                            <td class="drop-zone" id="compressibility-gas"></td>
+                        </tr>
+                        <tr>
+                            <td><b>Interparticle Force</b></td>
+                            <td class="drop-zone" id="force-solid"></td>
+                            <td class="drop-zone" id="force-liquid"></td>
+                            <td class="drop-zone" id="force-gas"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button id="check-btn" class="btn">Check Answers</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const gameArea = document.getElementById('game-area');
+    const tileBank = document.getElementById('tile-bank');
+    const dropZones = document.querySelectorAll('.drop-zone');
+    const checkBtn = document.getElementById('check-btn');
+
+    // --- Game Data ---
+    const TILES = {
+        'definite': { value: 'Definite', count: 3 },
+        'indefinite': { value: 'Indefinite', count: 3 },
+        'negligible': { value: 'Negligible', count: 2 },
+        'high': { value: 'High', count: 1 },
+        'strong': { value: 'Strong', count: 1 },
+        'moderate': { value: 'Moderate', count: 1 },
+        'weak': { value: 'Weak', count: 1 }
+    };
+    const ANSWERS = {
+        'shape-solid': 'definite',
+        'shape-liquid': 'indefinite',
+        'shape-gas': 'indefinite',
+        'volume-solid': 'definite',
+        'volume-liquid': 'definite',
+        'volume-gas': 'indefinite',
+        'compressibility-solid': 'negligible',
+        'compressibility-liquid': 'negligible',
+        'compressibility-gas': 'high',
+        'force-solid': 'strong',
+        'force-liquid': 'moderate',
+        'force-gas': 'weak'
+    };
+
+    let draggedItem = null;
+
+    // --- Core Functions ---
+    function createTiles() {
+        tileBank.innerHTML = '';
+        let tileId = 0;
+        let tileList = [];
+
+        for (const key in TILES) {
+            for (let i = 0; i < TILES[key].count; i++) {
+                tileList.push({ id: `tile-${tileId++}`, 'data-value': key, text: TILES[key].value });
+            }
+        }
+        
+        // Shuffle tiles
+        tileList.sort(() => Math.random() - 0.5);
+
+        tileList.forEach(tileData => {
+            const tile = document.createElement('div');
+            tile.id = tileData.id;
+            tile.className = 'tile';
+            tile.draggable = true;
+            tile.textContent = tileData.text;
+            tile.dataset.value = tileData['data-value'];
+            addDragListeners(tile);
+            tileBank.appendChild(tile);
+        });
+    }
+
+    function addDragListeners(tile) {
+        tile.addEventListener('dragstart', (e) => {
+            draggedItem = e.target;
+            setTimeout(() => e.target.classList.add('dragging'), 0);
+        });
+        tile.addEventListener('dragend', () => {
+            draggedItem.classList.remove('dragging');
+            draggedItem = null;
+        });
+    }
+
+    function checkAnswers() {
+        dropZones.forEach(zone => {
+            const tile = zone.querySelector('.tile');
+            if (tile) {
+                const zoneId = zone.id;
+                const tileValue = tile.dataset.value;
+                if (ANSWERS[zoneId] === tileValue) {
+                    tile.classList.add('correct');
+                    tile.classList.remove('incorrect');
+                } else {
+                    tile.classList.add('incorrect');
+                    tile.classList.remove('correct');
+                }
+            }
+        });
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        gameArea.style.display = 'flex';
+        dropZones.forEach(zone => {
+            zone.innerHTML = '';
+            zone.classList.remove('correct', 'incorrect');
+        });
+        createTiles();
+    }
+    
+    // --- Event Listeners Setup ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    checkBtn.addEventListener('click', checkAnswers);
+
+    dropZones.forEach(zone => {
+        zone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            zone.classList.add('drag-over');
+        });
+        zone.addEventListener('dragleave', () => {
+            zone.classList.remove('drag-over');
+        });
+        zone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            zone.classList.remove('drag-over');
+            
+            // If the zone already has a tile, move it back to the bank
+            if (zone.children.length > 0) {
+                tileBank.appendChild(zone.firstElementChild);
+            }
+            
+            if (draggedItem) {
+                zone.appendChild(draggedItem);
+                // Clear any previous validation styling on drop
+                draggedItem.classList.remove('correct', 'incorrect');
+            }
+        });
+    });
+
+    tileBank.addEventListener('dragover', e => e.preventDefault());
+    tileBank.addEventListener('drop', e => {
+        e.preventDefault();
+        if(draggedItem) {
+            tileBank.appendChild(draggedItem);
+        }
+    });
+
+    window.onload = () => { gameArea.style.display = 'none'; };
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

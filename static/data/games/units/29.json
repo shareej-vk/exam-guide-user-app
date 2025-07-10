@@ -1,0 +1,217 @@
+{
+    "subject": {
+        "id": 1,
+        "name": "math",
+        "label": "Mathematics"
+    },
+    "units": [
+        {
+            "id": 29,
+            "name": "surface_areas_and_volumes",
+            "label": "Surface Areas and Volumes",
+            "lessons": [
+                {
+                    "id": 279,
+                    "title": "Lesson 1: Curved and Total Surface Area of a Right Circular Cone",
+                    "slug": "lesson_1_curved_and_total_surface_area_of_a_right_circular_cone",
+                    "display_order": 1,
+                    "games": [
+                        {
+                            "id": "279_1",
+                            "name": "Formula Match",
+                            "implementationDetails": "Match the formula to the type of property (CSA, TSA)",
+                            "learningPoints": [
+                                "Formula identification",
+                                "Area formula knowledge",
+                                "Area application"
+                            ]
+                        },
+                         {
+                            "id": "279_2",
+                            "name": "Value selector",
+                            "implementationDetails": "From multiple side choose formula required numbers",
+                            "learningPoints": [
+                                "Input parameter identifires",
+                                "Formula recognition",
+                                "Side selector theorem "
+                            ]
+                        },
+                        {
+                            "id": "279_3",
+                            "name": "Component relation builder",
+                            "implementationDetails": "Show dependency of base and total area what will happen with changes with one by formula identifier",
+                            "learningPoints": [
+                                "Dependencity recognization",
+                                "Change relation identifier",
+                                "Formula application"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 280,
+                    "title": "Lesson 2: Surface Area of a Sphere",
+                    "slug": "lesson_2_surface_area_of_a_sphere",
+                    "display_order": 2,
+                    "games": [
+                        {
+                            "id": "280_1",
+                            "name": "Relation chain",
+                            "implementationDetails": "If given total  side like square how related surface by this  circle like shape inside or round what formula make relations",
+                            "learningPoints": [
+                                "Shape relation building chain",
+                                "Formula chain application",
+                                "Surface and side relationship"
+                            ]
+                        },
+                         {
+                            "id": "280_2",
+                            "name": "Diameter identifier",
+                            "implementationDetails": "In data what part help to build and get side",
+                            "learningPoints": [
+                              "Data properties",
+                              "Numerical side  selection",
+                              "Side identification"
+                            ]
+                          },
+                        {
+                            "id": "280_3",
+                            "name": "Sphere propert identifier",
+                            "implementationDetails": "Multiple property base multiple choice questions for sphere",
+                            "learningPoints": [
+                                "Shape knowledge",
+                                "Sphere properties knowledge",
+                                "Type and properties"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 281,
+                    "title": "Lesson 3: Surface Area of a Hemisphere",
+                    "slug": "lesson_3_surface_area_of_a_hemisphere",
+                    "display_order": 3,
+                    "games": [
+                        {
+                            "id": "281_1",
+                            "name": "Half full property ",
+                            "implementationDetails": "Relate semi sphere formula from parent by step to builder",
+                            "learningPoints": [
+                                "Relation circle or hemisphere",
+                                "Formula derivation",
+                                "Surface area property"
+                            ]
+                        },
+                        {
+                            "id": "281_2",
+                            "name": "Surface identifier",
+                            "implementationDetails": "For what sphere what surface identifier like curved for all part but not curve for open one ",
+                            "learningPoints": [
+                                "Surfaces application circle for property",
+                                "Property shape formula selector",
+                                "Hemisphere and shape surface rule"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 282,
+                    "title": "Lesson 4: Volume of a Right Circular Cone",
+                    "slug": "lesson_4_volume_of_a_right_circular_cone",
+                    "display_order": 4,
+                    "games": [
+                        {
+                            "id": "282_1",
+                            "name": "Volume chain",
+                            "implementationDetails": "In volume of triangle circle and other area shape volume link",
+                            "learningPoints": [
+                                "Volume based chain build",
+                                "Triangles to cone property for  volume chain rule",
+                                "Geometric knowledge formula relation"
+                            ]
+                        },
+                         {
+                            "id": "282_2",
+                            "name": "What data minimum",
+                            "implementationDetails": "What required data at question solving for volume",
+                            "learningPoints": [
+                              "Triangle parameter for volume",
+                              "Numerical selector equation building",
+                              "Minimum  data side and other triangle "
+                            ]
+                          },
+                        {
+                            "id": "282_3",
+                            "name": "Formula finder",
+                            "implementationDetails": "Drag correct volume formula",
+                            "learningPoints": [
+                                "Volume identifier for theorems",
+                                "Formula application",
+                                "Formula recognization"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "id": 283,
+                    "title": "Lesson 5: Volume of a Sphere",
+                    "slug": "lesson_5_volume_of_a_sphere",
+                    "display_order": 5,
+                    "games": [
+                        {
+                            "id": "283_1",
+                            "name": "Volume chain builder",
+                            "implementationDetails": "What is realatin this volume number side in formula",
+                            "learningPoints": [
+                                "Side property by formula",
+                                "Area relation recognition chain building circle theorem",
+                                "Triangle or square relation shape "
+                              ]
+                        },
+                         {
+                            "id": "283_2",
+                            "name": "Equal chain for cube",
+                            "implementationDetails": "What can volume of cylinder  volume part of sphere",
+                            "learningPoints": [
+                              "Volume relation",
+                              "Cylinder for application chain",
+                              "Shape relationship"
+                            ]
+                          }
+                    ]
+                },
+                {
+                    "id": 284,
+                    "title": "Lesson 6: Volume of a Hemisphere",
+                    "slug": "lesson_6_volume_of_a_hemisphere",
+                    "display_order": 6,
+                    "games": [
+                      {
+                        "id": "284_1",
+                        "name": "Volume diff calcualtor",
+                        "implementationDetails": "Calculate volume hemisphere diff side",
+                        "learningPoints": [
+                          "Volume formula application",
+                          "Calculation side  triangle property chain bulder",
+                          "Step by step volume building chain"
+                        ]
+                      },
+                        {
+                        "id": "284_2",
+                        "name": "Property identifier",
+                        "implementationDetails": "Volume in sphere half side all properties ",
+                        "learningPoints": [
+                          "Side and circle relation",
+                          "Property recognizer hemisphere",
+                          "Formulas and their identification "
+                        ]
+                    
+                        
+                      }
+                    
+                    ]
+                }
+            ]
+        }
+    ]
+  }

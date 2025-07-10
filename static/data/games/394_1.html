@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melting Point Lab - CBSE Class 9 Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f8ff;
+            --card-bg: #ffffff;
+            --primary-color: #d90429; /* Red for heat */
+            --accent-color: #0077b6; /* Blue for ice */
+            --wax-color: #ffc300;
+            --text-color: #333;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --correct-color: #198754;
+            --incorrect-color: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font); background-color: var(--bg-color); color: var(--text-color);
+            padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;
+        }
+
+        .main-container { display: flex; gap: 20px; width: 100%; max-width: 1400px; }
+        .instructions-card {
+            flex: 3; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; align-self: flex-start;
+        }
+        .game-card {
+            flex: 7; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; display: flex;
+            flex-direction: column; align-items: center;
+        }
+        .card-header {
+            font-family: var(--heading-font); font-size: 28px; font-weight: 800; color: var(--primary-color);
+            margin-bottom: 20px; text-align: center; display: inline-block;
+            background: linear-gradient(45deg, #ffccd5, #fff0f3); padding: 5px 20px; border-radius: 12px;
+        }
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 12px; line-height: 1.6; display: flex; align-items: flex-start;
+        }
+        .instructions-list li::before { content: '🌡️'; margin-right: 10px; font-size: 16px; }
+        .instructions-list li b { color: var(--primary-color); }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+        .btn {
+            font-family: var(--heading-font); font-size: 18px; font-weight: 600;
+            padding: 12px 20px; border: none; border-radius: 12px; cursor: pointer;
+            transition: all 0.3s ease; flex-grow: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        
+        /* Game Area Styles */
+        #initial-message {
+            font-family: var(--heading-font); font-size: 24px; color: #999; height: 500px;
+            display: flex; align-items: center; text-align: center;
+        }
+        .lab-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .simulation-container { display: flex; justify-content: space-around; width: 100%; gap: 20px; }
+        .beaker-wrapper {
+            width: 48%; display: flex; flex-direction: column; align-items: center;
+            padding: 15px; background: #f8f9fa; border-radius: 15px; border: 1px solid #dee2e6;
+        }
+        .beaker-title { font-family: var(--heading-font); font-size: 24px; margin-bottom: 10px; }
+        
+        .beaker {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1; /* Reduced height */
+        }
+        canvas { width: 100%; height: 100%; border: 5px solid #ced4da; border-radius: 0 0 15px 15px; border-top: none; }
+        
+        .thermometer {
+            position: absolute; right: 5px; top: 10%; width: 20px; height: 80%;
+            background-color: #e9ecef; border-radius: 10px; border: 2px solid #adb5bd;
+        }
+        .mercury {
+            position: absolute; bottom: 5px; left: 5px; right: 5px; height: 10%;
+            background-color: var(--primary-color); border-radius: 5px; transition: height 0.2s linear;
+        }
+        .thermometer::after { /* Bulb */
+            content: ''; position: absolute; bottom: -10px; left: -5px;
+            width: 30px; height: 30px; background-color: var(--primary-color);
+            border-radius: 50%; border: 2px solid #adb5bd;
+        }
+        .temp-display {
+            position: absolute; top: -25px; right: 0; font-weight: bold; font-size: 16px;
+            background: white; padding: 2px 5px; border-radius: 5px;
+        }
+
+        .status-display {
+            font-weight: 600; margin-top: 10px; font-size: 18px; color: #333;
+        }
+        
+        #heat-control { margin-top: 25px; }
+        #heat-btn {
+            background: linear-gradient(45deg, #f77f00, #d62828);
+            color: white; padding: 15px 30px; font-size: 22px;
+            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out; /* For press effect */
+        }
+        #heat-btn:disabled { background: #999; cursor: not-allowed; }
+        /* NEW: Press effect for the button */
+        #heat-btn:active:not(:disabled) {
+            transform: scale(0.95) translateY(2px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        /* Question Area */
+        #quiz-container { display: none; margin-top: 20px; width: 100%; }
+        #quiz-container h3 { font-family: var(--heading-font); color: var(--primary-color); text-align: center; margin-bottom: 15px; }
+        .quiz-options { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .quiz-btn { width: 80%; background-color: var(--card-bg); border: 2px solid var(--primary-color); color: var(--primary-color); }
+        .quiz-btn.correct { background-color: var(--correct-color); border-color: var(--correct-color); color: white; }
+        .quiz-btn.incorrect { background-color: var(--incorrect-color); border-color: var(--incorrect-color); color: white; }
+
+        @media (max-width: 992px) {
+            .main-container { flex-direction: column; }
+            .simulation-container { flex-direction: column; gap: 15px; }
+            .beaker-wrapper { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">🧊 Melting Point Lab</h2>
+            <p><strong>Lesson:</strong> Discovering that different substances melt at their own special temperatures!</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Investigation</h3>
+            <p style="margin-bottom: 15px;">Every solid has a secret code: its melting point! It's the exact temperature where it turns into a liquid. Let's find the melting points for Ice and Wax.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to set up the lab.</li>
+                <li>Press and hold the <b>"Apply Heat"</b> button to warm up the beakers.</li>
+                <li>Watch the thermometers and the particles closely.</li>
+                <li>Notice how the temperature <b>stops rising</b> while the substance is melting!</li>
+                <li>Once both have melted, a quiz will appear.</li>
+            </ul>
+             <div id="quiz-container">
+                <h3>Lab Report!</h3>
+                <p style="text-align:center; margin-bottom:10px;">The higher melting point of wax compared to ice means that...</p>
+                <div class="quiz-options">
+                    <button class="btn quiz-btn" data-correct="false">Wax particles are smaller than ice particles.</button>
+                    <button class="btn quiz-btn" data-correct="true">The forces of attraction between wax particles are stronger.</button>
+                    <button class="btn quiz-btn" data-correct="false">Ice is denser than wax.</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to begin the melting point experiment!</div>
+            <div class="lab-wrapper" id="lab-wrapper" style="display: none;">
+                <div class="simulation-container">
+                    <div class="beaker-wrapper">
+                        <h3 class="beaker-title" style="color:var(--accent-color)">Ice 🧊</h3>
+                        <div class="beaker">
+                           <canvas id="ice-canvas"></canvas>
+                           <div class="thermometer"><div id="ice-mercury" class="mercury"></div><span id="ice-temp" class="temp-display">-10°C</span></div>
+                        </div>
+                        <div id="ice-status" class="status-display">Solid</div>
+                    </div>
+                    <div class="beaker-wrapper">
+                        <h3 class="beaker-title" style="color:var(--wax-color)">Wax 🕯️</h3>
+                        <div class="beaker">
+                           <canvas id="wax-canvas"></canvas>
+                           <div class="thermometer"><div id="wax-mercury" class="mercury"></div><span id="wax-temp" class="temp-display">-10°C</span></div>
+                        </div>
+                        <div id="wax-status" class="status-display">Solid</div>
+                    </div>
+                </div>
+                <div id="heat-control">
+                    <button id="heat-btn" class="btn">Apply Heat 🔥</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const heatBtn = document.getElementById('heat-btn');
+    const quizContainer = document.getElementById('quiz-container');
+
+    // --- Substance Data ---
+    const substances = {
+        ice: { canvasId: 'ice-canvas', tempId: 'ice-temp', mercuryId: 'ice-mercury', statusId: 'ice-status', color: '#0077b6', meltingPoint: 0, temp: -10, meltPercent: 0, state: 'solid', particles: [], bonds: [] },
+        wax: { canvasId: 'wax-canvas', tempId: 'wax-temp', mercuryId: 'wax-mercury', statusId: 'wax-status', color: '#ffc300', meltingPoint: 60, temp: -10, meltPercent: 0, state: 'solid', particles: [], bonds: [] }
+    };
+
+    // --- Sim Constants ---
+    const NUM_PARTICLES = 40;
+    const PARTICLE_RADIUS = 7;
+    let animationFrameId;
+    let heatInterval;
+
+    // --- Particle Class ---
+    class Particle {
+        constructor(x, y, state) {
+            this.x = x; this.y = y; this.state = state;
+            this.latticeX = x; this.latticeY = y;
+            this.vx = 0; this.vy = 0;
+            this.radius = PARTICLE_RADIUS;
+        }
+        update(substance, canvas) {
+            if (this.state === 'solid') {
+                const vibration = Math.max(1, substance.temp / 10 + 2);
+                this.x = this.latticeX + (Math.random() - 0.5) * vibration;
+                this.y = this.latticeY + (Math.random() - 0.5) * vibration;
+            } else { // Liquid
+                this.vy += 0.05; // Gravity
+                this.x += this.vx; this.y += this.vy;
+                this.vx *= 0.98; this.vy *= 0.98;
+                if (this.x < this.radius || this.x > canvas.width - this.radius) this.vx *= -0.8;
+                if (this.y > canvas.height - this.radius) { this.y = canvas.height - this.radius; this.vy *= -0.5; }
+            }
+        }
+        draw(ctx, color) { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill(); }
+    }
+
+    // --- Core Functions ---
+    function initSubstance(key) {
+        const s = substances[key];
+        const canvas = document.getElementById(s.canvasId);
+        const simArea = canvas.parentElement;
+        canvas.width = simArea.clientWidth; canvas.height = simArea.clientHeight;
+        s.ctx = canvas.getContext('2d');
+        
+        s.particles = []; s.bonds = []; s.temp = -10; s.meltPercent = 0; s.state = 'solid';
+        const cols = 8, spacing = PARTICLE_RADIUS * 2.5;
+        const totalWidth = (cols - 1) * spacing;
+        const startX = (canvas.width - totalWidth) / 2;
+        const startY = canvas.height - 40;
+        for (let i = 0; i < NUM_PARTICLES; i++) {
+            const latticeX = startX + (i % cols) * spacing;
+            const latticeY = startY - Math.floor(i / cols) * spacing;
+            s.particles.push(new Particle(latticeX, latticeY, 'solid'));
+        }
+        for(let i=0; i<s.particles.length; i++) for(let j=i+1; j<s.particles.length; j++) if(Math.hypot(s.particles[i].x-s.particles[j].x, s.particles[i].y-s.particles[j].y) < spacing * 1.5) s.bonds.push([i, j]);
+        updateThermometer(key);
+        document.getElementById(s.statusId).textContent = 'Solid';
+    }
+
+    function updateThermometer(key) {
+        const s = substances[key];
+        const tempRange = 120; // -10 to 110
+        const percent = (s.temp + 10) / tempRange * 100;
+        document.getElementById(s.mercuryId).style.height = `${Math.max(5, percent)}%`;
+        document.getElementById(s.tempId).textContent = `${Math.round(s.temp)}°C`;
+    }
+
+    function animate() {
+        for (const key in substances) {
+            const s = substances[key];
+            const canvas = document.getElementById(s.canvasId);
+            s.ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Draw bonds if solid/melting
+            if (s.state !== 'liquid') {
+                s.ctx.strokeStyle = 'rgba(0,0,0,0.1)'; s.ctx.lineWidth = 2;
+                const bondsToDraw = Math.floor(s.bonds.length * (1 - s.meltPercent / 100));
+                for(let i=0; i < bondsToDraw; i++) {
+                    const b = s.bonds[i];
+                    s.ctx.beginPath();
+                    s.ctx.moveTo(s.particles[b[0]].x, s.particles[b[0]].y);
+                    s.ctx.lineTo(s.particles[b[1]].x, s.particles[b[1]].y);
+                    s.ctx.stroke();
+                }
+            }
+            s.particles.forEach(p => { p.update(s, canvas); p.draw(s.ctx, s.color); });
+        }
+        animationFrameId = requestAnimationFrame(animate);
+    }
+
+    function applyHeat() {
+        heatInterval = setInterval(() => {
+            let allMelted = true;
+            for (const key in substances) {
+                const s = substances[key];
+                if (s.state === 'liquid' && s.temp < 110) {
+                    s.temp += 1; // Heat up liquid after melting
+                } else if (s.state === 'melting' && s.meltPercent < 100) {
+                    s.meltPercent += 2;
+                    // Convert particles to liquid state
+                    const numToConvert = Math.ceil(NUM_PARTICLES * (s.meltPercent/100));
+                    for(let i=0; i<numToConvert; i++) s.particles[i].state = 'liquid';
+                } else if (s.state === 'solid' && s.temp < s.meltingPoint) {
+                    s.temp += 1;
+                }
+                
+                // Update state based on temp and melt percent
+                if (s.temp >= s.meltingPoint && s.state === 'solid') {
+                    s.state = 'melting';
+                    document.getElementById(s.statusId).textContent = 'Melting...';
+                }
+                if (s.meltPercent >= 100 && s.state === 'melting') {
+                    s.state = 'liquid';
+                    document.getElementById(s.statusId).textContent = 'Liquid';
+                }
+                updateThermometer(key);
+
+                if(s.state !== 'liquid' || s.temp < 110) allMelted = false;
+            }
+            if(allMelted) {
+                stopHeat();
+                quizContainer.style.display = 'block';
+            }
+        }, 100);
+    }
+    
+    function stopHeat() { clearInterval(heatInterval); }
+    
+    function startGame() {
+        initialMessage.style.display = 'none'; labWrapper.style.display = 'flex';
+        quizContainer.style.display = 'none';
+        document.querySelectorAll('.quiz-btn').forEach(b => {
+            b.classList.remove('correct', 'incorrect');
+            b.disabled = false;
+        });
+        for (const key in substances) initSubstance(key);
+        if (!animationFrameId) animate();
+    }
+    
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', () => {
+        stopHeat(); cancelAnimationFrame(animationFrameId); animationFrameId = null;
+        initialMessage.style.display = 'flex'; labWrapper.style.display = 'none'; quizContainer.style.display = 'none';
+    });
+    heatBtn.addEventListener('mousedown', applyHeat);
+    heatBtn.addEventListener('mouseup', stopHeat);
+    heatBtn.addEventListener('mouseleave', stopHeat);
+    document.querySelectorAll('.quiz-btn').forEach(btn => btn.addEventListener('click', e => {
+        document.querySelectorAll('.quiz-btn').forEach(b => {
+            b.disabled = true;
+            b.classList.add(b.dataset.correct === 'true' ? 'correct' : 'incorrect')
+        });
+    }));
+    
+    window.onload = () => { labWrapper.style.display = 'none'; };
+</script>
+</body>
+</html>

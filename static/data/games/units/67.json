@@ -1,0 +1,160 @@
+{
+  "subject": {
+    "id": 5,
+    "name": "science",
+    "label": "Science"
+  },
+  "units": [
+    {
+      "id": 67,
+      "name": "unit_10:_work_&_energy",
+      "label": "Unit 10: Work & Energy",
+      "lessons": [
+        {
+          "id": 528,
+          "title": "Lesson 1: The Scientific Concept of Work",
+          "slug": "lesson_1_the_scientific_concept_of_work",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "528_1",
+              "name": "Work or Not?",
+              "implementationDetails": "The player is shown several animated scenarios: a person pushing against a stationary wall, a person lifting a dumbbell, a person holding a heavy suitcase without moving, and a bullock pulling a cart. For each scenario, the player must decide if 'scientific work' is being done by dragging it into a 'Work Done' or 'No Work Done' bin. A 'Work Meter' only fills up if both conditions are met: a force is applied AND there is displacement in the direction of the force. This game directly teaches the two essential conditions for work to be done.",
+              "learningPoints": [
+                "Defining work in a scientific context.",
+                "Understanding that work is done only when a force causes displacement.",
+                "Differentiating between 'effort' and the scientific definition of 'work'."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 529,
+          "title": "Lesson 2: Calculating Work Done: Positive and Negative Work",
+          "slug": "lesson_2_calculating_work_done_positive_and_negative_work",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "529_1",
+              "name": "The Work Meter",
+              "implementationDetails": "An interactive simulation where the player can apply force to a block. The player has a 'Push' tool and a 'Brake' tool. When they use the 'Push' tool on a stationary block, it moves, and the Work Meter shows a positive value (e.g., +50 J), as force and displacement are in the same direction. When they use the 'Brake' tool on an already moving block, it slows down, and the Work Meter shows a negative value (e.g., -30 J), because the force (friction/braking) is opposite to the direction of displacement. The formula W = F × s is displayed and updates in real-time.",
+              "learningPoints": [
+                "Understanding that work done is the product of force and displacement.",
+                "Defining positive work as when the force is in the direction of displacement.",
+                "Defining negative work as when the force is in the opposite direction of displacement."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 530,
+          "title": "Lesson 3: Introduction to Energy and its Various Forms",
+          "slug": "lesson_3_introduction_to_energy_and_its_various_forms",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "530_1",
+              "name": "Energy Transformer",
+              "implementationDetails": "A matching game where an animated scenario is shown on the left (e.g., a windmill turning, a battery lighting a bulb, a person eating an apple and then running). On the right is a list of energy forms (Kinetic, Potential, Electrical, Chemical, Light). The player must drag the correct energy transformation sequence onto the scenario. For the battery and bulb, they would drag 'Chemical Energy' -> 'Electrical Energy' -> 'Light Energy'. This helps them identify different forms of energy and understand the concept of energy transformation.",
+              "learningPoints": [
+                "Defining energy as the capacity to do work.",
+                "Identifying various forms of energy such as kinetic, potential, chemical, and electrical.",
+                "Understanding that energy can be transformed from one form to another."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 531,
+          "title": "Lesson 4: Kinetic Energy and its Formula",
+          "slug": "lesson_4_kinetic_energy_and_its_formula",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "531_1",
+              "name": "Demolition Derby",
+              "implementationDetails": "A physics sandbox where the player's goal is to knock down a wall of blocks. They can launch a ball at the wall. The player has two sliders: one for the 'Mass' of the ball and one for its 'Velocity'. They will discover that doubling the mass doubles the destructive power, but doubling the velocity quadruples it. A 'Kinetic Energy' meter (displaying KE = ½mv²) updates in real-time, allowing the player to intuitively understand the powerful effect of the velocity-squared term in the formula.",
+              "learningPoints": [
+                "Defining kinetic energy as the energy possessed by an object due to its motion.",
+                "Understanding that kinetic energy depends on both the mass and the velocity of the object.",
+                "Grasping the relationship KE = ½mv² and the significant impact of velocity."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 532,
+          "title": "Lesson 5: Potential Energy and Gravitational Potential Energy",
+          "slug": "lesson_5_potential_energy_and_gravitational_potential_energy",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "532_1",
+              "name": "Energy Hoist",
+              "implementationDetails": "The player operates a crane to lift different objects. A 'Potential Energy' meter is displayed. The player first lifts a 10kg block to a height of 5m. The meter reads a certain value. Then, they lift a 20kg block to the same height, and the meter reading doubles. Next, they lift the 10kg block to a height of 10m, and the meter reading also doubles. Through this interactive process, the player directly explores how gravitational potential energy (PE = mgh) is proportional to both mass and height.",
+              "learningPoints": [
+                "Defining potential energy as stored energy due to an object's position or configuration.",
+                "Understanding the formula for gravitational potential energy, PE = mgh.",
+                "Discovering that potential energy increases with both mass and height."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 533,
+          "title": "Lesson 6: The Law of Conservation of Energy",
+          "slug": "lesson_6_the_law_of_conservation_of_energy",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "533_1",
+              "name": "Roller Coaster Creator",
+              "implementationDetails": "A simulation where the player can design a simple roller coaster track. They release a cart from the top of the first hill. As the cart moves along the track, three dynamic bar graphs are shown: 'Kinetic Energy', 'Potential Energy', and 'Total Mechanical Energy'. The player will observe the KE bar increasing as the PE bar decreases (and vice-versa), but the 'Total Energy' bar remains constant throughout the ride (ignoring friction). This provides a powerful visual proof of the law of conservation of energy.",
+              "learningPoints": [
+                "Stating the Law of Conservation of Energy: energy cannot be created or destroyed, only transformed.",
+                "Visualizing the transformation between potential and kinetic energy.",
+                "Understanding that the total mechanical energy of a system remains constant in the absence of friction."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 534,
+          "title": "Lesson 7: Power - The Rate of Doing Work",
+          "slug": "lesson_7_power_-_the_rate_of_doing_work",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "534_1",
+              "name": "The Power Challenge",
+              "implementationDetails": "A competitive game where the player races against an AI. Both have to lift an identical crate (e.g., 1000 J of work). The player can choose their 'Power Level' via a slider before starting. If they choose a low power level, their crane lifts the crate slowly. If they choose a high power level, it lifts the crate quickly and wins the race. The game displays the calculation P = Work / time for both the player and the AI, clearly demonstrating that doing the same amount of work in less time requires more power.",
+              "learningPoints": [
+                "Defining power as the rate at which work is done or energy is transferred.",
+                "Understanding the formula P = W/t.",
+                "Differentiating between work and power: work is the energy transferred, while power is how fast it is transferred."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 535,
+          "title": "Lesson 8: The Commercial Unit of Energy",
+          "slug": "lesson_8_the_commercial_unit_of_energy",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "535_1",
+              "name": "Household Energy Audit",
+              "implementationDetails": "A simulation of a house with various appliances (e.g., a 100W bulb, a 1500W heater, a 50W fan). The player can turn each appliance on or off. A clock can be fast-forwarded through a 24-hour period. A large electricity meter is displayed, which measures energy consumption in kilowatt-hours (kWh). The player's challenge is to run the house for a day while keeping the energy consumption below a certain limit. They will learn that a high-power device like a heater uses 1 kWh much faster than a low-power device like a bulb.",
+              "learningPoints": [
+                "Identifying the commercial unit of energy as the kilowatt-hour (kWh).",
+                "Understanding that 1 kWh is the energy used by a 1 kW device operating for 1 hour.",
+                "Relating power ratings of appliances to their energy consumption over time."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

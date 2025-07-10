@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tyndall Effect Explorer - Is Matter Around Us Pure?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #212529;
+            --card-bg: #f8f9fa;
+            --text-color: #212529;
+            --primary-color: #ffbe0b; /* Light beam yellow */
+            --accent-color: #d90429; /* Laser red */
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #343a40, #495057);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .instructions-list li::before {
+            content: '✨';
+            margin-right: 12px;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+        .instructions-list b { color: var(--primary-color); }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: #2a9d8f; color: white; }
+        #reset-btn { background-color: #fca311; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .dark-room {
+            width: 100%;
+            height: 500px;
+            background-color: #343a40;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            border: 5px solid #495057;
+        }
+        
+        #window-frame {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: 150px;
+            background-color: #ced4da;
+            border: 5px solid #495057;
+            cursor: pointer;
+            transition: box-shadow 0.3s;
+        }
+        #window-frame:hover { box-shadow: 0 0 20px var(--primary-color); }
+        .pane {
+            width: 100%; height: 50%;
+            border-bottom: 5px solid #495057;
+            background: linear-gradient(45deg, #e0fbfc, #caf0f8);
+        }
+        .crossbar {
+            position: absolute;
+            top: 50%;
+            left: -2.5px;
+            width: 100px; height: 5px;
+            background-color: #495057;
+        }
+        
+        #sunbeam {
+            position: absolute;
+            top: -50px;
+            right: 70px;
+            width: 80px;
+            height: 600px;
+            background: linear-gradient(to right, rgba(255, 251, 235, 0), rgba(255, 251, 235, 0.2), rgba(255, 251, 235, 0));
+            transform: rotate(-25deg);
+            pointer-events: none;
+            display: none;
+        }
+        .dust-particle {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: float 20s linear infinite;
+        }
+        @keyframes float {
+            from { transform: translateY(0) translateX(0); }
+            to { transform: translateY(-500px) translateX(20px); }
+        }
+
+        #flashlight {
+            width: 100px; height: 40px;
+            background-color: var(--accent-color);
+            border-radius: 20px;
+            position: absolute;
+            left: 20px; top: 300px;
+            cursor: grab;
+            border: 3px solid #f8f9fa;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+        }
+        #flashlight:active { cursor: grabbing; }
+        #flashlight::before {
+             content: ''; width: 20px; height: 20px;
+            background: black; border-radius: 50%;
+            border: 2px solid #495057;
+        }
+
+
+        #beaker-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 250px;
+        }
+
+        #beaker-canvas {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(233, 236, 239, 0.1);
+            border-radius: 0 0 15px 15px;
+        }
+        #beaker-border {
+             position: absolute;
+             top: 0; left: 0;
+             width: 100%; height: 100%;
+             border: 5px solid #adb5bd;
+             border-top: none;
+             border-radius: 0 0 20px 20px;
+             pointer-events: none;
+        }
+        
+        #tooltip {
+            position: absolute;
+            background-color: var(--primary-color);
+            color: #212529;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: none;
+            z-index: 10;
+            text-align: center;
+            pointer-events: none;
+            transform: translate(-50%, -120%);
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Tyndall Effect Explorer</h2>
+            <p><strong>Lesson:</strong> Properties of Colloids</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Mission</h3>
+            <p style="margin-bottom: 15px;">Have you ever seen a sunbeam in a dusty room? That's the Tyndall effect! Let's explore how colloids scatter light, making the path of light visible.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to enter the dark lab.</li>
+                <li><b>Click the Window</b> to let in a sunbeam. Notice how the dust particles (a colloid) make the light path visible.</li>
+                <li><b>Drag the Flashlight</b> and aim its light beam through the beaker of milky water (another colloid).</li>
+                <li>Observe how the path of light becomes visible inside the beaker. This is the Tyndall effect in action!</li>
+                <li>A tooltip will explain the science as you experiment.</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to enter the dark room!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="dark-room" id="dark-room">
+                    <div id="window-frame">
+                        <div class="pane"></div>
+                        <div class="pane"></div>
+                        <div class="crossbar"></div>
+                    </div>
+                    <div id="sunbeam"></div>
+                    <div id="flashlight"></div>
+                    <div id="beaker-container">
+                        <canvas id="beaker-canvas"></canvas>
+                        <div id="beaker-border"></div>
+                    </div>
+                    <div id="tooltip"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const darkRoom = document.getElementById('dark-room');
+    const windowFrame = document.getElementById('window-frame');
+    const sunbeam = document.getElementById('sunbeam');
+    const flashlight = document.getElementById('flashlight');
+    const beakerContainer = document.getElementById('beaker-container');
+    const canvas = document.getElementById('beaker-canvas');
+    const ctx = canvas.getContext('2d');
+    const tooltip = document.getElementById('tooltip');
+
+    // --- State & Constants ---
+    let isDragging = false;
+    let tooltipTimer;
+    let particles = [];
+    let animationFrameId;
+    let laserY = 0;
+    let showTyndall = false;
+
+    // --- Particle Class for Canvas ---
+    class Particle {
+        constructor(x, y, radius) {
+            this.x = x; this.y = y; this.radius = radius;
+            this.vx = (Math.random() - 0.5) * 0.5;
+            this.vy = (Math.random() - 0.5) * 0.5;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.fill();
+        }
+
+        update() {
+            this.x += this.vx; this.y += this.vy;
+            if (this.x < this.radius || this.x > canvas.width - this.radius) this.vx *= -1;
+            if (this.y < this.radius || this.y > canvas.height - this.radius) this.vy *= -1;
+        }
+    }
+
+    // --- Simulation Logic ---
+    function setupCanvas() {
+        canvas.width = beakerContainer.clientWidth;
+        canvas.height = beakerContainer.clientHeight;
+        particles = [];
+        for (let i = 0; i < 150; i++) {
+            particles.push(new Particle(
+                Math.random() * canvas.width,
+                Math.random() * canvas.height,
+                1.5
+            ));
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        if (showTyndall) {
+            const beakerRect = beakerContainer.getBoundingClientRect();
+            const roomRect = darkRoom.getBoundingClientRect();
+            const relativeLaserY = laserY - (beakerRect.top - roomRect.top);
+            
+            // Brighter, more defined beam
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            gradient.addColorStop(0, 'rgba(255, 191, 11, 0.8)');
+            gradient.addColorStop(0.5, 'rgba(255, 191, 11, 0.6)');
+            gradient.addColorStop(1, 'rgba(255, 191, 11, 0.8)');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, relativeLaserY - 2, canvas.width, 4); // Thin, core beam
+            
+            // Softer glow
+            const glowGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            glowGradient.addColorStop(0, 'rgba(255, 191, 11, 0.3)');
+            glowGradient.addColorStop(0.5, 'rgba(255, 191, 11, 0.2)');
+            glowGradient.addColorStop(1, 'rgba(255, 191, 11, 0.3)');
+            ctx.fillStyle = glowGradient;
+            ctx.fillRect(0, relativeLaserY - 15, canvas.width, 30);
+        }
+
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    
+    // --- UI & Interaction Logic ---
+    function showTooltip(text, element) {
+        clearTimeout(tooltipTimer);
+        const rect = element.getBoundingClientRect();
+        const gameRect = darkRoom.getBoundingClientRect();
+        const x = rect.left - gameRect.left + rect.width / 2;
+        const y = rect.top - gameRect.top;
+        
+        tooltip.textContent = text;
+        tooltip.style.left = `${x}px`;
+        tooltip.style.top = `${y}px`;
+        tooltip.style.display = 'block';
+
+        tooltipTimer = setTimeout(() => {
+            tooltip.style.display = 'none';
+        }, 4000);
+    }
+
+    function createDustParticles() {
+        sunbeam.innerHTML = ''; // Clear old dust
+        for (let i = 0; i < 50; i++) {
+            const dust = document.createElement('div');
+            dust.className = 'dust-particle';
+            dust.style.left = `${Math.random() * 100}%`;
+            dust.style.top = `${Math.random() * 100}%`;
+            dust.style.animationDelay = `${Math.random() * -20}s`;
+            sunbeam.appendChild(dust);
+        }
+    }
+
+    // --- Drag and Drop Logic (Rewritten) ---
+    function startDrag(e) {
+        isDragging = true;
+        flashlight.style.cursor = 'grabbing';
+        document.body.style.cursor = 'grabbing';
+    }
+
+    function onDrag(e) {
+        if (!isDragging) return;
+        const roomRect = darkRoom.getBoundingClientRect();
+        let y = (e.clientY || e.touches[0].clientY) - roomRect.top - (flashlight.clientHeight / 2);
+        
+        const minY = 0;
+        const maxY = darkRoom.clientHeight - flashlight.clientHeight;
+        y = Math.max(minY, Math.min(y, maxY));
+        
+        flashlight.style.top = `${y}px`;
+        laserY = y + flashlight.clientHeight / 2;
+
+        const beakerRect = beakerContainer.getBoundingClientRect();
+        showTyndall = laserY > (beakerRect.top - roomRect.top) && laserY < (beakerRect.bottom - roomRect.top);
+
+        if (showTyndall && tooltip.style.display === 'none') {
+             showTooltip("The flashlight beam is scattered by the colloid!", beakerContainer);
+        }
+    }
+
+    function endDrag() {
+        isDragging = false;
+        flashlight.style.cursor = 'grab';
+        document.body.style.cursor = 'default';
+        showTyndall = false;
+    }
+
+    // --- Game Setup ---
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        sunbeam.style.display = 'none';
+        tooltip.style.display = 'none';
+        flashlight.style.top = '300px';
+        showTyndall = false;
+        
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        setupCanvas();
+        animate();
+    }
+    
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+
+    windowFrame.addEventListener('click', () => {
+        if (sunbeam.style.display === 'none') {
+            sunbeam.style.display = 'block';
+            createDustParticles();
+            showTooltip("The sunbeam is visible because of dust in the air!", windowFrame);
+        } else {
+            sunbeam.style.display = 'none';
+        }
+    });
+
+    flashlight.addEventListener('mousedown', startDrag);
+    flashlight.addEventListener('touchstart', startDrag);
+    window.addEventListener('mousemove', onDrag);
+    window.addEventListener('touchmove', onDrag);
+    window.addEventListener('mouseup', endDrag);
+    window.addEventListener('touchend', endDrag);
+
+</script>
+</body>
+</html>

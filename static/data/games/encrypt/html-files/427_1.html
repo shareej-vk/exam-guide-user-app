@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compound Builder - Introduction to Compounds</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f7f4;
+            --card-bg: #ffffff;
+            --primary-color: #0d1b2a;
+            --accent-color: #778da9;
+            --text-color: #1b263b;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            --correct-color: #2a9d8f;
+            --incorrect-color: #e76f51;
+            --h-color: #e0fbfc;
+            --o-color: #ef476f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #e0e1dd, #e9ecef);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .instructions-list li::before {
+            content: '⚛️';
+            margin-right: 12px;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+        .instructions-list b { color: var(--primary-color); }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .btn:disabled { background-color: #adb5bd; cursor: not-allowed; }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #task-display {
+            width: 100%;
+            background-color: var(--accent-color);
+            color: white;
+            font-family: var(--heading-font);
+            font-size: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .lab-bench {
+            width: 100%;
+            height: 450px;
+            background-color: #415a77;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .supply-area {
+            width: 150px; height: 100%;
+            background-color: #778da9;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .supply-title { font-family: var(--heading-font); color: white; font-size: 18px; }
+        
+        .atom {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: var(--primary-color);
+            cursor: grab;
+            transition: transform 0.2s;
+            border: 3px solid rgba(255,255,255,0.5);
+        }
+        .atom:active { cursor: grabbing; transform: scale(1.1); }
+        .hydrogen { background-color: var(--h-color); }
+        .oxygen { background-color: var(--o-color); }
+        
+        #reaction-chamber {
+            width: 400px; height: 400px;
+            border: 4px dashed #e0e1dd;
+            border-radius: 20px;
+            background-color: rgba(0,0,0,0.2);
+            position: relative;
+            transition: border-color 0.3s;
+        }
+        #reaction-chamber.drag-over { border-color: var(--correct-color); border-style: solid; }
+        #reaction-canvas { width: 100%; height: 100%; }
+        
+        #combine-btn {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 30px;
+            background-color: var(--incorrect-color);
+            color: white;
+            font-size: 20px;
+        }
+
+        #feedback-area {
+            margin-top: 15px; font-size: 20px; font-weight: 800;
+            display: none; padding: 10px 20px; border-radius: 12px;
+            font-family: var(--heading-font); color: white; text-align: center;
+        }
+        #feedback-area.correct { background-color: var(--correct-color); }
+        #feedback-area.incorrect { background-color: var(--incorrect-color); }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Compound Builder</h2>
+            <p><strong>Lesson:</strong> Introduction to Compounds</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">Your Mission</h3>
+            <p style="margin-bottom: 15px;">Compounds are made when different elements join together chemically in a fixed ratio. Your mission is to build a water molecule (H₂O) by combining the correct atoms!</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to get your supplies. Your task is to make a water molecule.</li>
+                <li>From the supply area, <b>drag the correct number</b> of Hydrogen (H) and Oxygen (O) atoms into the Reaction Chamber.</li>
+                <li>Remember the formula for water: <b>H₂O</b>. This tells you the exact recipe!</li>
+                <li>Once you have the right atoms in the chamber, click the <b>"Combine!"</b> button.</li>
+                <li>Watch the atoms bond to form a new compound with totally new properties!</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to begin building compounds!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div id="task-display">Your Task: Build a Water Molecule (H₂O)</div>
+                <div class="lab-bench">
+                    <div class="supply-area">
+                        <div class="supply-title">Hydrogen (H)</div>
+                        <div class="atom hydrogen" draggable="true" data-atom="h">H</div>
+                        <div class="atom hydrogen" draggable="true" data-atom="h">H</div>
+                        <div class="atom hydrogen" draggable="true" data-atom="h">H</div>
+                    </div>
+                    <div id="reaction-chamber">
+                        <canvas id="reaction-canvas"></canvas>
+                        <button id="combine-btn" class="btn">Combine!</button>
+                    </div>
+                    <div class="supply-area">
+                        <div class="supply-title">Oxygen (O)</div>
+                        <div class="atom oxygen" draggable="true" data-atom="o">O</div>
+                        <div class="atom oxygen" draggable="true" data-atom="o">O</div>
+                    </div>
+                </div>
+                <div id="feedback-area"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const reactionChamber = document.getElementById('reaction-chamber');
+    const canvas = document.getElementById('reaction-canvas');
+    const ctx = canvas.getContext('2d');
+    const atoms = document.querySelectorAll('.atom');
+    const combineBtn = document.getElementById('combine-btn');
+    const feedbackArea = document.getElementById('feedback-area');
+
+    // --- State & Config ---
+    let chamberContents = [];
+    let animationFrameId;
+
+    // --- Particle Class for animation ---
+    class Particle {
+        constructor(x, y, type) {
+            this.x = x; this.y = y; this.type = type;
+            this.vx = (Math.random() - 0.5) * 4;
+            this.vy = (Math.random() - 0.5) * 4;
+            this.radius = type === 'h' ? 15 : 25;
+            this.color = type === 'h' ? getComputedStyle(document.documentElement).getPropertyValue('--h-color') : getComputedStyle(document.documentElement).getPropertyValue('--o-color');
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#333';
+            ctx.font = `bold ${this.radius}px Baloo 2`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(this.type.toUpperCase(), this.x, this.y);
+        }
+        update() {
+            this.x += this.vx; this.y += this.vy;
+            if (this.x < this.radius || this.x > canvas.width - this.radius) this.vx *= -1;
+            if (this.y < this.radius || this.y > canvas.height - this.radius) this.vy *= -1;
+        }
+    }
+
+    // --- Game Logic ---
+    function setupCanvas() {
+        canvas.width = reactionChamber.clientWidth;
+        canvas.height = reactionChamber.clientHeight;
+    }
+
+    function drawChamber() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        chamberContents.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        animationFrameId = requestAnimationFrame(drawChamber);
+    }
+    
+    function showFeedback(text, type) {
+        feedbackArea.textContent = text;
+        feedbackArea.className = `feedback-area ${type}`;
+        feedbackArea.style.display = 'block';
+        setTimeout(() => feedbackArea.style.display = 'none', 3000);
+    }
+
+    function checkCombination() {
+        const hCount = chamberContents.filter(p => p.type === 'h').length;
+        const oCount = chamberContents.filter(p => p.type === 'o').length;
+
+        if (hCount === 2 && oCount === 1) {
+            showFeedback('Correct! 2 Hydrogen + 1 Oxygen makes Water!', 'correct');
+            animateBonding();
+        } else {
+            showFeedback('Incorrect ratio! Water is H₂O. Try again.', 'incorrect');
+        }
+    }
+
+    function animateBonding() {
+        combineBtn.disabled = true;
+        const oxygen = chamberContents.find(p => p.type === 'o');
+        const hydrogens = chamberContents.filter(p => p.type === 'h');
+        
+        let targetX1 = canvas.width / 2 - 30;
+        let targetX2 = canvas.width / 2 + 30;
+        let targetY = canvas.height / 2 + 20;
+        let oTargetX = canvas.width / 2;
+        let oTargetY = canvas.height / 2 - 15;
+
+        const bondingAnimation = () => {
+            let done = true;
+            // Move oxygen to center top
+            oxygen.x += (oTargetX - oxygen.x) * 0.1;
+            oxygen.y += (oTargetY - oxygen.y) * 0.1;
+            // Move hydrogens to sides
+            hydrogens[0].x += (targetX1 - hydrogens[0].x) * 0.1;
+            hydrogens[0].y += (targetY - hydrogens[0].y) * 0.1;
+            hydrogens[1].x += (targetX2 - hydrogens[1].x) * 0.1;
+            hydrogens[1].y += (targetY - hydrogens[1].y) * 0.1;
+            
+            if (Math.hypot(oTargetX - oxygen.x, oTargetY - oxygen.y) > 1) done = false;
+
+            if(done) {
+                 cancelAnimationFrame(animationFrameId);
+                 // Final draw
+                 ctx.clearRect(0,0,canvas.width, canvas.height);
+                 ctx.beginPath();
+                 ctx.moveTo(hydrogens[0].x, hydrogens[0].y);
+                 ctx.lineTo(oxygen.x, oxygen.y);
+                 ctx.lineTo(hydrogens[1].x, hydrogens[1].y);
+                 ctx.strokeStyle = '#333';
+                 ctx.lineWidth = 4;
+                 ctx.stroke();
+                 chamberContents.forEach(p => p.draw());
+
+            } else {
+                animationFrameId = requestAnimationFrame(bondingAnimation);
+            }
+        };
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = requestAnimationFrame(bondingAnimation);
+    }
+    
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        feedbackArea.style.display = 'none';
+        combineBtn.disabled = false;
+        
+        setupCanvas();
+        chamberContents = [];
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        drawChamber();
+    }
+    
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    
+    atoms.forEach(atom => {
+        atom.addEventListener('dragstart', e => {
+            e.dataTransfer.setData('text/plain', e.target.dataset.atom);
+        });
+    });
+
+    reactionChamber.addEventListener('dragover', e => {
+        e.preventDefault();
+        reactionChamber.classList.add('drag-over');
+    });
+    reactionChamber.addEventListener('dragleave', () => {
+        reactionChamber.classList.remove('drag-over');
+    });
+    reactionChamber.addEventListener('drop', e => {
+        e.preventDefault();
+        reactionChamber.classList.remove('drag-over');
+        const atomType = e.dataTransfer.getData('text/plain');
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        chamberContents.push(new Particle(x, y, atomType));
+    });
+    
+    combineBtn.addEventListener('click', checkCombination);
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

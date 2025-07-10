@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Identity Builder 3D</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f1f5f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .instructions {
+      width: 30%;
+    }
+    .game-area {
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    h2 {
+      font-family: 'Baloo 2', cursive;
+      color: #0f172a;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 16px;
+      color: #334155;
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 100px);
+      grid-gap: 15px;
+      margin-top: 20px;
+    }
+    .block {
+      width: 100px;
+      height: 60px;
+      background-color: #e0f2fe;
+      border: 2px dashed #0284c7;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: grab;
+    }
+    .dropzone {
+      width: 100px;
+      height: 60px;
+      background-color: #f8fafc;
+      border: 2px solid #94a3b8;
+      border-radius: 10px;
+    }
+    .dropzone.correct {
+      border-color: #22c55e;
+      background-color: #dcfce7;
+    }
+    .dropzone.wrong {
+      border-color: #ef4444;
+      background-color: #fee2e2;
+    }
+    .buttons {
+      margin-top: 20px;
+    }
+    .buttons button {
+      background-color: #6366f1;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      margin-right: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    .buttons button:hover {
+      background-color: #4338ca;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card instructions">
+      <h2>📘 Instructions</h2>
+      <p>Welcome to <strong>Identity Builder 3D</strong>!<br><br>
+        🔹 Drag the term blocks like <em>x²</em>, <em>2xy</em>, <em>y²</em> etc.<br>
+        🔹 Drop them onto the correct drop zones to match the identity:<br>
+        <strong>(x + y + z)² = x² + y² + z² + 2xy + 2yz + 2zx</strong><br><br>
+        ✅ Green means correct placement<br>
+        ❌ Red means incorrect placement<br><br>
+        Click "Start Game" to begin and "Reset" anytime!
+      </p>
+    </div>
+
+    <div class="card game-area">
+      <h2>🎯 Match the Identity Terms</h2>
+
+      <div class="grid" id="dropzones">
+        <div class="dropzone" data-answer="x²"></div>
+        <div class="dropzone" data-answer="y²"></div>
+        <div class="dropzone" data-answer="z²"></div>
+        <div class="dropzone" data-answer="2xy"></div>
+        <div class="dropzone" data-answer="2yz"></div>
+        <div class="dropzone" data-answer="2zx"></div>
+      </div>
+
+      <div class="grid" id="blocks">
+        <div class="block" draggable="true" data-value="2zx">2zx</div>
+        <div class="block" draggable="true" data-value="y²">y²</div>
+        <div class="block" draggable="true" data-value="x²">x²</div>
+        <div class="block" draggable="true" data-value="2xy">2xy</div>
+        <div class="block" draggable="true" data-value="z²">z²</div>
+        <div class="block" draggable="true" data-value="2yz">2yz</div>
+      </div>
+
+      <div class="buttons">
+        <button onclick="startGame()">Start Game</button>
+        <button onclick="resetGame()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const blocks = document.querySelectorAll(".block");
+    const dropzones = document.querySelectorAll(".dropzone");
+
+    blocks.forEach(block => {
+      block.addEventListener("dragstart", dragStart);
+    });
+
+    dropzones.forEach(zone => {
+      zone.addEventListener("dragover", dragOver);
+      zone.addEventListener("drop", drop);
+    });
+
+    function dragStart(e) {
+      e.dataTransfer.setData("text/plain", e.target.dataset.value);
+      e.dataTransfer.setData("element-id", e.target.id);
+    }
+
+    function dragOver(e) {
+      e.preventDefault();
+    }
+
+    function drop(e) {
+      e.preventDefault();
+      const value = e.dataTransfer.getData("text/plain");
+      const correct = e.currentTarget.dataset.answer;
+
+      if (!e.currentTarget.hasChildNodes()) {
+        const draggedBlock = [...blocks].find(b => b.dataset.value === value);
+        e.currentTarget.appendChild(draggedBlock);
+        if (value === correct) {
+          e.currentTarget.classList.add("correct");
+          e.currentTarget.classList.remove("wrong");
+        } else {
+          e.currentTarget.classList.add("wrong");
+          e.currentTarget.classList.remove("correct");
+        }
+      }
+    }
+
+    function startGame() {
+      alert("🎮 Game Started! Match each term correctly.");
+    }
+
+    function resetGame() {
+      const blockContainer = document.getElementById("blocks");
+      dropzones.forEach(zone => {
+        zone.classList.remove("correct", "wrong");
+        if (zone.firstChild) {
+          blockContainer.appendChild(zone.firstChild);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

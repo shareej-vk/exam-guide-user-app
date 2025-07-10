@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distillation Master - Is Matter Around Us Pure?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #e9d8a6;
+            --card-bg: #ffffff;
+            --primary-color: #005f73;
+            --accent-color: #ee9b00;
+            --heat-color: #e5383b;
+            --text-color: #0a9396;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            --correct-color: #94d2bd;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #ee9b00, #fca311);
+            padding: 8px 25px;
+            border-radius: 16px;
+            color: white;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .step-label {
+            font-family: var(--heading-font);
+            font-size: 20px;
+            color: white;
+            background-color: var(--primary-color);
+            padding: 0px 10px;
+            border-radius: 8px;
+            margin-right: 10px;
+            line-height: 1.2;
+        }
+        .instructions-list b { color: var(--accent-color); }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: #001219; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .btn:disabled { background-color: #adb5bd; cursor: not-allowed; }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .distillation-setup {
+            width: 100%;
+            height: 450px;
+            position: relative;
+        }
+        #apparatus-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        .info-display {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: rgba(255,255,255,0.8);
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .info-display h3 { font-family: var(--heading-font); font-size: 18px; margin: 0; color: var(--primary-color); }
+        #temperature-readout { font-size: 24px; font-weight: bold; color: var(--heat-color); }
+
+        .heat-control {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        #heat-slider { width: 300px; }
+        
+        #status-message {
+            margin-top: 15px; font-size: 20px; font-weight: 800;
+            display: none; padding: 10px 20px; border-radius: 12px;
+            font-family: var(--heading-font);
+            background-color: var(--correct-color);
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Distillation Master</h2>
+            <p><strong>Lesson:</strong> Separation by Distillation</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Challenge</h3>
+            <p style="margin-bottom: 15px;">You have a mixture of acetone and water. They are mixed perfectly (miscible), so you can't filter them. But they have a secret weakness: different boiling points! Your mission is to separate them using distillation.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <ul class="instructions-list">
+                <li><span class="step-label">1</span> Click <b>Start</b> to get your distillation apparatus.</li>
+                <li><span class="step-label">2</span> Use the <b>Heat Control slider</b> to slowly heat the flask.</li>
+                <li><span class="step-label">3</span> Watch the <b>thermometer</b>! Acetone boils at 56°C. The temperature will pause there as the acetone evaporates.</li>
+                <li><span class="step-label">4</span> The acetone vapor travels to the condenser, cools down, and drips into the collection flask.</li>
+                <li><span class="step-label">5</span> Once all the acetone is separated, the temperature will start to rise again. You've done it!</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to master the art of distillation!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="distillation-setup">
+                    <canvas id="apparatus-canvas"></canvas>
+                    <div class="info-display">
+                        <h3>Temperature</h3>
+                        <div id="temperature-readout">20 °C</div>
+                    </div>
+                </div>
+                <div class="heat-control">
+                    <label for="heat-slider">Heat Control</label>
+                    <input type="range" id="heat-slider" min="0" max="100" value="0">
+                </div>
+                <div id="status-message"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const canvas = document.getElementById('apparatus-canvas');
+    const ctx = canvas.getContext('2d');
+    const heatSlider = document.getElementById('heat-slider');
+    const tempReadout = document.getElementById('temperature-readout');
+    const statusMessage = document.getElementById('status-message');
+
+    // --- State & Constants ---
+    let state = {};
+    const ACETONE_BOIL = 56;
+    const WATER_BOIL = 100;
+    const ACETONE_COLOR = 'rgba(238, 155, 0, 0.6)';
+    const WATER_COLOR = 'rgba(0, 168, 232, 0.6)';
+    let particles = [];
+
+    // --- Particle Class ---
+    class Particle {
+        constructor(x, y, type) {
+            this.x = x; this.y = y; this.type = type;
+            this.vx = (Math.random() - 0.5); this.vy = (Math.random() - 0.5);
+            this.state = 'liquid'; // liquid, vapor, condensed
+            this.radius = 2;
+            this.pathPoint = 0;
+        }
+
+        update(temp) {
+            if (this.state === 'liquid') {
+                this.x += this.vx * (temp/50); this.y += this.vy * (temp/50);
+                if(this.x < 110 || this.x > 240) this.vx *= -1;
+                if(this.y < 250 || this.y > 380) this.vy *= -1;
+                // Evaporation
+                if ((this.type === 'acetone' && temp >= ACETONE_BOIL) || (this.type === 'water' && temp >= WATER_BOIL)) {
+                    if (Math.random() < 0.1) {
+                       this.state = 'vapor';
+                       this.vy = -2 - Math.random();
+                    }
+                }
+            } else if (this.state === 'vapor') {
+                this.y += this.vy;
+                this.x += this.vx;
+
+                // Condenser path
+                if (this.y < 230) { // Enters side arm
+                    this.vx = 2; this.vy = 0.2;
+                }
+                if (this.x > 300) { // In condenser
+                     this.vx = 0.5; this.vy = 2;
+                     if(Math.random() < 0.1) this.state = 'condensed';
+                }
+            } else if (this.state === 'condensed') {
+                 this.vx = 0; this.vy = 4; // Drips down
+                 this.y += this.vy;
+                 if (this.y > 380) this.state = 'collected';
+            }
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, 2*Math.PI);
+            ctx.fillStyle = this.type === 'acetone' ? ACETONE_COLOR : WATER_COLOR;
+            ctx.globalAlpha = (this.state === 'vapor') ? 0.3 : 0.8;
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+        }
+    }
+
+    // --- Drawing Functions ---
+    function drawApparatus() {
+        const w = canvas.width; const h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+        ctx.strokeStyle = '#343a40'; ctx.lineWidth = 4;
+        
+        // Flask
+        ctx.beginPath(); ctx.arc(175, 300, 70, 0, Math.PI, false); ctx.lineTo(105, 200); ctx.lineTo(245, 200); ctx.closePath(); ctx.stroke();
+        // Condenser
+        ctx.strokeRect(300, 150, 200, 60);
+        // Tubes
+        ctx.beginPath(); ctx.moveTo(200, 200); ctx.lineTo(300, 180); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(500, 200); ctx.lineTo(550, 250); ctx.stroke();
+        // Collection Beaker
+        ctx.beginPath(); ctx.moveTo(520, 400); ctx.lineTo(520, 300); ctx.lineTo(580, 300); ctx.lineTo(580, 400); ctx.stroke();
+        // Thermometer
+        ctx.beginPath(); ctx.moveTo(175, 200); ctx.lineTo(175, 100); ctx.stroke();
+        ctx.beginPath(); ctx.arc(175, 100, 10, 0, 2*Math.PI); ctx.fillStyle = '#e5383b'; ctx.fill();
+    }
+    
+    // --- Game Logic ---
+    function updateTemperature(heat) {
+        let targetTemp;
+        if (state.acetone > 0) {
+            targetTemp = 20 + heat * (ACETONE_BOIL - 20) / 100;
+            if (heat >= 50) targetTemp = ACETONE_BOIL; // Plateau
+        } else { // All acetone boiled
+             targetTemp = ACETONE_BOIL + heat * (WATER_BOIL - ACETONE_BOIL) / 100;
+        }
+        
+        // Smooth temperature change
+        state.temp += (targetTemp - state.temp) * 0.1;
+        tempReadout.textContent = `${Math.round(state.temp)} °C`;
+    }
+
+    function gameLoop() {
+        updateTemperature(state.heatLevel);
+        
+        // Update particles
+        ctx.clearRect(0,0,canvas.width, canvas.height);
+        drawApparatus();
+        particles.forEach(p => {
+            p.update(state.temp);
+            p.draw();
+        });
+
+        // Update liquid levels
+        if (state.temp >= ACETONE_BOIL && state.acetone > 0) {
+            state.acetone -= 0.001;
+            state.collectedAcetone += 0.001;
+        }
+        
+        if(state.acetone <= 0 && !state.isComplete) {
+            state.isComplete = true;
+            statusMessage.textContent = 'Success! Acetone has been separated.';
+            statusMessage.style.display = 'block';
+        }
+
+        requestAnimationFrame(gameLoop);
+    }
+    
+    function init() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        statusMessage.style.display = 'none';
+        
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        
+        state = {
+            heatLevel: 0,
+            temp: 20,
+            acetone: 1.0,
+            water: 1.0,
+            collectedAcetone: 0,
+            isComplete: false
+        };
+        heatSlider.value = 0;
+        
+        particles = [];
+        for(let i=0; i<100; i++) {
+            particles.push(new Particle(175 + (Math.random()-0.5)*100, 320 + Math.random()*50, 'acetone'));
+            particles.push(new Particle(175 + (Math.random()-0.5)*100, 320 + Math.random()*50, 'water'));
+        }
+
+        drawApparatus();
+        gameLoop();
+    }
+    
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', init);
+    resetBtn.addEventListener('click', init);
+
+    heatSlider.addEventListener('input', e => {
+        state.heatLevel = parseInt(e.target.value);
+    });
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

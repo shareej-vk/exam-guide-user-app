@@ -1,0 +1,549 @@
+{
+  "subject": {
+    "id": 1,
+    "name": "math",
+    "label": "Mathematics"
+  },
+  "units": [
+    {
+      "id": 16,
+      "name": "number_systems",
+      "label": "Number Systems",
+      "lessons": [
+        {
+          "id": 166,
+          "title": "Lesson 1: Introduction to Number Systems (Natural, Whole, Integers)",
+          "slug": "lesson_1_introduction_to_number_systems_natural_whole_integers",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "166_1",
+              "name": "Number System Sorter",
+              "implementationDetails": "Use draggable div elements for numbers and drop areas for categories (Natural, Whole, Integers). Store numbers in an array. Use the Drag and Drop API. Check the number's value against category rules on drop. Provide visual feedback (color change) for correct/incorrect placements. Display a score.",
+              "learningPoints": [
+                "Definition of Natural Numbers",
+                "Definition of Whole Numbers",
+                "Definition of Integers",
+                "Distinguishing Number Systems"
+              ]
+            },
+            {
+              "id": "166_2",
+              "name": "True/False Number System Statements",
+              "implementationDetails": "Create a game that presents true/false statements about the relationships between number systems. Provide feedback on the player's answers.",
+              "learningPoints": [
+                "Relationships between Natural, Whole, and Integer Numbers",
+                "Understanding Definitions",
+                "Logical Reasoning"
+              ]
+            },
+            {
+              "id": "166_3",
+              "name": "Number System Venn Diagram",
+              "implementationDetails": "Use a canvas or overlapping divs to represent a Venn diagram. Create draggable number elements. Check the number's properties (positive, non-negative, integer) to determine the correct region. Provide visual cues for valid drop zones. Award points for correct placement.",
+              "learningPoints": [
+                "Set relationships (subset, superset)",
+                "Visual representation of number systems",
+                "Logical reasoning"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 167,
+          "title": "Lesson 2: Rational Numbers and Their Representation",
+          "slug": "lesson_2_rational_numbers_and_their_representation",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "167_1",
+              "name": "Rational Number Identifier",
+              "implementationDetails": "Present a mix of numbers (fractions, decimals, square roots). Use buttons or a drag-and-drop interface. Check if the number can be expressed in p/q form (q!=0). Use Number.isInteger() and string manipulation. Provide feedback and a score.",
+              "learningPoints": [
+                "Definition of Rational Numbers",
+                "p/q form of Rational Numbers",
+                "Identifying Rational Numbers"
+              ]
+            },
+            {
+              "id": "167_2",
+              "name": "Rational Number Builder",
+              "implementationDetails": "Use input fields for p and q. Add validation (q!=0). Display the resulting rational number. Provide feedback if the input is valid. Have a score/timer component. ",
+              "learningPoints": [
+                "Definition of Rational Numbers",
+                "p/q form of Rational numbers",
+                "Understanding the constraint q!=0"
+              ]
+            },
+            {
+              "id": "167_3",
+              "name": "Equivalent Fraction Match",
+              "implementationDetails": "Use a card matching game format (display a grid of cards). Store fraction pairs (one simplified, one not). Implement card flipping and matching logic. Check numerators and denominators after simplification. Timer and score elements.",
+              "learningPoints": [
+                "Equivalent fractions",
+                "Simplifying fractions",
+                "Understanding different representations of the same rational number"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 168,
+          "title": "Lesson 3: Finding Rational Numbers Between Two Given Numbers",
+          "slug": "lesson_3_finding_rational_numbers_between_two_given_numbers",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "168_1",
+              "name": "Number Line Squeeze",
+              "implementationDetails": "Use a canvas or SVG for the number line. Display two endpoints. Allow the player to add points between them using mouse clicks. Calculate the values of the new points. Provide visual cues for correct placement. Track accuracy and time.",
+              "learningPoints": [
+                "Density of Rational Numbers",
+                "Finding Rational Numbers Between Two Numbers",
+                "Number Line Visualization"
+              ]
+            },
+            {
+              "id": "168_2",
+              "name": "Rational Number Generator",
+              "implementationDetails": "Use input fields for two numbers. Implement the mean formula ((a+b)/2). Display the generated number. Allow the player to generate multiple numbers between the previous result and the input. Display the generated sequence visually. ",
+              "learningPoints": [
+                "Finding Rational Numbers Between Two Numbers Using Mean Method",
+                "Density of Rational Numbers",
+                "Algorithmic thinking"
+              ]
+            },
+            {
+              "id": "168_3",
+              "name": "Fraction Comparison Challenge",
+              "implementationDetails": "Display two fractions. Use input fields for the numerator and denominator of a third fraction. Check if the third fraction falls between the first two. Provide feedback (number line visualization). Score and timer.",
+              "learningPoints": [
+                "Comparing fractions",
+                "Understanding fraction ordering",
+                "Density property"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 169,
+          "title": "Lesson 4: Introduction to Irrational Numbers",
+          "slug": "lesson_4_introduction_to_irrational_numbers",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "169_1",
+              "name": "Irrational Number Identifier",
+              "implementationDetails": "Present numbers (√2, π, fractions, terminating decimals). Use buttons or drag-and-drop. Check if the number can be expressed in p/q form. Use Math.sqrt() and string manipulation. Provide feedback. Score points for correct answers, deduct points for incorrect.",
+              "learningPoints": [
+                "Definition of Irrational Numbers",
+                "Identifying Irrational Numbers",
+                "Distinguishing Rational and Irrational Numbers"
+              ]
+            },
+            {
+              "id": "169_2",
+              "name": "Irrational vs Rational Drag and Drop",
+              "implementationDetails": "Use draggable number elements and drop areas for 'Rational' and 'Irrational' categories. Store numbers in an array. Check number properties on drop. Give visual feedback and update score.",
+              "learningPoints": [
+                "Definition of Irrational Numbers",
+                "Definition of Rational Numbers",
+                "Distinguishing Rational and Irrational Numbers"
+              ]
+            },
+            {
+              "id": "169_3",
+              "name": "Square Root Approximation",
+              "implementationDetails": "Use a number line (canvas or SVG). Display the square root symbol and a non-perfect square (e.g., √10). Allow the player to click on the number line to place a marker. Calculate the approximate value and compare to the correct value. Give feedback on accuracy.",
+              "learningPoints": [
+                "Estimating irrational number values",
+                "Non perfect square roots",
+                "Number Line visualization"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 170,
+          "title": "Lesson 5: Real Numbers and the Real Number Line",
+          "slug": "lesson_5_real_numbers_and_the_real_number_line",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "170_1",
+              "name": "Real Number Line Placement",
+              "implementationDetails": "Use a number line (canvas or SVG). Allow the player to drag number labels (rational and irrational) and drop them on the line. Check for correct placement within a tolerance. Provide visual cues for valid drop zones. Score based on accuracy.",
+              "learningPoints": [
+                "Real Number Line Representation",
+                "Relationship between Rational and Irrational Numbers",
+                "Number Approximation"
+              ]
+            },
+            {
+              "id": "170_2",
+              "name": "Which set does this belong to?",
+              "implementationDetails": "Display a number. Use checkboxes or buttons for number system options (N, W, Z, Q, R). Store the correct sets for each number in a data structure. Check player's selections against the correct sets. Give feedback and award points.",
+              "learningPoints": [
+                "Real Number Line Representation",
+                "Relationship between Rational and Irrational Numbers",
+                "Understanding the hierarchy of sets"
+              ]
+            },
+            {
+              "id": "170_3",
+              "name": "Number System Hierarchy Quiz",
+              "implementationDetails": "Present true/false or multiple-choice questions about subset relationships (e.g., 'Is Q a subset of R?'). Store questions in an array of objects (question, answer). Display questions and options. Check the answer and provide feedback.",
+              "learningPoints": [
+                "Hierarchy of number systems",
+                "Set theory concepts",
+                "Logical Reasoning"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 171,
+          "title": "Lesson 6: Locating Irrational Numbers on the Number Line (e.g., √2, √3)",
+          "slug": "lesson_6_locating_irrational_numbers_on_the_number_line_eg_2_3",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "171_1",
+              "name": "Geometric Construction Simulator",
+              "implementationDetails": "Use a canvas element to represent the number line. Implement virtual compass and straightedge tools using mouse events. Guide the player through the construction steps (draw line, mark point, draw semicircle, etc.). Provide visual feedback (highlight correct elements, show error messages). Use the Pythagorean theorem to calculate lengths. Check if construction is precise within a tolerance.",
+              "learningPoints": [
+                "Geometric Representation of Irrational Numbers",
+                "Pythagorean Theorem Application",
+                "Number Line Visualization"
+              ]
+            },
+            {
+              "id": "171_2",
+              "name": "Approximate location identification",
+              "implementationDetails": "Display a number line with tick marks. Show an irrational number (e.g., √5). Ask the player to select the closest tick mark. Calculate the approximate value and compare it.",
+              "learningPoints": [
+                "Geometric Representation of Irrational Numbers",
+                "Pythagorean Theorem Application",
+                "Number Line Visualization"
+              ]
+            },
+            {
+              "id": "171_3",
+              "name": "Construction steps sequencer",
+              "implementationDetails": "Store the construction steps in an array. Display the steps in a random order. Allow the player to drag and drop the steps into the correct sequence. Provide feedback on the order.",
+              "learningPoints": [
+                "Understanding the construction steps",
+                "Applying the pythagorean therorem",
+                "Geometric skill"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 172,
+          "title": "Lesson 7: Decimal Expansions of Rational Numbers (Terminating & Non-Terminating Recurring)",
+          "slug": "lesson_7_decimal_expansions_of_rational_numbers_terminating_non-terminating_recurring",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "172_1",
+              "name": "Decimal Expansion Classifier",
+              "implementationDetails": "Present decimal expansions (use string manipulation to generate recurring decimals). Use buttons or drag-and-drop for 'Terminating' and 'Non-Terminating Recurring'. Check the pattern of the digits. Provide feedback.",
+              "learningPoints": [
+                "Terminating Decimal Expansions",
+                "Non-Terminating Recurring Decimal Expansions",
+                "Relationship Between Rational Numbers and Decimal Expansions"
+              ]
+            },
+            {
+              "id": "172_2",
+              "name": "Fraction to decimal conversion",
+              "implementationDetails": "Use input fields for p and q. Implement long division using JavaScript (consider limiting the number of steps). Display the decimal expansion. Provide visual cues for the repeating block (if any).",
+              "learningPoints": [
+                "Terminating Decimal Expansions",
+                "Non-Terminating Recurring Decimal Expansions",
+                "Long division"
+              ]
+            },
+            {
+              "id": "172_3",
+              "name": "Divisibility rule identifier",
+              "implementationDetails": "Present fractions (p/q). Ask the player to identify if the denominator's factors cause terminating expansion. Use multiple-choice options for rules. Check the prime factorization of q.",
+              "learningPoints": [
+                "Condition for termination",
+                "Divisibility understanding",
+                "Factors of denominator"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 173,
+          "title": "Lesson 8: Converting Decimal Expansions into p/q Form",
+          "slug": "lesson_8_converting_decimal_expansions_into_pq_form",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "173_1",
+              "name": "Decimal to Fraction Converter",
+              "implementationDetails": "Display a terminating or recurring decimal. Use input fields and buttons to guide the player through the algebraic steps (multiply by 10, 100, etc., subtract equations). Check each step for correctness. Provide hints and feedback.",
+              "learningPoints": [
+                "Converting Terminating Decimals to p/q Form",
+                "Converting Non-Terminating Recurring Decimals to p/q Form",
+                "Algebraic Manipulation"
+              ]
+            },
+            {
+              "id": "173_2",
+              "name": "Missing step identifier",
+              "implementationDetails": "Display the steps of the conversion process with one step missing. Use multiple-choice options for the missing step. Store the steps in an array. Check the player's selection. Provide feedback.",
+              "learningPoints": [
+                "Converting Terminating Decimals to p/q Form",
+                "Converting Non-Terminating Recurring Decimals to p/q Form",
+                "Algebraic Manipulation"
+              ]
+            },
+            {
+              "id": "173_3",
+              "name": "Equation builder",
+              "implementationDetails": "Display the decimal. Use input fields to create equations (e.g., 10x = ..., 100x = ...). Check if the equations are correctly set up to eliminate the recurring part. Guide the player with feedback.",
+              "learningPoints": [
+                "Understanding equation manipulation",
+                "Algorithmic thinking",
+                "Decimal expansion conversion"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 174,
+          "title": "Lesson 9: Decimal Expansions of Irrational Numbers (Non-Terminating Non-Recurring)",
+          "slug": "lesson_9_decimal_expansions_of_irrational_numbers_non-terminating_non-recurring",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "174_1",
+              "name": "Decimal Expansion Identifier (Irrational)",
+              "implementationDetails": "Present decimal expansions (generate random non-repeating digits or use pre-defined irrational numbers). Use buttons or drag-and-drop. Check for non-terminating and non-recurring patterns. Provide feedback.",
+              "learningPoints": [
+                "Non-Terminating Non-Recurring Decimal Expansions",
+                "Identifying Irrational Numbers from Decimal Expansions",
+                "Distinguishing Rational and Irrational Decimal Expansions"
+              ]
+            },
+            {
+              "id": "174_2",
+              "name": "Construct an irrational decimal",
+              "implementationDetails": "Provide a text input field. Give the player instructions (e.g., enter 10 digits that don't repeat). Check the input for patterns or repetition. Give feedback on the player's construction.",
+              "learningPoints": [
+                "Non-Terminating Non-Recurring Decimal Expansions",
+                "Identifying Irrational Numbers from Decimal Expansions",
+                "Distinguishing Rational and Irrational Decimal Expansions"
+              ]
+            },
+            {
+              "id": "174_3",
+              "name": "Is this pattern irrational?",
+              "implementationDetails": "Present different digit patterns (repeating, non-repeating, etc.). Use buttons or multiple-choice options ('Irrational', 'Rational', 'Cannot be determined'). Check if the pattern will result in a non-terminating, non-recurring expansion. Provide a explanation.",
+              "learningPoints": [
+                "Pattern recognition",
+                "Understanding non termination",
+                "Understanding non recurring pattern"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 175,
+          "title": "Lesson 10: Operations on Real Numbers",
+          "slug": "lesson_10_operations_on_real_numbers",
+          "display_order": 10,
+          "games": [
+            {
+              "id": "175_1",
+              "name": "Real Number Operation Challenge",
+              "implementationDetails": "Present expressions (e.g., 2 + √3, √5 - 1, √2 * √3). Use input fields or buttons to select the result of the operation. Implement basic simplification (if applicable). Check for correct answers.",
+              "learningPoints": [
+                "Operations on Real Numbers",
+                "Simplifying Expressions with Real Numbers",
+                "Properties of Real Numbers"
+              ]
+            },
+            {
+              "id": "175_2",
+              "name": "Result set identification",
+              "implementationDetails": "Present an operation (e.g., rational + irrational). Use buttons or multiple-choice options ('Rational', 'Irrational'). Check the rules for operations with real numbers. Provide explanation",
+              "learningPoints": [
+                "Operations on Real Numbers",
+                "Simplifying Expressions with Real Numbers",
+                "Properties of Real Numbers"
+              ]
+            },
+            {
+              "id": "175_3",
+              "name": "Property identifier",
+              "implementationDetails": "Present an algebraic manipulation (e.g., a + b = b + a). Use multiple-choice options for properties (Commutative, Associative, Distributive). Check the expression against property definitions.",
+              "learningPoints": [
+                "Commutative property",
+                "Associative property",
+                "Distributive property"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 176,
+          "title": "Lesson 11: Representing √x Geometrically on the Number Line",
+          "slug": "lesson_11_representing_x_geometrically_on_the_number_line",
+          "display_order": 11,
+          "games": [
+            {
+              "id": "176_1",
+              "name": "Geometric Root Constructor",
+              "implementationDetails": "Use a canvas. Allow the player to draw lines and circles (simulating compass and straightedge). Guide the player through the construction steps (step-by-step). Check for correct geometric relationships using the Pythagorean theorem. Provide visual feedback.",
+              "learningPoints": [
+                "Geometric Construction of Square Roots",
+                "Number Line Representation",
+                "Pythagorean Theorem Application"
+              ]
+            },
+            {
+              "id": "176_2",
+              "name": "Step sequencer",
+              "implementationDetails": "Display construction steps (text descriptions or images) in random order. Allow the player to drag and drop them into the correct sequence. Store the steps in an array with the correct order. Check the player's sequence.",
+              "learningPoints": [
+                "Geometric Construction of Square Roots",
+                "Number Line Representation",
+                "Pythagorean Theorem Application"
+              ]
+            },
+            {
+              "id": "176_3",
+              "name": "What will be length?",
+              "implementationDetails": "Present the construction diagram with certain lengths labeled. Ask the player to calculate other lengths using the Pythagorean theorem. Use input fields for the answers. Check numerical accuracy.",
+              "learningPoints": [
+                "Applying pythagorean theorem",
+                "Construction steps",
+                "Geometric skill"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 177,
+          "title": "Lesson 12: Identities Involving Square Roots",
+          "slug": "lesson_12_identities_involving_square_roots",
+          "display_order": 12,
+          "games": [
+            {
+              "id": "177_1",
+              "name": "Identity Match Game",
+              "implementationDetails": "Use a card matching format. Display expressions (e.g., (a+b)²) on one set of cards and expanded forms (e.g., a² + 2ab + b²) on another. Implement card flipping and matching logic. Check algebraic equivalence.",
+              "learningPoints": [
+                "Identities Involving Square Roots",
+                "Simplifying Expressions",
+                "Algebraic Manipulation"
+              ]
+            },
+            {
+              "id": "177_2",
+              "name": "Missing term identifier",
+              "implementationDetails": "Display an identity with one term missing (e.g., (a + b)² = a² + __ + b²). Use multiple-choice options for the missing term. Check the player's selection against the correct expansion.",
+              "learningPoints": [
+                "Identities Involving Square Roots",
+                "Simplifying Expressions",
+                "Algebraic Manipulation"
+              ]
+            },
+            {
+              "id": "177_3",
+              "name": "Expression builder",
+              "implementationDetails": "Present a square root identity (e.g., (a + b)²). Provide input fields for a and b. Ask the player to construct the expanded expression using the identity.",
+              "learningPoints": [
+                "Identity application",
+                "Expression building",
+                "Pattern recognition"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 178,
+          "title": "Lesson 13: Rationalizing the Denominator",
+          "slug": "lesson_13_rationalizing_the_denominator",
+          "display_order": 13,
+          "games": [
+            {
+              "id": "178_1",
+              "name": "Rationalizing Steps Sequencer",
+              "implementationDetails": "Display steps for rationalizing a denominator in random order. Use drag and drop to arrange the steps. Store the correct sequence in an array. Check the player's sequence.",
+              "learningPoints": [
+                "Rationalizing the Denominator",
+                "Algebraic Manipulation",
+                "Step-by-Step Problem Solving"
+              ]
+            },
+            {
+              "id": "178_2",
+              "name": "Correct multiplier identification",
+              "implementationDetails": "Present an expression with an irrational denominator. Use multiple-choice options for the correct multiplier (conjugate). Check the player's selection.",
+              "learningPoints": [
+                "Rationalizing the Denominator",
+                "Algebraic Manipulation",
+                "Step-by-Step Problem Solving"
+              ]
+            },
+            {
+              "id": "178_3",
+              "name": "What changed?",
+              "implementationDetails": "Display an expression before and after rationalization. Highlight or ask the player to identify the term(s) that changed. Compare the numerators and denominators.",
+              "learningPoints": [
+                "Understanding numerator and denominator",
+                "Rationalisation process",
+                "Expression transformation"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 179,
+          "title": "Lesson 14: Laws of Exponents for Real Numbers",
+          "slug": "lesson_14_laws_of_exponents_for_real_numbers",
+          "display_order": 14,
+          "games": [
+            {
+              "id": "179_1",
+              "name": "Exponent Law Match",
+              "implementationDetails": "Use a card matching format. Display expressions with exponents on one set of cards and simplified forms (using the laws of exponents) on another. Flip cards and check equivalence",
+              "learningPoints": [
+                "Laws of Exponents for Real Numbers",
+                "Simplifying Exponential Expressions",
+                "Algebraic Manipulation"
+              ]
+            },
+            {
+              "id": "179_2",
+              "name": "Missing exponent identifier",
+              "implementationDetails": "Display an expression with a missing exponent (e.g., x^2 * x^__ = x^5). Use an input field or multiple-choice options for the missing value. Check if input is correct.",
+              "learningPoints": [
+                "Laws of Exponents for Real Numbers",
+                "Simplifying Exponential Expressions",
+                "Algebraic Manipulation"
+              ]
+            },
+            {
+              "id": "179_3",
+              "name": "Law Application identifier",
+              "implementationDetails": "Present an exponential expression. Use multiple-choice options for which law can be applied (Product Law, Quotient Law, Power Law, etc.). Check if the selected law is applicable.",
+              "learningPoints": [
+                "Exponent law recognition",
+                "Expression assessment",
+                "Strategic thinking"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

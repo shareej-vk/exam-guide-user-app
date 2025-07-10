@@ -1,0 +1,299 @@
+{
+  "subject": {
+    "id": 1,
+    "name": "math",
+    "label": "Mathematics"
+  },
+  "units": [
+    {
+      "id": 22,
+      "name": "linear_equations_in_two_variables",
+      "label": "Linear Equations in Two Variables",
+      "lessons": [
+        {
+          "id": 216,
+          "title": "Lesson 1: Introduction to Linear Equations in Two Variables",
+          "slug": "lesson_1_introduction_to_linear_equations_in_two_variables",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "216_1",
+              "name": "Equation Identifier",
+              "implementationDetails": "Present a mix of equations (linear in one variable, linear in two variables, non-linear). Ask the player to identify which ones are linear equations in two variables using button selection. Check for the presence of two variables and degree one.",
+              "learningPoints": [
+                "Definition of a Linear Equation in Two Variables",
+                "Identifying Linear Equations",
+                "Distinguishing from other types of equations"
+              ]
+            },
+            {
+              "id": "216_2",
+              "name": "Real-World Scenario Builder",
+              "implementationDetails": "Present a real-world scenario (e.g., cost of pens and pencils). Use input fields to define variables and write a linear equation representing the scenario. Provide tips and explanation for defining variable for situation based statement",
+              "learningPoints": [
+                "Translating real-world problems into linear equations",
+                "Defining variables",
+                "Understanding the meaning of linear equations"
+              ]
+            },
+            {
+              "id": "216_3",
+              "name": "Term Identifier",
+              "implementationDetails": "Show different linear equation terms with two variables and ask students to identify which one is ax + by term",
+              "learningPoints": [
+                "Terms in Linear Equation",
+                "Variable based separation",
+                "Constant recognition"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 217,
+          "title": "Lesson 2: The Standard Form: ax + by + c = 0",
+          "slug": "lesson_2_the_standard_form_ax_by_c_0",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "217_1",
+              "name": "Standard Form Converter",
+              "implementationDetails": "Present a linear equation in a non-standard form. Use drag-and-drop or button selection to rearrange the terms into the standard form (ax + by + c = 0). Check term manipulations and provide hint based arrangement",
+              "learningPoints": [
+                "Understanding the Standard Form",
+                "Rearranging equations",
+                "Algebraic manipulation"
+              ]
+            },
+            {
+              "id": "217_2",
+              "name": "Spot the standard form!",
+              "implementationDetails": "Present linear equation and ask students whether it is in standard form or not",
+              "learningPoints": [
+                "Recognition of standard form",
+                "Difference between standard form and other form",
+                "Rearranging of expression for conversion to standard form"
+              ]
+            }
+            ,
+            {
+              "id": "217_3",
+              "name": "Term mover",
+              "implementationDetails": "Ask students to move equations on side to get it into standard form",
+              "learningPoints": [
+                "Term movement in equation",
+                "Coefficient identification",
+                "Standard form components"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 218,
+          "title": "Lesson 3: Identifying the Coefficients a, b, and c",
+          "slug": "lesson_3_identifying_the_coefficients_a_b_and_c",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "218_1",
+              "name": "Coefficient Extractor",
+              "implementationDetails": "Present a linear equation in standard form. Use input fields for the player to enter the values of a, b, and c. Check against the equation's coefficients. Give feedback and points based on the right number of identification.",
+              "learningPoints": [
+                "Identifying Coefficients",
+                "Relating Coefficients to the Equation",
+                "Understanding Standard Form"
+              ]
+            },
+            {
+              "id": "218_2",
+              "name": "Coefficient builder",
+              "implementationDetails": "Ask students to build an expression given values of coefficients a, b, and c",
+              "learningPoints": [
+                "Coefficent building",
+                "Standard Form recognition",
+                "Term identification"
+              ]
+            },
+            {
+              "id": "218_3",
+              "name": "Coefficient selector",
+              "implementationDetails": "Provide a multiple choice question with multiple options of coefficients for different terms",
+              "learningPoints": [
+                "Standard form understanding",
+                "Coefficient discrimination",
+                "Expression coefficient application"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 219,
+          "title": "Lesson 4: Expressing One-Variable Equations in a Two-Variable Form",
+          "slug": "lesson_4_expressing_one-variable_equations_in_a_two-variable_form",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "219_1",
+              "name": "Variable adder",
+              "implementationDetails": "Present a linear equation in one variable. Use drag-and-drop or input fields to add the missing term (0y or 0x) to express it in two-variable form. Check the resulting equation is equivalent and linear.",
+              "learningPoints": [
+                "Rewriting Equations",
+                "Understanding Equivalent Forms",
+                "Role of Zero Coefficients"
+              ]
+            },
+            {
+              "id": "219_2",
+              "name": "Variable addition identifier",
+              "implementationDetails": "Show how expressions gets converted from one variable to two variable and ask students to identity that number which was multiplied with new variable and converted",
+              "learningPoints": [
+                "Application in variable addition",
+                "Coefficient based comparison",
+                "Coefficient identification"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 220,
+          "title": "Lesson 5: What is a Solution to a Linear Equation in Two Variables?",
+          "slug": "lesson_5_what_is_a_solution_to_a_linear_equation_in_two_variables",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "220_1",
+              "name": "Solution Checker",
+              "implementationDetails": "Present a linear equation in two variables and an ordered pair (x, y). Check value equality after substitution in the expression by drag and drop",
+              "learningPoints": [
+                "Definition of a Solution",
+                "Ordered Pairs as Solutions",
+                "Verifying Solutions"
+              ]
+            },
+             {
+              "id": "220_2",
+              "name": "Point addition",
+              "implementationDetails": "Add different numbers to equation and select from given options if both are same after adding to them or not",
+              "learningPoints": [
+                "Solution side application",
+                "Application of term addition",
+                "Equation balancing"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 221,
+          "title": "Lesson 6: Verifying if a Given Ordered Pair is a Solution",
+          "slug": "lesson_6_verifying_if_a_given_ordered_pair_is_a_solution",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "221_1",
+              "name": "Solution Verifier",
+              "implementationDetails": "Present a linear equation and a set of ordered pairs. Use radio button based selection to show if it solution or not",
+              "learningPoints": [
+                "Verifying Solutions",
+                "Substituting Values",
+                "Checking for Equality"
+              ]
+            },
+            {
+              "id": "221_2",
+              "name": "Which one is in?",
+              "implementationDetails": "Show points and equation ask student which point satisfy that equation",
+              "learningPoints": [
+                "Solution point identification",
+                "Point equation application",
+                "Ordered pair importance"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 222,
+          "title": "Lesson 7: Understanding that Linear Equations in Two Variables have Infinitely Many Solutions",
+          "slug": "lesson_7_understanding_that_linear_equations_in_two_variables_have_infinitely_many_solutions",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "222_1",
+              "name": "Solution Generator",
+              "implementationDetails": "Use input fields for the x value and generate value for y. Explain that this pair of value is solution. Generate several solutions and show that they are infinite.",
+              "learningPoints": [
+                "Infinitely Many Solutions",
+                "Generating Solutions",
+                "Relationship between x and y"
+              ]
+            },
+            {
+              "id": "222_2",
+              "name": "Solution calculator",
+              "implementationDetails": "Display linear equation and set one variable value with a range and set formula for calculating other with this range",
+              "learningPoints": [
+                "Relationship between variables",
+                "Solution generator formula",
+                "Automaticity by solution"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 223,
+          "title": "Lesson 8: Methods for Finding Multiple Solutions to a Linear Equation",
+          "slug": "lesson_8_methods_for_finding_multiple_solutions_to_a_linear_equation",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "223_1",
+              "name": "Solution Method Explorer",
+              "implementationDetails": "Implement multiple methods for finding solutions (e.g., substituting x, substituting y, rearranging the equation). Present these using a step based system so that users can visualise and apply",
+              "learningPoints": [
+                "Finding Solutions",
+                "Method application",
+                "Generating ordered pairs"
+              ]
+            },
+             {
+              "id": "223_2",
+              "name": "Formula builder",
+              "implementationDetails": "For equation get value in terms of other variable",
+              "learningPoints": [
+                "Finding Solutions",
+                "Method application",
+                "Generating ordered pairs"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 224,
+          "title": "Lesson 9: Finding an Unknown Constant (k) when a Solution is Given",
+          "slug": "lesson_9_finding_an_unknown_constant_k_when_a_solution_is_given",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "224_1",
+              "name": "Constant Solver",
+              "implementationDetails": "Present a linear equation with an unknown constant (k) and a given solution (x, y). Use input fields and guide to solve the equation for k. Check the answer and provide feedback.",
+              "learningPoints": [
+                "Solving for Unknown Constants",
+                "Substituting Values",
+                "Applying Solution Properties"
+              ]
+            },
+             {
+              "id": "224_2",
+              "name": " Constant identifier",
+              "implementationDetails": "Display a series of steps to find value of unknown constant and ask for the identifier step from other steps",
+              "learningPoints": [
+                "Substitution application",
+                "Equation recognition",
+                "Term identification and knowledge"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

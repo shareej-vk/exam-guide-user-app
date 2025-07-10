@@ -1,0 +1,447 @@
+{
+  "subject": {
+    "id": 5,
+    "name": "science",
+    "label": "Science"
+  },
+  "units": [
+    {
+      "id": 58,
+      "name": "unit_2:_is_matter_around_us_pure?",
+      "label": "Unit 2: Is matter around us pure?",
+      "lessons": [
+        {
+          "id": 406,
+          "title": "Lesson 1: Defining Pure Substances and Mixtures",
+          "slug": "lesson_1_defining_pure_substances_and_mixtures",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "406_1",
+              "name": "Lab Shelf Sorter",
+              "implementationDetails": "The game screen shows two shelves labeled 'Pure Substances' and 'Mixtures'. A conveyor belt brings various items represented by labeled jars (e.g., 'Salt (NaCl)', 'Sugar (C12H22O11)', 'Salt Water', 'Air', 'Iron Filings'). The player must drag and drop each jar onto the correct shelf. When a jar is hovered, a 'magnifying glass' button appears. Clicking it shows an animated microscopic view: 'Salt' shows only identical NaCl particles, while 'Salt Water' shows a mix of NaCl and H2O particles. This visual clue helps the player make the correct choice.",
+              "learningPoints": [
+                "Visually differentiating between a pure substance (one type of particle) and a mixture (multiple types of particles).",
+                "Understanding that elements and compounds are pure substances.",
+                "Reinforcing the definition of mixtures as substances containing more than one kind of pure matter."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 407,
+          "title": "Lesson 2: Types of Mixtures - Homogeneous and Heterogeneous",
+          "slug": "lesson_2_types_of_mixtures_-_homogeneous_and_heterogeneous",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "407_1",
+              "name": "Mixture Inspector",
+              "implementationDetails": "The player is presented with several beakers containing different mixtures (e.g., salt in water, sand in water, oil in water, sugar in water). The beakers initially look uniform. The player has two tools: a 'Stir' tool (a draggable glass rod that animates stirring) and a 'Wait' button (fast-forwards time). When stirred, all mixtures appear mixed. When 'Wait' is clicked, the sand settles in the 'sand in water' beaker (heterogeneous), and the oil separates in the 'oil in water' beaker (heterogeneous). The salt and sugar solutions remain uniformly mixed (homogeneous).",
+              "learningPoints": [
+                "Defining a homogeneous mixture by its uniform composition.",
+                "Defining a heterogeneous mixture by its non-uniform composition and physically distinct parts.",
+                "Observing how properties like particle settling can help differentiate between mixture types."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 408,
+          "title": "Lesson 3: Understanding Solutions - Solute and Solvent",
+          "slug": "lesson_3_understanding_solutions_-_solute_and_solvent",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "408_1",
+              "name": "Solution Maker",
+              "implementationDetails": "The player sees a central beaker of water (the solvent). On shelves are various solutes (salt, sugar, iodine crystals). The player drags a solute to the beaker. An animation shows the solute particles dispersing among the water particles. Text labels appear, identifying 'Water' as the 'Solvent' (the larger quantity) and 'Salt' as the 'Solute' (the substance being dissolved). The game can offer different solvents like alcohol to show that it can also be a solvent.",
+              "learningPoints": [
+                "Identifying the solute as the substance that is dissolved.",
+                "Identifying the solvent as the substance in which the solute dissolves.",
+                "Understanding that the solvent is typically present in the larger amount."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 409,
+          "title": "Lesson 4: Properties of a Solution",
+          "slug": "lesson_4_properties_of_a_solution",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "409_1",
+              "name": "Light Path Lab",
+              "implementationDetails": "The player is presented with three beakers: one containing a true solution (salt water), one with a colloid (milky water), and one with a suspension (sandy water). A draggable laser pointer tool is provided. When the player shines the laser through the true solution, the light beam passes through without its path being visible. When shone through the colloid, the path of the beam becomes clearly visible (Tyndall Effect). Through the suspension, the beam is scattered and blocked. This directly demonstrates a key property of solutions.",
+              "learningPoints": [
+                "Observing that particles in a solution are too small to scatter light (no Tyndall effect).",
+                "Understanding that a solution is stable and its particles do not settle down.",
+                "Visually confirming that solution particles cannot be seen with the naked eye."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 410,
+          "title": "Lesson 5: Concentration of a Solution - Saturated, Unsaturated, and Solubility",
+          "slug": "lesson_5_concentration_of_a_solution_-_saturated_unsaturated_and_solubility",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "410_1",
+              "name": "Saturation Point Lab",
+              "implementationDetails": "The player sees a beaker of water with a temperature display. A button lets them add 'scoops' of a solute (e.g., sugar). Each click adds sugar particles that animate dissolving. A concentration meter increases. Initially, the solution is 'Unsaturated'. After a certain number of scoops, the sugar stops dissolving and piles up at the bottom. The solution is now labeled 'Saturated'. A 'Heat' button then appears. Clicking it raises the temperature, and the settled sugar begins to dissolve again, demonstrating the effect of temperature on solubility.",
+              "learningPoints": [
+                "Differentiating between unsaturated, saturated, and supersaturated solutions.",
+                "Defining solubility as the maximum amount of solute that can be dissolved at a given temperature.",
+                "Observing how temperature affects the solubility of a substance."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 411,
+          "title": "Lesson 6: Methods for Expressing the Concentration of a Solution",
+          "slug": "lesson_6_methods_for_expressing_the_concentration_of_a_solution",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "411_1",
+              "name": "Concentration Calculator",
+              "implementationDetails": "A virtual lab bench is shown. The player is given a task, e.g., 'Create a 10% mass by mass salt solution'. They have a scale, a beaker of water (e.g., 90g shown), and a jar of salt. The player must drag the salt to the scale, use a slider to measure out the correct mass (10g), and then add it to the water. The game then displays the calculation: (10g solute / (10g solute + 90g solvent)) * 100 = 10%. The game can have multiple levels for mass/volume and volume/volume percentages.",
+              "learningPoints": [
+                "Applying the formula for mass by mass percentage.",
+                "Applying the formula for mass by volume percentage.",
+                "Practicing the calculation of solution concentration in a hands-on, simulated environment."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 412,
+          "title": "Lesson 7: Understanding Suspensions and Their Properties",
+          "slug": "lesson_7_understanding_suspensions_and_their_properties",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "412_1",
+              "name": "Suspension Settler",
+              "implementationDetails": "The player mixes chalk powder in a beaker of water. Initially, the water becomes cloudy, and large particles are visibly suspended. The player can shine a flashlight, and the beam is scattered/blocked. A 'Wait 5 Minutes' button is available. When clicked, an animation shows the large chalk particles slowly settling at the bottom of the beaker, leaving the water clearer. This demonstrates the instability of suspensions.",
+              "learningPoints": [
+                "Identifying a suspension as a heterogeneous mixture.",
+                "Observing that suspension particles are large enough to be seen.",
+                "Understanding that suspensions are unstable and their particles settle over time."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 413,
+          "title": "Lesson 8: Understanding Colloidal Solutions (Colloids)",
+          "slug": "lesson_8_understanding_colloidal_solutions_colloids",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "413_1",
+              "name": "Colloid Creator",
+              "implementationDetails": "The player is shown a beaker of water. They can add a few drops of 'milk' or 'ink'. The particles disperse and do not settle, appearing homogeneous to the naked eye. The game then allows the player to use a 'Super Microscope' tool. When activated, it zooms in to reveal that the milk/ink consists of larger particles (dispersed phase) floating among the smaller water particles (dispersion medium), proving it's actually a heterogeneous mixture at the microscopic level.",
+              "learningPoints": [
+                "Defining a colloid by its particle size, which is intermediate between solutions and suspensions.",
+                "Understanding that colloids appear homogeneous but are actually heterogeneous.",
+                "Identifying the dispersed phase and the dispersion medium in a colloidal solution."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 414,
+          "title": "Lesson 9: Properties of Colloids and the Tyndall Effect",
+          "slug": "lesson_9_properties_of_colloids_and_the_tyndall_effect",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "414_1",
+              "name": "Tyndall Effect Explorer",
+              "implementationDetails": "This is a visual exploration game. The player is shown a dark room with a window, a beaker of milky water (colloid), and a flashlight. First, the player can click the window to let a 'sunbeam' enter the room. An animation shows the path of the sunbeam becoming visible due to dust particles (a colloid of solid in gas). Next, the player can drag the flashlight to shine it through the beaker. The path of the light beam becomes clearly visible inside the milky water. A tooltip explains this is the Tyndall effect.",
+              "learningPoints": [
+                "Defining the Tyndall effect as the scattering of light by colloidal particles.",
+                "Observing the Tyndall effect in everyday examples like dust in a sunbeam.",
+                "Using the Tyndall effect as a key method to distinguish colloids from true solutions."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 415,
+          "title": "Lesson 10: Classification of Colloids - Dispersed Phase and Dispersion Medium",
+          "slug": "lesson_10_classification_of_colloids_-_dispersed_phase_and_dispersion_medium",
+          "display_order": 10,
+          "games": [
+            {
+              "id": "415_1",
+              "name": "Colloid Classifier",
+              "implementationDetails": "A matching game. The player sees a grid with colloid types (e.g., 'Aerosol', 'Emulsion', 'Sol', 'Gel'). On the side are cards with examples ('Fog', 'Milk', 'Paint', 'Jelly'). The player must drag each example card to the correct type. When a card is hovered, it shows a hint about its composition (e.g., hovering 'Fog' shows 'Liquid in Gas'). Correct matches lock into place. This game helps students memorize the classification of colloids in an interactive way.",
+              "learningPoints": [
+                "Categorizing different types of colloids based on their dispersed phase and dispersion medium.",
+                "Learning the specific names for different colloid types (aerosol, foam, emulsion, etc.).",
+                "Associating common everyday examples with their scientific colloid classification."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 416,
+          "title": "Lesson 11: Separating the Components of a Mixture",
+          "slug": "lesson_11_separating_the_components_of_a_mixture",
+          "display_order": 11,
+          "games": [
+            {
+              "id": "416_1",
+              "name": "Separation Lab Challenge",
+              "implementationDetails": "The player is presented with a mixture (e.g., 'Sand and Salt Water'). They have a virtual lab bench with various tools: a filter funnel, an evaporation dish, a centrifuge, a separating funnel, etc. The player must choose the right tool for the job. For 'Sand and Salt Water', they must first use the filter to separate the sand, then use the evaporation dish to separate the salt from the water. Choosing the wrong tool results in a 'Try Again' message with a hint.",
+              "learningPoints": [
+                "Understanding that different separation techniques are used for different types of mixtures.",
+                "Developing problem-solving skills to select the appropriate technique based on the properties of the components.",
+                "Recognizing that mixtures can often require multiple separation steps."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 417,
+          "title": "Lesson 12: Separation Technique - Evaporation",
+          "slug": "lesson_12_separation_technique_-_evaporation",
+          "display_order": 12,
+          "games": [
+            {
+              "id": "417_1",
+              "name": "Salt Crystal Farmer",
+              "implementationDetails": "The player is given a beaker of salt water (a solution of a non-volatile solute in a volatile solvent). They must drag the beaker and pour its contents into an evaporation dish. Then, they drag the dish over a bunsen burner. An animation shows the water turning into steam, leaving behind the salt crystals. The game's goal is to recover the solid salt from the solution.",
+              "learningPoints": [
+                "Understanding the principle of evaporation as a separation technique.",
+                "Identifying that evaporation is used to separate a non-volatile solute from a volatile solvent.",
+                "Visually observing the process of the solvent evaporating and the solute being left behind."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 418,
+          "title": "Lesson 13: Separation Technique - Centrifugation",
+          "slug": "lesson_13_separation_technique_-_centrifugation",
+          "display_order": 13,
+          "games": [
+            {
+              "id": "418_1",
+              "name": "Cream Separator",
+              "implementationDetails": "The player is shown a test tube of milk (a colloid). They place the test tube into a centrifuge machine. The player then clicks a 'Spin' button. An animation shows the centrifuge spinning rapidly. A cross-section view of the test tube shows the lighter cream particles (fat) being forced to the top, while the denser skimmed milk is forced to the bottom. The player has successfully separated the cream from the milk.",
+              "learningPoints": [
+                "Understanding the principle of centrifugation based on density differences.",
+                "Learning that centrifugation is used to separate suspended particles from a liquid, especially in colloids.",
+                "Applying the concept to real-world examples like separating cream from milk or blood components."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 419,
+          "title": "Lesson 14: Separation Technique - Separating Funnel for Immiscible Liquids",
+          "slug": "lesson_14_separation_technique_-_separating_funnel_for_immiscible_liquids",
+          "display_order": 14,
+          "games": [
+            {
+              "id": "419_1",
+              "name": "Oil & Water Split",
+              "implementationDetails": "The player is given a mixture of oil and water in a beaker. They must pour this into a separating funnel. An animation shows the two immiscible liquids forming distinct layers, with the denser water at the bottom and the lighter oil on top. The player then clicks to open the stopcock at the bottom of the funnel. The water layer drains out into a beaker below. The player must click to close the stopcock at the exact moment the water is gone, successfully separating the two liquids.",
+              "learningPoints": [
+                "Understanding that a separating funnel is used for immiscible liquids.",
+                "Learning that this technique works based on the different densities of the liquids.",
+                "Practicing the careful procedure of draining the lower layer to achieve separation."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 420,
+          "title": "Lesson 15: Separation Technique - Sublimation",
+          "slug": "lesson_15_separation_technique_-_sublimation",
+          "display_order": 15,
+          "games": [
+            {
+              "id": "420_1",
+              "name": "Ammonium Chloride Rescue",
+              "implementationDetails": "The player starts with a dish containing a mixture of ammonium chloride (which sublimes) and salt (which doesn't). The goal is to separate them. The player places an inverted funnel over the dish and a cotton plug at the top. They then drag a bunsen burner underneath to heat the dish. An animation shows the ammonium chloride turning directly into vapor, rising, and then solidifying (deposition) on the cooler, inner walls of the funnel, leaving the pure salt behind.",
+              "learningPoints": [
+                "Applying the principle of sublimation to separate mixtures.",
+                "Identifying that this technique works when one component sublimes and the other does not.",
+                "Observing both sublimation (solid to gas) and deposition (gas to solid) in one process."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 421,
+          "title": "Lesson 16: Separation Technique - Chromatography",
+          "slug": "lesson_16_separation_technique_-_chromatography",
+          "display_order": 16,
+          "games": [
+            {
+              "id": "421_1",
+              "name": "Ink Detective",
+              "implementationDetails": "The player is given a spot of 'black ink' on a strip of filter paper. They dip the bottom of the paper into a solvent. An animation begins, showing the solvent moving up the paper. As it passes the ink spot, it separates the ink into different colored bands (e.g., blue, red, yellow). The different colors travel at different speeds. The game's objective is to identify which colors made up the original black ink, demonstrating how chromatography separates components based on their different solubilities.",
+              "learningPoints": [
+                "Understanding the basic principle of paper chromatography.",
+                "Learning that separation occurs because different components have different solubilities in the solvent and travel at different speeds.",
+                "Applying chromatography to separate the different dyes in a mixture like ink."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 422,
+          "title": "Lesson 17: Separation Technique - Distillation and Fractional Distillation",
+          "slug": "lesson_17_separation_technique_-_distillation_and_fractional_distillation",
+          "display_order": 17,
+          "games": [
+            {
+              "id": "422_1",
+              "name": "Distillation Master",
+              "implementationDetails": "A virtual lab setup for distillation is shown. The player has a mixture of two miscible liquids with different boiling points, e.g., acetone (56°C) and water (100°C). The player heats the flask. A thermometer shows the temperature rising. At 56°C, the temperature holds steady as the acetone boils, turns to vapor, travels through the condenser (where it turns back to liquid), and collects in a separate beaker. Once all the acetone is distilled, the temperature begins to rise again towards 100°C. The player has successfully separated the liquids.",
+              "learningPoints": [
+                "Understanding that distillation separates miscible liquids with different boiling points.",
+                "Observing the process of evaporation followed by condensation.",
+                "Differentiating between simple distillation (for large boiling point differences) and fractional distillation (for small differences)."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 423,
+          "title": "Lesson 18: Separation Technique - Filtration",
+          "slug": "lesson_18_separation_technique_-_filtration",
+          "display_order": 18,
+          "games": [
+            {
+              "id": "423_1",
+              "name": "Muddy Water Challenge",
+              "implementationDetails": "The player is given a beaker of muddy water (an insoluble solid in a liquid). Their goal is to get clear water. They must drag and assemble the filtration apparatus: a beaker, a funnel, and filter paper. Once assembled, they pour the muddy water through the filter. An animation shows the clear water (filtrate) passing through the paper, while the mud particles (residue) are trapped on the filter paper. The game emphasizes separating an insoluble solid from a liquid.",
+              "learningPoints": [
+                "Understanding filtration as a technique to separate an insoluble solid from a liquid.",
+                "Identifying the key components: filtrate (the liquid that passes through) and residue (the solid left behind).",
+                "Applying filtration to a common example like cleaning muddy water."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 424,
+          "title": "Lesson 19: Differentiating Between Physical and Chemical Changes",
+          "slug": "lesson_19_differentiating_between_physical_and_chemical_changes",
+          "display_order": 19,
+          "games": [
+            {
+              "id": "424_1",
+              "name": "Change Lab",
+              "implementationDetails": "The player is on a lab bench with two stations. A conveyor belt brings items like 'Ice Cube', 'Piece of Paper', 'Iron Nail', 'Sugar'. At Station 1 (Physical), tools like a 'Hammer' and 'Heater' are available. At Station 2 (Chemical), tools like a 'Bunsen Burner' and 'Water Dropper' are available. The player must choose the right station. E.g., melting ice is physical (reversible, no new substance). Burning paper is chemical (irreversible, creates ash/smoke - new substances). The game provides feedback on why each choice is a physical or chemical change.",
+              "learningPoints": [
+                "Defining a physical change as a change in physical properties where no new substance is formed.",
+                "Defining a chemical change as a change where new substances with different properties are formed.",
+                "Identifying key indicators of chemical changes, such as the production of light, heat, or a gas."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 425,
+          "title": "Lesson 20: Pure Substances - Introduction to Elements",
+          "slug": "lesson_20_pure_substances_-_introduction_to_elements",
+          "display_order": 20,
+          "games": [
+            {
+              "id": "425_1",
+              "name": "Element Breaker",
+              "implementationDetails": "The player is given two substances: 'Water (H2O)' and 'Copper (Cu)'. They have two tools: a 'Physical Hammer' and a 'Chemical Zapper' (representing electrolysis). Using the hammer on either does nothing to their composition. Using the zapper on water breaks it down into separate hydrogen and oxygen particles. Using the zapper on copper does nothing, as it cannot be broken down further by chemical means. This demonstrates that elements are the fundamental building blocks.",
+              "learningPoints": [
+                "Defining an element as a basic form of matter that cannot be broken down into simpler substances by chemical reactions.",
+                "Contrasting elements with compounds, which can be broken down chemically.",
+                "Understanding the fundamental nature of elements."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 426,
+          "title": "Lesson 21: Classification of Elements - Metals, Non-metals, and Metalloids",
+          "slug": "lesson_21_classification_of_elements_-_metals_non-metals_and_metalloids",
+          "display_order": 21,
+          "games": [
+            {
+              "id": "426_1",
+              "name": "Property Tester",
+              "implementationDetails": "The player is given a sample of an unknown element. They have a lab bench with tools to test its properties: a 'Shine' tool (tests lustre), a 'Hammer' (tests malleability), a 'Wire Puller' (tests ductility), and a 'Circuit Tester' (tests conductivity). Based on the results (e.g., shiny, malleable, conductive), the player must classify the element by dragging it into one of three bins: 'Metal', 'Non-metal', or 'Metalloid'.",
+              "learningPoints": [
+                "Identifying the characteristic physical properties of metals (lustre, malleability, ductility, conductivity).",
+                "Identifying the characteristic properties of non-metals.",
+                "Understanding that metalloids have intermediate properties between metals and non-metals."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 427,
+          "title": "Lesson 22: Pure Substances - Introduction to Compounds",
+          "slug": "lesson_22_pure_substances_-_introduction_to_compounds",
+          "display_order": 22,
+          "games": [
+            {
+              "id": "427_1",
+              "name": "Compound Builder",
+              "implementationDetails": "A virtual chemistry set. The player is given a task: 'Make Water (H2O)'. They have supplies of individual Hydrogen and Oxygen atoms. They must drag two Hydrogen atoms and one Oxygen atom to a 'Reaction Chamber' and click 'Combine'. An animation shows them chemically bonding to form a new H2O molecule with entirely new properties. The game reinforces that compounds are formed from two or more elements chemically combined in a fixed ratio.",
+              "learningPoints": [
+                "Defining a compound as a substance formed from two or more elements chemically combined.",
+                "Understanding that compounds have a fixed composition by mass (Law of Constant Proportions).",
+                "Recognizing that the properties of a compound are different from its constituent elements."
+              ]
+            }
+          ]
+        },
+        {
+          "id": "428",
+          "title": "Lesson 23: Comparing the Properties of Mixtures and Compounds",
+          "slug": "lesson_23_comparing_the_properties_of_mixtures_and_compounds",
+          "display_order": 23,
+          "games": [
+            {
+              "id": "428_1",
+              "name": "Iron & Sulphur Lab",
+              "implementationDetails": "The player performs two experiments side-by-side. Exp 1: Mix iron filings and sulphur powder (Mixture). Exp 2: Heat iron and sulphur to form iron sulphide (Compound). The player then tests both products. A magnet attracts the iron in the mixture but has no effect on the compound. Adding an acid to the mixture produces hydrogen gas, while adding it to the compound produces foul-smelling hydrogen sulphide gas. This directly contrasts the properties of a mixture (retains component properties) and a compound (new properties).",
+              "learningPoints": [
+                "Observing that a mixture shows the properties of its constituent substances.",
+                "Observing that a compound has entirely new properties different from its constituents.",
+                "Understanding that components of a mixture can be separated by physical means, while components of a compound cannot."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 429,
+          "title": "Lesson 24: Summary - The Classification of Matter",
+          "slug": "lesson_24_summary_-_the_classification_of_matter",
+          "display_order": 24,
+          "games": [
+            {
+              "id": "429_1",
+              "name": "Matter Flowchart",
+              "implementationDetails": "A drag-and-drop flowchart puzzle. The chart starts with 'Matter'. The player must drag labels like 'Pure Substance', 'Mixture', 'Element', 'Compound', 'Homogeneous', and 'Heterogeneous' into the correct positions in the branching diagram. They also drag examples (like 'Water', 'Air', 'Iron', 'Salad') to the correct final category. This serves as a comprehensive visual review of the entire chapter.",
+              "learningPoints": [
+                "Organizing the classification of matter in a structured, hierarchical way.",
+                "Reviewing the definitions and relationships between all key terms in the chapter.",
+                "Solidifying the entire chapter's concepts in a single summary activity."
+              ]
+            }
+          ]
+        }
+      ]
+    }]
+  }   

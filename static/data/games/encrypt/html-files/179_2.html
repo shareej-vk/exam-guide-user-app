@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Missing Exponent Identifier</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f0f4ff;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      display: flex;
+      gap: 30px;
+      max-width: 1200px;
+      width: 100%;
+    }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      box-sizing: border-box;
+    }
+    .instructions {
+      flex: 3;
+    }
+    .game {
+      flex: 7;
+    }
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a237e;
+      margin-bottom: 15px;
+    }
+    p {
+      font-size: 16px;
+      color: #333;
+      line-height: 1.5;
+    }
+    .problem-area {
+      font-size: 26px;
+      margin-bottom: 20px;
+      text-align: center;
+      background-color: #e3f2fd;
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px solid #64b5f6;
+    }
+    .input-group {
+      text-align: center;
+      margin: 20px 0;
+    }
+    input[type="number"] {
+      font-size: 20px;
+      padding: 10px 20px;
+      width: 100px;
+      border: 2px solid #90caf9;
+      border-radius: 8px;
+    }
+    .button-row {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .button-row button {
+      padding: 10px 18px;
+      font-size: 15px;
+      font-weight: bold;
+      background: #90caf9;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #0d47a1;
+    }
+    .button-row button:hover {
+      background: #64b5f6;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .correct {
+      color: green;
+    }
+    .wrong {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card instructions">
+      <h2>🧠 Instructions</h2>
+      <p>In this game, you’ll see an equation with a missing exponent. Your task is to fill in the missing exponent so that the equation is correct using exponent laws.</p>
+      <p>✍️ Enter the missing exponent in the input box.</p>
+      <p>✅ If your answer is correct, you’ll get a green confirmation. If not, try again!</p>
+      <p>🔄 Use the "Start New" or "Reset" button to begin or restart the game.</p>
+    </div>
+
+    <div class="card game">
+      <h2>🎯 Missing Exponent Identifier</h2>
+      <div class="problem-area" id="problemText">
+        <!-- Problem will appear here -->
+      </div>
+      <div class="input-group">
+        <label for="userAnswer">Enter missing exponent: </label>
+        <input type="number" id="userAnswer" />
+      </div>
+      <div class="button-row">
+        <button onclick="checkAnswer()">Check</button>
+        <button onclick="generateProblem()">Start New</button>
+      </div>
+      <div id="result" class="result"></div>
+    </div>
+  </div>
+
+  <script>
+    const problems = [
+      { base: 'x', leftExp: 2, missingExp: 3, resultExp: 5 },
+      { base: 'a', leftExp: 4, missingExp: 2, resultExp: 6 },
+      { base: 'y', leftExp: 1, missingExp: 4, resultExp: 5 },
+      { base: 'm', leftExp: 5, missingExp: 3, resultExp: 8 },
+      { base: 'z', leftExp: 7, missingExp: 2, resultExp: 9 }
+    ];
+
+    let currentProblem = null;
+
+    function generateProblem() {
+      const randomIndex = Math.floor(Math.random() * problems.length);
+      currentProblem = problems[randomIndex];
+
+      const { base, leftExp, resultExp } = currentProblem;
+      document.getElementById('problemText').innerText =
+        `${base}^${leftExp} × ${base}^___ = ${base}^${resultExp}`;
+
+      document.getElementById('userAnswer').value = '';
+      document.getElementById('result').innerText = '';
+    }
+
+    function checkAnswer() {
+      const userInput = parseInt(document.getElementById('userAnswer').value);
+      const resultEl = document.getElementById('result');
+
+      if (userInput === currentProblem.missingExp) {
+        resultEl.innerText = "🎉 Correct! Well done.";
+        resultEl.className = "result correct";
+      } else {
+        resultEl.innerText = "❌ Oops! That's not correct. Try again.";
+        resultEl.className = "result wrong";
+      }
+    }
+
+    window.onload = generateProblem;
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

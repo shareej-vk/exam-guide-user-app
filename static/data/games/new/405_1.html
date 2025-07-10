@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Changes Puzzle - Interactive Learning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ===== Base Styles & Variables ===== */
+        :root {
+            /* Colors */
+            --primary-600: #4f46e5;
+            --primary-500: #6366f1;
+            --primary-50: #eef2ff;
+            
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            
+            --success-500: #10b981;
+            --error-500: #ef4444;
+            --warning-500: #f59e0b;
+            --info-500: #3b82f6;
+            
+            /* State Colors */
+            --solid: #64748b;
+            --liquid: #0ea5e9;
+            --gas: #22c55e;
+            
+            /* Typography */
+            --font-heading: 'Plus Jakarta Sans', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            
+            /* Spacing */
+            --spacing-1: 0.25rem;
+            --spacing-2: 0.5rem;
+            --spacing-3: 0.75rem;
+            --spacing-4: 1rem;
+            --spacing-6: 1.5rem;
+            --spacing-8: 2rem;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        
+        /* ===== Reset & Base Styles ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: var(--font-body);
+            line-height: 1.5;
+            color: var(--gray-900);
+            background-color: var(--gray-50);
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        button {
+            font: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        
+        /* ===== Layout ===== */
+        .app {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-6) var(--spacing-4);
+        }
+        
+        .game-layout {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-6);
+        }
+        
+        /* ===== Cards ===== */
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .card-header {
+            padding: var(--spacing-4);
+            border-bottom: 1px solid var(--gray-200);
+            background-color: var(--primary-50);
+        }
+        
+        .card-body {
+            padding: var(--spacing-4);
+        }
+        
+        /* ===== Buttons ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.625rem 1.25rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-600);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-500);
+        }
+        
+        .btn-outline {
+            border: 1px solid var(--gray-300);
+            background-color: white;
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--gray-100);
+        }
+        
+        /* ===== Game Area ===== */
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            order: 1;
+            width: 100%;
+        }
+        
+        .tile-banks {
+            display: flex;
+            gap: var(--spacing-4);
+            margin-bottom: var(--spacing-4);
+        }
+        
+        .tile-bank {
+            flex: 1;
+            background-color: var(--gray-100);
+            border-radius: 0.5rem;
+            padding: var(--spacing-3);
+            min-height: 80px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-2);
+            align-content: flex-start;
+        }
+        
+        .tile {
+            padding: 0.5rem 1rem;
+            background-color: white;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            cursor: grab;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--gray-200);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+        
+        .tile:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+            box-shadow: var(--shadow);
+        }
+        
+        .tile.heat {
+            font-weight: 700;
+            padding: 0.5rem;
+            min-width: 44px;
+            text-align: center;
+        }
+        
+        .tile.heat.plus {
+            color: var(--error-500);
+        }
+        
+        .tile.heat.minus {
+            color: var(--info-500);
+        }
+        
+        .diagram-container {
+            position: relative;
+            width: 100%;
+            min-height: 500px;
+            background-color: white;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .state-box {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.125rem;
+            box-shadow: var(--shadow);
+            border: 4px solid white;
+        }
+        
+        .state-box.solid { background-color: var(--solid); top: 50%; left: 15%; transform: translateY(-50%); }
+        .state-box.liquid { background-color: var(--liquid); top: 15%; left: 50%; transform: translateX(-50%); }
+        .state-box.gas { background-color: var(--gas); top: 50%; right: 15%; transform: translateY(-50%); }
+        
+        /* ===== Drop Zones ===== */
+        .drop-zone {
+            border: 2px dashed var(--gray-300);
+            border-radius: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.95);
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            width: 120px;
+            height: 60px;
+            margin: 5px 0;
+        }
+        
+        .drop-zone .heat-hint {
+            font-size: 0.7rem;
+            color: var(--gray-500);
+            font-style: italic;
+            opacity: 0.7;
+            transition: all 0.2s ease;
+        }
+        
+        .drop-zone:not(:empty) .heat-hint {
+            display: none;
+        }
+        
+        .drop-zone.process { 
+            width: 140px; 
+            height: 44px; 
+            background-color: rgba(239, 246, 255, 0.95);
+            border: 2px dashed var(--primary-100);
+            transition: all 0.2s ease;
+        }
+        
+        .drop-zone.heat { 
+            width: 60px; 
+            height: 44px; 
+            background-color: rgba(254, 243, 199, 0.95);
+            border: 2px dashed var(--warning-200);
+            transition: all 0.2s ease;
+        }
+        
+        .drop-zone.drag-over {
+            border-color: var(--primary-500);
+            background-color: rgba(219, 234, 254, 0.9);
+            transform: scale(1.02);
+            box-shadow: 0 0 0 2px var(--primary-100);
+        }
+        
+        .drop-zone.heat.drag-over {
+            border-color: var(--warning-500);
+            background-color: rgba(254, 243, 219, 0.9);
+            box-shadow: 0 0 0 2px var(--warning-100);
+        }
+        
+        .drop-zone-wrapper {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+            pointer-events: auto;
+            padding: 12px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--gray-200);
+            min-width: 160px;
+            transform: translate(-50%, -50%);
+        }
+        
+        .drop-zone-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            margin: 5px 0;
+        }
+        
+        .drop-zone-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+            text-align: center;
+            width: 100%;
+            padding: 4px 0;
+            border-bottom: 2px solid var(--gray-200);
+            background-color: var(--gray-50);
+            border-radius: 4px;
+            padding: 6px 8px;
+        }
+        
+        /* ===== Utility Classes ===== */
+        .hidden { display: none; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .gap-2 { gap: var(--spacing-2); }
+        .gap-3 { gap: var(--spacing-3); }
+        .gap-4 { gap: var(--spacing-4); }
+        .mt-2 { margin-top: var(--spacing-2); }
+        .mt-4 { margin-top: var(--spacing-4); }
+        .mt-6 { margin-top: var(--spacing-6); }
+        .mb-2 { margin-bottom: var(--spacing-2); }
+        .mb-4 { margin-bottom: var(--spacing-4); }
+        .text-center { text-align: center; }
+        .text-sm { font-size: 0.875rem; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .text-gray-500 { color: var(--gray-500); }
+        .text-gray-700 { color: var(--gray-700); }
+        
+        /* ===== Responsive Design ===== */
+        @media (max-width: 1024px) {
+            .game-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .state-box {
+                width: 100px;
+                height: 100px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: var(--spacing-4) var(--spacing-3);
+            }
+            
+            .tile-banks {
+                flex-direction: column;
+            }
+            
+            .state-box {
+                width: 80px;
+                height: 80px;
+                font-size: 0.875rem;
+            }
+        }
+        
+        .instructions {
+            order: 2;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header class="border-b border-gray-200 bg-white">
+            <div class="container py-4">
+                <h1 class="text-2xl font-bold text-gray-900">State Changes Puzzle</h1>
+                <p class="text-gray-600">Learn about states of matter and phase changes</p>
+            </div>
+        </header>
+        
+        <main class="flex-1">
+            <div class="container">
+                <div class="game-layout">
+                    <!-- Game Area -->
+                    <div class="game-area">
+                        <div class="card">
+                            <div class="card-header flex justify-between items-center">
+                                <h2 class="text-xl font-bold">State Changes Puzzle</h2>
+                                <span id="score" class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm font-medium">Score: 0/6</span>
+                            </div>
+                            <div class="card-body">
+                                <!-- Initial Message -->
+                                <div id="initial-message" class="text-center py-8">
+                                    <h3 class="text-xl font-semibold mb-4">Welcome to the State Changes Puzzle!</h3>
+                                    <p class="mb-6 text-gray-600">Test your knowledge of states of matter and phase changes.</p>
+                                    <button id="start-btn" class="btn btn-primary px-6 py-2">Start Puzzle</button>
+                                </div>
+                                
+                                <!-- Game Content (initially hidden) -->
+                                <div id="game-content" class="hidden">
+                                    <!-- Tile Banks -->
+                                    <div class="tile-banks">
+                                        <div id="process-tile-bank" class="tile-bank">
+                                            <!-- Process tiles will be added here by JavaScript -->
+                                        </div>
+                                        <div id="heat-tile-bank" class="tile-bank">
+                                            <!-- Heat tiles will be added here by JavaScript -->
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Diagram Container -->
+                                    <div class="diagram-container">
+                                        <!-- State Boxes -->
+                                        <div class="state-box solid">
+                                            <span>Solid</span>
+                                            <span class="text-2xl">🧊</span>
+                                        </div>
+                                        <div class="state-box liquid">
+                                            <span>Liquid</span>
+                                            <span class="text-2xl">💧</span>
+                                        </div>
+                                        <div class="state-box gas">
+                                            <span>Gas</span>
+                                            <span class="text-2xl">💨</span>
+                                        </div>
+                                        
+                                        <!-- Drop zones will be added here by JavaScript -->
+                                    </div>
+                                    
+                                    <!-- Check Button -->
+                                    <div class="mt-6 flex justify-center">
+                                        <button id="check-btn" class="btn btn-primary px-8 py-3 text-lg">Check My Answers</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Results (initially hidden) -->
+                                <div id="results" class="hidden mt-6 p-6 rounded-lg">
+                                    <h3 class="text-xl font-semibold mb-4 text-center">Results</h3>
+                                    <div id="score-display" class="text-center text-2xl font-bold mb-6"></div>
+                                    <div id="feedback" class="space-y-3">
+                                        <!-- Feedback will be added here by JavaScript -->
+                                    </div>
+                                    <div class="mt-6 flex justify-center gap-4">
+                                        <button id="try-again-btn" class="btn btn-outline">Try Again</button>
+                                        <button id="new-puzzle-btn" class="btn btn-primary">New Puzzle</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Instructions Panel -->
+                    <div class="instructions">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="text-xl font-bold">How to Play</h2>
+                            </div>
+                            <div class="card-body">
+                                <ol class="list-decimal pl-5 space-y-2">
+                                    <li>Drag the process names (melting, freezing, etc.) to the correct arrows between the states.</li>
+                                    <li>Drag the +Heat or -Heat indicators to show whether heat is added or removed for each process.</li>
+                                    <li>Click "Check Answers" to see how you did!</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="border-t border-gray-200 bg-white py-4 mt-8">
+            <div class="container text-center text-sm text-gray-500">
+                <p>Educational Game | States of Matter | &copy; 2025</p>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const startBtn = document.getElementById('start-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const checkBtn = document.getElementById('check-btn');
+            const tryAgainBtn = document.getElementById('try-again-btn');
+            const newPuzzleBtn = document.getElementById('new-puzzle-btn');
+            const initialMessage = document.getElementById('initial-message');
+            const gameContent = document.getElementById('game-content');
+            const resultsSection = document.getElementById('results');
+            const scoreDisplay = document.getElementById('score');
+            const finalScoreDisplay = document.getElementById('score-display');
+            const feedbackContainer = document.getElementById('feedback');
+            const processBank = document.getElementById('process-tile-bank');
+            const heatBank = document.getElementById('heat-tile-bank');
+            const diagramContainer = document.querySelector('.diagram-container');
+
+            // Game Data
+            const PROCESSES = {
+                melting: { name: 'Melting', from: 'solid', to: 'liquid', heat: 'plus', description: 'Solid to liquid' },
+                freezing: { name: 'Freezing', from: 'liquid', to: 'solid', heat: 'minus', description: 'Liquid to solid' },
+                vaporization: { name: 'Vaporization', from: 'liquid', to: 'gas', heat: 'plus', description: 'Liquid to gas' },
+                condensation: { name: 'Condensation', from: 'gas', to: 'liquid', heat: 'minus', description: 'Gas to liquid' },
+                sublimation: { name: 'Sublimation', from: 'solid', to: 'gas', heat: 'plus', description: 'Solid to gas' },
+                deposition: { name: 'Deposition', from: 'gas', to: 'solid', heat: 'minus', description: 'Gas to solid' }
+            };
+
+            let draggedItem = null;
+            let score = 0;
+            let totalQuestions = 6; // Total number of processes
+
+            // Initialize the game
+            function initGame() {
+                // Reset game state
+                score = 0;
+                updateScore();
+                
+                // Clear previous content
+                processBank.innerHTML = '';
+                heatBank.innerHTML = '';
+                feedbackContainer.innerHTML = '';
+                
+                // Remove existing drop zones and labels
+                document.querySelectorAll('.drop-zone-wrapper, .drop-zone-label').forEach(el => el.remove());
+                
+                // Create process and heat tiles
+                createTiles();
+                
+                // Create drop zones
+                createDropZones();
+                
+                // Show game content
+                initialMessage.classList.add('hidden');
+                gameContent.classList.remove('hidden');
+                resultsSection.classList.add('hidden');
+                
+                // Ensure the diagram container is visible
+                diagramContainer.style.visibility = 'visible';
+                diagramContainer.style.opacity = '1';
+                
+                // Position drop zones and draw arrows with a small delay to ensure layout is complete
+                setTimeout(() => {
+                    positionDropZones();
+                    drawArrows();
+                }, 50);
+            }
+
+            // Create draggable tiles
+            function createTiles() {
+                // Create process tiles
+                const processTiles = Object.entries(PROCESSES).map(([key, val]) => ({
+                    key,
+                    name: val.name,
+                    type: 'process',
+                    value: key,
+                    description: val.description
+                }));
+                
+                // Shuffle process tiles
+                shuffleArray(processTiles);
+                
+                // Add process tiles to the bank
+                processTiles.forEach(tile => {
+                    const tileElement = createTileElement(tile);
+                    processBank.appendChild(tileElement);
+                });
+                
+                // Create heat tiles
+                const heatTiles = [];
+                for (let i = 0; i < 6; i++) {
+                    heatTiles.push({ type: 'heat', value: 'plus', symbol: '+🔥', description: 'Adds heat' });
+                    heatTiles.push({ type: 'heat', value: 'minus', symbol: '-❄️', description: 'Removes heat' });
+                }
+                
+                // Shuffle heat tiles
+                shuffleArray(heatTiles);
+                
+                // Add heat tiles to the bank
+                heatTiles.forEach((tile, index) => {
+                    const tileElement = createTileElement(tile);
+                    heatBank.appendChild(tileElement);
+                });
+            }
+
+            // Create a tile element
+            function createTileElement(tile) {
+                const element = document.createElement('div');
+                element.className = `tile ${tile.type === 'heat' ? 'heat ' + tile.value : ''}`;
+                element.draggable = true;
+                element.dataset.type = tile.type;
+                element.dataset.value = tile.value;
+                
+                if (tile.type === 'process') {
+                    element.textContent = tile.name;
+                    element.title = tile.description;
+                } else {
+                    element.innerHTML = tile.symbol;
+                    element.title = tile.description;
+                }
+                
+                // Add drag event listeners
+                element.addEventListener('dragstart', handleDragStart);
+                element.addEventListener('dragend', handleDragEnd);
+                
+                return element;
+            }
+
+            // Create drop zones for each process
+            function createDropZones() {
+                Object.entries(PROCESSES).forEach(([key, process]) => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'drop-zone-wrapper';
+                    wrapper.id = `wrapper-${process.from}-to-${process.to}`;
+                    
+                    // Process drop zone
+                    const processDrop = document.createElement('div');
+                    processDrop.className = 'drop-zone process';
+                    processDrop.dataset.type = 'process';
+                    processDrop.dataset.process = key;
+                    
+                    // Heat drop zone
+                    const heatDrop = document.createElement('div');
+                    heatDrop.className = 'drop-zone heat';
+                    heatDrop.dataset.type = 'heat';
+                    heatDrop.dataset.process = key;
+                    
+                    // Add drop event listeners
+                    [processDrop, heatDrop].forEach(dropZone => {
+                        dropZone.addEventListener('dragover', handleDragOver);
+                        dropZone.addEventListener('dragleave', handleDragLeave);
+                        dropZone.addEventListener('drop', handleDrop);
+                        dropZone.addEventListener('click', handleDropZoneClick);
+                    });
+                    
+                    wrapper.appendChild(processDrop);
+                    wrapper.appendChild(heatDrop);
+                    diagramContainer.appendChild(wrapper);
+                });
+            }
+
+            // Draw arrows between state boxes
+            function drawArrows() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const container = diagramContainer;
+                
+                // Set canvas size to match container
+                canvas.width = container.offsetWidth;
+                canvas.height = container.offsetHeight;
+                
+                // Clear any existing canvas
+                const existingCanvas = container.querySelector('canvas');
+                if (existingCanvas) {
+                    container.removeChild(existingCanvas);
+                }
+                container.insertBefore(canvas, container.firstChild);
+                
+                // Get state box positions
+                const stateBoxes = {
+                    solid: document.querySelector('.state-box.solid'),
+                    liquid: document.querySelector('.state-box.liquid'),
+                    gas: document.querySelector('.state-box.gas')
+                };
+                
+                // Draw arrows for each process
+                Object.entries(PROCESSES).forEach(([key, process]) => {
+                    const fromBox = stateBoxes[process.from];
+                    const toBox = stateBoxes[process.to];
+                    
+                    if (!fromBox || !toBox) return;
+                    
+                    const fromRect = fromBox.getBoundingClientRect();
+                    const toRect = toBox.getBoundingClientRect();
+                    const containerRect = container.getBoundingClientRect();
+                    
+                    // Calculate positions relative to the canvas
+                    const fromX = fromRect.left + fromRect.width / 2 - containerRect.left;
+                    const fromY = fromRect.top + fromRect.height / 2 - containerRect.top;
+                    const toX = toRect.left + toRect.width / 2 - containerRect.left;
+                    const toY = toRect.top + toRect.height / 2 - containerRect.top;
+                    
+                    // Draw arrow
+                    drawArrow(ctx, fromX, fromY, toX, toY, process);
+                });
+            }
+            
+            // Helper function to draw an arrow
+            function drawArrow(ctx, fromX, fromY, toX, toY, process) {
+                // Line style
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round';
+                
+                // Draw line
+                ctx.beginPath();
+                ctx.moveTo(fromX, fromY);
+                
+                // Add curve for better visibility
+                const cp1x = fromX + (toX - fromX) * 0.5;
+                const cp1y = fromY + (toY - fromY) * 0.5;
+                const cp2x = cp1x + (toY - fromY) * 0.2;
+                const cp2y = cp1y - (toX - fromX) * 0.2;
+                
+                ctx.quadraticCurveTo(cp2x, cp2y, toX, toY);
+                ctx.stroke();
+                
+                // Arrow head
+                const headLength = 15;
+                const angle = Math.atan2(toY - fromY, toX - fromX);
+                
+                ctx.beginPath();
+                ctx.moveTo(toX, toY);
+                ctx.lineTo(
+                    toX - headLength * Math.cos(angle - Math.PI / 6),
+                    toY - headLength * Math.sin(angle - Math.PI / 6)
+                );
+                ctx.moveTo(toX, toY);
+                ctx.lineTo(
+                    toX - headLength * Math.cos(angle + Math.PI / 6),
+                    toY - headLength * Math.sin(angle + Math.PI / 6)
+                );
+                ctx.stroke();
+            }
+
+            // Position drop zones between state boxes with better spacing
+            function positionDropZones() {
+                const stateBoxes = {
+                    solid: document.querySelector('.state-box.solid'),
+                    liquid: document.querySelector('.state-box.liquid'),
+                    gas: document.querySelector('.state-box.gas')
+                };
+                
+                // First, make sure all state boxes are visible and positioned
+                Object.values(stateBoxes).forEach(box => {
+                    if (box) {
+                        box.style.visibility = 'visible';
+                        box.style.opacity = '1';
+                    }
+                });
+                
+                // Clear any existing labels to prevent duplicates
+                document.querySelectorAll('.drop-zone-label').forEach(el => el.remove());
+                
+                // Define positions for each drop zone group
+                const positions = {
+                    'solid-liquid': { x: 25, y: 50 },
+                    'liquid-solid': { x: 25, y: 70 },
+                    'liquid-gas': { x: 75, y: 25 },
+                    'gas-liquid': { x: 75, y: 50 },
+                    'solid-gas': { x: 40, y: 75 },
+                    'gas-solid': { x: 60, y: 75 }
+                };
+                
+                // Position each drop zone
+                Object.entries(PROCESSES).forEach(([key, process]) => {
+                    const wrapper = document.getElementById(`wrapper-${process.from}-to-${process.to}`);
+                    if (!wrapper) return;
+                    
+                    const positionKey = `${process.from}-${process.to}`;
+                    const pos = positions[positionKey] || { x: 50, y: 50 };
+                    
+                    // Create wrapper HTML structure if it doesn't exist
+                    if (!wrapper.querySelector('.drop-zone-group')) {
+                        wrapper.innerHTML = `
+                            <div class="drop-zone-label">${process.from} → ${process.to}</div>
+                            <div class="drop-zone-group">
+                                <div class="drop-zone process-drop-zone" data-type="process" data-process="${key}"></div>
+                                <div class="drop-zone heat-drop-zone" data-type="heat" data-process="${key}">
+                                    <span class="heat-hint">+/- Heat</span>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Add event listeners to the new drop zones
+                        const dropZones = wrapper.querySelectorAll('.drop-zone');
+                        dropZones.forEach(dz => {
+                            dz.addEventListener('dragover', handleDragOver);
+                            dz.addEventListener('dragleave', handleDragLeave);
+                            dz.addEventListener('drop', handleDrop);
+                            dz.addEventListener('click', handleDropZoneClick);
+                        });
+                    }
+                    
+                    // Position the wrapper using percentage-based positioning
+                    wrapper.style.display = 'flex';
+                    wrapper.style.visibility = 'visible';
+                    wrapper.style.opacity = '1';
+                    wrapper.style.left = `${pos.x}%`;
+                    wrapper.style.top = `${pos.y}%`;
+                    wrapper.style.transform = 'translate(-50%, -50%)';
+                    wrapper.style.zIndex = '10';
+                    wrapper.style.pointerEvents = 'auto';
+                });
+                
+                // Redraw arrows after positioning drop zones
+                drawArrows();
+            }
+
+            // Check answers
+            function checkAnswers() {
+                let correctCount = 0;
+                feedbackContainer.innerHTML = '';
+                
+                // Reset all feedback
+                document.querySelectorAll('.tile').forEach(tile => {
+                    tile.classList.remove('correct', 'incorrect');
+                });
+                
+                // Check each process
+                Object.entries(PROCESSES).forEach(([key, process]) => {
+                    const wrapper = document.getElementById(`wrapper-${process.from}-to-${process.to}`);
+                    if (!wrapper) return;
+                    
+                    const processDrop = wrapper.querySelector('.drop-zone.process');
+                    const heatDrop = wrapper.querySelector('.drop-zone.heat');
+                    
+                    const processTile = processDrop.querySelector('.tile');
+                    const heatTile = heatDrop.querySelector('.tile');
+                    
+                    let isProcessCorrect = false;
+                    let isHeatCorrect = false;
+                    
+                    // Check process
+                    if (processTile && processTile.dataset.value === key) {
+                        processTile.classList.add('correct');
+                        isProcessCorrect = true;
+                    } else if (processTile) {
+                        processTile.classList.add('incorrect');
+                    }
+                    
+                    // Check heat
+                    if (heatTile && heatTile.dataset.value === process.heat) {
+                        heatTile.classList.add('correct');
+                        isHeatCorrect = true;
+                    } else if (heatTile) {
+                        heatTile.classList.add('incorrect');
+                    }
+                    
+                    // Update score and feedback
+                    if (isProcessCorrect && isHeatCorrect) {
+                        correctCount++;
+                        addFeedbackItem('correct', `Correct! ${process.name} (${process.description}) ${process.heat === 'plus' ? 'adds' : 'removes'} heat.`);
+                    } else {
+                        const correctHeat = process.heat === 'plus' ? 'adds heat (+🔥)' : 'removes heat (-❄️)';
+                        addFeedbackItem('incorrect', `${process.name}: ${process.description} ${correctHeat}`);
+                    }
+                });
+                
+                // Update score
+                score = correctCount;
+                updateScore();
+                
+                // Show results
+                showResults();
+            }
+
+            // Show results
+            function showResults() {
+                gameContent.classList.add('hidden');
+                resultsSection.classList.remove('hidden');
+                
+                const percentage = Math.round((score / totalQuestions) * 100);
+                let message = '';
+                
+                if (percentage === 100) {
+                    message = '🎉 Perfect! You got all answers correct! 🎉';
+                } else if (percentage >= 70) {
+                    message = `Great job! You got ${score} out of ${totalQuestions} correct!`;
+                } else if (percentage >= 40) {
+                    message = `Good effort! You got ${score} out of ${totalQuestions} correct.`;
+                } else {
+                    message = `You got ${score} out of ${totalQuestions}. Keep practicing!`;
+                }
+                
+                finalScoreDisplay.textContent = message;
+            }
+
+            // Add feedback item
+            function addFeedbackItem(type, text) {
+                const item = document.createElement('div');
+                item.className = `p-3 rounded-md ${type === 'correct' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`;
+                item.innerHTML = `
+                    <div class="flex items-start">
+                        <span class="mr-2">${type === 'correct' ? '✓' : '✗'}</span>
+                        <span>${text}</span>
+                    </div>
+                `;
+                feedbackContainer.appendChild(item);
+            }
+
+            // Update score display
+            function updateScore() {
+                scoreDisplay.textContent = `Score: ${score}/${totalQuestions}`;
+            }
+
+            // Drag and Drop Handlers
+            function handleDragStart(e) {
+                draggedItem = this;
+                setTimeout(() => this.classList.add('dragging'), 0);
+            }
+
+            function handleDragEnd() {
+                this.classList.remove('dragging');
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+                this.classList.add('drag-over');
+            }
+
+            function handleDragLeave() {
+                this.classList.remove('drag-over');
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                this.classList.remove('drag-over');
+                
+                if (!draggedItem) return;
+                
+                // Check if the drop zone is for the same type of tile
+                if (this.dataset.type === draggedItem.dataset.type) {
+                    // If there's already a tile in the drop zone, return it to the bank
+                    if (this.firstChild) {
+                        const bank = this.firstChild.dataset.type === 'process' ? processBank : heatBank;
+                        bank.appendChild(this.firstChild);
+                    }
+                    
+                    // Move the dragged item to the drop zone
+                    this.appendChild(draggedItem);
+                }
+            }
+
+            // Handle click on drop zone to return tile to bank
+            function handleDropZoneClick(e) {
+                if (e.target !== this) return; // Only trigger if clicking the drop zone itself, not its children
+                
+                const tile = this.querySelector('.tile');
+                if (tile) {
+                    const bank = tile.dataset.type === 'process' ? processBank : heatBank;
+                    bank.appendChild(tile);
+                }
+            }
+
+            // Utility function to shuffle an array
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            // Event Listeners
+            startBtn.addEventListener('click', initGame);
+            resetBtn.addEventListener('click', initGame);
+            tryAgainBtn.addEventListener('click', () => {
+                resultsSection.classList.add('hidden');
+                gameContent.classList.remove('hidden');
+                // Redraw arrows when trying again
+                setTimeout(drawArrows, 100);
+            });
+            newPuzzleBtn.addEventListener('click', initGame);
+            checkBtn.addEventListener('click', checkAnswers);
+            
+            // Initial setup
+            updateScore();
+            
+            // Handle window resize with debounce
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    positionDropZones();
+                    drawArrows();
+                }, 250);
+            });
+        });
+    </script>
+</body>
+</html>

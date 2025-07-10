@@ -1,0 +1,320 @@
+{
+  "subject": {
+    "id": 1,
+    "name": "math",
+    "label": "Mathematics"
+  },
+  "units": [
+    {
+      "id": 23,
+      "name": "introduction_to_euclid’s_geometry",
+      "label": "Introduction to Euclid’s Geometry",
+      "lessons": [
+        {
+          "id": 225,
+          "title": "Lesson 1: A Brief History of Geometry",
+          "slug": "lesson_1_a_brief_history_of_geometry",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "225_1",
+              "name": "Geometry Timeline",
+              "implementationDetails": "Present historical figures (Euclid, Thales, Pythagoras) and civilizations (Egypt, Babylonia, Greece). Drag-and-drop or a card sorting interface to place them on a timeline. Check chronological order and provide informative feedback.",
+              "learningPoints": [
+                "History of Geometry",
+                "Key Figures in Geometry",
+                "Timeline Comprehension"
+              ]
+            },
+            {
+              "id": "225_2",
+              "name": "Civilization comparison",
+              "implementationDetails": "Present multiple choice question like where this construction method used? ",
+              "learningPoints": [
+                "Understanding contribution of different civilisation",
+                "Inter civilisation comparison",
+                "Historic application identification"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 226,
+          "title": "Lesson 2: Euclid's Definitions for Point, Line, and Surface",
+          "slug": "lesson_2_euclids_definitions_for_point_line_and_surface",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "226_1",
+              "name": "Definition Match",
+              "implementationDetails": "Display Euclid's definitions for point, line, and surface (some scrambled or incomplete). Ask the player to match the correct definitions. Use a drag-and-drop or card matching interface. Give feedback.",
+              "learningPoints": [
+                "Euclid's Definitions",
+                "Understanding Geometric Concepts",
+                "Recall definition"
+              ]
+            },
+            {
+              "id": "226_2",
+              "name": "Definition component arrangement",
+              "implementationDetails": "Divide definitions into parts and ask to arrange correctly",
+              "learningPoints": [
+                "Definition component identification",
+                "Definitional knowledge",
+                "Euclidean definition knowledge"
+              ]
+            },
+            {
+              "id": "226_3",
+              "name": "Which definition?",
+              "implementationDetails": "Present figures and which definition applied here",
+              "learningPoints": [
+                "Application of geometric objects",
+                "Practical use of definition",
+                "Geometric skill"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 227,
+          "title": "Lesson 3: The Concept of Undefined Terms in Geometry",
+          "slug": "lesson_3_the_concept_of_undefined_terms_in_geometry",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "227_1",
+              "name": "Undefined Term Identifier",
+              "implementationDetails": "Present sentences using geometrical terms (point, line, plane, breadth, length) and ask what needs further definition?",
+              "learningPoints": [
+                "Understanding Undefined Terms",
+                "Identifying Vague Terms",
+                "Importance of Precise Definitions"
+              ]
+            },
+            {
+              "id": "227_2",
+              "name": "Definition cycle",
+              "implementationDetails": "Show an infinitely cycling set of definitions and ask to identify base point",
+              "learningPoints": [
+                "Undefined term recognition",
+                "Inifite loop formation identification",
+                "Definition and undefined term"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 228,
+          "title": "Lesson 4: Euclid's Axioms (Common Notions)",
+          "slug": "lesson_4_euclids_axioms_common_notions",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "228_1",
+              "name": "Axiom Application",
+              "implementationDetails": "Present geometric scenarios. Select best application axiom ",
+              "learningPoints": [
+                "Euclid's Axioms (Common Notions)",
+                "Applying Axioms",
+                "Algebraic reasoning"
+              ]
+            },
+             {
+              "id": "228_2",
+              "name": "Axiom definer",
+              "implementationDetails": "Put statements multiple choice what it represents",
+              "learningPoints": [
+                "Axiom meaning",
+                "Axiom relation for expression",
+                "Theorem axioms for formula"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 229,
+          "title": "Lesson 5: Euclid's Postulate 1: A Unique Line Through Two Points",
+          "slug": "lesson_5_euclids_postulate_1_a_unique_line_through_two_points",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "229_1",
+              "name": "Point Linker",
+              "implementationDetails": "Present line and ask to draw number using postulates and axioms",
+              "learningPoints": [
+                "Understanding Two-Point Postulate",
+                "Drawing Line Segments",
+                "Visual Representation"
+              ]
+            },
+            {
+              "id": "229_2",
+              "name": "Unique identifier",
+              "implementationDetails": "Present different number of points which can be join and a ask how many joins posible for point",
+              "learningPoints": [
+                "Points joins understanding",
+                "Pair possibility recognition",
+                "Geometric relation"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 230,
+          "title": "Lesson 6: Euclid's Postulate 2: Extending a Terminated Line",
+          "slug": "lesson_6_euclids_postulate_2_extending_a_terminated_line",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "230_1",
+              "name": "Line Extender",
+              "implementationDetails": "Present line and put slider where can student move and see",
+              "learningPoints": [
+                "Understanding Postulate of line can extend",
+                "Line Application",
+                "Practical visualization"
+              ]
+            },
+              {
+              "id": "230_2",
+              "name": "End state identifier",
+              "implementationDetails": "Present diagrams of line extension and ask end result or vice versa",
+              "learningPoints": [
+                "Relationship of points in line",
+                "Line properties identification",
+                "Postulate application"
+              ]
+            }
+          ]
+        },
+        {
+            "id": 231,
+            "title": "Lesson 7: Euclid's Postulate 3: Drawing a Circle",
+            "slug": "lesson_7_euclids_postulate_3_drawing_a_circle",
+            "display_order": 7,
+            "games": [
+              {
+                "id": "231_1",
+                "name": "Radius Circle Drawer",
+                "implementationDetails": "Set a number line value and draw circle and change raidus",
+                "learningPoints": [
+                  "Circel knowledge and center",
+                  "Radius application in circle",
+                  "Circular geometry"
+                ]
+              },
+              {
+              "id": "231_2",
+              "name": "Point circle position identifier",
+              "implementationDetails": "Is there point which circle have zero distant from circumference",
+              "learningPoints": [
+                "Circel point distance understanding",
+                "Application of radius",
+                "Circular geometry applications"
+              ]
+              
+            }
+          ]
+        },
+        {
+            "id": 232,
+            "title": "Lesson 8: Euclid's Postulate 4: Equality of Right Angles",
+            "slug": "lesson_8_euclids_postulate_4_equality_of_right_angles",
+            "display_order": 8,
+            "games": [
+                {
+                    "id": "232_1",
+                    "name": "Right angle visual recognizer",
+                    "implementationDetails": "Present different angle with different scale ask which one look right angle",
+                    "learningPoints": [
+                        "90 deg identification",
+                        "Visually same angle application",
+                        "Angle application"
+                      ]
+                },
+              {
+              "id": "232_2",
+              "name": "Equal check",
+              "implementationDetails": "Present right angle and equal angle figure and tell if they are same or not",
+              "learningPoints": [
+                "Right angle and other angle",
+                "Visually same angle identification",
+                "Angle size identification"
+              ]
+              
+            }
+            ]
+        },
+        {
+            "id": 233,
+            "title": "Lesson 9: Euclid's Postulate 5: The Parallel Postulate",
+            "slug": "lesson_9_euclids_postulate_5_the_parallel_postulate",
+            "display_order": 9,
+            "games": [
+            
+              {
+                "id": "233_1",
+                "name": "Parallel liner",
+                "implementationDetails": "A line intersects two line what side angle low sum than 180",
+                "learningPoints": [
+                  "Parallel Postulate side identifire",
+                  "180 degree rule application",
+                  "Geometry properties"
+                ]
+              }
+              ,
+              {
+              "id": "233_2",
+              "name": "Postulate finder",
+              "implementationDetails": "Line intersections rule what will happen if sum of all angles at one side of one transversal is than 180",
+              "learningPoints": [
+                "Transversal based point",
+                "180 side property",
+                "Intersection and side concept"
+              ]
+              
+            }
+            ]
+        },
+        {
+            "id": 234,
+            "title": "Lesson 10: Distinguishing Between Axioms, Postulates, and Theorems",
+            "slug": "lesson_10_distinguishing_between_axioms_postulates_and_theorems",
+            "display_order": 10,
+            "games": [
+              
+              {
+                "id": "234_1",
+                "name": "Postualte identifier",
+                "implementationDetails": "Given a short description, identify which is theorem postulate and axoim by selection multiple point",
+                "learningPoints": [
+                  "Understanding between different terms",
+                  "Postulate differences",
+                  "Axiom recognition "
+                ]
+              }
+            ]
+        },
+        {
+            "id": 235,
+            "title": "Lesson 11: Applying Axioms and Postulates to Prove a Theorem",
+            "slug": "lesson_11_applying_axioms_and_postulates_to_prove_a_theorem",
+            "display_order": 11,
+            "games": [
+              {
+                "id": "235_1",
+                "name": "Theorem builder",
+                "implementationDetails": "Show statements set and what postulate to use to get it as theorem",
+                "learningPoints": [
+                  "Theorem postulates",
+                  "Postulate application by different formula",
+                  "Mathematical building skill"
+                ]
+              }
+            ]
+        }
+      ]
+    }
+  ]
+}

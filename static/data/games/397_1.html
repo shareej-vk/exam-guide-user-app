@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steam Power - CBSE Class 9 Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ffe8cc;
+            --card-bg: #ffffff;
+            --primary-color: #e5383b; /* Strong Red for heat/burns */
+            --accent-color: #0077b6; /* Blue for water/ice */
+            --particle-color: #03045e;
+            --latent-heat-color: #fca311;
+            --text-color: #212529;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --correct-color: #198754;
+            --incorrect-color: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font); background-color: var(--bg-color); color: var(--text-color);
+            padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;
+        }
+
+        .main-container { display: flex; gap: 20px; width: 100%; max-width: 1500px; }
+        .instructions-card {
+            flex: 3; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; align-self: flex-start;
+        }
+        .game-card {
+            flex: 7; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; display: flex;
+            flex-direction: column; align-items: center;
+        }
+        .card-header {
+            font-family: var(--heading-font); font-size: 28px; font-weight: 800; color: var(--primary-color);
+            margin-bottom: 20px; text-align: center; display: inline-block;
+            background: linear-gradient(45deg, #ffdcdc, #fff5f5); padding: 5px 20px; border-radius: 12px;
+        }
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 12px; line-height: 1.6; display: flex; align-items: flex-start;
+        }
+        .instructions-list li::before { content: '💨'; margin-right: 10px; font-size: 16px; }
+        .instructions-list li b { color: var(--primary-color); }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+        .btn {
+            font-family: var(--heading-font); font-size: 18px; font-weight: 600;
+            padding: 12px 20px; border: none; border-radius: 12px; cursor: pointer;
+            transition: all 0.3s ease; flex-grow: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #heat-btn {
+            background: linear-gradient(45deg, #f77f00, #d62828);
+            color: white; padding: 15px 30px; font-size: 22px;
+            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+        }
+        #heat-btn:disabled { background: #999; cursor: not-allowed; }
+        /* NEW: Press effect for the button */
+        #heat-btn:active:not(:disabled) {
+            transform: scale(0.95) translateY(2px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        #heat-control { margin-top: 20px; }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffbe0b; color: #333; }
+        
+        /* Game Area Styles */
+        #initial-message {
+            font-family: var(--heading-font); font-size: 24px; color: #999; height: 500px;
+            display: flex; align-items: center; text-align: center;
+        }
+        .lab-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        .simulation-container { display: flex; justify-content: space-around; width: 100%; gap: 20px; }
+        .viz-wrapper {
+            width: 48%; display: flex; flex-direction: column; align-items: center;
+            padding: 15px; background: #f8f9fa; border-radius: 15px; border: 1px solid #dee2e6;
+        }
+        .viz-title { font-family: var(--heading-font); font-size: 20px; margin-bottom: 10px; color: var(--accent-color); }
+        .beaker {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 0.8; /* Reduced height */
+        }
+        canvas { width: 100%; height: 100%; border: 2px solid #ced4da; border-radius: 8px; }
+        .thermometer {
+            position: absolute; right: 5px; top: 10%; width: 20px; height: 80%; background-color: #e9ecef; 
+            border-radius: 10px; border: 2px solid #adb5bd;
+        }
+        .mercury {
+            position: absolute; bottom: 5px; left: 5px; right: 5px; height: 0%; background-color: #d90429; 
+            border-radius: 5px; transition: height 0.2s linear;
+        }
+        .thermometer::after { content: ''; position: absolute; bottom: -10px; left: -5px; width: 30px; height: 30px; 
+            background-color: #d90429; border-radius: 50%; border: 2px solid #adb5bd; }
+        .temp-display { position: absolute; top: -25px; right: 0; font-weight: bold; font-size: 16px; 
+            background: white; padding: 2px 5px; border-radius: 5px; }
+
+        /* Modal / Pop-up Quiz Styles */
+        #quiz-modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6);
+            display: none; justify-content: center; align-items: center; z-index: 1000;
+        }
+        #quiz-modal {
+            background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 600px;
+            text-align: center; box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+        }
+        #quiz-modal h3 { font-family: var(--heading-font); font-size: 24px; color: var(--primary-color); margin-bottom: 15px; }
+        #quiz-modal-options { display: flex; gap: 15px; margin-bottom: 20px; }
+        .quiz-btn { width: 50%; padding: 20px; font-size: 18px; }
+        .quiz-btn.correct { background-color: var(--correct-color); border-color: var(--correct-color); color: white; transform: scale(1.05); }
+        .quiz-btn.incorrect { background-color: var(--incorrect-color); border-color: var--incorrect-color); color: white; }
+        
+        #explanation-area { display: flex; justify-content: space-around; gap: 10px; min-height: 120px; }
+        .explanation-box { width: 45%; border: 2px solid #ccc; border-radius: 10px; padding: 10px; position: relative; overflow: hidden;}
+        .explanation-box p { font-weight: bold; margin-bottom: 10px; }
+        #continue-btn { margin-top: 20px; background-color: var(--accent-color); color: white; display: none; }
+        
+        @keyframes energyBurst {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+        .burn-effect {
+            position: absolute; width: 20px; height: 20px; border-radius: 50%;
+            background-color: var(--latent-heat-color); animation: energyBurst 0.5s ease-out forwards;
+        }
+
+        @media (max-width: 992px) {
+            .main-container { flex-direction: column; } .simulation-container { flex-direction: column; gap: 15px; }
+            .viz-wrapper { width: 100%; } #quiz-modal-options { flex-direction: column; } .quiz-btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">⚡ Steam Power</h2>
+            <p><strong>Lesson:</strong> Why steam at 100°C is more dangerous than water at 100°C.</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Investigation</h3>
+            <p style="margin-bottom: 15px;">We continue our heating experiment to uncover another 'hidden heat': the Latent Heat of Vaporization. This is the superpower that makes steam so energetic!</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> and then press and hold <b>"Apply Heat"</b>.</li>
+                <li>Watch the graph pass the first plateau (melting) and keep heating the water.</li>
+                <li>When the water reaches 100°C, a quiz will pop up. Make your choice!</li>
+                <li>Pay close attention to the explanation animation to see the hidden energy in action.</li>
+                <li>Click "Continue" to finish the experiment.</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to investigate the power of steam!</div>
+            <div class="lab-wrapper" id="lab-wrapper" style="display: none;">
+                <div class="simulation-container">
+                    <div class="viz-wrapper">
+                        <h3 class="viz-title">Temperature vs. Heat Added</h3>
+                        <canvas id="graph-canvas"></canvas>
+                    </div>
+                    <div class="viz-wrapper">
+                        <h3 class="viz-title">Particle View</h3>
+                        <div class="beaker">
+                           <canvas id="beaker-canvas"></canvas>
+                           <div class="thermometer"><div id="beaker-mercury" class="mercury"></div><span id="beaker-temp" class="temp-display">-10°C</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="heat-control">
+                    <button id="heat-btn" class="btn">Apply Heat 🔥</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quiz Modal -->
+    <div id="quiz-modal-overlay">
+        <div id="quiz-modal">
+            <h3>Challenge Question!</h3>
+            <p>Which do you think would cause a more severe burn?</p>
+            <div id="quiz-modal-options">
+                <button class="btn quiz-btn" id="choice-water">Water at 100°C</button>
+                <button class="btn quiz-btn" id="choice-steam">Steam at 100°C</button>
+            </div>
+            <div id="explanation-area">
+                <div class="explanation-box" id="water-burn-box"><p>Water at 100°C</p></div>
+                <div class="explanation-box" id="steam-burn-box"><p>Steam at 100°C</p></div>
+            </div>
+            <button id="continue-btn" class="btn">Continue Experiment</button>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const heatBtn = document.getElementById('heat-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const quizModalOverlay = document.getElementById('quiz-modal-overlay');
+    const choiceWaterBtn = document.getElementById('choice-water');
+    const choiceSteamBtn = document.getElementById('choice-steam');
+    const continueBtn = document.getElementById('continue-btn');
+    
+    // --- Sim State & Constants ---
+    let simState, animationFrameId, heatInterval;
+    const MELTING_POINT = 0, BOILING_POINT = 100;
+    
+    // --- Setup & Initialization ---
+    function initSim() {
+        const beakerCanvas = document.getElementById('beaker-canvas');
+        const graphCanvas = document.getElementById('graph-canvas');
+        const beakerWrapper = document.querySelector('.beaker').parentElement;
+        const canvasSize = beakerWrapper.clientWidth;
+        const canvasHeight = beakerWrapper.clientHeight;
+        beakerCanvas.width = canvasSize;
+        beakerCanvas.height = canvasHeight;
+        graphCanvas.width = canvasSize; 
+        graphCanvas.height = canvasHeight;
+
+        simState = {
+            temp: -10, heatAdded: 0, phase: 'HEATING_SOLID',
+            particles: [], bonds: [],
+            ctx: { beaker: beakerCanvas.getContext('2d'), graph: graphCanvas.getContext('2d') }
+        };
+
+        const NUM_PARTICLES = 30, PARTICLE_RADIUS = 6, cols = 6, spacing = PARTICLE_RADIUS * 3;
+        const totalWidth = (cols - 1) * spacing;
+        const startX = (beakerCanvas.width - totalWidth) / 2;
+        const startY = beakerCanvas.height - 40;
+        for (let i = 0; i < NUM_PARTICLES; i++) {
+            const latticeX = startX + (i % cols) * spacing;
+            const latticeY = startY - Math.floor(i / cols) * spacing;
+            simState.particles.push({ x: latticeX, y: latticeY, latticeX, latticeY, vx:0, vy:0, radius: PARTICLE_RADIUS, state: 'solid' });
+        }
+        for (let i=0; i<NUM_PARTICLES; i++) for (let j=i+1; j<NUM_PARTICLES; j++) if (Math.hypot(simState.particles[i].x-simState.particles[j].x, simState.particles[i].y-simState.particles[j].y) < spacing*1.5) simState.bonds.push([i, j]);
+    }
+
+    // --- Drawing Functions ---
+    function drawGraph() {
+        const { graph: ctx } = simState.ctx;
+        const w = ctx.canvas.width, h = ctx.canvas.height, pad = 30;
+        ctx.clearRect(0,0,w,h);
+        ctx.strokeStyle = '#333'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(pad, pad); ctx.lineTo(pad, h-pad); ctx.lineTo(w-pad, h-pad); ctx.stroke();
+        ctx.fillStyle = '#333'; ctx.font = '12px Poppins';
+        ctx.save(); ctx.translate(10, h/2); ctx.rotate(-Math.PI/2); ctx.textAlign='center'; ctx.fillText('Temp (°C)', 0, 0); ctx.restore();
+        ctx.textAlign='center'; ctx.fillText('Heat Added (J)', w/2, h-5);
+
+        const maxHeat = 600, maxTemp = 120;
+        ctx.strokeStyle = '#d90429'; ctx.lineWidth = 3; ctx.beginPath();
+        let pathDrawn = false;
+        for(let i=0; i <= simState.heatAdded; i++) {
+            let temp;
+            if (i < 50) temp = -10 + (i/50)*10;
+            else if (i < 150) temp = MELTING_POINT;
+            else if (i < 250) temp = (i-150);
+            else if (i < 550) temp = BOILING_POINT;
+            else temp = 100 + (i-550);
+            
+            const x = pad + (i / maxHeat) * (w - 2*pad);
+            const y = h - pad - ((temp + 10) / (maxTemp+10)) * (h - 2*pad);
+            if(!pathDrawn) { ctx.moveTo(x,y); pathDrawn = true; } else { ctx.lineTo(x,y); }
+        }
+        ctx.stroke();
+    }
+    
+    function drawBeaker() {
+        const { beaker: ctx } = simState.ctx;
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        
+        if (simState.phase === 'HEATING_SOLID' || simState.phase === 'MELTING') {
+            ctx.strokeStyle = 'rgba(0,0,0,0.1)'; ctx.lineWidth = 2;
+            simState.bonds.forEach(b => {
+                ctx.beginPath();
+                ctx.moveTo(simState.particles[b[0]].x, simState.particles[b[0]].y);
+                ctx.lineTo(simState.particles[b[1]].x, simState.particles[b[1]].y);
+                ctx.stroke();
+            });
+        }
+        
+        simState.particles.forEach(p => {
+            if (p.state === 'solid') {
+                const vibration = Math.max(1, simState.temp / 20 + 1);
+                p.x = p.latticeX + (Math.random() - 0.5) * vibration;
+                p.y = p.latticeY + (Math.random() - 0.5) * vibration;
+            } else if (p.state === 'liquid') {
+                p.vy += 0.03; p.x += p.vx; p.y += p.vy;
+                p.vx *= 0.97; p.vy *= 0.97;
+                if (p.x < p.radius || p.x > ctx.canvas.width - p.radius) p.vx *= -0.8;
+                if (p.y > ctx.canvas.height - p.radius) { p.y = ctx.canvas.height - p.radius; p.vy *= -0.5; }
+            } else { // Gas
+                p.y -= 2; p.x += p.vx;
+            }
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, 2*Math.PI); 
+            ctx.fillStyle = p.state === 'gas' ? 'rgba(3,4,94,0.3)' : '#0077b6';
+            ctx.fill();
+        });
+        simState.particles = simState.particles.filter(p => p.y > -p.radius);
+    }
+    
+    // --- Main Loop & Game Logic ---
+    function mainLoop() {
+        drawBeaker(); drawGraph();
+        animationFrameId = requestAnimationFrame(mainLoop);
+    }
+    
+    function applyHeat() {
+        heatInterval = setInterval(() => {
+            if (simState.phase === 'FINISHED') { stopHeat(); return; }
+            simState.heatAdded++;
+
+            if (simState.phase === 'HEATING_SOLID') {
+                simState.temp = -10 + (simState.heatAdded / 50) * 10;
+                if (simState.temp >= MELTING_POINT) { simState.phase = 'MELTING'; simState.temp = MELTING_POINT; }
+            } else if (simState.phase === 'MELTING') {
+                if(simState.bonds.length > 0) simState.bonds.pop();
+                if(simState.heatAdded >= 150) { simState.phase = 'HEATING_LIQUID'; simState.particles.forEach(p => p.state = 'liquid'); }
+            } else if (simState.phase === 'HEATING_LIQUID') {
+                simState.temp = (simState.heatAdded - 150);
+                if (simState.temp >= BOILING_POINT) {
+                    simState.phase = 'BOILING_QUIZ'; simState.temp = BOILING_POINT;
+                    stopHeat(); quizModalOverlay.style.display = 'flex';
+                }
+            } else if (simState.phase === 'BOILING') {
+                if(simState.particles.some(p=>p.state==='liquid') && Math.random() < 0.2){
+                    let liquidParticles = simState.particles.filter(p=>p.state==='liquid');
+                    if(liquidParticles.length > 0) liquidParticles[0].state = 'gas';
+                }
+                if(simState.heatAdded >= 550) { simState.phase = 'FINISHED'; stopHeat(); }
+            }
+            
+            const tempRange = 130; // -10 to 120
+            const percent = (simState.temp + 10) / tempRange * 100;
+            document.getElementById('beaker-mercury').style.height = `${Math.max(0, percent)}%`;
+            document.getElementById('beaker-temp').textContent = `${Math.round(simState.temp)}°C`;
+        }, 20);
+    }
+    
+    function stopHeat() { clearInterval(heatInterval); }
+    
+    function startGame() {
+        stopHeat(); cancelAnimationFrame(animationFrameId);
+        initialMessage.style.display = 'none'; labWrapper.style.display = 'flex';
+        quizModalOverlay.style.display = 'none';
+        initSim(); mainLoop();
+    }
+    
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    heatBtn.addEventListener('mousedown', applyHeat);
+    heatBtn.addEventListener('mouseup', stopHeat);
+    heatBtn.addEventListener('mouseleave', stopHeat);
+
+    choiceWaterBtn.addEventListener('click', () => {
+        choiceWaterBtn.classList.add('incorrect');
+        choiceSteamBtn.classList.add('correct');
+        document.getElementById('steam-burn-box').innerHTML += `<div class="burn-effect" style="top:50%;left:50%;"></div>`;
+        continueBtn.style.display = 'inline-block';
+    });
+    choiceSteamBtn.addEventListener('click', () => {
+        choiceSteamBtn.classList.add('correct');
+        choiceWaterBtn.classList.remove('incorrect');
+        document.getElementById('steam-burn-box').innerHTML += `<div class="burn-effect" style="top:50%;left:50%;"></div>`;
+        continueBtn.style.display = 'inline-block';
+    });
+    continueBtn.addEventListener('click', () => {
+        quizModalOverlay.style.display = 'none';
+        simState.phase = 'BOILING';
+        // Clear old burn effect
+        document.getElementById('steam-burn-box').innerHTML = '<p>Steam at 100°C</p>';
+        continueBtn.style.display = 'none';
+        applyHeat(); // Resume heating
+    });
+    
+    window.onload = () => { labWrapper.style.display = 'none'; };
+</script>
+</body>
+</html>

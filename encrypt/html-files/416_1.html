@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Separation Lab Challenge - Is Matter Around Us Pure?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f1de;
+            --card-bg: #ffffff;
+            --primary-color: #3d405b;
+            --accent-color: #e07a5f;
+            --text-color: #3d405b;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            --correct-color: #81b29a;
+            --incorrect-color: #e07a5f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #f2cc8f, #f4f1de);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .instructions-list li::before {
+            content: '🔬';
+            margin-right: 12px;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+        .instructions-list b { color: var(--primary-color); }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lab-bench {
+            width: 100%;
+            min-height: 350px;
+            background-color: #81b29a;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #mixture-beaker {
+            width: 200px; height: 250px;
+            border: 5px solid #6c757d;
+            border-top: none; border-radius: 0 0 20px 20px;
+            background-color: rgba(0, 180, 216, 0.2);
+            position: relative;
+        }
+        .beaker-label {
+            position: absolute; bottom: 10px; left: 50%;
+            transform: translateX(-50%); font-weight: 600;
+            background: rgba(255,255,255,0.7); padding: 5px 10px; border-radius: 8px;
+        }
+        .beaker-canvas { width: 100%; height: 100%; }
+        
+        #feedback-box {
+            position: absolute; top: 10px; left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px; border-radius: 12px;
+            font-family: var(--heading-font); font-size: 20px;
+            color: white;
+            opacity: 0; transition: opacity 0.5s, transform 0.5s;
+            pointer-events: none;
+        }
+        #feedback-box.correct { background-color: var(--correct-color); }
+        #feedback-box.incorrect { background-color: var(--incorrect-color); }
+        #feedback-box.visible { opacity: 1; transform: translateX(-50%) translateY(10px); }
+
+        .tool-shelf {
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .tool {
+            width: 100px;
+            padding: 10px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .tool img { width: 60px; height: 60px; object-fit: contain; }
+        .tool p { font-weight: 600; font-size: 14px; margin-top: 5px; }
+        .tool:hover { transform: scale(1.05); border-color: var(--accent-color); }
+        
+        #challenge-status {
+            width: 100%; margin-top: 15px; text-align: center;
+        }
+        #challenge-status h3 {
+            font-family: var(--heading-font);
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Separation Lab Challenge</h2>
+            <p><strong>Lesson:</strong> Separating Components of a Mixture</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Challenge</h3>
+            <p style="margin-bottom: 15px;">You're in charge of the lab today! A messy mixture has arrived, and it's your job to separate it into its pure components. Different mixtures need different tools. Can you pick the right ones?</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to get your first mixture.</li>
+                <li>Analyze the mixture. Is it a solid in a liquid? Two liquids that don't mix?</li>
+                <li>From the <b>Tool Shelf</b>, click the correct tool to perform the first separation step.</li>
+                <li>If the mixture needs another step, the lab will update. Choose the next correct tool.</li>
+                <li>Choose wisely! Using the wrong tool will give you a hint to try again.</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to face the Separation Challenge!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="lab-bench">
+                    <div id="mixture-beaker">
+                         <canvas id="beaker-canvas" class="beaker-canvas"></canvas>
+                         <div id="beaker-label" class="beaker-label">Mixture</div>
+                    </div>
+                    <div id="feedback-box">Feedback</div>
+                </div>
+                 <div id="challenge-status">
+                    <h3>Current Task:</h3>
+                    <p id="task-description"></p>
+                </div>
+                <div class="tool-shelf" id="tool-shelf"></div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const toolShelf = document.getElementById('tool-shelf');
+    const taskDescription = document.getElementById('task-description');
+    const feedbackBox = document.getElementById('feedback-box');
+    const beakerCanvas = document.getElementById('beaker-canvas');
+    const beakerLabel = document.getElementById('beaker-label');
+    const ctx = beakerCanvas.getContext('2d');
+
+    // --- Data ---
+    const tools = [
+        { id: 'filtration', name: 'Filtration', img: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10 10 L50 90 L90 10 Z" fill="%23FFF" stroke="%23333" stroke-width="3"/><path d="M25 40 L75 40" stroke="%23CCC" stroke-width="2" stroke-dasharray="4,4"/></svg>' },
+        { id: 'evaporation', name: 'Evaporation', img: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10 80 Q 50 50, 90 80" fill="%23FFF" stroke="%23333" stroke-width="3"/><path d="M30 40 Q 40 30, 50 40" stroke="%23AAA" stroke-width="2"/><path d="M50 30 Q 60 20, 70 30" stroke="%23AAA" stroke-width="2"/><path d="M20 50 Q 30 40, 40 50" stroke="%23AAA" stroke-width="2"/></svg>' },
+        { id: 'separating_funnel', name: 'Separating Funnel', img: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 90 L50 70 M10 10 L50 70 L90 10 Z" fill="%23FFF" stroke="%23333" stroke-width="3"/><path d="M40 90 L60 90 L60 95 L40 95 Z" fill="%23333"/></svg>' },
+        { id: 'centrifugation', name: 'Centrifugation', img: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="%23333" stroke-width="3"/><path d="M50 50 L85 35 M50 50 L15 65 M50 50 L35 15 M50 50 L65 85" stroke="%23333" stroke-width="2"/></svg>' },
+    ];
+
+    const challenges = [
+        { 
+            name: 'Sand, Salt & Water', 
+            steps: [
+                { task: 'Separate the sand from the salt water.', tool: 'filtration' },
+                { task: 'Separate the salt from the water.', tool: 'evaporation' }
+            ],
+            initialState: {sand: true, salt: true, water: true}
+        },
+        {
+            name: 'Oil & Water',
+            steps: [
+                { task: 'Separate the oil from the water.', tool: 'separating_funnel' }
+            ],
+            initialState: {oil: true, water: true}
+        },
+    ];
+    let currentChallenge, currentStep;
+
+    // --- Canvas Drawing ---
+    function drawMixture() {
+        const beaker = document.getElementById('mixture-beaker');
+        beakerCanvas.width = beaker.clientWidth;
+        beakerCanvas.height = beaker.clientHeight;
+        ctx.clearRect(0,0, beakerCanvas.width, beakerCanvas.height);
+
+        const state = currentChallenge.steps[currentStep].state || currentChallenge.initialState;
+        
+        // Water
+        if(state.water) {
+            ctx.fillStyle = 'rgba(0, 180, 216, 0.3)';
+            ctx.fillRect(0, beakerCanvas.height * 0.3, beakerCanvas.width, beakerCanvas.height * 0.7);
+        }
+        // Oil
+        if(state.oil) {
+            ctx.fillStyle = 'rgba(255, 195, 0, 0.5)';
+            ctx.fillRect(0, beakerCanvas.height * 0.3, beakerCanvas.width, beakerCanvas.height * 0.3);
+        }
+        // Salt (represented by cloudy water)
+        if(state.salt) {
+             ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+             ctx.fillRect(0, beakerCanvas.height * 0.3, beakerCanvas.width, beakerCanvas.height * 0.7);
+        }
+        // Sand
+        if(state.sand) {
+            ctx.fillStyle = '#c2b280';
+            for(let i=0; i<50; i++) {
+                ctx.beginPath();
+                ctx.arc(Math.random() * beakerCanvas.width, beakerCanvas.height - Math.random() * 20, 3, 0, 2*Math.PI);
+                ctx.fill();
+            }
+        }
+    }
+
+    // --- Game Logic ---
+    function showFeedback(message, type) {
+        feedbackBox.textContent = message;
+        feedbackBox.className = `feedback-box ${type}`;
+        feedbackBox.classList.add('visible');
+        setTimeout(() => feedbackBox.classList.remove('visible'), 2000);
+    }
+    
+    function selectTool(selectedToolId) {
+        const correctToolId = currentChallenge.steps[currentStep].tool;
+
+        if (selectedToolId === correctToolId) {
+            showFeedback('Correct Tool!', 'correct');
+            currentStep++;
+            if (currentStep >= currentChallenge.steps.length) {
+                // Challenge complete
+                taskDescription.textContent = "Well done! You have separated all components.";
+                toolShelf.innerHTML = '<p style="font-size: 24px; font-weight: bold;">🎉 Challenge Complete! 🎉</p>';
+            } else {
+                updateChallenge();
+            }
+        } else {
+            showFeedback('Wrong tool! Think about the properties.', 'incorrect');
+        }
+    }
+    
+    function updateChallenge() {
+        const step = currentChallenge.steps[currentStep];
+        taskDescription.textContent = step.task;
+        beakerLabel.textContent = currentChallenge.name.replace(/ & /g, ' &<br>');
+        
+        // This simulates the change in the beaker for the next step
+        let previousState = currentStep > 0 ? currentChallenge.steps[currentStep-1].state : currentChallenge.initialState;
+        let newState = {};
+        
+        if (step.tool === 'evaporation') {
+            newState = { salt: true, water: false, sand: false }; // Leaves salt behind
+            beakerLabel.textContent = 'Salt';
+        } else if (step.tool === 'separating_funnel') {
+             newState = { oil: false, water: true}; // Leaves water behind
+             beakerLabel.textContent = 'Water';
+        } else if (currentChallenge.steps[currentStep-1]?.tool === 'filtration') {
+            newState = { sand: false, salt: true, water: true }; // Sand is filtered out
+            beakerLabel.textContent = 'Salt Water';
+        }
+        step.state = newState;
+
+        drawMixture();
+    }
+
+    function buildToolShelf() {
+        toolShelf.innerHTML = '';
+        tools.forEach(tool => {
+            const toolEl = document.createElement('div');
+            toolEl.className = 'tool';
+            toolEl.id = tool.id;
+            toolEl.innerHTML = `<img src="${tool.img}" alt="${tool.name}"><p>${tool.name}</p>`;
+            toolEl.addEventListener('click', () => selectTool(tool.id));
+            toolShelf.appendChild(toolEl);
+        });
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        
+        currentChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+        currentStep = 0;
+        
+        buildToolShelf();
+        updateChallenge();
+    }
+    
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

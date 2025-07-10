@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mixture Inspector - Is Matter Around Us Pure?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f3e9d2;
+            --card-bg: #ffffff;
+            --primary-color: #c6ac8f;
+            --secondary-color: #6a994e;
+            --text-color: #3d405b;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --correct-color: #2a9d8f;
+            --incorrect-color: #e76f51;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.07);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #e9f5db, #d8f3dc);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .instructions-list li::before {
+            content: '🧪';
+            margin-right: 12px;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+        .instructions-list b { color: var(--secondary-color); }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .btn:active { transform: translateY(0); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tool-panel {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 25px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 16px;
+        }
+        #stir-rod {
+            width: 30px;
+            height: 150px;
+            background: linear-gradient(to top, rgba(255,255,255,0.1), rgba(255,255,255,0.5));
+            border: 3px solid #ced4da;
+            border-radius: 15px;
+            cursor: grab;
+            text-align: center;
+            writing-mode: vertical-rl;
+            font-weight: 600;
+            padding: 10px 0;
+            user-select: none;
+        }
+        #stir-rod:active { cursor: grabbing; }
+
+        .beakers-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .beaker-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            transition: border-color 0.3s;
+        }
+        .beaker-wrapper.drag-over { border-color: var(--secondary-color); }
+        
+        .beaker {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border: 5px solid #ced4da;
+            border-top: none;
+            border-radius: 0 0 20px 20px;
+            position: relative;
+        }
+        .beaker-label { font-family: var(--heading-font); font-size: 18px; margin-bottom: 10px; }
+        .beaker canvas { width: 100%; height: 100%; }
+
+        .classification-buttons { display: flex; gap: 10px; margin-top: 15px; }
+        .classify-btn {
+            font-size: 14px;
+            padding: 8px 15px;
+            border: 2px solid #adb5bd;
+            background-color: #f8f9fa;
+        }
+        .classify-btn.selected {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+            transform: scale(1.05);
+        }
+        .classify-btn.correct { background-color: var(--correct-color); color: white; border-color: var(--correct-color); }
+        .classify-btn.incorrect { background-color: var(--incorrect-color); color: white; border-color: var(--incorrect-color); }
+
+        #check-answers-btn { margin-top: 10px; background-color: #457b9d; color: white; width: 50%; }
+
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Mixture Inspector</h2>
+            <p><strong>Lesson:</strong> Homogeneous vs. Heterogeneous</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--secondary-color); margin-bottom: 10px;">The Investigation</h3>
+            <p style="margin-bottom: 15px;">Welcome, Inspector! Your job is to figure out which of these mixtures are the same all the way through (homogeneous) and which have different parts you can see (heterogeneous).</p>
+            <h3 style="font-family: var(--heading-font); color: var(--secondary-color); margin-bottom: 10px;">How to Inspect</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to get your lab equipment.</li>
+                <li>Drag the <b>Glass Rod</b> and drop it into a beaker to stir the mixture.</li>
+                <li>Click the <b>"Wait a Minute"</b> button to see what happens over time. Does anything settle or separate?</li>
+                <li>Choose whether each mixture is <b>Homogeneous</b> or <b>Heterogeneous</b>.</li>
+                <li>When you've classified all four, click <b>"Check My Answers"</b>!</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to begin your inspection!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="tool-panel">
+                    <div id="stir-rod" draggable="true">Stir Rod</div>
+                    <button id="wait-btn" class="btn">Wait a Minute ⏳</button>
+                </div>
+                <div class="beakers-container" id="beakers-container"></div>
+                <button id="check-answers-btn" class="btn">Check My Answers</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const beakersContainer = document.getElementById('beakers-container');
+    const stirRod = document.getElementById('stir-rod');
+    const waitBtn = document.getElementById('wait-btn');
+    const checkBtn = document.getElementById('check-answers-btn');
+
+    // --- Mixture Data & State ---
+    const mixtures = [
+        { id: 'salt-water', name: 'Salt in Water', type: 'homogeneous', solute: 'salt', solvent: 'water' },
+        { id: 'sugar-water', name: 'Sugar in Water', type: 'homogeneous', solute: 'sugar', solvent: 'water' },
+        { id: 'sand-water', name: 'Sand in Water', type: 'heterogeneous', solute: 'sand', solvent: 'water' },
+        { id: 'oil-water', name: 'Oil in Water', type: 'heterogeneous', solute: 'oil', solvent: 'water' }
+    ];
+    let mixtureStates = {};
+    let animationFrameId;
+
+    // --- Particle Class ---
+    class Particle {
+        constructor(x, y, type, canvas) {
+            this.x = x; this.y = y; this.type = type;
+            this.vx = (Math.random() - 0.5) * 2;
+            this.vy = (Math.random() - 0.5) * 2;
+            this.canvas = canvas;
+
+            switch (type) {
+                case 'water': this.radius = 4; this.color = '#00b4d8'; this.mass = 1; break;
+                case 'salt': this.radius = 3; this.color = '#e9ecef'; this.mass = 1.2; break;
+                case 'sugar': this.radius = 5; this.color = '#fec89a'; this.mass = 1.1; break;
+                case 'sand': this.radius = 6; this.color = '#c6ac8f'; this.mass = 2.5; break;
+                case 'oil': this.radius = 7; this.color = '#fca311'; this.mass = 0.8; break;
+            }
+        }
+
+        draw(ctx) {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+
+        update(state) {
+            if (state.isStirring) {
+                this.vx += (Math.random() - 0.5) * 4;
+                this.vy += (Math.random() - 0.5) * 4;
+            } else if (state.isSettling) {
+                if (this.type === 'sand') this.vy += 0.2; // Gravity for sand
+                else if (this.type === 'oil') this.vy -= 0.2; // Buoyancy for oil
+                else this.vy += 0.01; // Slight gravity for others
+            } else {
+                 this.vy += 0.01; // Normal slight gravity
+            }
+
+            this.x += this.vx; this.y += this.vy;
+            this.vx *= 0.95; this.vy *= 0.95;
+
+            // Wall collisions
+            if (this.x < this.radius) { this.x = this.radius; this.vx *= -0.5; }
+            if (this.x > this.canvas.width - this.radius) { this.x = this.canvas.width - this.radius; this.vx *= -0.5; }
+            if (this.y < this.radius) { this.y = this.radius; this.vy *= -0.5; }
+            if (this.y > this.canvas.height - this.radius) { this.y = this.canvas.height - this.radius; this.vy *= -0.5; }
+        }
+    }
+    
+    // --- Game Logic ---
+    function createBeaker(mixture) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'beaker-wrapper';
+        wrapper.id = `wrapper-${mixture.id}`;
+        
+        wrapper.innerHTML = `
+            <h3 class="beaker-label">${mixture.name}</h3>
+            <div class="beaker">
+                <canvas id="canvas-${mixture.id}"></canvas>
+            </div>
+            <div class="classification-buttons">
+                <button class="btn classify-btn" data-beaker="${mixture.id}" data-type="homogeneous">Homogeneous</button>
+                <button class="btn classify-btn" data-beaker="${mixture.id}" data-type="heterogeneous">Heterogeneous</button>
+            </div>
+        `;
+        beakersContainer.appendChild(wrapper);
+
+        const canvas = document.getElementById(`canvas-${mixture.id}`);
+        const ctx = canvas.getContext('2d');
+        const beakerDiv = canvas.parentElement;
+        canvas.width = beakerDiv.clientWidth;
+        canvas.height = beakerDiv.clientHeight;
+
+        mixtureStates[mixture.id] = {
+            ctx, canvas, particles: [],
+            isStirring: false, isSettling: false,
+            type: mixture.type, userSelection: null
+        };
+        
+        // Populate particles
+        for(let i=0; i<80; i++) mixtureStates[mixture.id].particles.push(new Particle(Math.random()*canvas.width, Math.random()*canvas.height, 'water', canvas));
+        for(let i=0; i<20; i++) mixtureStates[mixture.id].particles.push(new Particle(Math.random()*canvas.width, Math.random()*canvas.height, mixture.solute, canvas));
+
+        // Drag and drop for stir rod
+        wrapper.addEventListener('dragover', e => { e.preventDefault(); wrapper.classList.add('drag-over'); });
+        wrapper.addEventListener('dragleave', () => wrapper.classList.remove('drag-over'));
+        wrapper.addEventListener('drop', e => {
+            e.preventDefault();
+            wrapper.classList.remove('drag-over');
+            stirBeaker(mixture.id);
+        });
+    }
+
+    function stirBeaker(id) {
+        mixtureStates[id].isStirring = true;
+        setTimeout(() => {
+            mixtureStates[id].isStirring = false;
+        }, 1500); // Stir for 1.5 seconds
+    }
+    
+    function animate() {
+        for (const id in mixtureStates) {
+            const state = mixtureStates[id];
+            state.ctx.clearRect(0, 0, state.canvas.width, state.canvas.height);
+            state.particles.forEach(p => {
+                p.update(state);
+                p.draw(state.ctx);
+            });
+        }
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    
+    function startGame() {
+        if(animationFrameId) cancelAnimationFrame(animationFrameId);
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        beakersContainer.innerHTML = '';
+        mixtureStates = {};
+        
+        mixtures.forEach(createBeaker);
+        animate();
+    }
+
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+
+    waitBtn.addEventListener('click', () => {
+        for (const id in mixtureStates) {
+            mixtureStates[id].isSettling = true;
+        }
+        // After a "wait" period, stop the forced settling
+        setTimeout(() => {
+            for (const id in mixtureStates) {
+                mixtureStates[id].isSettling = false;
+            }
+        }, 3000);
+    });
+    
+    document.addEventListener('click', e => {
+        if (e.target.classList.contains('classify-btn')) {
+            const { beaker, type } = e.target.dataset;
+            mixtureStates[beaker].userSelection = type;
+            
+            // Update button styles
+            e.target.parentElement.querySelectorAll('.classify-btn').forEach(btn => btn.classList.remove('selected'));
+            e.target.classList.add('selected');
+        }
+    });
+
+    checkBtn.addEventListener('click', () => {
+        let allAnswered = true;
+        for (const id in mixtureStates) {
+            if (!mixtureStates[id].userSelection) {
+                allAnswered = false;
+                break;
+            }
+        }
+        if (!allAnswered) {
+            alert("Please classify all four mixtures before checking!");
+            return;
+        }
+
+        document.querySelectorAll('.classify-btn.selected').forEach(btn => {
+            const { beaker, type } = btn.dataset;
+            if (mixtureStates[beaker].type === type) {
+                btn.classList.add('correct');
+            } else {
+                btn.classList.add('incorrect');
+            }
+        });
+        
+        // Disable buttons after checking
+        document.querySelectorAll('.classify-btn, #wait-btn, #check-answers-btn').forEach(el => el.disabled = true);
+        stirRod.draggable = false;
+    });
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

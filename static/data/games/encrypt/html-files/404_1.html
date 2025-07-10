@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dual Thermometer - CBSE Class 9 Science</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f7ff;
+            --card-bg: #ffffff;
+            --primary-color: #d62828; /* Thermometer Red */
+            --accent-color: #003049; /* Deep Blue for contrast */
+            --text-color: #333;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --correct-color: #198754;
+            --incorrect-color: #dc3545;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+
+        body {
+            font-family: var(--body-font); background-color: var(--bg-color); color: var(--text-color);
+            padding: 20px; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh;
+        }
+
+        .main-container { display: flex; gap: 20px; width: 100%; max-width: 1400px; }
+        .instructions-card {
+            flex: 3; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; align-self: flex-start;
+        }
+        .game-card {
+            flex: 7; background-color: var(--card-bg); padding: 25px; border-radius: 20px;
+            box-shadow: var(--shadow); border: 1px solid #e0e0e0; display: flex;
+            flex-direction: column; align-items: center;
+        }
+        .card-header {
+            font-family: var(--heading-font); font-size: 28px; font-weight: 800; color: var(--primary-color);
+            margin-bottom: 20px; text-align: center; display: inline-block;
+            background: linear-gradient(45deg, #ffdcdc, #fff5f5); padding: 5px 20px; border-radius: 12px;
+        }
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li { margin-bottom: 12px; line-height: 1.6; display: flex; align-items: flex-start; }
+        .instructions-list li::before { content: '🌡️'; margin-right: 10px; font-size: 16px; }
+        .instructions-list li b { color: var(--primary-color); }
+
+        .controls { margin-top: 25px; display: flex; gap: 10px; }
+        .btn {
+            font-family: var(--heading-font); font-size: 18px; font-weight: 600;
+            padding: 12px 20px; border: none; border-radius: 12px; cursor: pointer;
+            transition: all 0.3s ease; flex-grow: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        
+        .formulas {
+            margin-top: 20px; background: #e9ecef; padding: 15px; border-radius: 12px;
+            text-align: center; font-weight: bold; font-size: 16px;
+        }
+        
+        /* Game Area Styles */
+        #initial-message { font-family: var(--heading-font); font-size: 24px; color: #999; height: 500px; display: flex; align-items: center; text-align: center; }
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        
+        .thermometer-container { display: flex; justify-content: center; align-items: flex-end; height: 450px; margin-top: 30px; }
+        .scale { display: flex; flex-direction: column-reverse; justify-content: space-between; height: 80%; list-style: none; padding: 0 10px; }
+        .scale li {position: relative;
+    left: 10px;
+    top: 0px; }
+        .celsius-scale li::after { content: '°C'; position: absolute; left: 100%; margin-left: 5px; }
+        .kelvin-scale li::before { content: 'K'; position: absolute; right: 100%; margin-right: 5px; }
+        
+        .thermometer-body {
+            width: 40px; height: 80%; background-color: rgba(233, 236, 239, 0.7);
+            border-radius: 20px; border: 2px solid #adb5bd; position: relative;
+            cursor: grab; /* <-- FIXED: Changed default cursor to 'grab' for better UX */
+        }
+        .mercury {
+            position: absolute; bottom: 0; left: 5px; right: 5px; height: 50%;
+            background: linear-gradient(to top, #d90429, #ef233c); border-radius: 15px 15px 0 0;
+            pointer-events: none; /* Make mercury non-interactive so clicks go to the body */
+        }
+        .thermometer-bulb {
+            width: 70px; height: 70px; background: linear-gradient(135deg, #d90429, #ef233c);
+            border-radius: 50%; border: 2px solid #adb5bd; margin: 0 -15px;
+            transition: background 0.3s ease; /* <-- ADDED: Smooth transition for feedback color change */
+        }
+
+        #challenge-container {
+            margin-top: 30px; padding: 20px; background: #fffbe8; border: 2px solid #ffc107;
+            border-radius: 15px; width: 80%; text-align: center;
+        }
+        #challenge-text { font-size: 18px; font-weight: bold; margin-bottom: 15px; }
+        #answer-input {
+            font-size: 18px; padding: 10px; border-radius: 8px; border: 2px solid #ccc;
+            width: 150px; text-align: center;
+        }
+        #answer-input.correct { border-color: var(--correct-color); background-color: #e2f9e6; }
+        #answer-input.incorrect { border-color: var(--incorrect-color); background-color: #fbe5e7; }
+        #check-answer-btn { margin-left: 10px; background-color: var(--accent-color); color: white; }
+        
+        @media (max-width: 992px) { .main-container { flex-direction: column; } }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">🌡️ Dual Thermometer</h2>
+            <p><strong>Lesson:</strong> Mastering temperature conversions between Celsius and Kelvin.</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Tool</h3>
+            <p style="margin-bottom: 15px;">This special thermometer shows two scales at once! Celsius (°C) is used in daily life, while Kelvin (K) is the SI unit used by scientists.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to activate the thermometer.</li>
+                <li><b>Click and drag</b> the red mercury up and down to change the temperature.</li>
+                <li>Observe how both scales change together. Key points are marked!</li>
+                <li>Solve the challenges that appear below the thermometer.</li>
+                <li>You might need to drag the thermometer or type the answer using the formulas!</li>
+            </ul>
+            <!-- FIXED: Added the missing control buttons that the JS requires to start the game. -->
+           
+            <div class="formulas">
+                K = °C + 273.15 <br>
+                °C = K - 273.15
+            </div>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset Game</button>
+            </div>
+            <div id="initial-message">Click 'Start' to use the dual-scale thermometer!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="thermometer-container">
+                    <ul class="scale celsius-scale" id="celsius-scale"></ul>
+                    <div class="thermometer-body">
+                        <div class="mercury"></div>
+                    </div>
+                    <ul class="scale kelvin-scale" id="kelvin-scale"></ul>
+                </div>
+                 <div class="thermometer-bulb"></div>
+                <div id="challenge-container">
+                    <p id="challenge-text">Challenge will appear here.</p>
+                    <div id="input-area">
+                        <input type="number" id="answer-input" placeholder="Type here...">
+                        <button id="check-answer-btn" class="btn">Check</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const thermometerBody = document.querySelector('.thermometer-body');
+    const mercury = document.querySelector('.mercury');
+    const thermometerBulb = document.querySelector('.thermometer-bulb'); // FIXED: Added selector for bulb feedback
+    const celsiusScale = document.getElementById('celsius-scale');
+    const kelvinScale = document.getElementById('kelvin-scale');
+    const challengeText = document.getElementById('challenge-text');
+    const answerInput = document.getElementById('answer-input');
+    const checkAnswerBtn = document.getElementById('check-answer-btn');
+
+    // --- Sim State & Constants ---
+    const TEMP_MIN_C = -50, TEMP_MAX_C = 150;
+    const KELVIN_OFFSET = 273.15; // More precise value
+    let currentTempC = 25;
+    let isDragging = false;
+    let currentChallenge = {};
+    const CHALLENGES = [
+        { type: 'input', question: 'Water boils at 100°C. What is this in Kelvin?', answer: 373.15 },
+        { type: 'input', question: 'Absolute zero is 0 K. What is this in Celsius?', answer: -273.15 },
+        { type: 'input', question: 'A comfortable room temperature is 298.15 K. What is this in Celsius?', answer: 25 },
+        { type: 'set', question: 'Set the thermometer to the freezing point of water (0°C).', answer: 0 },
+        { type: 'set', question: 'Set the thermometer to 323.15 K.', answer: 50 },
+        { type: 'input', question: 'Convert 50°C to Kelvin.', answer: 323.15 },
+        { type: 'input', question: 'Convert 250 K to Celsius.', answer: -23.15 },
+    ];
+    
+    // --- Core Functions ---
+    function updateThermometer(celsiusValue) { // FIXED: Removed 'fromDrag' parameter
+        currentTempC = Math.max(TEMP_MIN_C, Math.min(celsiusValue, TEMP_MAX_C));
+        const percent = (currentTempC - TEMP_MIN_C) / (TEMP_MAX_C - TEMP_MIN_C) * 100;
+        mercury.style.height = `${percent}%`;
+    }
+
+    function generateScales() {
+        celsiusScale.innerHTML = ''; kelvinScale.innerHTML = '';
+        for (let t = TEMP_MIN_C; t <= TEMP_MAX_C; t += 25) {
+            if(t === 150) continue; // Skip last one for better visual spacing
+            const c_li = document.createElement('li');
+            c_li.textContent = t;
+            const k_li = document.createElement('li');
+            k_li.textContent = Math.round(t + KELVIN_OFFSET); // Display rounded Kelvin values on scale
+            celsiusScale.appendChild(c_li);
+            kelvinScale.appendChild(k_li);
+        }
+    }
+    
+    function nextChallenge() {
+        answerInput.value = '';
+        answerInput.classList.remove('correct', 'incorrect');
+        currentChallenge = CHALLENGES[Math.floor(Math.random() * CHALLENGES.length)];
+        challengeText.textContent = currentChallenge.question;
+        document.getElementById('input-area').style.display = currentChallenge.type === 'input' ? 'block' : 'none';
+    }
+
+    function checkAnswer() {
+        if(currentChallenge.type !== 'input') return;
+        const userAnswer = parseFloat(answerInput.value);
+        // Use a small tolerance for floating point comparisons
+        const isCorrect = Math.abs(userAnswer - currentChallenge.answer) < 0.01;
+        handleResult(isCorrect);
+    }
+    
+    // FIXED: Reworked handleResult to provide feedback for both challenge types.
+    function handleResult(isCorrect) {
+        if (isCorrect) {
+            if (currentChallenge.type === 'input') {
+                answerInput.classList.add('correct');
+            } else if (currentChallenge.type === 'set') {
+                // Flash the bulb green for visual feedback on 'set' challenges
+                thermometerBulb.style.background = 'var(--correct-color)';
+                setTimeout(() => {
+                    thermometerBulb.style.background = ''; // Revert to CSS default
+                }, 1000);
+            }
+            // Move to the next challenge after a delay
+            setTimeout(nextChallenge, 1500);
+        } else {
+            // Only show 'incorrect' for input types. For 'set', user just keeps trying.
+            if (currentChallenge.type === 'input') {
+                answerInput.classList.add('incorrect');
+            }
+        }
+    }
+    
+    function startGame() {
+        initialMessage.style.display = 'none'; labWrapper.style.display = 'flex';
+        generateScales();
+        updateThermometer(25);
+        nextChallenge();
+    }
+    
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    checkAnswerBtn.addEventListener('click', checkAnswer);
+    answerInput.addEventListener('keydown', (e) => { 
+        answerInput.classList.remove('incorrect'); // Remove red border on new input
+        if(e.key === 'Enter') checkAnswer(); 
+    });
+
+    thermometerBody.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        thermometerBody.style.cursor = 'ns-resize'; // FIXED: Change cursor only on drag
+    });
+
+    document.addEventListener('mouseup', () => {
+        if(isDragging) {
+            isDragging = false;
+            thermometerBody.style.cursor = 'grab'; // FIXED: Revert cursor after drag
+            
+            // FIXED: This is now the ONLY place where a 'set' challenge is validated.
+            if (currentChallenge.type === 'set' && Math.abs(currentTempC - currentChallenge.answer) < 2) {
+                handleResult(true);
+            }
+        }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if(isDragging) {
+            e.preventDefault(); // Prevent accidental text selection
+            const rect = thermometerBody.getBoundingClientRect();
+            // Ensure clientY is within the bounds of the thermometer body to prevent jumping
+            const clientY = Math.max(rect.top, Math.min(e.clientY, rect.bottom));
+            const percent = 1 - ((clientY - rect.top) / rect.height);
+            const newTemp = TEMP_MIN_C + percent * (TEMP_MAX_C - TEMP_MIN_C);
+            updateThermometer(newTemp);
+        }
+    });
+    
+    window.onload = () => { labWrapper.style.display = 'none'; };
+</script>
+</body>
+</html>

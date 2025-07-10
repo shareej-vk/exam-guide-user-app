@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Real Number Operation Challenge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f3f9ff;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1200px;
+      width: 100%;
+      gap: 30px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      box-sizing: border-box;
+    }
+
+    .instructions {
+      flex: 3;
+    }
+
+    .game {
+      flex: 7;
+    }
+
+    .instructions h2 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #2e7d32;
+      margin-bottom: 15px;
+    }
+
+    .instructions p {
+      font-size: 17px;
+      line-height: 1.7;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    .game h2 {
+      font-size: 28px;
+      color: #1a237e;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .expression-display {
+      font-size: 24px;
+      text-align: center;
+      background-color: #e3f2fd;
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: #0d47a1;
+    }
+
+    .options {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .options button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      background-color: #ffe0b2;
+      color: #e65100;
+      box-shadow: 2px 4px 6px rgba(0,0,0,0.1);
+      transition: background 0.3s ease;
+    }
+
+    .options button:hover {
+      background-color: #ffcc80;
+    }
+
+    .options button.correct {
+      background-color: #a5d6a7 !important;
+      color: #1b5e20;
+    }
+
+    .options button.wrong {
+      background-color: #ef9a9a !important;
+      color: #b71c1c;
+    }
+
+    .feedback {
+      font-size: 18px;
+      text-align: center;
+      font-weight: bold;
+      min-height: 24px;
+    }
+
+    .feedback.correct {
+      color: #1b5e20;
+    }
+
+    .feedback.wrong {
+      color: #b71c1c;
+    }
+
+    .controls {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .controls button {
+      font-size: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      margin: 5px;
+      background-color: #d1c4e9;
+      color: #4527a0;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 2px 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .controls button:hover {
+      background-color: #b39ddb;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card instructions">
+      <h2>🧮 Instructions</h2>
+      <p>Each round shows you an expression involving real numbers.</p>
+      <p>Use your knowledge of operations on real numbers to pick the correct result!</p>
+      <p>Click the correct result from the options given.</p>
+      <p>✅ Green means correct, ❌ red means incorrect.</p>
+    </div>
+
+    <div class="card game">
+      <h2>🎯 Real Number Operation Challenge</h2>
+      <div class="expression-display" id="expressionDisplay">2 + √3</div>
+
+      <div class="options" id="optionButtons">
+        <!-- options will be populated by JS -->
+      </div>
+
+      <div class="feedback" id="feedbackMsg"></div>
+
+      <div class="controls">
+        <button onclick="nextExpression()">▶️ Next</button>
+        <button onclick="resetGame()">🔄 Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const expressions = [
+      { expr: "2 + √3", correct: "Approx. 3.73", options: ["Approx. 4.41", "Approx. 3.73", "Approx. 2.61"] },
+      { expr: "√5 - 1", correct: "Approx. 1.24", options: ["Approx. 1.24", "Approx. 2.34", "Approx. 3.12"] },
+      { expr: "√2 * √3", correct: "Approx. 2.45", options: ["Approx. 3", "Approx. 1.73", "Approx. 2.45"] },
+      { expr: "3 + √2", correct: "Approx. 4.41", options: ["Approx. 4.41", "Approx. 3.14", "Approx. 5.00"] },
+      { expr: "√7 + √3", correct: "Approx. 5.15", options: ["Approx. 5.15", "Approx. 6.41", "Approx. 4.12"] },
+      { expr: "√2 * √2", correct: "2", options: ["1", "2", "√4"] },
+      { expr: "√9 - 2", correct: "1", options: ["0", "1", "2"] }
+    ];
+
+    let currentIndex = 0;
+
+    function displayExpression() {
+      const current = expressions[currentIndex];
+      document.getElementById("expressionDisplay").textContent = current.expr;
+      document.getElementById("feedbackMsg").textContent = "";
+      document.getElementById("feedbackMsg").className = "feedback";
+
+      const optionsDiv = document.getElementById("optionButtons");
+      optionsDiv.innerHTML = "";
+
+      current.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(btn, opt);
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(button, selected) {
+      const correct = expressions[currentIndex].correct;
+      const feedback = document.getElementById("feedbackMsg");
+      const buttons = document.querySelectorAll("#optionButtons button");
+
+      if (selected === correct) {
+        button.classList.add("correct");
+        feedback.textContent = "✅ Correct!";
+        feedback.className = "feedback correct";
+      } else {
+        button.classList.add("wrong");
+        feedback.textContent = `❌ Incorrect. Correct answer: ${correct}`;
+        feedback.className = "feedback wrong";
+
+        buttons.forEach(btn => {
+          if (btn.textContent === correct) btn.classList.add("correct");
+        });
+      }
+
+      // Disable buttons after selection
+      buttons.forEach(btn => btn.disabled = true);
+    }
+
+    function nextExpression() {
+      currentIndex = (currentIndex + 1) % expressions.length;
+      displayExpression();
+    }
+
+    function resetGame() {
+      currentIndex = 0;
+      displayExpression();
+    }
+
+    // Initialize
+    displayExpression();
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

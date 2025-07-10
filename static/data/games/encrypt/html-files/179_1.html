@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exponent Law Match Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f0f4ff;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      display: flex;
+      gap: 30px;
+      max-width: 1200px;
+      width: 100%;
+    }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      box-sizing: border-box;
+    }
+    .instructions {
+      flex: 3;
+    }
+    .game {
+      flex: 7;
+    }
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1a237e;
+      margin-bottom: 15px;
+    }
+    p {
+      font-size: 16px;
+      color: #333;
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .card-tile {
+      background: #e8f5e9;
+      padding: 20px;
+      text-align: center;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      border: 2px solid #a5d6a7;
+      transition: 0.3s ease;
+    }
+    .card-tile:hover {
+      background: #c8e6c9;
+    }
+    .card-tile.correct {
+      background-color: #c8e6c9;
+      border-color: #66bb6a;
+    }
+    .card-tile.wrong {
+      background-color: #ffcdd2;
+      border-color: #e57373;
+    }
+    .button-row {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+    .button-row button {
+      padding: 10px 18px;
+      font-size: 15px;
+      font-weight: bold;
+      background: #90caf9;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #0d47a1;
+    }
+    .button-row button:hover {
+      background: #64b5f6;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card instructions">
+      <h2>📘 Instructions</h2>
+      <p>Match each exponential expression to its simplified form using the laws of exponents.</p>
+      <p>👆 Click one card from the left (expression) and one from the right (simplified form) to make a match.</p>
+      <p>✅ Correct matches turn <span style="color:green;">green</span>, incorrect ones turn <span style="color:red;">red</span>.</p>
+      <p>🔄 Use the "Reset" button to play again.</p>
+    </div>
+
+    <div class="card game">
+      <h2>🎯 Exponent Law Match</h2>
+      <div class="grid" id="grid"></div>
+      <div class="button-row">
+        <button onclick="resetGame()">Reset</button>
+      </div>
+      <div id="result" class="result"></div>
+    </div>
+  </div>
+
+  <script>
+    const expressions = [
+      { id: 1, text: "a³ × a²", match: "a⁵" },
+      { id: 2, text: "(b⁴)²", match: "b⁸" },
+      { id: 3, text: "x⁶ ÷ x²", match: "x⁴" },
+      { id: 4, text: "(m⁻³)", match: "1/m³" }
+    ];
+
+    let selectedCards = [];
+    const grid = document.getElementById('grid');
+    const result = document.getElementById('result');
+
+    function shuffle(array) {
+      return array.sort(() => Math.random() - 0.5);
+    }
+
+    function renderGame() {
+      grid.innerHTML = '';
+      selectedCards = [];
+      result.innerText = '';
+
+      const left = expressions.map(e => ({ ...e, type: 'expr' }));
+      const right = expressions.map(e => ({ id: e.id, text: e.match, type: 'match' }));
+
+      const allCards = shuffle([...left, ...right]);
+
+      allCards.forEach(card => {
+        const div = document.createElement('div');
+        div.className = 'card-tile';
+        div.innerText = card.text;
+        div.dataset.id = card.id;
+        div.dataset.type = card.type;
+        div.onclick = () => handleSelect(div);
+        grid.appendChild(div);
+      });
+    }
+
+    function handleSelect(tile) {
+      if (tile.classList.contains('correct') || tile.classList.contains('wrong')) return;
+      if (selectedCards.includes(tile)) return;
+
+      tile.style.borderColor = '#1976d2';
+      tile.style.backgroundColor = '#e3f2fd';
+      selectedCards.push(tile);
+
+      if (selectedCards.length === 2) {
+        const [first, second] = selectedCards;
+        const isMatch =
+          first.dataset.id === second.dataset.id &&
+          first.dataset.type !== second.dataset.type;
+
+        if (isMatch) {
+          first.classList.add('correct');
+          second.classList.add('correct');
+          result.innerText = "✅ Great! That's a correct match.";
+        } else {
+          first.classList.add('wrong');
+          second.classList.add('wrong');
+          result.innerText = "❌ Oops! Try again.";
+        }
+
+        setTimeout(() => {
+          first.style.borderColor = '';
+          second.style.borderColor = '';
+          first.style.backgroundColor = '';
+          second.style.backgroundColor = '';
+          selectedCards = [];
+        }, 1000);
+      }
+    }
+
+    function resetGame() {
+      renderGame();
+    }
+
+    renderGame();
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

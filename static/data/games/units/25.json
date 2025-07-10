@@ -1,0 +1,339 @@
+{
+  "subject": {
+    "id": 1,
+    "name": "math",
+    "label": "Mathematics"
+  },
+  "units": [
+    {
+      "id": 25,
+      "name": "triangles",
+      "label": "Triangles",
+      "lessons": [
+        {
+          "id": 246,
+          "title": "Lesson 1: Introduction to Congruent Figures",
+          "slug": "lesson_1_introduction_to_congruent_figures",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "246_1",
+              "name": "Congruence Match",
+              "implementationDetails": "Present shape pair and match with congruent ones which have same size and shape",
+              "learningPoints": [
+                "Size and shape understanding",
+                "Geometrical identification",
+                "Congruence property application"
+              ]
+            },
+            {
+              "id": "246_2",
+              "name": "Real world relation",
+              "implementationDetails": "Present object and ask what of its parts are congurence",
+              "learningPoints": [
+                "Object recognition",
+                "Congurent identification",
+                "Real world application"
+              ]
+            },
+            {
+              "id": "246_3",
+              "name": "Mirror image identifier",
+              "implementationDetails": "Present one figures and identify in mirror if that one congruent with previous or not",
+              "learningPoints": [
+                "Mirror image",
+                "Congurent figure",
+                "Practical application of congruence"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 247,
+          "title": "Lesson 2: Congruence of Triangles and CPCT",
+          "slug": "lesson_2_congruence_of_triangles_and_cpct",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "247_1",
+              "name": "Congruent property identifiers",
+              "implementationDetails": "Show figure with lines and number or symbols and identify corresponding congurent number or properties",
+              "learningPoints": [
+                "corresponding identifier",
+                "CPCT application",
+                "Geometric application by congruence"
+              ]
+            },
+            {
+              "id": "247_2",
+              "name": "Which triangle is mirror of?",
+              "implementationDetails": "Mirror form the triangle and what corresponding property holds",
+              "learningPoints": [
+                "CPCT and mirror equation",
+                "Conguence application in triangle",
+                "Mirror equation building"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 248,
+          "title": "Lesson 3: The SAS (Side-Angle-Side) Congruence Rule",
+          "slug": "lesson_3_the_sas_side-angle-side_congruence_rule",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "248_1",
+              "name": "SAS triangle builder",
+              "implementationDetails": "Present side for angle what minimum number is need to create",
+              "learningPoints": [
+                "Conguence formula recognizer",
+                "Geometric identifier in criteria",
+                "Side angle visualization"
+              ]
+            },
+            {
+              "id": "248_2",
+              "name": "Conguence side identifier",
+              "implementationDetails": "For diagram given property show side and angle from SAS which congruent triangle formula is",
+              "learningPoints": [
+                "Geometric figure identfication",
+                "Triangle side angle property",
+                "SAS theorem application"
+              ]
+            },
+            {
+              "id": "248_3",
+              "name": "What is enough for SAS?",
+              "implementationDetails": "Give information and select sufficient data for SAS congreuence",
+              "learningPoints": [
+                "SAS identifier ",
+                "Triangle property",
+                "Minimum side and angle require"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 249,
+          "title": "Lesson 4: The ASA (Angle-Side-Angle) Congruence Rule",
+          "slug": "lesson_4_the_asa_angle-side-angle_congruence_rule",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "249_1",
+              "name": "Angle checker",
+              "implementationDetails": "Select minimum number to equal and what are part to ASA theram",
+              "learningPoints": [
+                "Axiom rule selection",
+                "Angle properties application",
+                "Triangle property builder"
+              ]
+            },
+            {
+              "id": "249_2",
+              "name": "Line selector",
+              "implementationDetails": "What must be line that can make triangles congurent",
+              "learningPoints": [
+                "Geometric figure identifier",
+                "Minimum properties for conguence",
+                "ASA with Triangle application"
+              ]
+            },
+            {
+              "id": "249_3",
+              "name": "Which criteria applicable",
+              "implementationDetails": "Select ASA triagle or another",
+              "learningPoints": [
+                "Axiom rule application",
+                "Side or angle identifier in congreuence",
+                "Side by side congreuence builder"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 250,
+          "title": "Lesson 5: The AAS (Angle-Angle-Side) Congruence Rule",
+          "slug": "lesson_5_the_aas_angle-angle-side_congruence_rule",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "250_1",
+              "name": "Angle by angle congreunce tester",
+              "implementationDetails": "Select what part must be aquale of this conguence rule with property name like one equal angles",
+              "learningPoints": [
+                "Equal angel identification",
+                "Side by side relation",
+                "Property name identifiy"
+              ]
+            },
+            {
+              "id": "250_2",
+              "name": "Missing identification",
+              "implementationDetails": "Given condition side must be or not give the correct property and number for triangle",
+              "learningPoints": [
+                "Minimium number recognitiion",
+                "Side identifier for equation",
+                "Equation of congreuence"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 251,
+          "title": "Lesson 6: Theorem: Angles Opposite to Equal Sides are Equal",
+          "slug": "lesson_6_theorem_angles_opposite_to_equal_sides_are_equal",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "251_1",
+              "name": "Angle selector",
+              "implementationDetails": "Two sides are equal what angle are related to",
+              "learningPoints": [
+                "Isosceles Angle property",
+                "Side and angle relation",
+                "Opposite angel identifier"
+              ]
+            },
+            {
+              "id": "251_2",
+              "name": "Side equality implication",
+              "implementationDetails": "If angle same what that implies",
+              "learningPoints": [
+                "What are result after same  angle",
+                "Angle application to get answer",
+                "Theorem for triangle identification"
+              ]
+            },
+             {
+              "id": "251_3",
+              "name": "Isosceles visual selector",
+              "implementationDetails": "Multiple choice which figure have that property",
+              "learningPoints": [
+                "Side identification",
+                "isoscales knowledge",
+                "Side visuality power"
+              ]
+            }
+          ]
+        },
+        {
+            "id": 252,
+            "title": "Lesson 7: Theorem: Sides Opposite to Equal Angles are Equal",
+            "slug": "lesson_7_theorem_sides_opposite_to_equal_angles_are_equal",
+            "display_order": 7,
+            "games": [
+              {
+                "id": "252_1",
+                "name": "Isosceles side indentifier",
+                "implementationDetails": "Same or different angle side have property of",
+                "learningPoints": [
+                  "Oppisite side indentifier",
+                  "Rule implementation in triangle",
+                  "Side based conguence"
+                ]
+              },
+              {
+              "id": "252_2",
+              "name": "Side relation",
+              "implementationDetails": "If side same what property implied from rule",
+              "learningPoints": [
+                "Equal angle side selector",
+                "Rules implication",
+                "Property recognition in triangle"
+              ]
+              
+            }
+            ]
+        },
+        {
+            "id": 253,
+            "title": "Lesson 8: The SSS (Side-Side-Side) Congruence Rule",
+            "slug": "lesson_8_the_sss_side-side-side_congruence_rule",
+            "display_order": 8,
+            "games": [
+            
+              {
+                "id": "253_1",
+                "name": "Side by side chain",
+                "implementationDetails": "Show to line what other side can lead",
+                "learningPoints": [
+                  "Property identification",
+                  "Equal lines for congruent triangles",
+                  "Side based formula knowledge"
+                ]
+              },
+               {
+                "id": "253_2",
+                "name": "Sufficient requirement",
+                "implementationDetails": "What a minimum set in equation for this rule with multiple option and selection",
+                "learningPoints": [
+                  "SSS rules in action",
+                  "Minimal number of side properties",
+                  "Theorem requirement "
+                ]
+              }
+            ]
+        },
+        {
+            "id": 254,
+            "title": "Lesson 9: The RHS (Right Angle-Hypotenuse-Side) Congruence Rule",
+            "slug": "lesson_9_the_rhs_right_angle-hypotenuse-side_congruence_rule",
+            "display_order": 9,
+            "games": [
+              {
+                "id": "254_1",
+                "name": "Which property required more number for show that RHS rule is applying to figures",
+                "implementationDetails": "What minimu property need by student and their recognigion in geomerty and",
+                "learningPoints": [
+                   "RHS rule based identifiere",
+                   "Hypotenous and otheers side relation identifiier",
+                   "Minium property recognition"
+                ]
+              },
+                {
+                "id": "254_2",
+                "name": "Right triangle identifier",
+                "implementationDetails": "If set of sides give which set can for right triangle and for congruences",
+                "learningPoints": [
+                  "Pythagorous and tringles",
+                  "RHS formula application from pythagorus",
+                  "Triangle and theorem builder"
+                ]
+               
+              }
+            ]
+        },
+        {
+            "id": 255,
+            "title": "Lesson 10: Applications of Congruence Rules",
+            "slug": "lesson_10_applications_of_congruence_rules",
+            "display_order": 10,
+            "games": [
+              {
+                "id": "255_1",
+                "name": "Rule identifier",
+                "implementationDetails": "Which rule applicable for which type figure in triangle to make congruent to this one what must be the condition with line size angle",
+                "learningPoints": [
+                  "Figure identification with property",
+                  "Side and angle builder application",
+                  "Conguent application skill"
+                ]
+              },
+              {
+                "id": "255_2",
+                "name": "Steps identifier",
+                "implementationDetails": "Set order of congruences set that help in congruent identification of triangle with one theorem or rule at time in a sequence",
+                "learningPoints": [
+                  "Step by step implementation of rules",
+                  "Logic builder for formula",
+                  "Theorems for rules"
+                ]
+              }
+            ]
+        }
+      ]
+    }
+  ]
+}

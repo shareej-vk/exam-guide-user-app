@@ -1,0 +1,322 @@
+{
+  "subject": {
+    "id": 5,
+    "name": "science",
+    "label": "Science"
+  },
+  "units": [
+    {
+      "id": 63,
+      "name": "unit_6:_tissues",
+      "label": "Unit 6: Tissues",
+      "lessons": [
+        {
+          "id": 475,
+          "title": "Lesson 1: Introduction to Tissues and the Difference Between Plant and Animal Tissues",
+          "slug": "lesson_1_introduction_to_tissues_and_the_difference_between_plant_and_animal_tissues",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "475_1",
+              "name": "Tissue Sorter: Plant vs. Animal",
+              "implementationDetails": "The player is presented with characteristic cards, such as 'Growth is localized', 'Consumes more energy', 'Supportive tissues are mostly dead', and 'Most tissues are living'. They must drag each card into one of two bins: 'Plant Tissues' or 'Animal Tissues'. Correct placements build a comparative profile, visually highlighting the fundamental differences in growth, mobility, and structure between plant and animal tissues based on their different lifestyles.",
+              "learningPoints": [
+                "Defining a tissue as a group of similar cells performing a specific function.",
+                "Differentiating between the growth patterns of plants (localized) and animals (uniform).",
+                "Understanding why plants have more dead, supportive tissue and animals have more living, energy-consuming tissue."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 476,
+          "title": "Lesson 2: Plant Tissues - Meristematic Tissue and its Types (Apical, Lateral, Intercalary)",
+          "slug": "lesson_2_plant_tissues_-_meristematic_tissue_and_its_types_apical_lateral_intercalary",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "476_1",
+              "name": "Plant Growth Simulator",
+              "implementationDetails": "The player is shown a diagram of a young plant. Three specific zones are highlighted: the tip of the shoot (Apical), the side of the stem (Lateral/Cambium), and the base of a leaf node (Intercalary). The player's goal is to make the plant grow. They must click on the correct meristematic zone to achieve a specific type of growth. Clicking the apical meristem makes the plant grow taller. Clicking the lateral meristem makes the stem grow thicker. Clicking the intercalary meristem makes the leaf stalk elongate. Clicking anywhere else has no effect, reinforcing the localized nature of growth.",
+              "learningPoints": [
+                "Identifying meristematic tissue as the dividing tissue responsible for plant growth.",
+                "Locating the positions of apical, lateral, and intercalary meristems.",
+                "Understanding the specific function of each type of meristem (length, girth, and internode growth)."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 477,
+          "title": "Lesson 3: Plant Tissues - Permanent Tissue and the Process of Differentiation",
+          "slug": "lesson_3_plant_tissues_-_permanent_tissue_and_the_process_of_differentiation",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "477_1",
+              "name": "Cell Career Path",
+              "implementationDetails": "The game starts with a pool of 'meristematic cells' that are simple and actively dividing. The player's task is to create a 'permanent tissue'. They must drag a meristematic cell onto a 'Differentiation Pad'. This triggers an animation where the cell stops dividing, grows to a specific shape and size, and develops features for a permanent role (e.g., thickens its walls). This visually demonstrates the process of differentiation, where cells lose the ability to divide to take on a specialized function.",
+              "learningPoints": [
+                "Understanding that permanent tissues are formed from meristematic tissues.",
+                "Defining differentiation as the process where cells take up a permanent shape, size, and function.",
+                "Recognizing that a key feature of permanent tissue is the loss of the ability to divide."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 478,
+          "title": "Lesson 4: Simple Permanent Tissue: Parenchyma and Collenchyma",
+          "slug": "lesson_4_simple_permanent_tissue_parenchyma_and_collenchyma",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "478_1",
+              "name": "Tissue Architect: Support & Storage",
+              "implementationDetails": "A two-part challenge. Part 1: 'Provide flexible support to a bending leaf stalk'. The player must choose between Parenchyma and Collenchyma cells. They must select Collenchyma cells and arrange them with their characteristic irregularly thickened corners. Part 2: 'Create a tissue for food storage'. The player must select Parenchyma cells and arrange them with their thin walls and large intercellular spaces. This puzzle-based approach links the structure of each tissue directly to its primary function.",
+              "learningPoints": [
+                "Identifying Parenchyma as a packing tissue with thin walls and intercellular spaces, mainly for storage.",
+                "Identifying Collenchyma as a tissue providing flexibility and mechanical support, with irregularly thickened corners.",
+                "Relating the structural features of each tissue to its specific role in the plant."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 479,
+          "title": "Lesson 5: Simple Permanent Tissue: Sclerenchyma",
+          "slug": "lesson_5_simple_permanent_tissue_sclerenchyma",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "479_1",
+              "name": "Plant Armor Challenge",
+              "implementationDetails": "A tower-defense style game where the player must protect the 'seed' of a plant from being eaten by a 'pest'. The player can build walls using different types of tissue cells. Walls built from parenchyma or collenchyma are weak and the pest breaks through. The player discovers that only by building a wall from Sclerenchyma cells (shown as long, dead, and heavily lignified) can they create a hard, strong barrier that stops the pest. This demonstrates the tissue's role in providing strength and hardness, like in the husk of a coconut.",
+              "learningPoints": [
+                "Identifying Sclerenchyma as a tissue that makes the plant hard and stiff.",
+                "Understanding that Sclerenchyma cells are dead and have thick, lignified walls.",
+                "Recognizing its function in providing mechanical strength and protection."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 480,
+          "title": "Lesson 6: Protective Plant Tissues: Epidermis and Cork",
+          "slug": "lesson_6_protective_plant_tissues_epidermis_and_cork",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "480_1",
+              "name": "The Plant's Skin",
+              "implementationDetails": "A two-stage simulation. Stage 1 (Leaf): The player sees a leaf cross-section with an epidermis layer. To prevent water loss, the player must drag a waxy 'cutin' layer over the top. The game also highlights stomata and guard cells within the epidermis. Stage 2 (Old Stem): The game shows an older stem where the original epidermis is ruptured. The player must build a new protective layer by dragging 'cork' cells (shown as dead, compact, and suberin-filled) to make the stem impervious to gases and water, demonstrating the formation of bark.",
+              "learningPoints": [
+                "Identifying the epidermis as the outermost protective layer of the plant.",
+                "Understanding the function of stomata within the epidermis for gas exchange.",
+                "Recognizing cork as the protective tissue in older stems, and its impervious nature due to suberin."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 481,
+          "title": "Lesson 7: Complex Permanent Tissue: Xylem and its Components",
+          "slug": "lesson_7_complex_permanent_tissue_xylem_and_its_components",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "481_1",
+              "name": "Xylem Pipeline",
+              "implementationDetails": "A puzzle game where the player must construct a continuous pipeline to transport water from the roots to the leaves of a plant. They are given the four components of xylem: Tracheids, Vessels, Xylem Parenchyma, and Xylem Fibres. The player must correctly stack the tubular Tracheids and Vessels to form the main water-conducting channel. They must place Xylem Fibres for support and Xylem Parenchyma for food storage alongside the pipeline. Water will only flow once the pipeline is correctly assembled.",
+              "learningPoints": [
+                "Identifying xylem as a complex tissue responsible for water and mineral transport.",
+                "Recognizing the four types of elements that make up xylem.",
+                "Understanding the specific roles of vessels/tracheids (conduction), fibres (support), and parenchyma (storage)."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 482,
+          "title": "Lesson 8: Complex Permanent Tissue: Phloem and its Components",
+          "slug": "lesson_8_complex_permanent_tissue_phloem_and_its_components",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "482_1",
+              "name": "The Food Network",
+              "implementationDetails": "An interactive simulation where a leaf is producing food (sugar). The player must build a phloem network to deliver this food to the roots. They are given Sieve Tubes and Companion Cells. The player learns that Sieve Tubes must be connected end-to-end to form the transport channel, but they only function if a Companion Cell is placed next to each one. Once the network is correctly built, an animation shows food moving through the phloem to all parts of the plant.",
+              "learningPoints": [
+                "Identifying phloem as the food-conducting tissue in plants.",
+                "Recognizing that phloem is a complex tissue made of different cell types.",
+                "Understanding the crucial partnership between sieve tubes (transport) and companion cells (support and control)."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 483,
+          "title": "Lesson 9: Introduction to Animal Tissues",
+          "slug": "lesson_9_introduction_to_animal_tissues",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "483_1",
+              "name": "Tissue Match-Up",
+              "implementationDetails": "The player is shown a simplified diagram of a human body with key functions highlighted (e.g., 'Lining of organs', 'Connecting parts', 'Movement', 'Sending signals'). They must drag the four main types of animal tissue (Epithelial, Connective, Muscular, Nervous) to the corresponding function. Correct matches provide a brief explanation, giving the player a foundational overview of the main roles of each major tissue type.",
+              "learningPoints": [
+                "Identifying the four main types of animal tissues.",
+                "Associating each tissue type with its primary function in the body.",
+                "Understanding the division of labor among different tissues in an animal."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 484,
+          "title": "Lesson 10: Animal Tissues - Epithelial Tissue: Structure and Functions",
+          "slug": "lesson_10_animal_tissues_-_epithelial_tissue_structure_and_functions",
+          "display_order": 10,
+          "games": [
+            {
+              "id": "484_1",
+              "name": "Barrier Builder",
+              "implementationDetails": "A puzzle where the player must create a protective barrier to separate an organ from the external environment. They are given a supply of epithelial cells. The key to winning is to pack the cells very tightly together, leaving no intercellular spaces, and place them on a 'basement membrane'. The game will test the barrier by sending 'invading microbes' which are blocked if the barrier is continuous and tightly packed, teaching the primary structural characteristic of epithelial tissue.",
+              "learningPoints": [
+                "Understanding that epithelial tissue serves as a covering or protective tissue.",
+                "Recognizing that epithelial cells are tightly packed and form a continuous sheet.",
+                "Learning about the presence of a basement membrane that separates epithelium from other tissues."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 485,
+          "title": "Lesson 11: Types of Epithelial Tissue (Squamous, Cuboidal, Columnar, Glandular)",
+          "slug": "lesson_11_types_of_epithelial_tissue_squamous_cuboidal_columnar_glandular",
+          "display_order": 11,
+          "games": [
+            {
+              "id": "485_1",
+              "name": "Form Fits Function",
+              "implementationDetails": "A matching game where the player is given a specific location and function (e.g., 'Lining of the mouth for protection', 'Lining of kidney tubules for absorption', 'Lining of intestine for secretion'). They must select the correct type of epithelial tissue (Stratified Squamous, Cuboidal, Columnar) from a panel. The shape of the cells in the panel visually corresponds to their name and function. For example, the player learns to use the flat squamous cells for delicate linings and the multi-layered stratified squamous for protection.",
+              "learningPoints": [
+                "Identifying the different types of epithelial tissue based on cell shape.",
+                "Correlating the structure of each epithelial type with its specific function.",
+                "Recognizing the location of different epithelial tissues in the body."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 486,
+          "title": "Lesson 12: Animal Tissues - Introduction to Connective Tissue",
+          "slug": "lesson_12_animal_tissues_-_introduction_to_connective_tissue",
+          "display_order": 12,
+          "games": [
+            {
+              "id": "486_1",
+              "name": "Matrix Mixer",
+              "implementationDetails": "The player acts as a tissue engineer. They are given a base of loosely spaced cells. To create a specific connective tissue, they must choose the correct 'intercellular matrix' from a lab shelf. To make 'blood', they must add a 'fluid plasma' matrix. To make 'bone', they must add a 'hard, rigid' matrix. To make 'areolar tissue', they must add a 'jelly-like' matrix. This game teaches the defining characteristic of connective tissue: cells embedded in a non-living matrix.",
+              "learningPoints": [
+                "Understanding the defining feature of connective tissue: cells loosely embedded in an intercellular matrix.",
+                "Recognizing that the nature of the matrix (fluid, rigid, etc.) determines the tissue's function.",
+                "Identifying blood, bone, and cartilage as examples of connective tissue."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 487,
+          "title": "Lesson 13: Connective Tissue: Blood and its Components",
+          "slug": "lesson_13_connective_tissue_blood_and_its_components",
+          "display_order": 13,
+          "games": [
+            {
+              "id": "487_1",
+              "name": "Blood Stream Defender",
+              "implementationDetails": "A simulation of a blood vessel. The player must manage the blood's functions. First, they must drag Red Blood Cells to pick up and deliver oxygen to tissues. Second, when a bacterium appears, they must deploy a White Blood Cell to engulf and destroy it. Third, if a small tear appears in the vessel wall, they must dispatch Platelets to the site to form a clot. The background fluid is the plasma. This game interactively demonstrates the roles of all major blood components.",
+              "learningPoints": [
+                "Identifying the components of blood: plasma, RBCs, WBCs, and platelets.",
+                "Understanding the function of plasma as the fluid matrix.",
+                "Learning the specific roles of RBCs (oxygen transport), WBCs (defense), and platelets (clotting)."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 488,
+          "title": "Lesson 14: Connective Tissue: Bone and Cartilage",
+          "slug": "lesson_14_connective_tissue_bone_and_cartilage",
+          "display_order": 14,
+          "games": [
+            {
+              "id": "488_1",
+              "name": "Skeletal Engineer",
+              "implementationDetails": "The player is tasked with building a functional joint, like a knee. They must use 'Bone' pieces (shown as rigid and strong) to construct the main framework of the leg. However, the joint will not move smoothly. The player must then cap the ends of the bones with 'Cartilage' pieces (shown as white, smooth, and slightly flexible). Only then will the joint bend smoothly without friction. This puzzle highlights the different roles of bone (framework, support) and cartilage (smoothening surfaces).",
+              "learningPoints": [
+                "Understanding that bone forms the hard framework of the body.",
+                "Recognizing that cartilage is a flexible connective tissue that smoothens bone surfaces at joints.",
+                "Differentiating between the rigid matrix of bone and the solid but flexible matrix of cartilage."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 489,
+          "title": "Lesson 15: Connective Tissue: Ligaments, Tendons, Areolar, and Adipose Tissue",
+          "slug": "lesson_15_connective_tissue_ligaments_tendons_areolar_and_adipose_tissue",
+          "display_order": 15,
+          "games": [
+            {
+              "id": "489_1",
+              "name": "Anatomy Connector",
+              "implementationDetails": "A drag-and-drop anatomical puzzle. The player is shown a diagram with a bone and a muscle, and another diagram with two bones at a joint. They are given two types of connectors: 'Ligament' and 'Tendon'. They must correctly drag the Tendon to connect the muscle to the bone, and the Ligament to connect the bone to the other bone. A third level requires them to use 'Areolar' tissue to fill the empty space around an organ and 'Adipose' tissue as a fat storage layer under the skin.",
+              "learningPoints": [
+                "Differentiating between ligaments (connect bone to bone) and tendons (connect muscle to bone).",
+                "Identifying areolar tissue as a packing tissue that fills space and supports organs.",
+                "Recognizing adipose tissue as the body's fat-storing tissue."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 490,
+          "title": "Lesson 16: Animal Tissues - Muscular Tissue (Striated, Smooth, and Cardiac)",
+          "slug": "lesson_16_animal_tissues_-_muscular_tissue_striated_smooth_and_cardiac",
+          "display_order": 16,
+          "games": [
+            {
+              "id": "490_1",
+              "name": "Muscle Control",
+              "implementationDetails": "A scenario-based game. The player faces three challenges. 1) 'Lift the dumbbell': The player must choose 'Striated (Voluntary) Muscle' to make the arm move. 2) 'Pump blood through the heart': They must choose 'Cardiac Muscle', which then animates a rhythmic, involuntary contraction. 3) 'Move food through the intestine': They must choose 'Smooth Muscle', which shows a slow, involuntary wave of contraction. For each choice, a magnified view shows the unique structure of the muscle cells (e.g., striations, branching).",
+              "learningPoints": [
+                "Identifying the three types of muscular tissue: striated, smooth, and cardiac.",
+                "Differentiating between voluntary (striated) and involuntary (smooth, cardiac) muscles.",
+                "Correlating each muscle type with its specific location and function in the body."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 491,
+          "title": "Lesson 17: Animal Tissues - Nervous Tissue and the Neuron",
+          "slug": "lesson_17_animal_tissues_-_nervous_tissue_and_the_neuron",
+          "display_order": 17,
+          "games": [
+            {
+              "id": "491_1",
+              "name": "Nerve Impulse Relay",
+              "implementationDetails": "A fast-paced reaction game simulating signal transmission. The player sees a diagram of a neuron. A stimulus (a spark) appears at the dendrites. The player must click on the cell body, then along the axon, and finally on the nerve ending in the correct sequence to propagate the 'impulse'. The impulse is visualized as a pulse of light traveling along the neuron. Successfully transmitting the impulse causes it to jump to the next neuron in a chain, teaching the structure of a neuron and its function in transmitting stimuli.",
+              "learningPoints": [
+                "Identifying the neuron (nerve cell) as the basic unit of nervous tissue.",
+                "Recognizing the main parts of a neuron: cell body, dendrites, and axon.",
+                "Understanding the function of nervous tissue in receiving and transmitting stimuli rapidly."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Matka Effect - How Earthen Pots Cool Water</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            height: calc(100vh - 40px);
+        }
+
+        .info-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow-y: auto;
+        }
+
+        .simulation-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .title {
+            font-size: 2.5em;
+            color: #d2691e;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section h3 {
+            color: #d2691e;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #d2691e;
+            padding-bottom: 5px;
+        }
+
+        .science-explanation {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #28a745;
+            margin-bottom: 20px;
+        }
+
+        .steps {
+            list-style: none;
+            counter-reset: step-counter;
+        }
+
+        .steps li {
+            counter-increment: step-counter;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #007bff;
+            position: relative;
+        }
+
+        .steps li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -25px;
+            top: 15px;
+            background: #007bff;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-start {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-start:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .btn-reset:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .simulation-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .welcome-message {
+            text-align: center;
+            font-size: 1.5em;
+            color: #666;
+            margin: 50px 0;
+        }
+
+        .pots-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .pot-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            margin: 0 20px;
+        }
+
+        .pot-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .metal-title {
+            color: #6c757d;
+        }
+
+        .earthen-title {
+            color: #d2691e;
+        }
+
+        .pot-container {
+            position: relative;
+            width: 200px;
+            height: 250px;
+            margin-bottom: 15px;
+        }
+
+        .pot {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .metal-pot {
+            background: linear-gradient(145deg, #e9ecef, #adb5bd);
+            border: 3px solid #6c757d;
+        }
+
+        .earthen-pot {
+            background: linear-gradient(145deg, #deb887, #cd853f);
+            border: 3px solid #8b4513;
+        }
+
+        .water-particles {
+            position: absolute;
+            width: 80%;
+            height: 60%;
+            bottom: 20%;
+            left: 10%;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            background: radial-gradient(circle, #4fc3f7, #29b6f6);
+            opacity: 0.8;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #2196f3;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+        .thermometer {
+            position: absolute;
+            right: -30px;
+            top: 20px;
+            width: 20px;
+            height: 150px;
+            background: white;
+            border: 2px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .mercury {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, #ff1744, #ff5722);
+            border-radius: 0 0 8px 8px;
+            transition: height 1s ease;
+        }
+
+        .thermometer::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: -4px;
+            width: 28px;
+            height: 28px;
+            background: #ff1744;
+            border-radius: 50%;
+            border: 2px solid #333;
+        }
+
+        .temperature-display {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .energy-particle {
+            position: absolute;
+            font-size: 20px;
+            color: #ffc107;
+            pointer-events: none;
+            animation: float-up 2s ease-out forwards;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+
+        .evaporation-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(65, 174, 255, 0.6);
+            border-radius: 50%;
+            animation: evaporate 3s ease-out forwards;
+        }
+
+        @keyframes evaporate {
+            0% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.3) translateY(-150px);
+                opacity: 0;
+            }
+        }
+
+        .quiz-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border: 2px solid #dee2e6;
+        }
+
+        .quiz-title {
+            font-size: 1.4em;
+            color: #d2691e;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .quiz-question {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-btn {
+            padding: 15px 20px;
+            border: 2px solid #d2691e;
+            background: white;
+            color: #d2691e;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            text-align: left;
+        }
+
+        .quiz-btn:hover {
+            background: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+        .quiz-btn.correct {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .quiz-btn.incorrect {
+            background: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .status-running {
+            background: #28a745;
+            animation: pulse 1s infinite;
+        }
+
+        .status-stopped {
+            background: #dc3545;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .pots-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .pot-section {
+                margin: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="info-panel">
+            <h1 class="title">🏺 The Matka Effect</h1>
+            <p class="subtitle">Understanding Natural Cooling Through Evaporation</p>
+
+            <div class="section">
+                <h3>What is the Matka Effect?</h3>
+                <div class="science-explanation">
+                    <p><strong>The Science:</strong> Earthen pots (matkas) keep water cool through evaporation. Water molecules escape through tiny pores in the clay, taking heat energy with them. This leaves the remaining water cooler!</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>How to Use This Simulation</h3>
+                <ol class="steps">
+                    <li>Click the <strong>Start Simulation</strong> button to begin</li>
+                    <li>Watch both pots carefully - the metal pot stays at room temperature</li>
+                    <li>In the earthen pot, you'll see water particles seeping through the clay</li>
+                    <li>When particles evaporate, they take energy (⚡) with them</li>
+                    <li>Notice how the thermometer shows the earthen pot getting cooler</li>
+                    <li>Answer the quiz question to test your understanding</li>
+                </ol>
+            </div>
+
+            <div class="section">
+                <h3>Key Observations</h3>
+                <ul style="list-style-type: none; padding-left: 0;">
+                    <li style="margin-bottom: 10px;">🌡️ <strong>Temperature:</strong> Earthen pot temperature drops over time</li>
+                    <li style="margin-bottom: 10px;">💧 <strong>Evaporation:</strong> Water particles escape through clay pores</li>
+                    <li style="margin-bottom: 10px;">⚡ <strong>Energy Transfer:</strong> Heat energy is carried away by evaporating water</li>
+                    <li style="margin-bottom: 10px;">🏺 <strong>Porosity:</strong> Clay material allows water to seep through</li>
+                </ul>
+            </div>
+
+          
+        </div>
+
+        <div class="simulation-panel">
+            <div class="simulation-area">
+                <div id="welcomeMessage" class="welcome-message">
+                    <h2>🚀 Ready to Discover the Matka Effect?</h2>
+                    <p>Click "Start Simulation" to begin your scientific journey!</p>
+                </div>
+                <div class="controls">
+                    <button class="btn btn-start" id="startBtn">
+                        <span class="status-indicator status-stopped" id="statusIndicator"></span>
+                        Start
+                    </button>
+                    <button class="btn btn-reset" id="resetBtn">Reset</button>
+                </div>
+
+                <div id="simulationContent" style="display: none;">
+                    <div class="pots-container">
+                        <div class="pot-section">
+                            <h3 class="pot-title metal-title">Metal Pot</h3>
+                            <div class="pot-container">
+                                <div class="pot metal-pot">
+                                    <div class="water-particles" id="metalWater"></div>
+                                </div>
+                                <div class="thermometer">
+                                    <div class="mercury" id="metalMercury" style="height: 60%;"></div>
+                                </div>
+                            </div>
+                            <div class="temperature-display" id="metalTemp">30.0°C</div>
+                        </div>
+
+                        <div class="pot-section">
+                            <h3 class="pot-title earthen-title">Earthen Pot (Matka)</h3>
+                            <div class="pot-container">
+                                <div class="pot earthen-pot" id="earthenPot">
+                                    <div class="water-particles" id="earthenWater"></div>
+                                </div>
+                                <div class="thermometer">
+                                    <div class="mercury" id="earthenMercury" style="height: 60%;"></div>
+                                </div>
+                            </div>
+                            <div class="temperature-display" id="earthenTemp">30.0°C</div>
+                        </div>
+                    </div>
+
+                    <div id="quizSection" class="quiz-section" style="display: none;">
+                        <h3 class="quiz-title">🧠 Test Your Understanding!</h3>
+                        <p class="quiz-question">Why does the water in the earthen pot become cooler?</p>
+                        <div class="quiz-options">
+                            <button class="quiz-btn" data-correct="false">
+                                A) The clay material is naturally cold and chills the water
+                            </button>
+                            <button class="quiz-btn" data-correct="true">
+                                B) Evaporating water molecules take heat energy away from the pot
+                            </button>
+                            <button class="quiz-btn" data-correct="false">
+                                C) The metal pot heats up the surrounding air, making it feel warmer
+                            </button>
+                            <button class="quiz-btn" data-correct="false">
+                                D) The earthen pot absorbs heat from the environment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class MatkaSimulation {
+            constructor() {
+                this.isRunning = false;
+                this.metalTemp = 30.0;
+                this.earthenTemp = 30.0;
+                this.animationId = null;
+                this.quizTimer = null;
+                this.particles = [];
+                
+                this.init();
+            }
+
+            init() {
+                this.startBtn = document.getElementById('startBtn');
+                this.resetBtn = document.getElementById('resetBtn');
+                this.statusIndicator = document.getElementById('statusIndicator');
+                this.welcomeMessage = document.getElementById('welcomeMessage');
+                this.simulationContent = document.getElementById('simulationContent');
+                this.quizSection = document.getElementById('quizSection');
+                
+                this.startBtn.addEventListener('click', () => this.startSimulation());
+                this.resetBtn.addEventListener('click', () => this.resetSimulation());
+                
+                // Quiz event listeners
+                document.querySelectorAll('.quiz-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => this.handleQuizAnswer(e));
+                });
+            }
+
+            startSimulation() {
+                if (this.isRunning) return;
+                
+                this.isRunning = true;
+                this.startBtn.textContent = 'In progress...';
+                this.startBtn.disabled = true;
+                this.statusIndicator.className = 'status-indicator status-running';
+                
+                this.welcomeMessage.style.display = 'none';
+                this.simulationContent.style.display = 'block';
+                this.quizSection.style.display = 'none';
+                
+                // Reset quiz buttons
+                document.querySelectorAll('.quiz-btn').forEach(btn => {
+                    btn.classList.remove('correct', 'incorrect');
+                });
+                
+                this.runAnimation();
+                
+                // Show quiz after 12 seconds
+                this.quizTimer = setTimeout(() => {
+                    this.showQuiz();
+                }, 12000);
+            }
+
+            resetSimulation() {
+                this.isRunning = false;
+                this.metalTemp = 30.0;
+                this.earthenTemp = 30.0;
+                
+                this.startBtn.textContent = 'Start Simulation';
+                this.startBtn.disabled = false;
+                this.statusIndicator.className = 'status-indicator status-stopped';
+                
+                this.welcomeMessage.style.display = 'block';
+                this.simulationContent.style.display = 'none';
+                this.quizSection.style.display = 'none';
+                
+                if (this.animationId) {
+                    cancelAnimationFrame(this.animationId);
+                }
+                if (this.quizTimer) {
+                    clearTimeout(this.quizTimer);
+                }
+                
+                this.updateTemperatureDisplay();
+                this.clearParticles();
+            }
+
+            runAnimation() {
+                if (!this.isRunning) return;
+                
+                // Simulate cooling effect for earthen pot
+                if (Math.random() < 0.1) {
+                    this.earthenTemp -= 0.05;
+                    this.createEvaporationEffect();
+                }
+                
+                // Add floating water particles
+                if (Math.random() < 0.3) {
+                    this.addWaterParticles();
+                }
+                
+                this.updateTemperatureDisplay();
+                this.updateParticles();
+                
+                this.animationId = requestAnimationFrame(() => this.runAnimation());
+            }
+
+            createEvaporationEffect() {
+                const earthenPot = document.getElementById('earthenPot');
+                
+                // Create energy particle
+                const energyParticle = document.createElement('div');
+                energyParticle.className = 'energy-particle';
+                energyParticle.textContent = '⚡';
+                energyParticle.style.left = Math.random() * 150 + 'px';
+                energyParticle.style.top = Math.random() * 100 + 100 + 'px';
+                
+                earthenPot.appendChild(energyParticle);
+                
+                // Create evaporation particle
+                const evapParticle = document.createElement('div');
+                evapParticle.className = 'evaporation-particle';
+                evapParticle.style.left = Math.random() * 150 + 'px';
+                evapParticle.style.top = Math.random() * 100 + 100 + 'px';
+                
+                earthenPot.appendChild(evapParticle);
+                
+                // Remove particles after animation
+                setTimeout(() => {
+                    if (energyParticle.parentNode) {
+                        energyParticle.parentNode.removeChild(energyParticle);
+                    }
+                    if (evapParticle.parentNode) {
+                        evapParticle.parentNode.removeChild(evapParticle);
+                    }
+                }, 3000);
+            }
+
+            addWaterParticles() {
+                const metalWater = document.getElementById('metalWater');
+                const earthenWater = document.getElementById('earthenWater');
+                
+                // Add particles to both pots
+                [metalWater, earthenWater].forEach(container => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 80 + '%';
+                    particle.style.top = Math.random() * 80 + '%';
+                    particle.style.animationDuration = (Math.random() * 2 + 1) + 's';
+                    
+                    container.appendChild(particle);
+                    this.particles.push(particle);
+                });
+            }
+
+            updateParticles() {
+                // Clean up old particles
+                this.particles = this.particles.filter(particle => {
+                    if (!particle.parentNode) {
+                        return false;
+                    }
+                    if (Math.random() < 0.02) {
+                        particle.parentNode.removeChild(particle);
+                        return false;
+                    }
+                    return true;
+                });
+            }
+
+            clearParticles() {
+                this.particles.forEach(particle => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                });
+                this.particles = [];
+                
+                // Clear energy and evaporation particles
+                document.querySelectorAll('.energy-particle, .evaporation-particle').forEach(el => {
+                    if (el.parentNode) {
+                        el.parentNode.removeChild(el);
+                    }
+                });
+            }
+
+            updateTemperatureDisplay() {
+                if(this.earthenTemp > 15){
+                    const metalMercury = document.getElementById('metalMercury');
+                const earthenMercury = document.getElementById('earthenMercury');
+                const metalTempDisplay = document.getElementById('metalTemp');
+                const earthenTempDisplay = document.getElementById('earthenTemp');
+                
+                // Update mercury height (30°C = 60% height, 20°C = 40% height)
+                const metalHeight = 40 + (this.metalTemp - 20) * 2;
+                const earthenHeight = 40 + (this.earthenTemp - 20) * 2;
+                
+                metalMercury.style.height = Math.max(10, metalHeight) + '%';
+                earthenMercury.style.height = Math.max(10, earthenHeight) + '%';
+                
+                metalTempDisplay.textContent = this.metalTemp.toFixed(1) + '°C';
+                earthenTempDisplay.textContent = this.earthenTemp.toFixed(1) + '°C';
+                    
+                }
+            
+            }
+
+            showQuiz() {
+                this.quizSection.style.display = 'block';
+                this.quizSection.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            handleQuizAnswer(e) {
+                const selectedBtn = e.target;
+                const isCorrect = selectedBtn.dataset.correct === 'true';
+                
+                document.querySelectorAll('.quiz-btn').forEach(btn => {
+                    if (btn.dataset.correct === 'true') {
+                        btn.classList.add('correct');
+                    } else {
+                        btn.classList.add('incorrect');
+                    }
+                });
+                
+                // Show result message
+                setTimeout(() => {
+                    if (isCorrect) {
+                        alert('🎉 Correct! Evaporating water molecules take heat energy away from the pot, cooling the remaining water.');
+                    } else {
+                        alert('❌ Not quite right. The correct answer is that evaporating water molecules take heat energy away from the pot, cooling the remaining water.');
+                    }
+                }, 500);
+            }
+        }
+
+        // Initialize the simulation when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new MatkaSimulation();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+{
+  "subject": {
+    "id": 5,
+    "name": "science",
+    "label": "Science"
+  },
+  "units": [
+    {
+      "id": 62,
+      "name": "unit_5:_introduction_to_cells",
+      "label": "Unit 5: Introduction to cells",
+      "lessons": [
+        {
+          "id": 457,
+          "title": "Lesson 1: The Discovery of the Cell and Cell Theory",
+          "slug": "lesson_1_the_discovery_of_the_cell_and_cell_theory",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "457_1",
+              "name": "The History of the Cell",
+              "implementationDetails": "A timeline-based puzzle game. The player is presented with a vertical timeline from the 1600s to the 1800s. Key discoveries (Hooke's observation of cork 'cells', Leeuwenhoek's discovery of 'animalcules', Brown's discovery of the nucleus, Schleiden & Schwann's Cell Theory, Virchow's 'all cells from cells' postulate) appear as scrambled event cards. The player must drag each card to its correct position on the timeline. Placing a card correctly plays a short, stylised animation of the discovery, such as Hooke looking through his microscope at cork.",
+              "learningPoints": [
+                "Identifying the key scientists involved in the discovery of the cell.",
+                "Understanding the chronological order of major discoveries in cell biology.",
+                "Connecting each scientist to their specific contribution to the Cell Theory."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 458,
+          "title": "Lesson 2: Unicellular and Multicellular Organisms",
+          "slug": "lesson_2_unicellular_and_multicellular_organisms",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "458_1",
+              "name": "Organism Sorter",
+              "implementationDetails": "The player is shown various organisms (e.g., Amoeba, Paramoecium, human, tree, bacteria) on a conveyor belt. They must drag each organism into one of two bins: 'Unicellular' or 'Multicellular'. A magnified view shows the Amoeba as a single complex cell, while the human is shown as being composed of many different types of cells (nerve, blood, muscle). This visually reinforces the core difference between the two types of organisms.",
+              "learningPoints": [
+                "Defining unicellular organisms as being composed of a single cell.",
+                "Defining multicellular organisms as being composed of many cells.",
+                "Identifying examples of both unicellular and multicellular organisms."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 459,
+          "title": "Lesson 3: The Plasma (Cell) Membrane and its Functions",
+          "slug": "lesson_3_the_plasma_cell_membrane_and_its_functions",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "459_1",
+              "name": "The Gatekeeper",
+              "implementationDetails": "The player takes on the role of a cell's plasma membrane. Various substances (oxygen molecules, water molecules, large protein molecules, waste CO2) approach the cell from the outside. The player must decide whether to let them in or out. Oxygen and water can pass through freely. CO2 must be allowed to exit. Large proteins are blocked. The game visually represents the membrane as a fluid, flexible barrier and highlights its role in controlling the passage of substances, thus teaching the concept of selective permeability.",
+              "learningPoints": [
+                "Understanding the plasma membrane's role as the cell's outer boundary.",
+                "Defining 'selective permeability' as the key property of the cell membrane.",
+                "Visualizing how the membrane allows the entry and exit of some substances while preventing others."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 460,
+          "title": "Lesson 4: Movement of Substances - Diffusion and Osmosis",
+          "slug": "lesson_4_movement_of_substances_-_diffusion_and_osmosis",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "460_1",
+              "name": "Concentration Gradient",
+              "implementationDetails": "A two-part simulation. Part 1 (Diffusion): The player drops a high concentration of CO2 particles inside a cell. They watch as the particles naturally move from the high concentration area (inside) to the low concentration area (outside). Part 2 (Osmosis): A cell is placed in a solution. A semi-permeable membrane is highlighted. The player sees a higher concentration of solute particles outside the cell. The game shows that water molecules move from the area of high water concentration (inside the cell) to the area of low water concentration (outside), causing the cell to shrink. This game visually differentiates between the movement of solutes (diffusion) and the movement of water (osmosis).",
+              "learningPoints": [
+                "Defining diffusion as the movement of substances from high to low concentration.",
+                "Defining osmosis as the specific movement of water across a semi-permeable membrane.",
+                "Differentiating between the two processes based on what substance is moving and the presence of a membrane."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 461,
+          "title": "Lesson 5: Effects of Hypotonic, Isotonic, and Hypertonic Solutions on a Cell",
+          "slug": "lesson_5_effects_of_hypotonic_isotonic_and_hypertonic_solutions_on_a_cell",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "461_1",
+              "name": "Cell Rescuer",
+              "implementationDetails": "The player is presented with three beakers labeled 'Hypotonic', 'Isotonic', and 'Hypertonic', each showing different concentrations of solute particles. The player must drag an animal cell (like a red blood cell) into each beaker. In the hypotonic solution, they watch the cell swell and eventually burst (lysis). In the isotonic solution, the cell remains stable. In the hypertonic solution, the cell shrivels. The player learns by observing the direct consequences of osmosis in different environments.",
+              "learningPoints": [
+                "Defining hypotonic, isotonic, and hypertonic solutions based on solute concentration.",
+                "Predicting the direction of net water movement via osmosis in each solution type.",
+                "Understanding the effect of each solution on an animal cell (lysis, stability, crenation)."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 462,
+          "title": "Lesson 6: The Cell Wall and Plasmolysis",
+          "slug": "lesson_6_the_cell_wall_and_plasmolysis",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "462_1",
+              "name": "Plant Cell Fortress",
+              "implementationDetails": "This game extends 'Cell Rescuer' by using a plant cell. The player drags a plant cell into the three solutions. In the isotonic solution, the cell is normal (flaccid). In the hypertonic solution, the player observes the cell membrane pulling away from the cell wall as it loses water, visually defining plasmolysis. In the hypotonic solution, the cell swells, but the rigid cell wall prevents it from bursting, making it turgid. This game highlights the protective function of the cell wall.",
+              "learningPoints": [
+                "Understanding the structural role of the cell wall in plant cells.",
+                "Defining plasmolysis as the shrinkage of the cell membrane away from the cell wall in a hypertonic solution.",
+                "Explaining why the cell wall prevents a plant cell from bursting in a hypotonic solution (turgor pressure)."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 463,
+          "title": "Lesson 7: The Nucleus - The Cell's Control Center",
+          "slug": "lesson_7_the_nucleus_-_the_cells_control_center",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "463_1",
+              "name": "The Director's Chair",
+              "implementationDetails": "A simulation where the player acts as the nucleus. The cell receives signals from the environment (e.g., 'Need more protein for repair'). The player, inside the nucleus, must find the correct 'gene' (a segment of DNA) and click 'transcribe'. An mRNA molecule is created and travels out through a nuclear pore to the cytoplasm, where it directs protein synthesis. This game teaches the nucleus's role in storing genetic information and controlling cell activities by sending out instructions.",
+              "learningPoints": [
+                "Identifying the nucleus as the control center of the cell.",
+                "Understanding that the nucleus contains the cell's genetic material (chromosomes/DNA).",
+                "Visualizing the nuclear membrane and its pores as a gateway for controlling information flow."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 464,
+          "title": "Lesson 8: Chromosomes, DNA, and Genes",
+          "slug": "lesson_8_chromosomes_dna_and_genes",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "464_1",
+              "name": "Gene Explorer",
+              "implementationDetails": "A 'zoom-in' puzzle. The game starts with a view of a dividing cell showing a visible chromosome. The player clicks to zoom in on the chromosome, revealing it is made of a tightly coiled thread. They zoom in again to see the thread is the double helix structure of DNA. Zooming in further highlights a specific segment of the DNA, which is then defined as a 'gene'. The player's task is to correctly label each level of organization: Cell -> Chromosome -> DNA -> Gene. This teaches the hierarchical relationship between these structures.",
+              "learningPoints": [
+                "Understanding that chromosomes are made of DNA.",
+                "Defining a gene as a functional segment of DNA.",
+                "Visualizing the relationship and scale from the whole chromosome down to a single gene."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 465,
+          "title": "Lesson 9: Cytoplasm and Cell Organelles",
+          "slug": "lesson_9_cytoplasm_and_cell_organelles",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "465_1",
+              "name": "Organelle Identifier",
+              "implementationDetails": "A 'Where's Waldo?' style game. The player is shown a detailed diagram of a eukaryotic cell. A prompt at the bottom says 'Find the Mitochondrion'. The player must scan the cytoplasm and click on the correct organelle. Upon a correct click, the organelle is highlighted, and a brief description of its function appears. The game cycles through the major organelles, helping the player to visually identify them within the context of the cytoplasm.",
+              "learningPoints": [
+                "Identifying the cytoplasm as the jelly-like substance filling the cell.",
+                "Understanding that specialized cell organelles are suspended within the cytoplasm.",
+                "Visually recognizing the appearance and location of major organelles within a cell diagram."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 466,
+          "title": "Lesson 10: Prokaryotic vs. Eukaryotic Cells",
+          "slug": "lesson_10_prokaryotic_vs_eukaryotic_cells",
+          "display_order": 10,
+          "games": [
+            {
+              "id": "466_1",
+              "name": "Cell Classifier",
+              "implementationDetails": "The player is presented with two unlabeled cell diagrams: a simple prokaryotic cell and a complex eukaryotic cell. A list of features (e.g., 'Has a true nucleus', 'No membrane-bound organelles', 'DNA in a nucleoid region', 'Contains mitochondria') appears. The player must drag each feature to the correct cell diagram. The game provides immediate feedback, building two complete profiles and highlighting the fundamental differences, especially the presence or absence of a nuclear membrane and membrane-bound organelles.",
+              "learningPoints": [
+                "Differentiating between prokaryotic and eukaryotic cells.",
+                "Identifying the key distinguishing feature: the presence of a true, membrane-bound nucleus in eukaryotes.",
+                "Recognizing that prokaryotes lack membrane-bound organelles."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 467,
+          "title": "Lesson 11: Endoplasmic Reticulum (RER and SER)",
+          "slug": "lesson_11_endoplasmic_reticulum_rer_and_ser",
+          "display_order": 11,
+          "games": [
+            {
+              "id": "467_1",
+              "name": "Cellular Factory",
+              "implementationDetails": "A factory management simulation. The player sees a cross-section of the RER and SER. On the RER, ribosomes produce protein 'packages'. The player must drag these packages along the ER's network of channels for transport. In the SER section, the player must initiate the production of lipid and steroid 'droplets'. The goal is to meet the cell's demand for both proteins and lipids within a time limit, teaching the distinct functions of the RER (protein synthesis/transport) and SER (lipid synthesis, detoxification).",
+              "learningPoints": [
+                "Identifying the Endoplasmic Reticulum as a network of membranes.",
+                "Differentiating between Rough ER (with ribosomes) and Smooth ER (without ribosomes).",
+                "Understanding the function of RER in protein synthesis and SER in lipid/fat molecule synthesis."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 468,
+          "title": "Lesson 12: Golgi Apparatus",
+          "slug": "lesson_12_golgi_apparatus",
+          "display_order": 12,
+          "games": [
+            {
+              "id": "468_1",
+              "name": "The Cell's Post Office",
+              "implementationDetails": "An interactive simulation where 'packages' of raw proteins and lipids arrive from the ER at one end of the Golgi apparatus. The player must process these packages. Step 1: Drag a 'modification' tool to the package (e.g., adding a sugar chain). Step 2: Drag a 'packaging' tool to enclose it in a vesicle. Step 3: Read the 'address label' on the vesicle (e.g., 'for Plasma Membrane' or 'for Secretion') and drag it to the correct destination. This game teaches the Golgi's role in modifying, sorting, and packaging materials.",
+              "learningPoints": [
+                "Identifying the Golgi apparatus as a system of membrane-bound vesicles.",
+                "Understanding its function in the storage, modification, and packaging of substances.",
+                "Visualizing the process of materials moving from the ER to the Golgi for processing and dispatch."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 469,
+          "title": "Lesson 13: Lysosomes - The 'Suicide Bags'",
+          "slug": "lesson_13_lysosomes_-_the_suicide_bags",
+          "display_order": 13,
+          "games": [
+            {
+              "id": "469_1",
+              "name": "Cellular Cleanup Crew",
+              "implementationDetails": "The player controls a lysosome within the cell's cytoplasm. Various 'waste' items appear: a foreign bacterium, a worn-out mitochondrion, and a damaged protein. The player must navigate the lysosome to engulf each of these items. Once an item is inside, an animation shows powerful enzymes breaking it down into simple, reusable molecules. In a special 'emergency' level, if the cell is severely damaged, the player can trigger the 'self-destruct' option, where the lysosome bursts and digests the entire cell.",
+              "learningPoints": [
+                "Identifying lysosomes as the cell's waste disposal system.",
+                "Understanding that lysosomes contain powerful digestive enzymes.",
+                "Explaining why lysosomes are known as 'suicide bags' of the cell."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 470,
+          "title": "Lesson 14: Mitochondria - The 'Powerhouse' of the Cell",
+          "slug": "lesson_14_mitochondria_-_the_powerhouse_of_the_cell",
+          "display_order": 14,
+          "games": [
+            {
+              "id": "470_1",
+              "name": "ATP Generator",
+              "implementationDetails": "An energy management game. The player sees a mitochondrion with glucose and oxygen molecules entering it. The player's task is to click on the inner folded membrane (cristae) to initiate the chemical reactions of cellular respiration. Each click consumes glucose and oxygen and produces ATP molecules, which fill up an 'Energy Bar' for the cell. The game can then show this energy being used to power other cell activities, like muscle contraction, demonstrating the mitochondrion's role as the powerhouse.",
+              "learningPoints": [
+                "Identifying mitochondria as the 'powerhouses' of the cell.",
+                "Understanding that mitochondria are the site of cellular respiration.",
+                "Recognizing that the energy released is stored in the form of ATP molecules."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 471,
+          "title": "Lesson 15: Plastids and Chloroplasts",
+          "slug": "lesson_15_plastids_and_chloroplasts",
+          "display_order": 15,
+          "games": [
+            {
+              "id": 471_1",
+              "name": "Plastid Painter",
+              "implementationDetails": "The player is shown different parts of a plant (e.g., a flower petal, a leaf, a root). They are given three types of plastids to drag and drop onto the correct part: Chromoplasts (containing colored pigments), Chloroplasts (containing green chlorophyll), and Leucoplasts (white/colorless). The player must drag the chromoplasts to the flower petal, the chloroplasts to the leaf, and the leucoplasts to the root. This teaches the different types of plastids and their primary locations/functions.",
+              "learningPoints": [
+                "Identifying plastids as organelles found only in plant cells.",
+                "Differentiating between chromoplasts (color), chloroplasts (photosynthesis), and leucoplasts (storage).",
+                "Understanding the specific role of chloroplasts as the site of photosynthesis."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 472,
+          "title": "Lesson 16: Vacuoles",
+          "slug": "lesson_16_vacuoles",
+          "display_order": 16,
+          "games": [
+            {
+              "id": 472_1,
+              "name": "The Storage Tank",
+              "implementationDetails": "A two-part comparison game. Part 1 shows an animal cell with several small vacuoles. Part 2 shows a plant cell with one large central vacuole that takes up most of the cell's volume. In the plant cell, the player can drag water into the vacuole, which makes the cell firm and turgid. If they remove water, the cell becomes flaccid. The game highlights that the vacuole stores water, sap, and waste and is crucial for maintaining turgor pressure in plant cells.",
+              "learningPoints": [
+                "Identifying vacuoles as storage sacs in the cell.",
+                "Contrasting the small vacuoles of animal cells with the large central vacuole of plant cells.",
+                "Understanding the role of the central vacuole in providing turgidity and rigidity to the plant cell."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 473,
+          "title": "Lesson 17: Comparing Plant and Animal Cells",
+          "slug": "lesson_17_comparing_plant_and_animal_cells",
+          "display_order": 17,
+          "games": [
+            {
+              "id": "473_1",
+              "name": "Cell Architect",
+              "implementationDetails": "A cell-building game. The player is given a blank cell outline and a tray of all organelles. The first prompt is 'Build an Animal Cell'. The player must drag the correct organelles (cell membrane, nucleus, mitochondria, etc.) into the cell. The second prompt is 'Now, transform it into a Plant Cell'. To succeed, the player must perform three key actions: add a rigid cell wall outside the membrane, replace the small vacuoles with one large central vacuole, and add chloroplasts. This is a hands-on method for comparing the two cell types.",
+              "learningPoints": [
+                "Identifying the organelles common to both plant and animal cells.",
+                "Recognizing the three key structures present in plant cells but absent in animal cells: the cell wall, chloroplasts, and a large central vacuole.",
+                "Consolidating the structural differences between plant and animal cells in an interactive way."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 474,
+          "title": "Lesson 18: Cell Division - Mitosis and Meiosis",
+          "slug": "lesson_18_cell_division_-_mitosis_and_meiosis",
+          "display_order": 18,
+          "games": [
+            {
+              "id": "474_1",
+              "name": "Division Director",
+              "implementationDetails": "A two-level puzzle. Level 1 (Mitosis): The player is shown animated stages of mitosis out of sequence and must drag them into the correct order. The game ends by showing one parent cell resulting in two identical diploid daughter cells. Level 2 (Meiosis): The player arranges the stages of Meiosis I and Meiosis II. The game ends by showing one parent cell resulting in four unique haploid daughter cells. This directly contrasts the processes and outcomes of the two types of cell division.",
+              "learningPoints": [
+                "Differentiating between mitosis (for growth and repair) and meiosis (for forming gametes).",
+                "Understanding the key outcome of mitosis: two identical daughter cells with the same chromosome number.",
+                "Understanding the key outcome of meiosis: four genetically different daughter cells with half the chromosome number."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

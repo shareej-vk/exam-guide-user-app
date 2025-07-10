@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Symmetry Cube Unlock</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f2f6fc;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1300px;
+      margin: auto;
+      display: flex;
+      gap: 20px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .instructions {
+      width: 30%;
+    }
+    .game-area {
+      width: 70%;
+    }
+    h2 {
+      font-family: 'Baloo 2', cursive;
+      color: #1e293b;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 15px;
+      color: #334155;
+    }
+    .section-title {
+      font-weight: bold;
+      font-size: 17px;
+      color: #1d4ed8;
+      margin-top: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 180px);
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .expression-tile, .dropzone {
+      border: 2px dashed #94a3b8;
+      background-color: #f8fafc;
+      border-radius: 10px;
+      padding: 12px;
+      min-height: 60px;
+      font-weight: bold;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: grab;
+      user-select: none;
+    }
+    .dropzone.correct {
+      background-color: #dcfce7;
+      border-color: #22c55e;
+    }
+    .dropzone.wrong {
+      background-color: #fee2e2;
+      border-color: #ef4444;
+    }
+    .buttons {
+      margin-top: 20px;
+    }
+    .buttons button {
+      background-color: #10b981;
+      color: white;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      margin-right: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .buttons button:hover {
+      background-color: #059669;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card instructions">
+      <h2>🔓 Symmetry Cube Unlock</h2>
+      <p>
+        Learn the identity:<br/>
+        <strong>x³ + y³ + z³ – 3xyz = (x + y + z)(x² + y² + z² – xy – yz – zx)</strong><br/><br/>
+        Your goal is to match scrambled pieces of the factored identity into the correct slots!<br/><br/>
+        ✅ Green = Correct<br/>
+        ❌ Red = Incorrect<br/><br/>
+        🎯 Drag each expression piece into the correct zone to build the full identity.<br/>
+        Press <strong>Start</strong> to begin and <strong>Reset</strong> anytime to replay.
+      </p>
+    </div>
+
+    <div class="card game-area">
+      <h2>🧠 Arrange Factored Identity</h2>
+      <div class="section-title">Drop the pieces in correct order:</div>
+      <div class="grid" id="dropzones">
+        <div class="dropzone" data-answer="(x + y + z)">(drop 1)</div>
+        <div class="dropzone" data-answer="(x² + y² + z² – xy – yz – zx)">(drop 2)</div>
+      </div>
+
+      <div class="section-title">Available pieces:</div>
+      <div class="grid" id="tiles">
+        <div class="expression-tile" draggable="true" data-value="(x + y + z)">(x + y + z)</div>
+        <div class="expression-tile" draggable="true" data-value="(x² + y² + z² – xy – yz – zx)">(x² + y² + z² – xy – yz – zx)</div>
+        <div class="expression-tile" draggable="true" data-value="(x³ + y³ + z³ – 3xyz)">(x³ + y³ + z³ – 3xyz)</div>
+      </div>
+
+      <div class="buttons">
+        <button onclick="startGame()">Start Game</button>
+        <button onclick="resetGame()">Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tiles = document.querySelectorAll('.expression-tile');
+    const dropzones = document.querySelectorAll('.dropzone');
+
+    tiles.forEach(tile => {
+      tile.addEventListener('dragstart', dragStart);
+    });
+
+    dropzones.forEach(zone => {
+      zone.addEventListener('dragover', dragOver);
+      zone.addEventListener('drop', handleDrop);
+    });
+
+    function dragStart(e) {
+      e.dataTransfer.setData("text/plain", e.target.dataset.value);
+    }
+
+    function dragOver(e) {
+      e.preventDefault();
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      const draggedVal = e.dataTransfer.getData("text/plain");
+      const correctVal = e.currentTarget.dataset.answer;
+      const draggedElem = [...tiles].find(t => t.dataset.value === draggedVal);
+
+      if (!e.currentTarget.hasChildNodes()) {
+        e.currentTarget.appendChild(draggedElem);
+        if (draggedVal === correctVal) {
+          e.currentTarget.classList.add("correct");
+          e.currentTarget.classList.remove("wrong");
+        } else {
+          e.currentTarget.classList.add("wrong");
+          e.currentTarget.classList.remove("correct");
+        }
+      }
+    }
+
+    function startGame() {
+      alert("🧠 Let's begin! Arrange the correct factor identity.");
+    }
+
+    function resetGame() {
+      const tileContainer = document.getElementById("tiles");
+      dropzones.forEach(zone => {
+        if (zone.firstChild) {
+          tileContainer.appendChild(zone.firstChild);
+        }
+        zone.classList.remove("correct", "wrong");
+      });
+    }
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

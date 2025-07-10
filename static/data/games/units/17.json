@@ -1,0 +1,207 @@
+{
+  "subject": {
+    "id": 1,
+    "name": "math",
+    "label": "Mathematics"
+  },
+  "units": [
+    {
+      "id": 17,
+      "name": "polynomials",
+      "label": "Polynomials",
+      "lessons": [
+        {
+          "id": 180,
+          "title": "Lesson 1: Introduction to Polynomials (Terms, Coefficients, Degree)",
+          "slug": "lesson_1_introduction_to_polynomials_terms_coefficients_degree",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "180_1",
+              "name": "Polynomial Term Identifier",
+              "implementationDetails": "Present algebraic expressions. Ask the player to identify terms, coefficients, and the constant term. Use input fields or multiple-choice options. Provide clear feedback and explanations.",
+              "learningPoints": [
+                "Definition of Terms in a Polynomial",
+                "Identifying Coefficients",
+                "Identifying Constant Terms"
+              ]
+            },
+            {
+              "id": "180_2",
+              "name": "Polynomial Degree Sorter",
+              "implementationDetails": "Use a drag-and-drop interface. Present polynomial expressions. Ask the player to sort them by degree (linear, quadratic, cubic, etc.). Check the highest power of the variable. Provide visual feedback.",
+              "learningPoints": [
+                "Definition of Degree of a Polynomial",
+                "Classifying Polynomials by Degree",
+                "Identifying the Leading Coefficient"
+              ]
+            },
+            {
+              "id": "180_3",
+              "name": "Polynomial Builder",
+              "implementationDetails": "Provide input fields for coefficients and exponents. Allow the player to build a polynomial expression. Validate the input (e.g., whole number exponents). Display the resulting polynomial.",
+              "learningPoints": [
+                "General form of a polynomial",
+                "Role of coefficients and exponents",
+                "Understanding variable representation"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 181,
+          "title": "Lesson 2: Types of Polynomials (Linear, Quadratic, Cubic, Monomial, Binomial, Trinomial)",
+          "slug": "lesson_2_types_of_polynomials_linear_quadratic_cubic_monomial_binomial_trinomial",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "181_1",
+              "name": "Polynomial Type Match",
+              "implementationDetails": "Use a matching game format (card flipping). Present polynomials and their types (linear, quadratic, cubic, monomial, etc.). Check if the player correctly matches the polynomial to its type.",
+              "learningPoints": [
+                "Definition of Linear Polynomial",
+                "Definition of Quadratic Polynomial",
+                "Definition of Cubic Polynomial",
+                "Monomials, Binomials, Trinomials"
+              ]
+            },
+            {
+              "id": "181_2",
+              "name": "Polynomial Classification Quiz",
+              "implementationDetails": "Present multiple-choice questions that ask the player to classify a given polynomial (e.g., 'Which of the following is a binomial?'). Store the questions in a data structure. Check the answer and provide feedback.",
+              "learningPoints": [
+                "Identifying Polynomial Types",
+                "Applying Definitions",
+                "Distinguishing different types"
+              ]
+            },
+            {
+              "id": "181_3",
+              "name": "Build a polynomial",
+              "implementationDetails": "Present a polynomial type and ask students to construct a polynomial fitting the description",
+              "learningPoints": [
+                "Applying Definitions",
+                "Understanding constraints",
+                "Polynomial structure"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 182,
+          "title": "Lesson 3: Zeroes of a Polynomial (Finding Zeroes, Relationship with Coefficients)",
+          "slug": "lesson_3_zeroes_of_a_polynomial_finding_zeroes_relationship_with_coefficients",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "182_1",
+              "name": "Polynomial Zero Finder",
+              "implementationDetails": "Present linear and simple quadratic polynomials. Use input fields for the player to enter a value for x. Check if p(x) = 0. Provide feedback. Add hints related to coefficients if user is stuck.",
+              "learningPoints": [
+                "Definition of a Zero of a Polynomial",
+                "Finding Zeroes of Linear Polynomials",
+                "Finding Zeroes of Quadratic Polynomials (simple cases)"
+              ]
+            },
+            {
+              "id": "182_2",
+              "name": "Is it a zero?",
+              "implementationDetails": "Present a polynomial and some values for the variable. Ask the student to identify the values that are zeroes for the given polynomial",
+              "learningPoints": [
+                "Definition of a Zero of a Polynomial",
+                "Substituting values in polynomial",
+                "Finding Zeroes of Linear Polynomials"
+              ]
+            },
+            {
+              "id": "182_3",
+              "name": "Value predictor",
+              "implementationDetails": "Present a zero and ask students to select the factor that will have this zero",
+              "learningPoints": [
+                "Relationship between factors and zeroes",
+                "Zero identification",
+                "Factor application"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 183,
+          "title": "Lesson 4: Factorization of Polynomials (Factor Theorem, Splitting Middle Term)",
+          "slug": "lesson_4_factorization_of_polynomials_factor_theorem_splitting_middle_term",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "183_1",
+              "name": "Factor Theorem Checker",
+              "implementationDetails": "Present a polynomial p(x) and a linear expression (x-a). Ask student if (x-a) is a factor using the Factor Theorem (check if p(a)=0). Provide steps hint based factorization",
+              "learningPoints": [
+                "Factor Theorem",
+                "Polynomial Evaluation",
+                "Identifying factors"
+              ]
+            },
+            {
+              "id": "183_2",
+              "name": "Middle Term Splitter",
+              "implementationDetails": "For quadratic polynomials, guide the player through splitting the middle term. Use input fields to select factors of coefficients c. Check if the player splits it correctly. Guide with hints for factor selection.",
+              "learningPoints": [
+                "Factorizing Quadratic Polynomials",
+                "Splitting the Middle Term",
+                "Finding Factors"
+              ]
+            },
+            {
+              "id": "183_3",
+              "name": "Factor constructor",
+              "implementationDetails": "Present the factors of expression and ask student to identify the expression this would result in",
+              "learningPoints": [
+                "Relationship between factors and polynomial",
+                "Algebraic manipulation",
+                "Factorization rules"
+              ]
+            }
+          ]
+        },
+        {
+          "id": 184,
+          "title": "Lesson 5: Algebraic Identities (Expanding and Factorizing Expressions)",
+          "slug": "lesson_5_algebraic_identities_expanding_and_factorizing_expressions",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "184_1",
+              "name": "Identity Match",
+              "implementationDetails": "Use a card matching game format. Present identities and their expansions/factorizations. Match left-hand side with correct right-hand side. Feedback and scoring system.",
+              "learningPoints": [
+                "Algebraic Identities",
+                "Expanding Expressions",
+                "Factorizing Expressions"
+              ]
+            },
+            {
+              "id": "184_2",
+              "name": "Missing Term Identifier",
+              "implementationDetails": "Display an identity with a missing term (e.g., (a + b)² = a² + ___ + b²). Multiple-choice options for the missing term. Check the player's selection.",
+              "learningPoints": [
+                "Applying Algebraic Identities",
+                "Recognizing Patterns",
+                "Algebraic Manipulation"
+              ]
+            },
+            {
+              "id": "184_3",
+              "name": "Expression simplifier",
+              "implementationDetails": "Present an expression that can be simplified using identity and ask students to simplify it using a specific identity by manipulating expression with mouse drag and drop",
+              "learningPoints": [
+                "Strategic application of identities",
+                "Expression simplification",
+                "Pattern Recognition"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

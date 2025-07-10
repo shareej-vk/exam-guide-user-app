@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution Maker - Is Matter Around Us Pure?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #e0fbfc;
+            --card-bg: #ffffff;
+            --primary-color: #3d5a80;
+            --accent-color: #98c1d9;
+            --solvent-color: #00b4d8;
+            --solute-color: #e76f51;
+            --text-color: #293241;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #e3f2fd, #e8f5e9);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .instructions-list li::before {
+            content: '💧';
+            margin-right: 12px;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+        .instructions-list b { color: var(--primary-color); }
+
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: #2a9d8f; color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .btn:active { transform: translateY(0); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .lab-bench {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 500px;
+        }
+        
+        .shelf-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 16px;
+            height: 100%;
+            justify-content: space-around;
+        }
+
+        .shelf-title {
+            font-family: var(--heading-font);
+            font-size: 20px;
+            color: var(--primary-color);
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+
+        .item {
+            width: 80px;
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: grab;
+            transition: transform 0.2s;
+            text-align: center;
+            padding-top: 75px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .item:active { cursor: grabbing; transform: scale(1.1); }
+        
+        #item-salt { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 100"><g><path d="M15 95 L 15 25 Q 15 5, 25 5 L 55 5 Q 65 5, 65 25 L 65 95 Z" fill="%23e9ecef" stroke="%23adb5bd" stroke-width="2"/><circle cx="25" cy="80" r="3" fill="white"/><circle cx="35" cy="70" r="3" fill="white"/><circle cx="45" cy="85" r="3" fill="white"/><circle cx="55" cy="75" r="3" fill="white"/><circle cx="30" cy="50" r="3" fill="white"/><circle cx="50" cy="60" r="3" fill="white"/><circle cx="40" cy="40" r="3" fill="white"/><rect x="10" y="0" width="60" height="15" fill="%236c757d" rx="5"/></g></svg>'); }
+        #item-sugar { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 100"><g><path d="M15 95 L 15 25 Q 15 5, 25 5 L 55 5 Q 65 5, 65 25 L 65 95 Z" fill="%23fec89a" stroke="%23e76f51" stroke-width="2"/><circle cx="25" cy="80" r="4" fill="white"/><circle cx="35" cy="70" r="4" fill="white"/><circle cx="45" cy="85" r="4" fill="white"/><circle cx="55" cy="75" r="4" fill="white"/><circle cx="30" cy="50" r="4" fill="white"/><circle cx="50" cy="60" r="4" fill="white"/><circle cx="40" cy="40" r="4" fill="white"/><rect x="10" y="0" width="60" height="15" fill="%23e76f51" rx="5"/></g></svg>'); }
+        #item-iodine { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 100"><g><path d="M15 95 L 15 25 Q 15 5, 25 5 L 55 5 Q 65 5, 65 25 L 65 95 Z" fill="%236a040f" stroke="%23370617" stroke-width="2"/><rect x="25" y="70" width="10" height="10" fill="%239d0208" transform="rotate(15 30 75)"/><rect x="45" y="50" width="10" height="10" fill="%239d0208" transform="rotate(-10 50 55)"/><rect x="30" y="30" width="10" height="10" fill="%239d0208" transform="rotate(25 35 35)"/><rect x="10" y="0" width="60" height="15" fill="%23370617" rx="5"/></g></svg>'); }
+
+        .beaker-area {
+            width: 350px;
+            height: 400px;
+            border: 4px dashed var(--accent-color);
+            border-radius: 20px;
+            position: relative;
+            background-color: #f8f9fa;
+        }
+        .beaker-area.drag-over {
+             background-color: #e3f2fd;
+             border-style: solid;
+        }
+
+        #beaker-canvas {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .info-label {
+            position: absolute;
+            font-family: var(--heading-font);
+            font-size: 20px;
+            padding: 8px 15px;
+            border-radius: 10px;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s;
+            pointer-events: none;
+        }
+        #solute-label { background-color: var(--solute-color); right: 20px; top: 100px; transform: translateX(20px); }
+        #solvent-label { background-color: var(--solvent-color); left: 20px; bottom: 80px; transform: translateX(-20px); }
+        .info-label.visible { opacity: 1; transform: translateX(0); }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Solution Maker</h2>
+            <p><strong>Lesson:</strong> Understanding Solute & Solvent</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">Your Goal</h3>
+            <p style="margin-bottom: 15px;">Let's become a master chemist! Today's task is to create different solutions and identify their two key parts: the solute and the solvent.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
+            <ul class="instructions-list">
+                <li>Click <b>Start</b> to get your lab bench ready.</li>
+                <li>Choose a substance (like Salt or Sugar) from the shelf. These are your potential <b>solutes</b>.</li>
+                <li><b>Drag and drop</b> your chosen solute into the big beaker of liquid. The liquid is your <b>solvent</b>.</li>
+                <li>Watch as the solute dissolves in the solvent to form a solution!</li>
+                <li>Labels will appear to help you remember: The <b>solute</b> is what dissolves, and the <b>solvent</b> is what does the dissolving!</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to enter the lab!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="lab-bench">
+                    <div class="shelf-container">
+                        <div class="shelf-title">Solutes</div>
+                        <div id="item-salt" class="item" draggable="true" data-type="salt">Salt</div>
+                        <div id="item-sugar" class="item" draggable="true" data-type="sugar">Sugar</div>
+                        <div id="item-iodine" class="item" draggable="true" data-type="iodine">Iodine</div>
+                    </div>
+                    <div class="beaker-area" id="beaker-area">
+                        <canvas id="beaker-canvas"></canvas>
+                        <div id="solute-label" class="info-label">Solute</div>
+                        <div id="solvent-label" class="info-label">Solvent</div>
+                    </div>
+                    <div class="shelf-container">
+                        <div class="shelf-title">Solvents</div>
+                         <!-- Could add more solvents here in the future -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const beakerArea = document.getElementById('beaker-area');
+    const canvas = document.getElementById('beaker-canvas');
+    const ctx = canvas.getContext('2d');
+    const items = document.querySelectorAll('.item');
+    const soluteLabel = document.getElementById('solute-label');
+    const solventLabel = document.getElementById('solvent-label');
+
+    // --- State ---
+    let particles = [];
+    let animationFrameId;
+
+    // --- Particle Class ---
+    class Particle {
+        constructor(x, y, type) {
+            this.x = x; this.y = y; this.type = type;
+            this.targetX = x; this.targetY = y;
+            this.vx = 0; this.vy = 0;
+            this.isDissolving = false;
+            
+            switch (type) {
+                case 'water': this.radius = 5; this.color = 'rgba(0, 180, 216, 0.7)'; break;
+                case 'salt': this.radius = 4; this.color = '#adb5bd'; break;
+                case 'sugar': this.radius = 6; this.color = '#fec89a'; break;
+                case 'iodine': this.radius = 5; this.color = '#6a040f'; break;
+            }
+        }
+        
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+        
+        update() {
+            if(this.isDissolving) {
+                this.vx = (this.targetX - this.x) * 0.02;
+                this.vy = (this.targetY - this.y) * 0.02;
+                
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (Math.hypot(this.targetX - this.x, this.targetY - this.y) < 1) {
+                    this.isDissolving = false;
+                }
+            }
+        }
+
+        dissolve() {
+            this.isDissolving = true;
+            this.targetX = Math.random() * (canvas.width - 40) + 20;
+            this.targetY = Math.random() * (canvas.height - 40) + 20;
+        }
+    }
+
+    // --- Game Logic ---
+    function setupCanvas() {
+        canvas.width = beakerArea.clientWidth;
+        canvas.height = beakerArea.clientHeight;
+    }
+
+    function initSolvent() {
+        particles = [];
+        for (let i=0; i < 150; i++) {
+            const x = Math.random() * (canvas.width - 40) + 20;
+            const y = Math.random() * (canvas.height - 40) + 20;
+            particles.push(new Particle(x, y, 'water'));
+        }
+    }
+
+    function addSolute(type) {
+        const dropX = canvas.width / 2;
+        const dropY = 30;
+        for (let i=0; i<30; i++) {
+            const p = new Particle(dropX + (Math.random()-0.5)*50, dropY + (Math.random()-0.5)*30, type);
+            particles.push(p);
+            setTimeout(() => p.dissolve(), 500 + i * 50);
+        }
+        soluteLabel.textContent = type.charAt(0).toUpperCase() + type.slice(1);
+        soluteLabel.classList.add('visible');
+        solventLabel.classList.add('visible');
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    
+    function startGame() {
+        if(animationFrameId) cancelAnimationFrame(animationFrameId);
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        
+        soluteLabel.classList.remove('visible');
+        solventLabel.classList.remove('visible');
+        
+        setupCanvas();
+        initSolvent();
+        animate();
+    }
+
+    // --- Drag and Drop Handlers ---
+    items.forEach(item => {
+        item.addEventListener('dragstart', e => {
+            e.dataTransfer.setData('text/plain', item.dataset.type);
+        });
+    });
+
+    beakerArea.addEventListener('dragover', e => {
+        e.preventDefault();
+        beakerArea.classList.add('drag-over');
+    });
+
+    beakerArea.addEventListener('dragleave', () => {
+        beakerArea.classList.remove('drag-over');
+    });
+    
+    beakerArea.addEventListener('drop', e => {
+        e.preventDefault();
+        beakerArea.classList.remove('drag-over');
+        const soluteType = e.dataTransfer.getData('text/plain');
+        
+        // Reset and add new solute
+        initSolvent();
+        addSolute(soluteType);
+    });
+
+
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    window.addEventListener('resize', () => {
+        if(labWrapper.style.display === 'flex') {
+            setupCanvas();
+            initSolvent();
+        }
+    });
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

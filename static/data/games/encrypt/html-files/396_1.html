@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)http://localhost:5173/data/games/396_1.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boiling Point Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="./Boiling Point Explorer_files/css2" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f5a623;
+            --correct-color: #28a745;
+            --wrong-color: #dc3545;
+            --bg-color: #f0f4f8;
+            --card-bg-color: #ffffff;
+            --text-color: #333;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1400px;
+            align-items: flex-start; /* Aligns items to the top */
+        }
+
+        .card {
+            background-color: var(--card-bg-color);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        .instructions-card {
+            flex: 3; /* 30% width */
+            position: sticky;
+            top: 20px;
+        }
+
+        .game-card {
+            flex: 7; /* 70% width */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .game-area-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .instructions-card h1 {
+            font-family: var(--heading-font);
+            color: var(--primary-color);
+            font-size: 2.2rem;
+            margin-top: 0;
+            text-align: center;
+        }
+
+        .instructions-card h2 {
+            font-family: var(--heading-font);
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 1.3rem;
+            margin-top: 20px;
+        }
+
+        .instructions-card p, .instructions-card li {
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .instructions-card ul {
+            padding-left: 20px;
+        }
+        
+        .instructions-card li::marker {
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        .key-concept {
+            background-color: #e3f2fd;
+            border-left: 4px solid var(--primary-color);
+            padding: 10px 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .key-concept strong {
+            color: var(--primary-color);
+        }
+
+        .game-canvas {
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            background-color: #f7f9fc;
+        }
+
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            font-family: var(--heading-font);
+            font-size: 1.2rem;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .start-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .start-btn:hover {
+            background-color: #3a7bc8;
+            transform: translateY(-2px);
+        }
+
+        .reset-btn {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .reset-btn:hover {
+            background-color: #d1d1d1;
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .thermometer-display {
+            font-family: var(--heading-font);
+            font-size: 1.5rem;
+            color: white;
+            background-color: var(--wrong-color);
+            padding: 10px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .question-container {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            width: 90%;
+            text-align: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s linear;
+        }
+        
+        .question-container.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .question-container h3 {
+            font-family: var(--heading-font);
+            margin-top: 0;
+        }
+
+        .answer-options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .answer-btn {
+            flex-grow: 1;
+            max-width: 250px;
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .answer-btn:not(:disabled):hover {
+             background-color: #e3f2fd;
+        }
+        
+        .answer-btn.correct {
+            background-color: var(--correct-color);
+            border-color: var(--correct-color);
+            color: white;
+        }
+
+        .answer-btn.wrong {
+            background-color: var(--wrong-color);
+            border-color: var(--wrong-color);
+            color: white;
+        }
+
+        .feedback-message {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+    </style>
+<style>
+    #cancel-btn, #cancelButton{
+        margin-right: 10px;
+        background: #e16991;
+        color: white;
+        padding: 15px;
+        border: 2px solid white;
+        font-size: 16px;
+        border-radius: 5px;
+        box-shadow: 1px 1px 6px 0px #c6bbbb;
+        cursor: pointer;
+        min-height: 35px;
+        line-height: 0px;
+}
+
+#copyButton{
+    align-self: end;
+}
+    
+  #apply-btn, #copyButton{
+    background: #009688;
+    color: white;
+    padding: 15px;
+    border: 2px solid white;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 6px 0px #c6bbbb;
+    cursor: pointer;
+    min-height: 35px;
+    line-height: 0px;
+  }
+
+  #apply-btn:hover, #copyButton:hover{
+    box-shadow: 1px 1px 6px 2px #c6bbbb;
+  }    
+    
+  
+
+  #apply-btn:active, #copyButton:active{
+    box-shadow: none;
+  
+  }    
+   
+
+
+  #cancel-btn:hover, #cancelButton:hover{  
+    box-shadow: 1px 1px 6px 2px #c6bbbb;
+  }
+
+  #cancel-btn:active , #cancelButton:active{     
+    
+    box-shadow: none;
+  }
+    .cropper-container {
+      direction: ltr;
+      font-size: 0;
+      line-height: 0;
+      position: relative;
+      -ms-touch-action: none;
+          touch-action: none;
+      -webkit-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+    }
+    
+    .cropper-container img {
+        backface-visibility: hidden;
+        display: block;
+        height: 100%;
+        image-orientation: 0deg;
+        max-height: none !important;
+        max-width: none !important;
+        min-height: 0 !important;
+        min-width: 0 !important;
+        width: 100%;
+      }
+    
+    .cropper-wrap-box,
+    .cropper-canvas,
+    .cropper-drag-box,
+    .cropper-crop-box,
+    .cropper-modal {
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    
+    .cropper-wrap-box,
+    .cropper-canvas {
+      overflow: hidden;
+    }
+    
+    .cropper-drag-box {
+      background-color: #fff;
+      opacity: 0;
+    }
+    
+    .cropper-modal {
+      background-color: #000;
+      opacity: 0.5;
+    }
+    
+    .cropper-view-box {
+      display: block;
+      height: 100%;
+      outline: 1px solid #39f;
+      outline-color: rgba(51, 153, 255, 0.75);
+      overflow: hidden;
+      width: 100%;
+    }
+    
+    .cropper-dashed {
+      border: 0 dashed #eee;
+      display: block;
+      opacity: 0.5;
+      position: absolute;
+    }
+    
+    .cropper-dashed.dashed-h {
+        border-bottom-width: 1px;
+        border-top-width: 1px;
+        height: calc(100% / 3);
+        left: 0;
+        top: calc(100% / 3);
+        width: 100%;
+      }
+    
+    .cropper-dashed.dashed-v {
+        border-left-width: 1px;
+        border-right-width: 1px;
+        height: 100%;
+        left: calc(100% / 3);
+        top: 0;
+        width: calc(100% / 3);
+      }
+    
+      .cropper-center {
+        left: 55%;
+        opacity: 1;
+        position: absolute;
+        top: -45px;
+        cursor: pointer;
+        z-index: 9999999;
+        display: inline-block;
+        width: 200px;
+        height: 50px;
+    }
+    
+    .cropper-center::before,
+      .cropper-center::after {
+        background-color: #eee;
+        content: ' ';
+        display: block;
+        position: absolute;
+      }
+    
+    .cropper-center::before {
+        height: 1px;
+        left: -3px;
+        top: 0;
+        width: 7px;
+      }
+    
+    .cropper-center::after {
+        height: 7px;
+        left: 0;
+        top: -3px;
+        width: 1px;
+      }
+    
+    .cropper-face,
+    .cropper-line,
+    .cropper-point {
+      display: block;
+      height: 100%;
+      opacity: 0.1;
+      position: absolute;
+      width: 100%;
+    }
+    
+    .cropper-face {
+      background-color: #fff;
+      left: 0;
+      top: 0;
+    }
+    
+    .cropper-line {
+      background-color: #39f;
+    }
+    
+    .cropper-line.line-e {
+        cursor: ew-resize;
+        right: -3px;
+        top: 0;
+        width: 5px;
+      }
+    
+    .cropper-line.line-n {
+        cursor: ns-resize;
+        height: 5px;
+        left: 0;
+        top: -3px;
+      }
+    
+    .cropper-line.line-w {
+        cursor: ew-resize;
+        left: -3px;
+        top: 0;
+        width: 5px;
+      }
+    
+    .cropper-line.line-s {
+        bottom: -3px;
+        cursor: ns-resize;
+        height: 5px;
+        left: 0;
+      }
+    
+    .cropper-point {
+      background-color: #39f;
+      height: 10px;
+      opacity: 1;
+      width: 10px;
+    }
+    
+    .cropper-point.point-e {
+        cursor: ew-resize;
+        margin-top: -3px;
+        right: -3px;
+        top: 50%;
+      }
+    
+    .cropper-point.point-n {
+        cursor: ns-resize;
+        left: 50%;
+        margin-left: -3px;
+        top: -3px;
+      }
+    
+    .cropper-point.point-w {
+        cursor: ew-resize;
+        left: -3px;
+        margin-top: -3px;
+        top: 50%;
+      }
+    
+    .cropper-point.point-s {
+        bottom: -3px;
+        cursor: s-resize;
+        left: 50%;
+        margin-left: -3px;
+      }
+    
+    .cropper-point.point-ne {
+        cursor: nesw-resize;
+        right: -3px;
+        top: -3px;
+      }
+    
+    .cropper-point.point-nw {
+        cursor: nwse-resize;
+        left: -3px;
+        top: -3px;
+      }
+    
+    .cropper-point.point-sw {
+        bottom: -3px;
+        cursor: nesw-resize;
+        left: -3px;
+      }
+    
+    .cropper-point.point-se {
+        bottom: -3px;
+        cursor: nwse-resize;
+        height: 20px;
+        opacity: 1;
+        right: -3px;
+        width: 20px;
+      }
+    
+    @media (min-width: 768px) {
+    
+    .cropper-point.point-se {
+          height: 15px;
+          width: 15px;
+      }
+        }
+    
+    @media (min-width: 992px) {
+    
+    .cropper-point.point-se {
+          height: 10px;
+          width: 10px;
+      }
+        }
+    
+    @media (min-width: 1200px) {
+    
+    .cropper-point.point-se {
+          height: 5px;
+          opacity: 0.75;
+          width: 5px;
+      }
+        }
+    
+    .cropper-point.point-se::before {
+        background-color: #39f;
+        bottom: -50%;
+        content: ' ';
+        display: block;
+        height: 200%;
+        opacity: 0;
+        position: absolute;
+        right: -50%;
+        width: 200%;
+      }
+    
+    .cropper-invisible {
+      opacity: 0;
+    }
+    
+    .cropper-bg {
+      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC');
+    }
+    
+    .cropper-hide {
+      display: block;
+      height: 0;
+      position: absolute;
+      width: 0;
+    }
+    
+    .cropper-hidden {
+      display: none !important;
+    }
+    
+    .cropper-move {
+      cursor: move;
+    }
+    
+    .cropper-crop {
+      cursor: crosshair;
+    }
+    
+    .cropper-disabled .cropper-drag-box,
+    .cropper-disabled .cropper-face,
+    .cropper-disabled .cropper-line,
+    .cropper-disabled .cropper-point {}
+
+    
+.lds-hourglass {
+    display: inline-block;
+    width: 40%;
+    height: 10%;  
+    text-align: center;
+   
+  }
+  .lds-hourglass:after {
+    content: " ";
+    display: block;
+    border-radius: 50%;
+    width: 0;
+    height: 0;
+    margin: 8px;
+    box-sizing: border-box;
+    border: 32px solid #fff;
+    border-color: #fff transparent #fff transparent;
+    animation: lds-hourglass 1.2s infinite;
+  }
+  @keyframes lds-hourglass {
+    0% {
+      transform: rotate(0);
+      animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+    }
+    50% {
+      transform: rotate(900deg);
+      animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    100% {
+      transform: rotate(1800deg);
+    }
+  }
+  
+
+     
+    </style></head>
+<body>
+
+    <div class="main-container">
+        <div class="instructions-card card">
+            <h1>Boiling Point Explorer 🔬🔥</h1>
+            <h2>Instructions</h2>
+            <ul>
+                <li>Click the <strong>Start</strong> button to begin heating the beaker of water.</li>
+                <li>Watch the thermometer. Notice how the temperature changes.</li>
+                <li>Observe the water closely. Where do the bubbles come from?</li>
+                <li>Answer the question that appears once the water starts boiling.</li>
+                <li>Click <strong>Reset</strong> to try the experiment again.</li>
+            </ul>
+            
+            <h2>What to Observe</h2>
+            <div class="key-concept">
+                <strong>Evaporation vs. Boiling:</strong> Before boiling, you'll see a few particles leaving only from the <strong>surface</strong>. This is evaporation. When boiling starts, bubbles form from <strong>everywhere</strong> inside the liquid. This is a <strong>bulk phenomenon</strong>.
+            </div>
+            <div class="key-concept">
+                <strong>Boiling Point:</strong> Notice that the temperature stops rising when it reaches <strong>100°C</strong>, even though we are still heating it. This fixed temperature is the boiling point of water.
+            </div>
+        </div>
+
+        <div class="game-card card">
+            <div class="game-area-content">
+                <div class="thermometer-display" id="temp-display" style="background-color: var(--secondary-color);">Temperature: 100°C</div>
+                <canvas id="gameCanvas" class="game-canvas" width="600" height="450"></canvas>
+                <div class="controls">
+                    <button id="startBtn" class="start-btn" disabled="">Start</button>
+                    <button id="resetBtn" class="reset-btn">Reset</button>
+                </div>
+                
+                <div id="questionContainer" class="question-container visible">
+                    <h3>Based on the simulation, boiling is a...</h3>
+                    <div class="answer-options">
+                        <button class="answer-btn" data-answer="surface">Surface Phenomenon</button>
+                        <button class="answer-btn" data-answer="bulk">Bulk Phenomenon</button>
+                    </div>
+                    <div id="feedbackMessage" class="feedback-message" style="color: var(--correct-color);"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const canvas = document.getElementById('gameCanvas');
+            const ctx = canvas.getContext('2d');
+            const startBtn = document.getElementById('startBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const tempDisplay = document.getElementById('temp-display');
+            const questionContainer = document.getElementById('questionContainer');
+            const answerButtons = document.querySelectorAll('.answer-btn');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+
+            // Game State
+            let temperature = 25;
+            let gameState = 'idle'; // idle, heating, boiling, finished
+            let animationFrameId;
+            let bubbles = [];
+            let evaporationParticles = [];
+
+            // --- Drawing Functions ---
+            const drawBeaker = () => {
+                ctx.strokeStyle = '#333';
+                ctx.lineWidth = 3;
+                // Beaker body
+                ctx.beginPath();
+                ctx.moveTo(150, 400);
+                ctx.lineTo(170, 150);
+                ctx.lineTo(430, 150);
+                ctx.lineTo(450, 400);
+                ctx.closePath();
+                ctx.stroke();
+            };
+
+            const drawWater = () => {
+                ctx.fillStyle = 'rgba(74, 144, 226, 0.6)';
+                ctx.fillRect(172, 200, 256, 199);
+            };
+
+            const drawBurner = () => {
+                // Stand
+                ctx.fillStyle = '#666';
+                ctx.fillRect(130, 400, 340, 10);
+                // Burner
+                ctx.fillStyle = '#aaa';
+                ctx.fillRect(285, 410, 30, 40);
+            };
+
+            const drawFlame = () => {
+                if (gameState === 'heating' || gameState === 'boiling') {
+                    ctx.fillStyle = `rgba(245, 166, 35, ${0.7 + Math.random() * 0.3})`;
+                    ctx.beginPath();
+                    ctx.moveTo(280, 410);
+                    ctx.bezierCurveTo(285, 380, 315, 380, 320, 410);
+                    ctx.fill();
+                    
+                    ctx.fillStyle = `rgba(255, 220, 0, ${0.5 + Math.random() * 0.3})`;
+                     ctx.beginPath();
+                    ctx.moveTo(290, 410);
+                    ctx.bezierCurveTo(295, 390, 305, 390, 310, 410);
+                    ctx.fill();
+                }
+            };
+            
+            const drawThermometer = () => {
+                // Outer glass
+                ctx.strokeStyle = '#999';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(500, 160, 20, 250);
+                ctx.beginPath();
+                ctx.arc(510, 410, 15, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Mercury
+                const mercuryHeight = (temperature / 120) * 250;
+                ctx.fillStyle = '#dc3545';
+                ctx.fillRect(501, 410 - mercuryHeight, 18, mercuryHeight);
+                ctx.beginPath();
+                ctx.arc(510, 410, 14, 0, Math.PI * 2);
+                ctx.fill();
+            };
+            
+            const createBubble = () => {
+                // Bulk phenomenon: bubbles from anywhere in the liquid
+                const x = 180 + Math.random() * 240;
+                const y = 210 + Math.random() * 180;
+                const radius = 2 + Math.random() * 5;
+                bubbles.push({ x, y, radius, speed: 1 + Math.random() * 2 });
+            };
+
+            const createEvaporationParticle = () => {
+                // Surface phenomenon: particles only from the top layer
+                const x = 175 + Math.random() * 250;
+                const y = 200;
+                const radius = 1 + Math.random() * 2;
+                evaporationParticles.push({ x, y, radius, speed: 0.5 + Math.random() });
+            };
+
+            const updateAndDrawParticles = () => {
+                 // Update and draw bubbles
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.strokeStyle = '#aaa';
+                ctx.lineWidth = 1;
+                for (let i = bubbles.length - 1; i >= 0; i--) {
+                    let b = bubbles[i];
+                    b.y -= b.speed;
+                    b.x += (Math.random() - 0.5) * 2; // Wiggle
+                    if (b.y < 200) {
+                        bubbles.splice(i, 1);
+                    } else {
+                        ctx.beginPath();
+                        ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+                        ctx.fill();
+                        ctx.stroke();
+                    }
+                }
+                
+                // Update and draw evaporation particles
+                ctx.fillStyle = 'rgba(200, 220, 255, 0.6)';
+                for (let i = evaporationParticles.length - 1; i >= 0; i--) {
+                     let p = evaporationParticles[i];
+                     p.y -= p.speed;
+                     if (p.y < 150) {
+                         evaporationParticles.splice(i, 1);
+                     } else {
+                         ctx.beginPath();
+                         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                         ctx.fill();
+                     }
+                }
+            };
+            
+
+            // --- Game Loop ---
+            const gameLoop = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                drawBeaker();
+                drawWater();
+                drawBurner();
+                drawFlame();
+                updateAndDrawParticles();
+                drawThermometer();
+                
+                // State logic
+                if (gameState === 'heating') {
+                    if (temperature < 100) {
+                        temperature += 0.1;
+                        if(Math.random() > 0.8) createEvaporationParticle();
+                    } else {
+                        temperature = 100;
+                        gameState = 'boiling';
+                        setTimeout(() => {
+                           questionContainer.classList.add('visible');
+                        }, 2000); // Show question after 2s of boiling
+                    }
+                }
+
+                if (gameState === 'boiling') {
+                    if (Math.random() > 0.5) createBubble();
+                }
+
+                tempDisplay.textContent = `Temperature: ${Math.round(temperature)}°C`;
+                if(temperature >= 100) tempDisplay.style.backgroundColor = 'var(--secondary-color)';
+
+                animationFrameId = requestAnimationFrame(gameLoop);
+            };
+            
+            // --- Event Handlers ---
+            const startGame = () => {
+                if (gameState !== 'idle') return;
+                gameState = 'heating';
+                startBtn.disabled = true;
+                gameLoop();
+            };
+
+            const resetGame = () => {
+                cancelAnimationFrame(animationFrameId);
+                gameState = 'idle';
+                temperature = 25;
+                bubbles = [];
+                evaporationParticles = [];
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawBeaker();
+                drawWater();
+                drawBurner();
+                drawThermometer();
+                
+                startBtn.disabled = false;
+                tempDisplay.textContent = `Temperature: 25°C`;
+                tempDisplay.style.backgroundColor = 'var(--wrong-color)';
+                
+                questionContainer.classList.remove('visible');
+                feedbackMessage.textContent = '';
+                answerButtons.forEach(btn => {
+                    btn.classList.remove('correct', 'wrong');
+                    btn.disabled = false;
+                });
+            };
+
+            const checkAnswer = (e) => {
+                const selectedButton = e.target;
+                const isCorrect = selectedButton.dataset.answer === 'bulk';
+                
+                answerButtons.forEach(btn => btn.disabled = true);
+                
+                if (isCorrect) {
+                    selectedButton.classList.add('correct');
+                    feedbackMessage.textContent = "Correct! Boiling happens throughout the liquid.";
+                    feedbackMessage.style.color = 'var(--correct-color)';
+                } else {
+                    selectedButton.classList.add('wrong');
+                    feedbackMessage.textContent = "Not quite. Look how bubbles form everywhere, not just the top!";
+                    feedbackMessage.style.color = 'var(--wrong-color)';
+                    // Highlight the correct answer
+                    document.querySelector('.answer-btn[data-answer="bulk"]').classList.add('correct');
+                }
+            };
+            
+            // --- Initial Setup ---
+            startBtn.addEventListener('click', startGame);
+            resetBtn.addEventListener('click', resetGame);
+            answerButtons.forEach(btn => btn.addEventListener('click', checkAnswer));
+            
+            // Initial draw
+            resetGame();
+        });
+    </script>
+
+
+</body></html>

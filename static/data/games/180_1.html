@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Polynomial Explorer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f2f7fc;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 30% 70%;
+      gap: 20px;
+    }
+    .card {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .instructions h2, .game h2 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 22px;
+      color: #3f51b5;
+      margin-bottom: 12px;
+    }
+    .instructions p {
+      font-size: 16px;
+      color: #444;
+    }
+    .expression-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .expression {
+      background-color: #e3f2fd;
+      border: 2px dashed #2196f3;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: grab;
+      font-size: 16px;
+      user-select: none;
+    }
+    .drop-zone {
+      margin-top: 10px;
+      background-color: #f1f8e9;
+      border: 3px dashed #689f38;
+      height: 100px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #33691e;
+    }
+    .result {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+    .wrong {
+      color: red;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 18px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #4caf50;
+      color: white;
+    }
+    button:hover {
+      background-color: #388e3c;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card instructions">
+      <h2>🧪 Instructions</h2>
+      <p>Welcome to the <strong>Polynomial Analyzer Lab</strong>!</p>
+      <p>Drag each expression into the Analyzer Box.</p>
+      <p>The system will check whether the expression is a valid <strong>polynomial in one variable</strong>.</p>
+      <ul>
+        <li>✅ Exponents must be whole numbers</li>
+        <li>✅ Only one variable (like <code>x</code>) allowed</li>
+        <li>❌ No square roots, negative or fractional powers</li>
+      </ul>
+      <button onclick="resetGame()">🔄 Reset</button>
+    </div>
+    <div class="card game">
+      <h2>🔍 Polynomial Analyzer</h2>
+      <div class="expression-list" id="expressions">
+        <div class="expression" draggable="true" ondragstart="drag(event)" data-expression="x^2 + 2x + 1">x² + 2x + 1</div>
+        <div class="expression" draggable="true" ondragstart="drag(event)" data-expression="3x^1.5 + 2">3x^1.5 + 2</div>
+        <div class="expression" draggable="true" ondragstart="drag(event)" data-expression="x^3 - x + 4">x³ - x + 4</div>
+        <div class="expression" draggable="true" ondragstart="drag(event)" data-expression="2x + y">2x + y</div>
+        <div class="expression" draggable="true" ondragstart="drag(event)" data-expression="5x^0 + 3">5x⁰ + 3</div>
+        <div class="expression" draggable="true" ondragstart="drag(event)" data-expression="√x + 1">√x + 1</div>
+      </div>
+      <div class="drop-zone" ondrop="drop(event)" ondragover="allowDrop(event)">
+        Drop Here to Analyze
+      </div>
+      <div class="result" id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function drag(ev) {
+      ev.dataTransfer.setData("text", ev.target.getAttribute("data-expression"));
+      ev.dataTransfer.setData("html", ev.target.outerHTML);
+    }
+
+    function drop(ev) {
+      ev.preventDefault();
+      const expression = ev.dataTransfer.getData("text");
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = `<span>Analyzing: ${expression}</span><br>`;
+
+      const valid = checkIfPolynomial(expression);
+
+      if (valid) {
+        resultDiv.innerHTML += `<span class="correct">✅ This is a valid polynomial in one variable!</span>`;
+      } else {
+        resultDiv.innerHTML += `<span class="wrong">❌ This is <strong>not</strong> a valid polynomial!</span>`;
+      }
+    }
+
+    function resetGame() {
+      document.getElementById("result").innerHTML = '';
+    }
+
+    function checkIfPolynomial(expr) {
+      const invalidPatterns = [/√/, /[a-z]\^\-?[0-9]*\.[0-9]+/, /[a-z]\^\-/, /[a-z][^+\-^\d]/g];
+      const multiVarPattern = /[a-z][^x^+\-*\/0-9]/g;
+
+      if (expr.includes('y') || expr.includes('z')) return false;
+      for (let pat of invalidPatterns) {
+        if (pat.test(expr)) return false;
+      }
+      return true;
+    }
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

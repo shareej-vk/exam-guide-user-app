@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rational Number Generator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono:wght@500;700&display=swap');
+
+        :root {
+            --bg-color: #f5f7fa;
+            --container-bg: #ffffff;
+            --header-color: #0097e6;
+            --text-color: #3d3d3d;
+            --border-color: #dfe4ea;
+            --input-bg: #f1f2f6;
+            --success-color: #2ed573;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .game-wrapper {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1300px;
+        }
+
+        .game-container {
+            background-color: var(--container-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 650px;
+        }
+
+        .game-header { text-align: center; margin-bottom: 20px; }
+        .game-header h1 { color: var(--header-color); margin: 0; font-size: 2.5em; }
+
+        #initial-setup {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: #f1f2f6;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .input-group label { font-weight: 600; margin-bottom: 5px; }
+        .endpoint-input {
+            width: 100px;
+            padding: 10px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.5em;
+            text-align: center;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+        }
+        
+        #game-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+        }
+        
+        #action-box {
+            text-align: center;
+            width: 100%;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #e5f4ff;
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px dashed #90cfff;
+        }
+        
+        #action-prompt { font-size: 1.2em; font-weight: 500; margin-bottom: 15px; }
+        
+        #generate-btn {
+            padding: 15px 40px; font-size: 1.3em; font-weight: 600;
+            color: #fff; background-color: var(--success-color);
+            border: none; border-radius: 10px; cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 4px solid #1abc9c;
+        }
+        #generate-btn:hover:not(:disabled) { transform: translateY(-2px); background-color: #2ecc71; }
+        #generate-btn:disabled { background-color: #bdc3c7; border-bottom-color: #95a5a6; cursor: not-allowed; }
+        
+        #next-step-choices { display: flex; gap: 15px; margin-top: 15px; }
+        
+        .choice-btn {
+             background-color: #3498db;
+             padding: 10px 20px;
+             font-size: 1em;
+        }
+        .choice-btn:hover { background-color: #2980b9; }
+
+        #generated-numbers-container {
+            margin-top: 25px;
+            width: 100%;
+            padding: 20px;
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            min-height: 100px;
+        }
+        #generated-numbers-container h3 { margin: 0 0 15px 0; text-align: center; color: #7f8c8d; }
+        
+        #number-sequence {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .num-item {
+            font-family: 'Roboto Mono', monospace;
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: 700;
+            transition: all 0.5s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .num-item.endpoint { background-color: #34495e; color: white; }
+        .num-item.generated { background-color: #9b59b6; color: white; }
+        .num-item.latest {
+            background-color: #e67e22;
+            transform: scale(1.2);
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+        }
+
+
+        .info-panel {
+            width: 380px; flex-shrink: 0;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .info-box { background: var(--container-bg); padding: 20px; border-radius: 20px; box-shadow: var(--shadow); }
+        .info-box h3 { margin-top: 0; color: var(--header-color); border-bottom: 2px solid #eafaff; padding-bottom: 10px; }
+        .info-box ul { padding-left: 20px; margin: 0; }
+        .info-box li { margin-bottom: 10px; line-height: 1.5; }
+        .info-box p { line-height: 1.6; }
+        .info-box .formula {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1.1em;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .game-btn { flex-grow: 1; padding: 12px 20px; font-size: 1.1em; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; color: white; }
+        .game-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        #set-endpoints-btn { background-color: #34495e; }
+        #set-endpoints-btn:hover { background-color: #2c3e50; }
+        #reset-btn { background-color: #e74c3c; }
+        #reset-btn:hover { background-color: #c0392b; }
+
+    </style>
+</head>
+<body>
+
+    <div class="game-wrapper">
+        <div class="game-container">
+            <div class="game-header">
+                <h1>Rational Number Generator</h1>
+            </div>
+            
+            <div id="initial-setup">
+                <div class="input-group">
+                    <label for="r-input">Number 'r'</label>
+                    <input type="number" id="r-input" class="endpoint-input" value="1">
+                </div>
+                <div class="input-group">
+                    <label for="s-input">Number 's'</label>
+                    <input type="number" id="s-input" class="endpoint-input" value="2">
+                </div>
+                <button id="set-endpoints-btn" class="game-btn">Set Endpoints</button>
+                <button id="reset-btn" class="game-btn">Reset</button>
+            </div>
+            
+            <div id="game-area">
+                <div id="action-box">
+                    <p id="action-prompt">Enter two numbers and click 'Set Endpoints' to start.</p>
+                    <button id="generate-btn" disabled>Find the Mean</button>
+                    <div id="next-step-choices"></div>
+                </div>
+
+                <div id="generated-numbers-container">
+                    <h3>Generated Number Sequence</h3>
+                    <div id="number-sequence"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <div class="info-box instructions">
+                <h3>How to Play</h3>
+                <ul>
+                    <li>Enter two different numbers ('r' and 's') and click <strong>Set Endpoints</strong>.</li>
+                    <li>Click the <strong>Find the Mean</strong> button to generate a new rational number exactly halfway between your current boundaries.</li>
+                    <li>The new number will appear in the sequence below.</li>
+                    <li>Now, choose which new, smaller interval you want to explore next.</li>
+                    <li>Repeat the process. Notice how you can *always* find another number! This shows that rational numbers are infinitely dense.</li>
+                </ul>
+            </div>
+            <div class="info-box definitions">
+                <h3>The Mean Method</h3>
+                <p>To find a rational number between any two rational numbers 'r' and 's', you can simply find their average (or mean).</p>
+                <div class="formula">(r + s) / 2</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        let leftBoundary, rightBoundary;
+        let gameActive = false;
+        
+        const rInput = document.getElementById('r-input');
+        const sInput = document.getElementById('s-input');
+        const setEndpointsBtn = document.getElementById('set-endpoints-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const generateBtn = document.getElementById('generate-btn');
+        const actionPrompt = document.getElementById('action-prompt');
+        const numberSequence = document.getElementById('number-sequence');
+        const nextStepChoices = document.getElementById('next-step-choices');
+
+        function setEndpoints() {
+            const rVal = parseFloat(rInput.value);
+            const sVal = parseFloat(sInput.value);
+
+            if (isNaN(rVal) || isNaN(sVal)) {
+                actionPrompt.textContent = "Please enter valid numbers for 'r' and 's'.";
+                return;
+            }
+            if (rVal === sVal) {
+                actionPrompt.textContent = "'r' and 's' must be different numbers.";
+                return;
+            }
+
+            leftBoundary = Math.min(rVal, sVal);
+            rightBoundary = Math.max(rVal, sVal);
+            gameActive = true;
+            
+            rInput.disabled = true;
+            sInput.disabled = true;
+            setEndpointsBtn.disabled = true;
+            
+            setupNextGeneration();
+            displaySequence();
+        }
+
+        function setupNextGeneration() {
+            actionPrompt.innerHTML = `Ready to find a number between <strong>${leftBoundary}</strong> and <strong>${rightBoundary}</strong>?`;
+            generateBtn.disabled = false;
+            nextStepChoices.innerHTML = '';
+        }
+
+        function generateMean() {
+            if (!gameActive) return;
+
+            const mean = (leftBoundary + rightBoundary) / 2;
+            
+            actionPrompt.innerHTML = `The mean of ${leftBoundary} and ${rightBoundary} is <strong>${mean}</strong>!`;
+            generateBtn.disabled = true;
+            
+            displaySequence(mean);
+            
+            // Create choices for the next step
+            nextStepChoices.innerHTML = `
+                <button class="game-btn choice-btn" data-lb="${leftBoundary}" data-rb="${mean}">Explore (${leftBoundary}, ${mean})</button>
+                <button class="game-btn choice-btn" data-lb="${mean}" data-rb="${rightBoundary}">Explore (${mean}, ${rightBoundary})</button>
+            `;
+            
+            document.querySelectorAll('.choice-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    leftBoundary = parseFloat(e.target.dataset.lb);
+                    rightBoundary = parseFloat(e.target.dataset.rb);
+                    setupNextGeneration();
+                });
+            });
+        }
+        
+        function displaySequence(latestNum = null) {
+            // Get all current numbers, parse them, and add the new one if it exists
+            const existingNumbers = Array.from(numberSequence.children).map(el => parseFloat(el.dataset.value));
+            const allNumbers = [...new Set([...existingNumbers, leftBoundary, rightBoundary, latestNum].filter(n => n !== null))];
+            allNumbers.sort((a, b) => a - b);
+            
+            numberSequence.innerHTML = '';
+            
+            allNumbers.forEach(num => {
+                const numEl = document.createElement('div');
+                numEl.className = 'num-item';
+                numEl.textContent = num;
+                numEl.dataset.value = num;
+                
+                if (num === leftBoundary || num === rightBoundary) {
+                    numEl.classList.add('endpoint');
+                } else {
+                    numEl.classList.add('generated');
+                }
+                
+                if (num === latestNum) {
+                    // Use a timeout to apply the 'latest' class after the element is in the DOM
+                    setTimeout(() => numEl.classList.add('latest'), 50);
+                }
+                
+                numberSequence.appendChild(numEl);
+            });
+        }
+
+        function resetGame() {
+            gameActive = false;
+            leftBoundary = null;
+            rightBoundary = null;
+            
+            rInput.disabled = false;
+            sInput.disabled = false;
+            setEndpointsBtn.disabled = false;
+            
+            rInput.value = '1';
+            sInput.value = '2';
+
+            generateBtn.disabled = true;
+            actionPrompt.textContent = "Enter two numbers and click 'Set Endpoints' to start.";
+            numberSequence.innerHTML = '';
+            nextStepChoices.innerHTML = '';
+        }
+
+        setEndpointsBtn.addEventListener('click', setEndpoints);
+        generateBtn.addEventListener('click', generateMean);
+        resetBtn.addEventListener('click', resetGame);
+    });
+    </script>
+</body>
+</html>
+<!--end-of-code-block-->

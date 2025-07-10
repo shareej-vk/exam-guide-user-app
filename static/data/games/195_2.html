@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Match - Quadrant Sign Convention Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #ff9800;
+      --correct: #4caf50;
+      --wrong: #f44336;
+      --bg: #fff8e1;
+      --card-bg: #ffffff;
+      --border: #ccc;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .instructions {
+      width: 30%;
+      box-sizing: border-box;
+    }
+
+    .game-area {
+      width: 70%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    h2 {
+      font-family: 'Fredoka', cursive;
+      color: var(--accent);
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .step {
+      font-weight: 700;
+      color: #333;
+      margin-top: 10px;
+    }
+
+    .question {
+      font-size: 20px;
+      margin: 15px 0;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .option-button {
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+
+    .option-button:hover {
+      background-color: #f57c00;
+    }
+
+    .correct {
+      background-color: var(--correct) !important;
+    }
+
+    .wrong {
+      background-color: var(--wrong) !important;
+    }
+
+    .controls {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    button {
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #f57c00;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="instructions card">
+      <h2>➕➖ Sign Match</h2>
+      <div class="step">🎯 Objective:</div>
+      <p>Understand the sign conventions used in each quadrant of the Cartesian plane.</p>
+
+      <div class="step">🕹️ How to Play:</div>
+      <ul>
+        <li>Click "Start Game" to see a quadrant name.</li>
+        <li>Select the correct sign pattern for the coordinates (x, y) in that quadrant.</li>
+        <li>Immediate feedback will be shown.</li>
+        <li>Click "Reset" to try again.</li>
+      </ul>
+    </div>
+
+    <div class="game-area card">
+      <div class="question" id="questionText">Click "Start Game" to begin!</div>
+
+      <div class="options" id="optionsArea">
+        <button class="option-button" onclick="checkAnswer(this)">(+,+)</button>
+        <button class="option-button" onclick="checkAnswer(this)">(-,+)</button>
+        <button class="option-button" onclick="checkAnswer(this)">(-,-)</button>
+        <button class="option-button" onclick="checkAnswer(this)">(+,-)</button>
+      </div>
+
+      <div class="controls">
+        <button onclick="startGame()">Start Game</button>
+        <button onclick="resetGame()">Reset</button>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+    </div>
+  </div>
+
+  <script>
+    const questionText = document.getElementById("questionText");
+    const optionsArea = document.getElementById("optionsArea");
+    const feedback = document.getElementById("feedback");
+
+    const quadrantSigns = {
+      I: "(+,+)",
+      II: "(-,+)",
+      III: "(-,-)",
+      IV: "(+,-)"
+    };
+
+    let currentQuadrant = "";
+
+    function startGame() {
+      const quadrants = Object.keys(quadrantSigns);
+      currentQuadrant = quadrants[Math.floor(Math.random() * quadrants.length)];
+      questionText.textContent = `📍 Which sign pair represents coordinates in Quadrant ${currentQuadrant}?`;
+      resetOptionColors();
+      feedback.textContent = "";
+    }
+
+    function checkAnswer(button) {
+      const userAnswer = button.textContent;
+      const correctAnswer = quadrantSigns[currentQuadrant];
+
+      resetOptionColors();
+
+      if (userAnswer === correctAnswer) {
+        button.classList.add("correct");
+        feedback.innerHTML = `<span class="correct">✅ Correct! In Quadrant ${currentQuadrant}, coordinates are ${correctAnswer}.</span>`;
+      } else {
+        button.classList.add("wrong");
+        feedback.innerHTML = `<span class="wrong">❌ Incorrect. The correct answer is ${correctAnswer}.</span>`;
+        highlightCorrect(correctAnswer);
+      }
+    }
+
+    function highlightCorrect(answer) {
+      const buttons = optionsArea.querySelectorAll(".option-button");
+      buttons.forEach(btn => {
+        if (btn.textContent === answer) {
+          btn.classList.add("correct");
+        }
+      });
+    }
+
+    function resetOptionColors() {
+      const buttons = optionsArea.querySelectorAll(".option-button");
+      buttons.forEach(btn => {
+        btn.classList.remove("correct", "wrong");
+      });
+    }
+
+    function resetGame() {
+      questionText.textContent = "Click \"Start Game\" to begin!";
+      feedback.textContent = "";
+      resetOptionColors();
+    }
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

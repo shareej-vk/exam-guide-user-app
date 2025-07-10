@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Point Plotter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #3f51b5;
+      --correct: #4caf50;
+      --wrong: #f44336;
+      --bg: #e8eaf6;
+      --card-bg: #ffffff;
+      --border: #ccc;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .instructions {
+      width: 30%;
+      box-sizing: border-box;
+    }
+
+    .game-area {
+      width: 70%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    h2 {
+      font-family: 'Fredoka', cursive;
+      color: var(--accent);
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .step {
+      font-weight: 700;
+      color: #333;
+      margin-top: 10px;
+    }
+
+    canvas {
+      border: 1px solid #ccc;
+      background-color: #fff;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      cursor: crosshair;
+    }
+
+    .question {
+      font-size: 20px;
+      margin: 10px 0;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #303f9f;
+    }
+
+    .feedback {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    .correct {
+      color: var(--correct);
+    }
+
+    .wrong {
+      color: var(--wrong);
+    }
+
+    .scoreboard {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 16px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="instructions card">
+      <h2>📌 Point Plotter</h2>
+      <div class="step">🎯 Objective:</div>
+      <p>Plot the correct point on the Cartesian plane based on the given coordinates.</p>
+
+      <div class="step">🕹️ How to Play:</div>
+      <ul>
+        <li>Click "Start Game" to receive a coordinate.</li>
+        <li>Click on the graph to plot the point as accurately as possible.</li>
+        <li>Get feedback and score based on accuracy!</li>
+        <li>Click "Reset" to try a new round.</li>
+      </ul>
+    </div>
+
+    <div class="game-area card">
+      <canvas id="gameCanvas" width="500" height="400"></canvas>
+
+      <div class="question" id="questionText">Click "Start Game" to begin!</div>
+
+      <div class="controls">
+        <button onclick="startGame()">Start Game</button>
+        <button onclick="resetGame()">Reset</button>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+      <div class="scoreboard" id="scoreDisplay">Score: 0</div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const questionText = document.getElementById("questionText");
+    const feedback = document.getElementById("feedback");
+    const scoreDisplay = document.getElementById("scoreDisplay");
+
+    const origin = { x: 250, y: 200 };
+    const gridSize = 25;
+    let currentTarget = { x: 0, y: 0 };
+    let score = 0;
+
+    function drawPlane() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.beginPath();
+      ctx.moveTo(0, origin.y);
+      ctx.lineTo(canvas.width, origin.y);
+      ctx.moveTo(origin.x, 0);
+      ctx.lineTo(origin.x, canvas.height);
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = "#ccc";
+      for (let i = -10; i <= 10; i++) {
+        for (let j = -8; j <= 8; j++) {
+          const x = origin.x + i * gridSize;
+          const y = origin.y - j * gridSize;
+          ctx.beginPath();
+          ctx.arc(x, y, 1.2, 0, 2 * Math.PI);
+          ctx.fill();
+        }
+      }
+    }
+
+    function startGame() {
+      currentTarget.x = Math.floor(Math.random() * 11) - 5;
+      currentTarget.y = Math.floor(Math.random() * 9) - 4;
+      questionText.textContent = `🎯 Plot the point (${currentTarget.x}, ${currentTarget.y})`;
+      feedback.textContent = "";
+      drawPlane();
+    }
+
+    function getGridCoordFromCanvas(clickX, clickY) {
+      const x = Math.round((clickX - origin.x) / gridSize);
+      const y = Math.round((origin.y - clickY) / gridSize);
+      return { x, y };
+    }
+
+    function canvasCoordFromGrid(x, y) {
+      return {
+        x: origin.x + x * gridSize,
+        y: origin.y - y * gridSize
+      };
+    }
+
+    canvas.addEventListener("click", function (e) {
+      if (questionText.textContent.includes("Plot")) {
+        const rect = canvas.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const clickY = e.clientY - rect.top;
+        const clicked = getGridCoordFromCanvas(clickX, clickY);
+
+        const distance = Math.hypot(clicked.x - currentTarget.x, clicked.y - currentTarget.y);
+        const accuracy = distance === 0 ? "perfect" : distance <= 1 ? "close" : "off";
+
+        const point = canvasCoordFromGrid(clicked.x, clicked.y);
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = accuracy === "perfect" ? "#4caf50" : "#f44336";
+        ctx.fill();
+
+        if (accuracy === "perfect") {
+          feedback.innerHTML = `<span class="correct">✅ Great! You plotted it correctly.</span>`;
+          score += 5;
+        } else if (accuracy === "close") {
+          feedback.innerHTML = `<span class="wrong">🟡 Almost there! You were close.</span>`;
+          score += 2;
+        } else {
+          feedback.innerHTML = `<span class="wrong">❌ Oops! That’s not the right location.</span>`;
+        }
+
+        scoreDisplay.textContent = `Score: ${score}`;
+
+        const actual = canvasCoordFromGrid(currentTarget.x, currentTarget.y);
+        ctx.beginPath();
+        ctx.arc(actual.x, actual.y, 5, 0, 2 * Math.PI);
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    });
+
+    function resetGame() {
+      score = 0;
+      scoreDisplay.textContent = "Score: 0";
+      questionText.textContent = "Click \"Start Game\" to begin!";
+      feedback.textContent = "";
+      drawPlane();
+    }
+
+    drawPlane();
+  </script>
+</body>
+</html>
+<!--end-of-code-block-->

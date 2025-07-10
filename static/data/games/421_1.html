@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ink Detective - Chromatography</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --primary-color: #0d3b66; /* Deep Blue */
+            --accent-color: #f95738; /* Vibrant Orange-Red */
+            --text-color: #212529;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            --correct-color: #2a9d8f;
+            --incorrect-color: #e76f51;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            background: linear-gradient(45deg, #caf0f8, #e0fbfc);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .step-label {
+            font-family: var(--heading-font);
+            font-size: 20px;
+            color: white;
+            background-color: var(--accent-color);
+            padding: 0px 10px;
+            border-radius: 8px;
+            margin-right: 10px;
+            line-height: 1.2;
+        }
+        .instructions-list b { color: var(--primary-color); }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--correct-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        .btn:disabled { background-color: #adb5bd; cursor: not-allowed; }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .lab-bench {
+            width: 100%;
+            height: 450px;
+            background-color: #6c757d;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        
+        .beaker {
+            width: 200px; height: 300px;
+            border: 5px solid #495057;
+            border-top: none;
+            border-radius: 0 0 20px 20px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        
+        #solvent {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%; height: 20%;
+            background-color: rgba(0, 180, 216, 0.3);
+        }
+        #solvent::after {
+            content: '';
+            position: absolute;
+            left: -50%; top: -10px;
+            width: 200%; height: 20px;
+            background-color: rgba(0, 180, 216, 0.2);
+            border-radius: 45%;
+            animation: slosh 7s ease-in-out infinite;
+        }
+        @keyframes slosh {
+            0% { transform: translateX(0) rotate(0); }
+            50% { transform: translateX(-20px) rotate(2deg); }
+            100% { transform: translateX(0) rotate(0); }
+        }
+        
+        /* --- FIX: Canvas starts higher and has a transition --- */
+        #chromatography-canvas {
+            width: 60px;
+            height: 280px;
+            position: relative;
+            bottom: 60px; /* Start above solvent */
+            transition: bottom 1s ease-in-out;
+        }
+        
+        #quiz-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e0fbfc;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            display: none;
+            text-align: center;
+        }
+        #quiz-container h3 {
+            font-family: var(--heading-font);
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        #color-options { display: flex; gap: 10px; justify-content: center; margin-top: 15px;}
+        .color-option {
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 4px solid transparent;
+            transition: all 0.2s;
+        }
+        .color-option:hover { transform: scale(1.1); }
+        .color-option.selected { border-color: var(--primary-color); }
+        .color-option.correct { border-color: var(--correct-color); box-shadow: 0 0 15px var(--correct-color); }
+        .color-option.incorrect { border-color: var(--incorrect-color); box-shadow: 0 0 15px var(--incorrect-color); }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Ink Detective</h2>
+            <p><strong>Lesson:</strong> Separation by Chromatography</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">Your Mission</h3>
+            <p style="margin-bottom: 15px;">Aha, a mystery! Is this black ink really just one color, or is it a mixture of different dyes? As an Ink Detective, your job is to use chromatography to find out.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Investigate</h3>
+            <ul class="instructions-list">
+                <li><span class="step-label">1</span> Click <b>Start</b> to get your chromatography setup.</li>
+                <li><span class="step-label">2</span> Click the <b>"Dip Paper"</b> button to lower the paper into the solvent.</li>
+                <li><span class="step-label">3</span> Watch as the solvent wicks up the paper. When it reaches the ink spot, it will carry the different colored dyes with it.</li>
+                <li><span class="step-label">4</span> Notice how some colors travel faster and farther! This is because they are more soluble.</li>
+                <li><span class="step-label">5</span> After the separation, solve the puzzle: which colors were hiding in the black ink?</li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to reveal the ink's secrets!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="lab-bench">
+                    <div class="beaker">
+                        <div id="solvent"></div>
+                        <canvas id="chromatography-canvas"></canvas>
+                    </div>
+                </div>
+                <button id="dip-paper-btn" class="btn" style="margin-top: 20px; background-color: var(--accent-color); color: white;">Dip Paper</button>
+                <div id="quiz-container">
+                    <h3>Detective, which colors did you find in the ink?</h3>
+                    <p>(Select all the correct colors you see)</p>
+                    <div id="color-options"></div>
+                    <button id="check-btn" class="btn" style="margin-top: 15px; background-color: var(--primary-color); color: white;">Check Answers</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // --- DOM Elements ---
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const canvas = document.getElementById('chromatography-canvas');
+    const ctx = canvas.getContext('2d');
+    const dipPaperBtn = document.getElementById('dip-paper-btn');
+    const quizContainer = document.getElementById('quiz-container');
+    const colorOptionsContainer = document.getElementById('color-options');
+    const checkBtn = document.getElementById('check-btn');
+
+    // --- State & Config ---
+    const inkComposition = ['#d90429', '#00a8e8', '#ffc300']; // Red, Blue, Yellow
+    const allColors = ['#d90429', '#00a8e8', '#ffc300', '#2a9d8f', '#9d4edd'];
+    const dyeSolubility = { '#d90429': 0.6, '#00a8e8': 0.85, '#ffc300': 0.7 };
+    
+    let animationFrameId;
+    let userSelection = new Set();
+    let solventFrontY;
+    let inkSpotY;
+    let animationState = 'idle'; // idle, dipping, running, finished
+
+    // --- Canvas Drawing & Animation ---
+    class Dye {
+        constructor(color, solubility) {
+            this.color = color;
+            this.solubility = solubility;
+            this.y = inkSpotY;
+            this.active = false;
+        }
+        update() { if (this.active) { this.y -= this.solubility * 0.5; } }
+        draw() {
+            if (this.y < inkSpotY - 1) {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, this.y, 7, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+    }
+    let dyes = [];
+
+    function drawScene() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = '#e9ecef';
+        ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+        if (animationState === 'running' || animationState === 'finished') {
+            if (solventFrontY > 10) solventFrontY -= 0.5;
+            ctx.fillStyle = 'rgba(0, 180, 216, 0.2)';
+            ctx.fillRect(0, solventFrontY, canvas.width, canvas.height - solventFrontY);
+        }
+
+        if (solventFrontY <= inkSpotY && animationState === 'running') {
+            dyes.forEach(dye => dye.active = true);
+        }
+        dyes.forEach(dye => {
+            if (animationState === 'running') dye.update();
+            dye.draw();
+        });
+        
+        let inkAlpha = 1;
+        if (dyes.some(d => d.active)) {
+            const fadePoint = inkSpotY - 10;
+            inkAlpha = Math.max(0, (solventFrontY - fadePoint) / (canvas.height - fadePoint));
+        }
+        if (inkAlpha > 0) {
+            ctx.fillStyle = `rgba(0, 0, 0, ${inkAlpha})`;
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, inkSpotY, 8, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    
+    function animate() {
+        drawScene();
+        if (solventFrontY > 10 && animationState === 'running') {
+            animationFrameId = requestAnimationFrame(animate);
+        } else if (animationState === 'running') {
+            animationState = 'finished';
+            quizContainer.style.display = 'block';
+        }
+    }
+    
+    // --- FIX: Updated dipping logic ---
+    function runChromatography() {
+        if (animationState !== 'idle') return;
+        animationState = 'dipping';
+        dipPaperBtn.disabled = true;
+
+        canvas.style.bottom = '5px'; // Animate dipping motion
+
+        setTimeout(() => {
+            animationState = 'running';
+            animate();
+        }, 1000); // Wait for dip animation to finish before starting wicking
+    }
+
+    // --- Quiz Logic ---
+    function populateQuiz() {
+        colorOptionsContainer.innerHTML = '';
+        userSelection.clear();
+        allColors.sort(() => Math.random() - 0.5).forEach(color => {
+            const option = document.createElement('div');
+            option.className = 'color-option';
+            option.style.backgroundColor = color;
+            option.dataset.color = color;
+            option.addEventListener('click', () => {
+                if (animationState !== 'finished') return;
+                option.classList.toggle('selected');
+                userSelection.has(color) ? userSelection.delete(color) : userSelection.add(color);
+            });
+            colorOptionsContainer.appendChild(option);
+        });
+    }
+
+    function checkAnswers() {
+        checkBtn.disabled = true;
+        document.querySelectorAll('.color-option').forEach(option => {
+            const color = option.dataset.color;
+            const isCorrectComponent = inkComposition.includes(color);
+            const isSelected = userSelection.has(color);
+            option.style.cursor = 'default';
+            if (isCorrectComponent && isSelected) option.classList.add('correct');
+            else if (isCorrectComponent && !isSelected) option.classList.add('incorrect');
+            else if (!isSelected && !isCorrectComponent) {}
+            else option.classList.add('incorrect');
+        });
+    }
+
+    // --- Game Setup ---
+    function startGame() {
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        quizContainer.style.display = 'none';
+        
+        animationState = 'idle';
+        dipPaperBtn.disabled = false;
+        checkBtn.disabled = false;
+        
+        // --- FIX: Reset canvas position ---
+        canvas.style.transition = 'none'; // Temporarily disable transition for instant reset
+        canvas.style.bottom = '60px'; // Set initial position above solvent
+        setTimeout(() => { canvas.style.transition = 'bottom 1s ease-in-out'; }, 50);
+
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+
+        inkSpotY = canvas.height - 40;
+        solventFrontY = canvas.height;
+        
+        dyes = inkComposition.map(color => new Dye(color, dyeSolubility[color]));
+
+        populateQuiz();
+        drawScene();
+    }
+    
+    // --- Event Listeners ---
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    dipPaperBtn.addEventListener('click', runChromatography);
+    checkBtn.addEventListener('click', checkAnswers);
+
+</script>
+</body>
+</html>

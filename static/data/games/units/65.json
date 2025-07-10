@@ -1,0 +1,197 @@
+{
+  "subject": {
+    "id": 5,
+    "name": "science",
+    "label": "Science"
+  },
+  "units": [
+    {
+      "id": 65,
+      "name": "unit_8:_force_&_laws_of_motion",
+      "label": "Unit 8: Force & laws of motion",
+      "lessons": [
+        {
+          "id": 506,
+          "title": "Lesson 1: Introduction to Force and its Effects",
+          "slug": "lesson_1_introduction_to_force_and_its_effects",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "506_1",
+              "name": "Force Sandbox",
+              "implementationDetails": "The player is presented with a 2D environment containing several objects: a ball, a block of dough, and a spring. The player has tools like a 'Hand' to push/pull, and a 'Hammer' to hit. When the player pushes the ball, it starts moving (change in state of motion). When they squeeze the dough, its shape changes. When they stretch the spring, its size changes. This sandbox environment allows the player to freely explore and discover the different effects a force can have on an object.",
+              "learningPoints": [
+                "Defining force as a push or a pull.",
+                "Understanding that a force can change an object's state of motion.",
+                "Discovering that a force can change the shape and size of an object."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 507,
+          "title": "Lesson 2: Balanced and Unbalanced Forces",
+          "slug": "lesson_2_balanced_and_unbalanced_forces",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "507_1",
+              "name": "Tug of War Challenge",
+              "implementationDetails": "A visual simulation of a tug-of-war with a large crate in the middle. The player can add 'force robots' to either side. Each robot adds 10N of force. If the player puts 3 robots on the left (30N) and 3 on the right (30N), the forces are balanced, and the crate doesn't move. If they add one more robot to the right (40N), the forces become unbalanced, and an animation shows the crate accelerating to the right. A 'Friction' slider can be introduced in a second level, showing how friction can balance a small pushing force.",
+              "learningPoints": [
+                "Defining balanced forces as equal forces acting in opposite directions, resulting in zero net force.",
+                "Defining an unbalanced force as one that causes a change in the motion of an object.",
+                "Visualizing how an object's state of motion only changes when the net force is greater than zero."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 508,
+          "title": "Lesson 3: Newton's First Law of Motion",
+          "slug": "lesson_3_newtons_first_law_of_motion",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "508_1",
+              "name": "Deep Space Puck",
+              "implementationDetails": "A simulation set in a frictionless, zero-gravity space environment. A hockey puck is at rest. The player can apply a single, quick push to the puck. After the push, no other forces act on it, and the puck continues to move in a straight line at a constant velocity forever. To alter its path, the player must apply another force. This game demonstrates the first law in its purest form, without the complications of friction or air resistance, showing that an object in motion stays in motion with the same speed and in the same direction unless acted upon by an unbalanced force.",
+              "learningPoints": [
+                "Understanding Newton's First Law of Motion.",
+                "Recognizing that an object at rest stays at rest, and an object in motion stays in motion with constant velocity, unless acted on by a net external force.",
+                "Defining this tendency to resist changes in the state of motion as inertia."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 509,
+          "title": "Lesson 4: Inertia and Mass",
+          "slug": "lesson_4_inertia_and_mass",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "509_1",
+              "name": "The Mass Challenge",
+              "implementationDetails": "The player is on a frozen, frictionless lake and must push two objects: a small wooden crate (low mass) and a large, heavy safe (high mass). The player has a 'Push Force' meter that is the same for both objects. When they push the crate, it accelerates quickly. When they apply the same force to the safe, it accelerates very slowly. The game visually demonstrates that the safe has more inertia (resistance to changing its state of motion) because it has more mass.",
+              "learningPoints": [
+                "Defining inertia as the natural tendency of an object to resist a change in its state of motion.",
+                "Understanding that inertia is directly proportional to the mass of an object.",
+                "Concluding that a more massive object has greater inertia."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 510,
+          "title": "Lesson 5: Introduction to Momentum",
+          "slug": "lesson_5_introduction_to_momentum",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "510_1",
+              "name": "Momentum Impact",
+              "implementationDetails": "The player can launch different objects at a target wall that has an 'Impact Meter'. The player has sliders to adjust the 'Mass' and 'Velocity' of the object before launching. They can launch a low-mass 'bullet' at high velocity and observe the large impact. Then, they can launch a high-mass 'truck' at a very low velocity and discover it can produce the same large impact. A 'Momentum' value (p = mv) is calculated and displayed for each launch, helping the player to intuitively grasp that momentum is the product of both mass and velocity.",
+              "learningPoints": [
+                "Defining momentum as the 'quantity of motion' of an object.",
+                "Understanding the formula for momentum (p = mv).",
+                "Recognizing that both mass and velocity contribute to an object's momentum."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 511,
+          "title": "Lesson 6: Newton's Second Law of Motion",
+          "slug": "lesson_6_newtons_second_law_of_motion",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "511_1",
+              "name": "The Catching Challenge",
+              "implementationDetails": "The player acts as a baseball catcher. A fast-moving ball approaches. The player has two options for catching it: 'Hard Hands' (stopping the ball almost instantly) or 'Soft Hands' (pulling the hands back as the ball makes contact). A 'Force on Hands' meter is displayed. If the player chooses 'Hard Hands', the change in momentum happens over a very short time (Δt is small), causing the force meter to spike into a red 'PAIN' zone. If they choose 'Soft Hands', Δt increases, and the peak force is much lower. This visually demonstrates that Force is proportional to the rate of change of momentum (F ∝ Δp/Δt).",
+              "learningPoints": [
+                "Understanding Newton's Second Law as the relationship between force and the rate of change of momentum.",
+                "Visualizing that increasing the time of impact reduces the force experienced for the same change in momentum.",
+                "Applying the concept to real-world examples like catching a ball or high-jump landings."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 512,
+          "title": "Lesson 7: Mathematical Formulation of the Second Law (F=ma)",
+          "slug": "lesson_7_mathematical_formulation_of_the_second_law_fma",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "512_1",
+              "name": "Force & Acceleration Lab",
+              "implementationDetails": "A virtual physics lab. The player has a block of a fixed mass 'm' on a frictionless surface. They can apply a variable force 'F' using a slider. As they increase the force, they see the block's acceleration 'a' increase proportionally, with the values plotted on a real-time graph. In a second experiment, they apply a fixed force 'F' but can change the mass 'm' of the block. They observe that as mass increases, acceleration decreases. This sandbox allows players to discover the relationship F=ma by manipulating the variables themselves.",
+              "learningPoints": [
+                "Understanding the mathematical relationship F=ma.",
+                "Discovering that acceleration is directly proportional to the applied force.",
+                "Discovering that acceleration is inversely proportional to the mass of the object."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 513,
+          "title": "Lesson 8: Applications and Calculations Using the Second Law",
+          "slug": "lesson_8_applications_and_calculations_using_the_second_law",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "513_1",
+              "name": "Cargo Transporter",
+              "implementationDetails": "A puzzle game where the player must move a cargo container of a given mass (e.g., 1000 kg) with a crane. The goal is to lift it with a specific acceleration (e.g., 2 m/s²). The player must use the formula F=ma to calculate the required force (1000 kg * 2 m/s² = 2000 N) and set the crane's 'Lift Force' dial to 2000 N. If they set the force too low, the cargo accelerates too slowly; too high, and it accelerates too quickly, failing the mission. This applies the formula in a goal-oriented context.",
+              "learningPoints": [
+                "Applying the formula F=ma to solve numerical problems.",
+                "Practicing how to calculate force, mass, or acceleration given the other two quantities.",
+                "Building problem-solving skills in a practical, interactive environment."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 514,
+          "title": "Lesson 9: Newton's Third Law of Motion",
+          "slug": "lesson_9_newtons_third_law_of_motion",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "514_1",
+              "name": "Action-Reaction Pairs",
+              "implementationDetails": "An interactive simulation showing an astronaut floating in space. The player can press a 'Push Wall' button. An animation shows the astronaut pushing on the wall of their spaceship. As they push, two force vectors appear simultaneously: an 'action' vector on the wall, and an equal and opposite 'reaction' vector on the astronaut's hands. The astronaut then recoils and floats away from the ship. The game emphasizes that the forces are equal in magnitude, opposite in direction, and act on two different bodies.",
+              "learningPoints": [
+                "Understanding Newton's Third Law: for every action, there is an equal and opposite reaction.",
+                "Recognizing that action and reaction forces act on different objects.",
+                "Visualizing that these forces occur in pairs and are equal and opposite."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 515,
+          "title": "Lesson 10: Examples and Applications of the Third Law",
+          "slug": "lesson_10_examples_and_applications_of_the_third_law",
+          "display_order": 10,
+          "games": [
+            {
+              "id": 515_1,
+              "name": "Real World Recoil",
+              "implementationDetails": "The player is presented with three scenarios: a gun firing a bullet, a rocket launching, and a person stepping out of a boat. For each animated scenario, the player must drag and drop 'Action Force' and 'Reaction Force' labels onto the correct interacting parts. For the gun, the 'action' is the gun pushing the bullet forward, and the 'reaction' is the bullet pushing the gun backward (recoil). This helps students identify the action-reaction pairs in common, everyday examples.",
+              "learningPoints": [
+                "Applying Newton's Third Law to real-world situations.",
+                "Identifying the action-reaction pair in the motion of a rocket.",
+                "Explaining the recoil of a gun using the third law.",
+                "Understanding why a boat moves backward when a person jumps forward from it."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

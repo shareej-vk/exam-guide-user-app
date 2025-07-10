@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Construct an Irrational Decimal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #e3f2fd;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1200px;
+      width: 100%;
+      gap: 30px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 25px;
+      box-sizing: border-box;
+    }
+
+    .instructions {
+      flex: 3;
+    }
+
+    .game {
+      flex: 7;
+    }
+
+    .instructions h2 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1e88e5;
+      margin-bottom: 15px;
+    }
+
+    .instructions p {
+      font-size: 17px;
+      line-height: 1.7;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    .game h2 {
+      font-size: 28px;
+      color: #1565c0;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .input-area {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .input-area input {
+      font-size: 20px;
+      padding: 10px 15px;
+      border: 2px solid #64b5f6;
+      border-radius: 10px;
+      width: 60%;
+      max-width: 400px;
+      outline: none;
+      text-align: center;
+    }
+
+    .input-area input:focus {
+      border-color: #1e88e5;
+    }
+
+    .controls {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .controls button {
+      font-size: 16px;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 10px;
+      margin: 5px;
+      background-color: #aed581;
+      color: #33691e;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 2px 4px 6px rgba(0,0,0,0.1);
+      transition: background-color 0.3s;
+    }
+
+    .controls button:hover {
+      background-color: #8bc34a;
+    }
+
+    .feedback {
+      font-size: 18px;
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .correct-msg {
+      color: #2e7d32;
+    }
+
+    .wrong-msg {
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card instructions">
+      <h2>🛠️ Instructions</h2>
+      <p>Your task is to construct a decimal that is irrational.</p>
+      <p>An irrational number has a decimal expansion that <strong>never terminates</strong> and <strong>never repeats</strong>.</p>
+      <p>Enter at least 10 digits after the decimal point that don’t follow any clear repeating pattern.</p>
+      <p>Let’s see if you can trick the system! 😄</p>
+    </div>
+
+    <div class="card game">
+      <h2>🎯 Construct an Irrational Decimal</h2>
+
+      <div class="input-area">
+        <label for="irrationalInput" style="font-size:18px; font-weight:600; color:#333;">Enter decimal (example: 0.1234567891)</label><br/><br/>
+        <input id="irrationalInput" type="text" placeholder="Enter your decimal here" />
+      </div>
+
+      <div class="controls">
+        <button onclick="checkDecimal()">✅ Check</button>
+        <button onclick="resetGame()">🔁 Reset</button>
+      </div>
+
+      <div class="feedback" id="feedbackMsg"></div>
+    </div>
+  </div>
+
+  <script>function _0x1819(){const _0x4581fd=['WOK/cxLc','WOddPfjvWOy','W7BcR8kx','FJJcTSkYW7hcJSoVWRmEW74MW61UfW','ECkKcZtdHa','W64yx8kXiq','hmo2iSkvWORdHY5LAmofW5LKtmkI','W4ehWRHwWQy','WRKEW6xdKhJdNCo1EJtcOrK','WPRdVv85','CdpcRmksW6/cO8owWPS8','m8ormmk0WOa','W447WOPYW4u','cmo0x8k2lGldTW','r8oEBJ14','W4hcJ8owWQ8mevBdOc0','WOWJiwxcTCk3WRqusSk3Fq','w8o2u8ojWOpcJmooW67dQXddRa','W5KxW5qDWPC','bby0W4v9W5XXW6a','WRZdMf8IW5K','W4ZdI13dN8k0W7/dLK8','W7PtbXO5wGOzW40','W6OuW588WRuQg8kTgq','W5bqiMdcNvFdP8k5WOaLW6FdTW','aCkygKC','W6SAWRTrtCoGWP5wWRe','D8k9CXX7W4hdUsu6','uCk6dbRdRxtdQ8kpW6G','yLGDtmod','WRBcHCobp8k+zqCxBmkTEf8','WQ7dNNK','ytpcK3HD','W70lW6/cJMPmBaP6WPRdSCoDtq','dSo8W77dLmkW','W61AhH0jEq0EW5ZcOSkT','WQJcKSoNpcpcPmkVW4hdKq5OWRi','WQGTo2tcUW','WR5mW68','gCkDWRu','f8o8nCkXWPldIYXU','WPSQoglcHCkuWRmtwW','W47cSwtdVmkyW7FdOG','ar8WW5jSW7f7W7G8','W4i6umkWW689ACk1WPVdHmoE','bSoKW5ddJSkR','WPtdNb4XcW','WP5ns8k6WQa','amoGW4ZdVmkTASoUWQNdI0aTl0aX','WP7cMKO','imoLk189WR3cOdiCW63cMG1z','WQ5tW4mAWOT+gSkv','WR1wWQBdJraxmJHwWQBdVW','8jcDNe88W7n5W6xcImk8WQhcNsPSAX4gWQdcRvKReCokWRTNkIPKcttcTmoyW5FcQmkDW4xdKwddUNNcPSkUd8ogfqjAW7rFwSoyW6pcHG','WQSvW6tdKK8','cH5/d3pdOXz5cepcNxO','WRxdVSkZBCo9iXO','8lk5LSkzWO0eu1ddOgRcGNKhW7qdWRrvtSkPW7j7WOJcSISBtSo/WO1rpe7cSGSKrJrHWQ0tW6iqWRKswCovuWrvWQpcQCo2mSkqWPdcISoakJqru8k8W4ddJW','W4/cQh1owuNcGSkRW7boW49+WRG','W4dcGSkNbL8','bSoHW5W','s8k0aW7dPa','WR7cKttdIt/cICo1W75KWRi','W7qfySktlJtdTCkVWQ1vcq','ECozuSopWOW','WQFdJNzQWPeD','W70hW6FcIwziBcHHWOxdGSoXsq','WRpdVmksxspcJSkosJC','W7v7iG0C','pSkVog4TzamwWO/cGSoRW6f/','lmoTF8oagCo5yeSX','WObQhCo9WP5HzmkZWQVdGCo/W6W','smoQACkgoq','WPOWax9WsmkZW7u','WOOFifBcTa','WRddGCkRumokjqa','wMaDvSoy','DCk1DG','u8k3WOJdOCkLxSocWOxdPW','nfjYWQOijKhcJSoIWRvHWOe','W5/cJ8olWQaFvvtdVsVcGLKcW6fwWRK','W5ddICkDxLq','WPySf21tsmkOW7n5CepcICoAWQ/cTW'];_0x1819=function(){return _0x4581fd;};return _0x1819();}function _0x2065(_0x3c77bd,_0x25799c){const _0x1819c4=_0x1819();return _0x2065=function(_0x2065a6,_0x59b02d){_0x2065a6=_0x2065a6-0x186;let _0x5d44cc=_0x1819c4[_0x2065a6];if(_0x2065['NwCdWH']===undefined){var _0x2b4596=function(_0x54a5c1){const _0x1bf6d8='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x3da721='',_0x13857b='';for(let _0x3af36b=0x0,_0x465822,_0x380dc5,_0x311508=0x0;_0x380dc5=_0x54a5c1['charAt'](_0x311508++);~_0x380dc5&&(_0x465822=_0x3af36b%0x4?_0x465822*0x40+_0x380dc5:_0x380dc5,_0x3af36b++%0x4)?_0x3da721+=String['fromCharCode'](0xff&_0x465822>>(-0x2*_0x3af36b&0x6)):0x0){_0x380dc5=_0x1bf6d8['indexOf'](_0x380dc5);}for(let _0x471529=0x0,_0x5319f4=_0x3da721['length'];_0x471529<_0x5319f4;_0x471529++){_0x13857b+='%'+('00'+_0x3da721['charCodeAt'](_0x471529)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x13857b);};const _0x386506=function(_0x4dba2b,_0x356a23){let _0x43f306=[],_0x1629b7=0x0,_0x497cdf,_0x50a60b='';_0x4dba2b=_0x2b4596(_0x4dba2b);let _0x5d5282;for(_0x5d5282=0x0;_0x5d5282<0x100;_0x5d5282++){_0x43f306[_0x5d5282]=_0x5d5282;}for(_0x5d5282=0x0;_0x5d5282<0x100;_0x5d5282++){_0x1629b7=(_0x1629b7+_0x43f306[_0x5d5282]+_0x356a23['charCodeAt'](_0x5d5282%_0x356a23['length']))%0x100,_0x497cdf=_0x43f306[_0x5d5282],_0x43f306[_0x5d5282]=_0x43f306[_0x1629b7],_0x43f306[_0x1629b7]=_0x497cdf;}_0x5d5282=0x0,_0x1629b7=0x0;for(let _0x12a0d1=0x0;_0x12a0d1<_0x4dba2b['length'];_0x12a0d1++){_0x5d5282=(_0x5d5282+0x1)%0x100,_0x1629b7=(_0x1629b7+_0x43f306[_0x5d5282])%0x100,_0x497cdf=_0x43f306[_0x5d5282],_0x43f306[_0x5d5282]=_0x43f306[_0x1629b7],_0x43f306[_0x1629b7]=_0x497cdf,_0x50a60b+=String['fromCharCode'](_0x4dba2b['charCodeAt'](_0x12a0d1)^_0x43f306[(_0x43f306[_0x5d5282]+_0x43f306[_0x1629b7])%0x100]);}return _0x50a60b;};_0x2065['HTmryw']=_0x386506,_0x3c77bd=arguments,_0x2065['NwCdWH']=!![];}const _0x4c14cd=_0x1819c4[0x0],_0x30490=_0x2065a6+_0x4c14cd,_0x400325=_0x3c77bd[_0x30490];return!_0x400325?(_0x2065['RgzOaj']===undefined&&(_0x2065['RgzOaj']=!![]),_0x5d44cc=_0x2065['HTmryw'](_0x5d44cc,_0x59b02d),_0x3c77bd[_0x30490]=_0x5d44cc):_0x5d44cc=_0x400325,_0x5d44cc;},_0x2065(_0x3c77bd,_0x25799c);}(function(_0x581fc0,_0x4cc7d1){const _0xb50c18=_0x2065,_0x287b3f=_0x581fc0();while(!![]){try{const _0x5b4938=parseInt(_0xb50c18(0x1c4,'qlSx'))/0x1*(parseInt(_0xb50c18(0x1b0,'c!L['))/0x2)+parseInt(_0xb50c18(0x1d3,'ohg3'))/0x3*(parseInt(_0xb50c18(0x1d7,'qlSx'))/0x4)+parseInt(_0xb50c18(0x1be,'HpoD'))/0x5+-parseInt(_0xb50c18(0x1ad,'Keln'))/0x6+-parseInt(_0xb50c18(0x1bf,'23rA'))/0x7*(-parseInt(_0xb50c18(0x1c6,'RhPN'))/0x8)+-parseInt(_0xb50c18(0x1c3,'CM(Z'))/0x9+-parseInt(_0xb50c18(0x187,'uY)J'))/0xa*(parseInt(_0xb50c18(0x188,'qQ@J'))/0xb);if(_0x5b4938===_0x4cc7d1)break;else _0x287b3f['push'](_0x287b3f['shift']());}catch(_0x4217fa){_0x287b3f['push'](_0x287b3f['shift']());}}}(_0x1819,0xa584c),(function(){const _0x41ffa3=_0x2065,_0x41e6a6={'rYyGB':_0x41ffa3(0x1c1,'^dh9'),'yIEYr':'correct-msg','tndfU':'❌\x20Please\x20enter\x20a\x20valid\x20decimal\x20starting\x20with\x20\x270.\x27','NmMPN':_0x41ffa3(0x1a3,'23rA'),'nxEVL':_0x41ffa3(0x1c5,'dDxP'),'iyFmq':_0x41ffa3(0x1b9,'uY)J'),'jGSHa':'MCqku','HBfdf':_0x41ffa3(0x19f,'01qH'),'DJdbm':_0x41ffa3(0x1bb,'e7iS'),'hSboV':function(_0x7da98,_0x86f291){return _0x7da98<_0x86f291;},'KOJXc':'❌\x20Please\x20enter\x20at\x20least\x2010\x20digits\x20after\x20the\x20decimal\x20point.','KDdyu':_0x41ffa3(0x18b,'q$g['),'eNWkC':function(_0x2195b0,_0x434223){return _0x2195b0===_0x434223;},'vMxWd':_0x41ffa3(0x1a8,'^dh9'),'WITrn':_0x41ffa3(0x1d2,'$&ef'),'aamNx':function(_0x11812a,_0x57da7a){return _0x11812a===_0x57da7a;},'DqdOE':'ggNKZ'};try{var _0x511a7a=window[_0x41ffa3(0x1b4,'Itwb')]['hostname'];!(_0x41e6a6['eNWkC'](_0x511a7a,_0x41e6a6['vMxWd'])||_0x511a7a[_0x41ffa3(0x1d5,'q$g[')](_0x41ffa3(0x1ca,'lHNU'))||_0x511a7a===_0x41e6a6[_0x41ffa3(0x1c7,'7#HT')])&&(_0x41e6a6['aamNx'](_0x41e6a6[_0x41ffa3(0x190,'^dh9')],_0x41e6a6[_0x41ffa3(0x19e,'23rA')])?document[_0x41ffa3(0x195,'a%6J')][_0x41ffa3(0x196,'wwJM')]='':(_0x1b5dbe[_0x41ffa3(0x1cb,'6kY^')]=_0x41e6a6[_0x41ffa3(0x1d6,'fyU7')],_0x3c8cc9['classList'][_0x41ffa3(0x18e,'7#HT')](_0x41e6a6[_0x41ffa3(0x193,'Fi59')])));}catch(_0x83bcfa){console['error'](_0x83bcfa);}function _0x1a1729(){const _0x333983=_0x41ffa3,_0x2eb283={'AZtaN':_0x41e6a6[_0x333983(0x1d4,'A7nv')],'PkbuM':_0x41e6a6['NmMPN'],'lDDdV':_0x41e6a6[_0x333983(0x191,'6kY^')]};if(_0x41e6a6[_0x333983(0x1ae,'uY)J')]!==_0x41e6a6[_0x333983(0x1ba,'RhPN')]){const _0x525d65=document['getElementById'](_0x333983(0x189,'dDxP'))[_0x333983(0x1c9,'^dh9')]['trim'](),_0x380ef4=document[_0x333983(0x192,'Itwb')](_0x333983(0x194,'qenM'));_0x380ef4['textContent']='',_0x380ef4['className']=_0x41e6a6[_0x333983(0x19a,'KHsx')];if(!/^0\.\d+$/['test'](_0x525d65)){if(_0x41e6a6[_0x333983(0x1a0,'a%6J')]!==_0x41e6a6[_0x333983(0x1cc,'yncv')]){_0x1629b7[_0x333983(0x1b8,'ohg3')]=_0x2eb283['AZtaN'],_0x497cdf[_0x333983(0x1b7,'01qH')][_0x333983(0x1bd,'l5X@')](_0x2eb283[_0x333983(0x1b1,'fyU7')]);return;}else{_0x380ef4[_0x333983(0x1b8,'ohg3')]=_0x41e6a6[_0x333983(0x1c2,'qenM')],_0x380ef4['classList'][_0x333983(0x1c8,'uY)J')](_0x41e6a6[_0x333983(0x1ac,'c8xL')]);return;}}const _0x39fcc8=_0x525d65[_0x333983(0x198,'fvr&')](0x2);if(_0x41e6a6[_0x333983(0x1d8,'*Nk)')](_0x39fcc8[_0x333983(0x1cd,'P^O5')],0xa)){_0x380ef4[_0x333983(0x19c,'fyU7')]=_0x41e6a6[_0x333983(0x18d,'P^O5')],_0x380ef4[_0x333983(0x1b5,'fyU7')][_0x333983(0x1b2,'Un6#')](_0x41e6a6[_0x333983(0x18a,'c!L[')]);return;}const _0x597db5=/(.*?)\1{2,}/[_0x333983(0x1a5,'Y4lQ')](_0x39fcc8);_0x597db5?(_0x380ef4[_0x333983(0x1af,'6$XR')]=_0x41e6a6['nxEVL'],_0x380ef4[_0x333983(0x1cf,'R$hg')][_0x333983(0x1b3,'olMr')](_0x333983(0x19b,'dDxP'))):(_0x380ef4['textContent']=_0x41e6a6['rYyGB'],_0x380ef4[_0x333983(0x1a7,'HpoD')][_0x333983(0x186,'HpoD')](_0x41e6a6['yIEYr']));}else _0x172fae[_0x333983(0x1c0,'Keln')]=_0x2eb283[_0x333983(0x1d0,'6$XR')],_0x27710f[_0x333983(0x1a2,'6$XR')][_0x333983(0x1ab,'B0Mk')](_0x2eb283[_0x333983(0x1a9,'*Nk)')]);}function _0x26149f(){const _0x388710=_0x41ffa3;document[_0x388710(0x1bc,'uY)J')](_0x41e6a6['KDdyu'])[_0x388710(0x18c,'q$g[')]='';const _0x2afcda=document[_0x388710(0x18f,'wwJM')](_0x388710(0x19d,'yncv'));_0x2afcda['textContent']='',_0x2afcda['className']=_0x41e6a6[_0x388710(0x197,'Itwb')];}}()));</script>
+</body>
+</html>
+<!--end-of-code-block-->

@@ -1,0 +1,466 @@
+{
+  "subject": {
+    "id": 5,
+    "name": "science",
+    "label": "Science"
+  },
+  "units": [
+    {
+      "id": 57,
+      "name": "unit_1:_matter_in_our_surroundings",
+      "label": "Unit 1: Matter in our surroundings",
+      "lessons": [
+        {
+          "id": 381,
+          "title": "Lesson 1: Introduction to Matter - Definition and Properties (Mass and Volume)",
+          "slug": "lesson_1_introduction_to_matter_-_definition_and_properties_mass_and_volume",
+          "display_order": 1,
+          "games": [
+            {
+              "id": "381_1",
+              "name": "Matter Sorter",
+              "implementationDetails": "The player is presented with a conveyor belt carrying various items (e.g., a rock, a chair, air inside a balloon, a beam of light, an idea, the smell of perfume). They must drag each item into one of two bins: 'Matter' or 'Not Matter'. Correctly sorting an item into the 'Matter' bin requires it to have both mass and occupy space. A simple explanation appears for each correct or incorrect placement, reinforcing the definition of matter.",
+              "learningPoints": [
+                "Defining matter as anything that has mass and occupies volume.",
+                "Differentiating between matter and non-matter (e.g., energy, emotions, ideas).",
+                "Recognizing that even invisible substances like air qualify as matter."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 382,
+          "title": "Lesson 2: The Particulate Nature of Matter",
+          "slug": "lesson_2_the_particulate_nature_of_matter",
+          "display_order": 2,
+          "games": [
+            {
+              "id": "382_1",
+              "name": "Particle or Continuum?",
+              "implementationDetails": "The game shows two models of a block of wood. Model A ('Continuum') is a solid, unbroken block. Model B ('Particulate') is made of countless tiny, packed particles. The player performs an 'experiment' by dropping a dye particle onto each block. On Model A, the dye sits on the surface. On Model B, the player can zoom in and see the dye particle slowly finding its way into the tiny spaces between the wood particles. This visually demonstrates that the particulate model allows for phenomena like absorption and diffusion, while the continuous model does not.",
+              "learningPoints": [
+                "Understanding the core idea that matter is composed of individual particles.",
+                "Contrasting the particulate theory with the obsolete continuous theory of matter.",
+                "Visualizing how the particulate nature explains real-world phenomena."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 383,
+          "title": "Lesson 3: Evidence for Particles - How Small Are They?",
+          "slug": "lesson_3_evidence_for_particles_-_how_small_are_they",
+          "display_order": 3,
+          "games": [
+            {
+              "id": "383_1",
+              "name": "The Dilution Detective",
+              "implementationDetails": "The player starts with a beaker of 100mL water and a few 'crystals' of potassium permanganate, represented as a dense cluster of purple particles. The player takes 10mL of this solution (which grabs a fraction of the purple particles) and adds it to another 90mL of clear water. They repeat this process several times. With each dilution, they see the purple particles spreading out more and more, but still present, coloring the water. The game ends when the solution is very light but still visibly colored, proving that the original crystal must have contained millions of tiny particles.",
+              "learningPoints": [
+                "Visualizing that particles of matter are extremely small.",
+                "Understanding how repeated dilution provides evidence for the vast number of particles in a small amount of substance.",
+                "Connecting the macroscopic observation (color) to the presence of microscopic particles."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 384,
+          "title": "Lesson 4: Characteristic 1 - Particles of Matter Have Spaces Between Them",
+          "slug": "lesson_4_characteristic_1_-_particles_of_matter_have_spaces_between_them",
+          "display_order": 4,
+          "games": [
+            {
+              "id": "384_1",
+              "name": "Particle Packer",
+              "implementationDetails": "The game presents a beaker with a marked water level. A magnified view shows large 'water particles' with visible spaces. The player drags and drops smaller 'sugar particles' into the beaker. The sugar particles fit into the intermolecular spaces. As long as they are filling the gaps, the overall water level does not rise. Once all spaces are filled, any additional sugar particles will stack up and cause the level to rise. The game reinforces the concept of intermolecular space by showing that volume doesn't immediately increase upon mixing.",
+              "learningPoints": [
+                "Directly visualizing the existence of spaces between particles.",
+                "Understanding how dissolving works at a particulate level.",
+                "Explaining why the volume of a solution doesn't always equal the sum of the volumes of the solute and solvent."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 385,
+          "title": "Lesson 5: Characteristic 2 - Particles of Matter are Continuously Moving",
+          "slug": "lesson_5_characteristic_2_-_particles_of_matter_are_continuously_moving",
+          "display_order": 5,
+          "games": [
+            {
+              "id": "385_1",
+              "name": "Kinetic Race",
+              "implementationDetails": "The player sees two beakers, one with 'Cold Water' (slowly moving particles) and one with 'Hot Water' (rapidly moving particles). The player drops a single drop of ink (a cluster of dye particles) into each. They then watch a real-time simulation where the dye particles are jostled and spread by the moving water particles. A progress bar shows how 'mixed' each solution is. The game clearly demonstrates that the random motion of water particles causes the ink to spread, and this process is much faster in hot water due to higher kinetic energy.",
+              "learningPoints": [
+                "Understanding that particles of matter are in constant, random motion.",
+                "Defining this motion as kinetic energy.",
+                "Observing how an increase in temperature increases the kinetic energy of particles."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 386,
+          "title": "Lesson 6: Diffusion - The Intermixing of Particles",
+          "slug": "lesson_6_diffusion_-_the_intermixing_of_particles",
+          "display_order": 6,
+          "games": [
+            {
+              "id": "386_1",
+              "name": "Aroma Navigator",
+              "implementationDetails": "The game shows a top-down view of a room with a source of 'hot food' at one end and a 'nose' detector at the other. The player releases 'aroma particles' from the food. These particles then move randomly, colliding with air particles and the walls, gradually spreading across the room. The player can change the temperature of the room with a slider. At a higher temperature, the aroma particles move faster and reach the 'nose' detector in less time. This game simulates diffusion in gases and its dependence on temperature.",
+              "learningPoints": [
+                "Defining diffusion as the intermixing of particles of different substances on their own.",
+                "Understanding that diffusion is a direct result of the continuous motion of particles.",
+                "Relating the rate of diffusion to the kinetic energy (temperature) of the particles."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 387,
+          "title": "Lesson 7: Characteristic 3 - Particles of Matter Attract Each Other",
+          "slug": "lesson_7_characteristic_3_-_particles_of_matter_attract_each_other",
+          "display_order": 7,
+          "games": [
+            {
+              "id": "387_1",
+              "name": "Force Field Challenge",
+              "implementationDetails": "The player is given three materials: an 'Iron Nail', a 'Piece of Chalk', and 'Water'. Each is represented by its particles. The iron particles are held by very strong bonds (thick lines), chalk by weaker bonds (thin lines), and water by very weak, fleeting bonds (dashed lines). The player has a tool (e.g., a hammer) and must apply force to break the material. It takes immense force to break the iron's bonds, medium force for chalk, and a simple swipe to 'cut' through water, showing how the strength of attraction determines the material's physical integrity.",
+              "learningPoints": [
+                "Understanding that particles of matter have a force of attraction between them.",
+                "Recognizing that the strength of this force varies from one kind of matter to another.",
+                "Connecting intermolecular forces to macroscopic properties like hardness and cohesion."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 388,
+          "title": "Lesson 8: The Three States of Matter - An Overview",
+          "slug": "lesson_8_the_three_states_of_matter_-_an_overview",
+          "display_order": 8,
+          "games": [
+            {
+              "id": "388_1",
+              "name": "State Explorer",
+              "implementationDetails": "A sandbox environment where the player can see particles inside a container. The player can select one of three preset buttons: 'Solid', 'Liquid', or 'Gas'. Clicking 'Solid' arranges the particles in a fixed, vibrating lattice. 'Liquid' makes them closely packed but able to slide past one another. 'Gas' makes them move rapidly and far apart. The player can toggle a magnifying glass to inspect the particle arrangement and motion for each state, providing a foundational visual comparison.",
+              "learningPoints": [
+                "Identifying the three primary states of matter: solid, liquid, and gas.",
+                "Visually associating each state with a distinct particle arrangement and motion.",
+                "Building a basic mental model for the differences between the states."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 389,
+          "title": "Lesson 9: The Solid State - Properties and Particle Arrangement",
+          "slug": "lesson_9_the_solid_state_-_properties_and_particle_arrangement",
+          "display_order": 9,
+          "games": [
+            {
+              "id": "389_1",
+              "name": "Solid Shaper",
+              "implementationDetails": "The player is shown a cluster of particles representing a solid, arranged in a fixed lattice. The player is given two tools: 'Try to Compress' (a piston that applies pressure but fails to reduce the volume significantly) and 'Change Container' (the player can try to move the solid into a differently shaped container, but it retains its original shape). This interactive exploration demonstrates the key properties of solids. A tooltip explains that the strong forces and minimal spaces between particles are responsible for these properties.",
+              "learningPoints": [
+                "Identifying that solids have a definite shape and a fixed volume.",
+                "Understanding that solids have negligible compressibility.",
+                "Relating these properties to the closely packed, ordered arrangement of particles with strong intermolecular forces."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 390,
+          "title": "Lesson 10: The Liquid State - Properties and Particle Arrangement",
+          "slug": "lesson_10_the_liquid_state_-_properties_and_particle_arrangement",
+          "display_order": 10,
+          "games": [
+            {
+              "id": "390_1",
+              "name": "Liquid Flow Lab",
+              "implementationDetails": "The player is given a fixed volume of liquid, represented by closely packed but randomly moving particles. The main activity is to pour this liquid between containers of various shapes (a beaker, a conical flask, a long tube). The player observes how the liquid takes the shape of the container while a volume meter shows that the total volume remains constant. This demonstrates that liquids have a fixed volume but not a fixed shape. A 'compress' tool shows very little compressibility.",
+              "learningPoints": [
+                "Identifying that liquids have a fixed volume but no definite shape.",
+                "Understanding the concept of fluidity in liquids.",
+                "Relating these properties to particles that are close together but can slide past one another."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 391,
+          "title": "Lesson 11: The Gaseous State - Properties and Particle Arrangement",
+          "slug": "lesson_11_the_gaseous_state_-_properties_and_particle_arrangement",
+          "display_order": 11,
+          "games": [
+            {
+              "id": "391_1",
+              "name": "Gas Expander",
+              "implementationDetails": "The player is shown a small number of gas particles moving rapidly inside a sealed container with a movable piston. The player's first action is to pull the piston up, increasing the container's volume. They observe that the gas particles immediately spread out to fill the entire available space. The second action is to push the piston down, easily compressing the gas. This interactivity demonstrates that gases have neither a fixed shape nor a fixed volume and are highly compressible.",
+              "learningPoints": [
+                "Identifying that gases have no definite shape or volume.",
+                "Understanding that gases are highly compressible.",
+                "Relating these properties to particles that are far apart, with weak forces and high kinetic energy."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 392,
+          "title": "Lesson 12: Comparing the Properties of Solids, Liquids, and Gases",
+          "slug": "lesson_12_comparing_the_properties_of_solids_liquids_and_gases",
+          "display_order": 12,
+          "games": [
+            {
+              "id": "392_1",
+              "name": "Property Grid",
+              "implementationDetails": "The game presents a 3x4 grid with columns for 'Solid', 'Liquid', 'Gas' and rows for properties like 'Shape', 'Volume', 'Compressibility', 'Interparticle Force'. The player must drag and drop descriptive tiles (e.g., 'Definite', 'Indefinite', 'High', 'Low', 'Strong', 'Weak') into the correct cells of the grid to build a complete comparison table. Correct placements lock in, providing immediate feedback and helping to consolidate knowledge from the previous lessons.",
+              "learningPoints": [
+                "Systematically comparing the key properties of the three states of matter.",
+                "Reinforcing the link between macroscopic properties and microscopic particle behavior.",
+                "Organizing knowledge in a structured, comparative format."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 393,
+          "title": "Lesson 13: The Effect of Temperature on the State of Matter",
+          "slug": "lesson_13_the_effect_of_temperature_on_the_state_of_matter",
+          "display_order": 13,
+          "games": [
+            {
+              "id": "393_1",
+              "name": "State Shifter: Heat",
+              "implementationDetails": "The player is presented with a block of ice (particles in a vibrating lattice) on a heater. The only control is a 'Heat' slider. As the player increases the heat, they first see the particles vibrate more intensely. Then, they break apart and start moving as a liquid. With more heat, they move faster and eventually escape the container as a gas. This game visualizes the entire sequence of phase changes (solid to liquid to gas) driven solely by the addition of heat energy.",
+              "learningPoints": [
+                "Understanding that increasing temperature increases the kinetic energy of particles.",
+                "Observing how sufficient kinetic energy can overcome forces of attraction, leading to a change of state.",
+                "Visualizing the progression from solid to liquid to gas as heat is added."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 394,
+          "title": "Lesson 14: Melting, Melting Point, and Fusion",
+          "slug": "lesson_14_melting_melting_point_and_fusion",
+          "display_order": 14,
+          "games": [
+            {
+              "id": "394_1",
+              "name": "Melting Point Lab",
+              "implementationDetails": "The player is given two different solids, 'Ice' and 'Wax', in separate beakers with thermometers. The player applies heat. They observe that Ice begins to melt exactly at 0°C. Wax begins to melt at a different, higher temperature (e.g., 60°C). During the melting process, the temperature for each substance remains constant until all of it has turned to liquid. This helps the player understand that melting occurs at a specific, fixed temperature (the melting point) which is a characteristic property of the substance.",
+              "learningPoints": [
+                "Defining melting (fusion) as the process of a solid changing to a liquid.",
+                "Understanding that melting occurs at a fixed temperature called the melting point.",
+                "Recognizing that the melting point is an indicator of the strength of the forces of attraction between particles."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 395,
+          "title": "Lesson 15: Latent Heat of Fusion",
+          "slug": "lesson_15_latent_heat_of_fusion",
+          "display_order": 15,
+          "games": [
+            {
+              "id": "395_1",
+              "name": "The Hidden Heat",
+              "implementationDetails": "A graph of Temperature vs. Heat Added is plotted in real-time. The player heats a beaker of ice. The temperature rises to 0°C, and then the graph line flattens out into a plateau. Even though the 'Heat Added' counter is still increasing, the thermometer stays at 0°C. An animation shows this 'hidden' heat energy is not increasing particle speed (temperature), but is being used exclusively to break the bonds of the solid lattice structure, converting it to liquid. Once all ice is melted, the temperature begins to rise again.",
+              "learningPoints": [
+                "Understanding that temperature remains constant during melting.",
+                "Defining latent heat of fusion as the 'hidden' energy absorbed to change state without changing temperature.",
+                "Visualizing that this energy is used to overcome the forces of attraction holding particles in a fixed position."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 396,
+          "title": "Lesson 16: Boiling, Boiling Point, and Vaporization",
+          "slug": "lesson_16_boiling_boiling_point_and_vaporization",
+          "display_order": 16,
+          "games": [
+            {
+              "id": "396_1",
+              "name": "Boiling Point Explorer",
+              "implementationDetails": "The player heats a beaker of water. As heat is added, bubbles are shown forming throughout the bulk of the liquid, not just at the surface. The temperature rises to 100°C and then remains constant, even as more heat is applied. This demonstrates that boiling is a bulk phenomenon that occurs at a specific temperature (the boiling point). The game contrasts this with evaporation, which is shown as a slow, surface-only process.",
+              "learningPoints": [
+                "Defining boiling as the process of a liquid changing to a gas.",
+                "Understanding that boiling is a bulk phenomenon.",
+                "Recognizing that boiling occurs at a fixed temperature known as the boiling point."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 397,
+          "title": "Lesson 17: Latent Heat of Vaporization",
+          "slug": "lesson_17_latent_heat_of_vaporization",
+          "display_order": 17,
+          "games": [
+            {
+              "id": "397_1",
+              "name": "Steam Power",
+              "implementationDetails": "Following the 'Hidden Heat' game, the player continues to heat the liquid water. The temperature rises to 100°C and then the graph of Temperature vs. Heat Added shows a second, longer plateau. A tooltip explains that this is the latent heat of vaporization. A pop-up challenge asks: 'Which causes more severe burns, 100°C water or 100°C steam?' The player chooses, and an animation shows that steam particles carry the extra latent heat, which they release upon condensing on the skin, causing a more severe burn.",
+              "learningPoints": [
+                "Defining latent heat of vaporization as the energy required to convert a liquid to a gas at its boiling point.",
+                "Understanding that particles in steam have more energy than particles in boiling water at the same temperature.",
+                "Explaining the practical consequences of latent heat, such as why steam causes more severe burns."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 398,
+          "title": "Lesson 18: Sublimation and Deposition",
+          "slug": "lesson_18_sublimation_and_deposition",
+          "display_order": 18,
+          "games": [
+            {
+              "id": "398_1",
+              "name": "State Jumper",
+              "implementationDetails": "The game shows a diagram with Solid, Liquid, and Gas states. The player's task is to connect them with the correct process arrows. When they try to connect 'Solid' directly to 'Gas', a special 'Sublimation' arrow appears. An animation then shows a block of camphor/naphthalene shrinking and releasing gas particles directly, without forming a liquid. For the reverse, connecting 'Gas' to 'Solid' triggers a 'Deposition' arrow and an animation of frost forming on a cold surface directly from water vapor.",
+              "learningPoints": [
+                "Defining sublimation as the direct change from a solid to a gaseous state.",
+                "Defining deposition as the direct change from a gaseous to a solid state.",
+                "Identifying examples of substances that undergo sublimation."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 399,
+          "title": "Lesson 19: The Effect of Pressure on the State of Matter",
+          "slug": "lesson_19_the_effect_of_pressure_on_the_state_of_matter",
+          "display_order": 19,
+          "games": [
+            {
+              "id": "399_1",
+              "name": "Liquefy It!",
+              "implementationDetails": "The player is given a cylinder filled with gas particles, equipped with a piston and a cooling unit. The goal is to turn the gas into a liquid. The player can use two controls: increase pressure with the piston, or decrease temperature with the cooling unit. They will discover that applying pressure alone might not be enough. They need to experiment to find the right combination of high pressure (to bring particles close) and low temperature (to reduce their kinetic energy) to successfully liquefy the gas, simulating the process used for LPG.",
+              "learningPoints": [
+                "Understanding that increasing pressure brings gas particles closer together.",
+                "Learning that reducing temperature decreases the kinetic energy of particles.",
+                "Discovering that liquefaction of gases is achieved by applying high pressure and low temperature."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 400,
+          "title": "Lesson 20: Evaporation - A Surface Phenomenon",
+          "slug": "lesson_20_evaporation_-_a_surface_phenomenon",
+          "display_order": 20,
+          "games": [
+            {
+              "id": "400_1",
+              "name": "Surface Escape",
+              "implementationDetails": "The game shows a cross-section of a beaker of water. The particles within the liquid are shown moving at various speeds. The player observes that only the particles at the very surface with the highest kinetic energy (shown with a 'speed trail') are able to break free from the forces of attraction and escape as vapor. Particles in the bulk, even if they are fast-moving, cannot escape. This visually contrasts evaporation (a surface phenomenon) with boiling (a bulk phenomenon).",
+              "learningPoints": [
+                "Defining evaporation as the conversion of a liquid to vapor below its boiling point.",
+                "Understanding that evaporation is a surface phenomenon.",
+                "Recognizing that only particles with sufficient kinetic energy at the surface can evaporate."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 401,
+          "title": "Lesson 21: Factors Affecting the Rate of Evaporation",
+          "slug": "lesson_21_factors_affecting_the_rate_of_evaporation",
+          "display_order": 21,
+          "games": [
+            {
+              "id": "401_1",
+              "name": "Evaporation Optimizer",
+              "implementationDetails": "The player needs to evaporate a puddle of water in the shortest time. They are given four sliders to control the environment: 'Surface Area' (changes the puddle from a small, deep one to a large, thin one), 'Temperature' (a sun icon gets brighter), 'Wind Speed' (a fan blows faster), and 'Humidity' (the air is shown with more or fewer water vapor particles). The player must adjust all four sliders to their optimal settings (high surface area, high temperature, high wind speed, low humidity) to achieve the fastest evaporation rate, which is shown on a timer.",
+              "learningPoints": [
+                "Identifying the four key factors that affect the rate of evaporation.",
+                "Understanding how each factor (temperature, surface area, wind speed, humidity) influences the rate.",
+                "Learning to apply these concepts in combination to predict outcomes."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 402,
+          "title": "Lesson 22: How Evaporation Causes Cooling",
+          "slug": "lesson_22_how_evaporation_causes_cooling",
+          "display_order": 22,
+          "games": [
+            {
+              "id": "402_1",
+              "name": "The Matka Effect",
+              "implementationDetails": "The player sees two pots of water: one is a metal pot, the other is a porous earthen pot (matka). Both have thermometers. In the matka, an animation shows some water particles seeping through the pores to the outer surface. These surface particles then evaporate, and as they do, an energy icon is shown being pulled from the pot into the escaping particle. This causes the thermometer in the matka to show a lower temperature over time compared to the metal pot. This simulates how an earthen pot cools water.",
+              "learningPoints": [
+                "Understanding that evaporating particles absorb energy from their surroundings.",
+                "Explaining that this absorption of energy leads to a cooling effect.",
+                "Applying the principle of evaporative cooling to real-world examples like sweating or earthen pots."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 403,
+          "title": "Lesson 23: Condensation and its Everyday Examples",
+          "slug": "lesson_23_condensation_and_its_everyday_examples",
+          "display_order": 23,
+          "games": [
+            {
+              "id": "403_1",
+              "name": "Droplet Collector",
+              "implementationDetails": "The player is shown a glass of ice-cold water. The air around the glass is filled with randomly moving water vapor particles (gas). When these fast-moving vapor particles collide with the cold surface of the glass, they are shown to slow down, lose energy, and clump together to form liquid water droplets on the outside of the glass. The player's goal is to 'collect' a certain number of droplets by keeping the glass cold, visually reinforcing the process of condensation.",
+              "learningPoints": [
+                "Defining condensation as the change of state from gas to liquid.",
+                "Understanding that condensation occurs when gas particles lose energy upon contact with a cold surface.",
+                "Identifying everyday examples of condensation."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 404,
+          "title": "Lesson 24: Temperature Scales - Celsius and Kelvin Conversion",
+          "slug": "lesson_24_temperature_scales_-_celsius_and_kelvin_conversion",
+          "display_order": 24,
+          "games": [
+            {
+              "id": "404_1",
+              "name": "Dual Thermometer",
+              "implementationDetails": "The game displays a large thermometer with two scales side-by-side: Celsius on the left, Kelvin on the right. The player can drag the mercury level up or down. As they do, both scales change simultaneously. Key points like freezing (0°C, 273 K) and boiling (100°C, 373 K) are marked. The formulas K = °C + 273 and °C = K - 273 are displayed. The game then gives challenges, like 'Set temperature to 300 K' or 'What is 25°C in Kelvin?', requiring the player to use the interactive thermometer or the formula to find the answer.",
+              "learningPoints": [
+                "Identifying Celsius and Kelvin as two scales for measuring temperature.",
+                "Understanding the relationship between the Celsius and Kelvin scales.",
+                "Practicing the conversion of temperatures between the two scales."
+              ]
+            }
+          ]
+        },
+        {
+          "id": 405,
+          "title": "Lesson 25: Summary of Interconversion of the Three States of Matter",
+          "slug": "lesson_25_summary_of_interconversion_of_the_three_states_of_matter",
+          "display_order": 25,
+          "games": [
+            {
+              "id": "405_1",
+              "name": "State Cycle Puzzle",
+              "implementationDetails": "The player is presented with a triangular diagram showing 'Solid', 'Liquid', and 'Gas' at the corners. The arrows connecting them are blank. A bank of process names (Melting, Freezing, Boiling, Condensation, Sublimation, Deposition) is provided. The player must drag each name to the correct arrow. A second layer of the puzzle could involve dragging '+ Heat' or '- Heat' icons to each arrow to indicate whether energy is absorbed or released during that process. This game serves as a comprehensive review of all phase changes.",
+              "learningPoints": [
+                "Recalling the names for all six types of phase transitions.",
+                "Visualizing the complete cycle of interconversion between states.",
+                "Associating each phase change with either an absorption or release of energy."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

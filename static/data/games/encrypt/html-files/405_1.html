@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Cycle Puzzle - CBSE Class 9 Science</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+
+        #process-bank, #heat-bank{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 26px;
+        }
+        :root {
+            --primary-color: #4f46e5;
+            --solid-color: #64748b;
+            --liquid-color: #0ea5e9;
+            --gas-color: #22c55e;
+            --correct-color: #16a34a;
+            --incorrect-color: #dc2626;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1f2937;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .card-header {
+            font-family: 'Baloo 2', cursive;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #eef2ff, #f1f5f9);
+            border-radius: 12px;
+        }
+
+        .instructions {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .instructions h3 {
+            font-family: 'Baloo 2', cursive;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .instructions ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .instructions li::before {
+            content: '➡️';
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            font-family: 'Baloo 2', cursive;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary {
+            background: var(--correct-color);
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            font-size: 20px;
+            padding: 15px 30px;
+            margin-top: 30px;
+        }
+
+        .initial-message {
+            text-align: center;
+            font-family: 'Baloo 2', cursive;
+            font-size: 24px;
+            color: #6b7280;
+            padding: 60px 20px;
+        }
+
+        .game-area {
+            display: none;
+        }
+
+        .tile-banks {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+            height: 200px;
+        }
+
+        .tile-bank {
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 15px;
+            min-height: 80px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: flex-start;
+            align-content: flex-start;
+        }
+
+        .tile-bank-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .tile {
+            background: white;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-weight: 600;
+            cursor: grab;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            user-select: none;
+        }
+
+        .tile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .tile:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .tile.dragging {
+            opacity: 0.5;
+        }
+
+        .heat-tile {
+            width: 50px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .diagram-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 16px;
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .state-circle {
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Baloo 2', cursive;
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border: 4px solid white;
+        }
+
+        .state-circle .emoji {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        #solid-circle {
+            background: var(--solid-color);
+            top: 50%;
+            left: 50px;
+            transform: translateY(-50%);
+        }
+
+        #liquid-circle {
+            background: var(--liquid-color);
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        #gas-circle {
+            background: var(--gas-color);
+            top: 50%;
+            right: 50px;
+            transform: translateY(-50%);
+        }
+
+        .process-row {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .process-label {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-color);
+            white-space: nowrap;
+            border: 1px solid var(--border-color);
+        }
+
+        .drop-zone {
+            background: white;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            min-height: 40px;
+        }
+
+        .drop-zone.drag-over {
+            border-color: var(--primary-color);
+            background: #eef2ff;
+        }
+
+        .process-drop {
+            width: 120px;
+        }
+
+        .heat-drop {
+            width: 55px;
+        }
+
+        .arrow {
+            position: absolute;
+            background: #94a3b8;
+            height: 3px;
+            z-index: 5;
+        }
+
+        .arrow::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: -5px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid #94a3b8;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+
+        .arrow.reverse::after {
+            left: -8px;
+            right: auto;
+            border-left: none;
+            border-right: 8px solid #94a3b8;
+        }
+
+        /* Process row positions */
+        .row-melting {
+            top: 158px;
+            left: 159px;
+        }
+
+        .row-freezing {
+            top: 220px;
+            left: 234px;
+        }
+
+        .row-vaporization {
+            top: 160px;
+            right: 140px;
+        }
+
+        .row-condensation {
+            top: 223px;
+    right: 220px;
+        }
+
+        .row-sublimation {
+            bottom: 210px;
+    left: 43%;
+    transform: translateX(-50%);
+        }
+
+        .row-deposition {
+            bottom: 150px;
+    left: 54%;
+    transform: translateX(-50%);
+        }
+
+        /* Arrow positions */
+        .arrow-sl {
+            top: 135px;
+            left: 190px;
+            width: 120px;
+            transform: rotate(-45deg);
+        }
+
+        .arrow-ls {
+            top: 195px;
+            left: 190px;
+            width: 120px;
+            transform: rotate(45deg);
+        }
+
+        .arrow-lg {
+            top: 135px;
+            right: 190px;
+            width: 120px;
+            transform: rotate(45deg);
+        }
+
+        .arrow-gl {
+            top: 195px;
+            right: 190px;
+            width: 120px;
+            transform: rotate(-45deg);
+        }
+
+        .arrow-sg {
+            bottom: 135px;
+            left: 240px;
+            width: 200px;
+        }
+
+        .arrow-gs {
+            bottom: 95px;
+            left: 240px;
+            width: 200px;
+        }
+
+        .tile.correct {
+            background: #dcfce7;
+            border-color: var(--correct-color);
+        }
+
+        .tile.incorrect {
+            background: #fee2e2;
+            border-color: var(--incorrect-color);
+        }
+
+        @media (max-width: 768px) {
+            .tile-banks {
+                grid-template-columns: 1fr;
+            }
+            
+            .diagram-container {
+                height: 500px;
+            }
+            
+            .state-circle {
+                width: 100px;
+                height: 100px;
+                font-size: 14px;
+            }
+            
+            .state-circle .emoji {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1 class="card-header">🔄 State Cycle Puzzle</h1>
+            
+            <div class="instructions">
+                <h3>📚 Instructions</h3>
+                <ul>
+                    <li><strong>Drag process names</strong> (like 'Melting') to the correct process boxes</li>
+                    <li><strong>Drag heat symbols</strong> to show if heat is added (+🔥) or removed (-❄️)</li>
+                    <li><strong>Match each process</strong> with the correct heat change</li>
+                    <li><strong>Click "Check Answers"</strong> to see if you're correct!</li>
+                </ul>
+            </div>
+
+            <div class="controls">
+                <button id="start-btn" class="btn btn-primary">Start Puzzle</button>
+                <button id="reset-btn" class="btn btn-warning">Reset</button>
+            </div>
+
+            <div id="initial-message" class="initial-message">
+                Click "Start Puzzle" to begin learning about states of matter! 🧪
+            </div>
+
+            <div id="game-area" class="game-area">
+                <div class="tile-banks">
+                    <div class="tile-bank" style="width: 861px;">
+                        <div class="tile-bank-label">📝 Process Names</div>
+                        <div id="process-bank"></div>
+                    </div>
+                    <div class="tile-bank" style="width: 238px;">
+                        <div class="tile-bank-label">🌡️ Heat Changes</div>
+                        <div id="heat-bank"></div>
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div id="solid-circle" class="state-circle">
+                        <div class="emoji">🧊</div>
+                        <div>SOLID</div>
+                    </div>
+                    <div id="liquid-circle" class="state-circle">
+                        <div class="emoji">💧</div>
+                        <div>LIQUID</div>
+                    </div>
+                    <div id="gas-circle" class="state-circle">
+                        <div class="emoji">💨</div>
+                        <div>GAS</div>
+                    </div>
+
+                    <!-- Process rows -->
+                    <div class="process-row row-melting" data-process="melting">
+                        <div class="process-label">Solid → Liquid</div>
+                        <div class="drop-zone heat-drop" data-type="heat"></div>
+                        <div class="drop-zone process-drop" data-type="process"></div>
+                      
+                    </div>
+
+                    <div class="process-row row-freezing" data-process="freezing">
+                        <div class="process-label">Liquid → Solid</div>
+                        <div class="drop-zone heat-drop" data-type="heat"></div>
+                        <div class="drop-zone process-drop" data-type="process"></div>
+                        
+                    </div>
+
+                    <div class="process-row row-vaporization" data-process="vaporization">
+                        <div class="process-label">Liquid → Gas</div>
+                        <div class="drop-zone heat-drop" data-type="heat"></div>
+                        <div class="drop-zone process-drop" data-type="process"></div>
+                        
+                    </div>
+
+                    <div class="process-row row-condensation" data-process="condensation">
+                        <div class="process-label">Gas → Liquid</div>
+                        <div class="drop-zone heat-drop" data-type="heat"></div>
+                        <div class="drop-zone process-drop" data-type="process"></div>
+                        
+                    </div>
+
+                    <div class="process-row row-sublimation" data-process="sublimation">
+                        <div class="process-label">Solid → Gas</div>
+                        <div class="drop-zone heat-drop" data-type="heat"></div>
+                        <div class="drop-zone process-drop" data-type="process"></div>
+                        
+                    </div>
+
+                    <div class="process-row row-deposition" data-process="deposition">
+                        <div class="process-label">Gas → Solid</div>
+                        <div class="drop-zone heat-drop" data-type="heat"></div>
+                        <div class="drop-zone process-drop" data-type="process"></div>
+                        
+                    </div>
+
+                    <!-- Arrows -->
+                    <!-- <div class="arrow arrow-sl"></div>
+                    <div class="arrow arrow-ls reverse"></div>
+                    <div class="arrow arrow-lg"></div>
+                    <div class="arrow arrow-gl reverse"></div>
+                    <div class="arrow arrow-sg"></div>
+                    <div class="arrow arrow-gs reverse"></div> -->
+                </div>
+
+                <div style="text-align: center;">
+                    <button id="check-btn" class="btn btn-check">Check My Answers</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game data
+        const PROCESSES = {
+            melting: { name: 'Melting', heat: 'plus' },
+            freezing: { name: 'Freezing', heat: 'minus' },
+            vaporization: { name: 'Vaporization', heat: 'plus' },
+            condensation: { name: 'Condensation', heat: 'minus' },
+            sublimation: { name: 'Sublimation', heat: 'plus' },
+            deposition: { name: 'Deposition', heat: 'minus' }
+        };
+
+        // DOM elements
+        const startBtn = document.getElementById('start-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const checkBtn = document.getElementById('check-btn');
+        const initialMessage = document.getElementById('initial-message');
+        const gameArea = document.getElementById('game-area');
+        const processBank = document.getElementById('process-bank');
+        const heatBank = document.getElementById('heat-bank');
+
+        let draggedItem = null;
+
+        // Create tiles
+        function createTiles() {
+            processBank.innerHTML = '';
+            heatBank.innerHTML = '';
+
+            // Create process tiles
+            const processNames = Object.values(PROCESSES).map(p => p.name);
+            processNames.sort(() => Math.random() - 0.5); // Shuffle
+
+            processNames.forEach(name => {
+                const key = Object.keys(PROCESSES).find(k => PROCESSES[k].name === name);
+                const tile = document.createElement('div');
+                tile.className = 'tile';
+                tile.draggable = true;
+                tile.textContent = name;
+                tile.dataset.type = 'process';
+                tile.dataset.value = key;
+                
+                tile.addEventListener('dragstart', handleDragStart);
+                tile.addEventListener('dragend', handleDragEnd);
+                
+                processBank.appendChild(tile);
+            });
+
+            // Create heat tiles
+            for (let i = 0; i < 3; i++) {
+                ['plus', 'minus'].forEach(type => {
+                    const tile = document.createElement('div');
+                    tile.className = 'tile heat-tile';
+                    tile.draggable = true;
+                    tile.textContent = type === 'plus' ? '+🔥' : '-❄️';
+                    tile.dataset.type = 'heat';
+                    tile.dataset.value = type;
+                    
+                    tile.addEventListener('dragstart', handleDragStart);
+                    tile.addEventListener('dragend', handleDragEnd);
+                    
+                    heatBank.appendChild(tile);
+                });
+            }
+        }
+
+        // Drag and drop handlers
+        function handleDragStart(e) {
+            draggedItem = e.target;
+            e.target.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        function setupDropZones() {
+            const dropZones = document.querySelectorAll('.drop-zone');
+            
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', e => {
+                    e.preventDefault();
+                    zone.classList.add('drag-over');
+                });
+                
+                zone.addEventListener('dragleave', () => {
+                    zone.classList.remove('drag-over');
+                });
+                
+                zone.addEventListener('drop', e => {
+                    e.preventDefault();
+                    zone.classList.remove('drag-over');
+                    
+                    if (draggedItem && draggedItem.dataset.type === zone.dataset.type) {
+                        // Return existing tile to bank
+                        if (zone.children.length > 0) {
+                            const existingTile = zone.firstElementChild;
+                            const targetBank = existingTile.dataset.type === 'process' ? processBank : heatBank;
+                            targetBank.appendChild(existingTile);
+                        }
+                        
+                        // Add new tile to drop zone
+                        zone.appendChild(draggedItem);
+                        draggedItem.classList.remove('correct', 'incorrect');
+                    }
+                });
+            });
+        }
+
+        // Check answers
+        function checkAnswers() {
+            const processRows = document.querySelectorAll('.process-row');
+            
+            processRows.forEach(row => {
+                const processName = row.dataset.process;
+                const correctProcess = PROCESSES[processName];
+                
+                const processDropZone = row.querySelector('.process-drop');
+                const heatDropZone = row.querySelector('.heat-drop');
+                
+                const processTile = processDropZone.querySelector('.tile');
+                const heatTile = heatDropZone.querySelector('.tile');
+                
+                // Check process tile
+                if (processTile) {
+                    processTile.classList.remove('correct', 'incorrect');
+                    if (processTile.dataset.value === processName) {
+                        processTile.classList.add('correct');
+                    } else {
+                        processTile.classList.add('incorrect');
+                    }
+                }
+                
+                // Check heat tile
+                if (heatTile) {
+                    heatTile.classList.remove('correct', 'incorrect');
+                    if (heatTile.dataset.value === correctProcess.heat) {
+                        heatTile.classList.add('correct');
+                    } else {
+                        heatTile.classList.add('incorrect');
+                    }
+                }
+            });
+        }
+
+        // Start game
+        function startGame() {
+            initialMessage.style.display = 'none';
+            gameArea.style.display = 'block';
+            createTiles();
+            setupDropZones();
+        }
+
+        // Reset game
+        function resetGame() {
+            // Clear drop zones
+            document.querySelectorAll('.drop-zone').forEach(zone => {
+                while (zone.firstChild) {
+                    zone.removeChild(zone.firstChild);
+                }
+            });
+            
+            // Remove all feedback classes
+            document.querySelectorAll('.tile').forEach(tile => {
+                tile.classList.remove('correct', 'incorrect');
+            });
+            
+            startGame();
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', startGame);
+        resetBtn.addEventListener('click', resetGame);
+        checkBtn.addEventListener('click', checkAnswers);
+
+        // Initialize
+        gameArea.style.display = 'none';
+    </script>
+</body>
+</html>

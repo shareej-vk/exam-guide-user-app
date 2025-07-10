@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number System Sorter</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+        :root {
+            --bg-color: #f0f7ff;
+            --container-bg: #ffffff;
+            --header-color: #0056b3;
+            --text-color: #333;
+            --natural-bg: #e0f7fa;
+            --natural-border: #00acc1;
+            --whole-bg: #fffde7;
+            --whole-border: #fdd835;
+            --integer-bg: #f3e5f5;
+            --integer-border: #ab47bc;
+            --number-bg: #d1eaff;
+            --number-text: #004a8c;
+            --correct-flash: #4caf50;
+            --incorrect-flash: #f44336;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .game-wrapper {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .game-container {
+            background-color: var(--container-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            flex-grow: 1;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .game-header h1 {
+            color: var(--header-color);
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .game-header p {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        #game-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #number-pool-container {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            min-height: 80px;
+            text-align: center;
+        }
+        
+        #number-pool-container h3 {
+            margin: 0 0 10px 0;
+            color: #777;
+        }
+
+        #number-pool {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            min-height: 50px;
+        }
+
+        .number-item {
+            background: linear-gradient(145deg, #e7f5ff, #b9d7f0);
+            color: var(--number-text);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 1.4em;
+            font-weight: 600;
+            cursor: grab;
+            user-select: none;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .number-item:hover {
+            transform: scale(1.05);
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.15);
+        }
+        
+        .number-item.dragging {
+            opacity: 0.5;
+            cursor: grabbing;
+            box-shadow: none;
+        }
+        
+        .number-item.dropped {
+            cursor: default;
+            background: #e9ecef;
+            color: #6c757d;
+        }
+
+        #drop-zones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .drop-zone {
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border-bottom: 5px solid;
+        }
+
+        .drop-zone h2 {
+            margin: 0 0 15px 0;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .drop-zone .numbers-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            width: 100%;
+        }
+
+        #natural-bin {
+            background-color: var(--natural-bg);
+            border-color: var(--natural-border);
+            color: var(--natural-border);
+        }
+
+        #whole-bin {
+            background-color: var(--whole-bg);
+            border-color: var(--whole-border);
+            color: var(--whole-border);
+        }
+
+        #integer-bin {
+            background-color: var(--integer-bg);
+            border-color: var(--integer-border);
+            color: var(--integer-border);
+        }
+        
+        .drag-over {
+            transform: scale(1.02);
+        }
+
+        .flash-correct {
+            animation: flash-correct 0.7s ease;
+        }
+
+        .flash-incorrect {
+            animation: flash-incorrect 0.7s ease;
+        }
+
+        @keyframes flash-correct {
+            0%, 100% { background-color: initial; }
+            50% { background-color: var(--correct-flash); }
+        }
+        
+        @keyframes flash-incorrect {
+            0%, 100% { background-color: initial; }
+            50% { background-color: var(--incorrect-flash); }
+        }
+
+
+        .info-panel {
+            width: 320px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-box {
+            background: var(--container-bg);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+        
+        .info-box h3 {
+            margin-top: 0;
+            color: var(--header-color);
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 10px;
+        }
+
+        .info-box ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+        
+        .info-box li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        #score-board {
+            text-align: center;
+        }
+        
+        #score-board #score-value {
+            font-size: 3em;
+            font-weight: 700;
+            color: var(--correct-flash);
+            animation: score-pop 0.3s ease;
+        }
+
+        @keyframes score-pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .game-btn {
+            flex-grow: 1;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            color: white;
+        }
+        
+        .game-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        #start-btn {
+            background-color: #28a745;
+        }
+        #start-btn:hover {
+            background-color: #218838;
+        }
+
+        #reset-btn {
+            background-color: #ffc107;
+            color: #333;
+        }
+        #reset-btn:hover {
+            background-color: #e0a800;
+        }
+        
+        #final-message {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--header-color);
+            margin-top: 15px;
+            min-height: 30px;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="game-wrapper">
+        <div class="game-container">
+            <div class="game-header">
+                <h1>Number System Sorter</h1>
+                <p>Based on CBSE Class 9 Maths, Chapter 1: Number Systems</p>
+            </div>
+            <div id="game-area">
+                <div id="number-pool-container">
+                    <h3>Drag the numbers from here</h3>
+                    <div id="number-pool">
+                        <!-- Draggable numbers will be generated here -->
+                    </div>
+                </div>
+
+                <div id="drop-zones">
+                    <div id="natural-bin" class="drop-zone" data-category="natural">
+                        <h2>Natural Numbers (N)</h2>
+                        <div class="numbers-container"></div>
+                    </div>
+                    <div id="whole-bin" class="drop-zone" data-category="whole">
+                        <h2>Whole Numbers (W)</h2>
+                        <div class="numbers-container"></div>
+                    </div>
+                    <div id="integer-bin" class="drop-zone" data-category="integer">
+                        <h2>Integers (Z)</h2>
+                        <div class="numbers-container"></div>
+                    </div>
+                </div>
+                 <div id="final-message"></div>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <div class="info-box controls-box">
+                <div id="score-board">
+                     <h3>Score</h3>
+                     <span id="score-value">0</span>
+                </div>
+                 <div class="controls">
+                    <button id="start-btn" class="game-btn">Start Game</button>
+                    <button id="reset-btn" class="game-btn">Reset</button>
+                </div>
+            </div>
+            <div class="info-box instructions">
+                <h3>How to Play</h3>
+                <ul>
+                    <li>Click <strong>Start Game</strong> to begin.</li>
+                    <li><strong>Drag</strong> a number from the top pool.</li>
+                    <li><strong>Drop</strong> it into the correct category bag below.</li>
+                    <li>A number can be valid in multiple categories (e.g., '5' is Natural, Whole, and an Integer). Placing it in any correct bag will earn points!</li>
+                    <li>The goal is to sort all the numbers correctly.</li>
+                </ul>
+            </div>
+            <div class="info-box definitions">
+                <h3>Definitions</h3>
+                 <ul>
+                    <li><strong>Natural (N):</strong> Counting numbers (1, 2, 3, ...).</li>
+                    <li><strong>Whole (W):</strong> Natural numbers including zero (0, 1, 2, ...).</li>
+                    <li><strong>Integers (Z):</strong> Whole numbers and their negatives (..., -2, -1, 0, 1, 2, ...).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const numberPool = document.getElementById('number-pool');
+            const dropZones = document.querySelectorAll('.drop-zone');
+            const scoreValue = document.getElementById('score-value');
+            const startBtn = document.getElementById('start-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const finalMessage = document.getElementById('final-message');
+
+            const allNumbers = [1, 5, 99, 0, 15, -7, -2, -50, 100, 42, -1, 0];
+            let score = 0;
+            let totalNumbers = 0;
+
+            function startGame() {
+                // 1. Reset everything
+                score = 0;
+                updateScore();
+                finalMessage.textContent = '';
+                numberPool.innerHTML = '';
+                dropZones.forEach(zone => {
+                    zone.querySelector('.numbers-container').innerHTML = '';
+                });
+
+                // 2. Shuffle and create numbers
+                const shuffledNumbers = allNumbers.sort(() => 0.5 - Math.random());
+                totalNumbers = shuffledNumbers.length;
+                
+                shuffledNumbers.forEach((num, index) => {
+                    const numberEl = document.createElement('div');
+                    numberEl.classList.add('number-item');
+                    numberEl.textContent = num;
+                    numberEl.setAttribute('draggable', 'true');
+                    numberEl.id = `num-${index}`;
+                    numberEl.dataset.value = num;
+                    numberPool.appendChild(numberEl);
+                });
+                
+                addDragListeners();
+            }
+
+            function addDragListeners() {
+                const draggables = document.querySelectorAll('.number-item');
+                draggables.forEach(draggable => {
+                    draggable.addEventListener('dragstart', handleDragStart);
+                    draggable.addEventListener('dragend', handleDragEnd);
+                });
+            }
+
+            function handleDragStart(e) {
+                e.dataTransfer.setData('text/plain', e.target.id);
+                setTimeout(() => {
+                    e.target.classList.add('dragging');
+                }, 0);
+            }
+            
+            function handleDragEnd(e) {
+                e.target.classList.remove('dragging');
+            }
+            
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('dragenter', handleDragEnter);
+                zone.addEventListener('dragleave', handleDragLeave);
+                zone.addEventListener('drop', handleDrop);
+            });
+
+            function handleDragOver(e) {
+                e.preventDefault(); // This is necessary to allow dropping
+            }
+            
+            function handleDragEnter(e) {
+                 e.preventDefault();
+                 if (e.target.classList.contains('drop-zone')){
+                    e.target.classList.add('drag-over');
+                 }
+            }
+            
+            function handleDragLeave(e) {
+                if (e.target.classList.contains('drop-zone')){
+                    e.target.classList.remove('drag-over');
+                }
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                const dropZone = e.target.closest('.drop-zone');
+                if (!dropZone) return;
+
+                dropZone.classList.remove('drag-over');
+                const id = e.dataTransfer.getData('text/plain');
+                const draggableElement = document.getElementById(id);
+                const value = parseInt(draggableElement.dataset.value, 10);
+                const category = dropZone.dataset.category;
+
+                if (checkPlacement(value, category)) {
+                    // Correct Placement
+                    dropZone.querySelector('.numbers-container').appendChild(draggableElement);
+                    draggableElement.setAttribute('draggable', 'false');
+                    draggableElement.classList.remove('dragging');
+                    draggableElement.classList.add('dropped');
+                    score++;
+                    updateScore(true); // pass true to animate
+                    flashFeedback(dropZone, true);
+                } else {
+                    // Incorrect Placement
+                    flashFeedback(dropZone, false);
+                }
+                
+                checkGameCompletion();
+            }
+
+            function checkPlacement(num, category) {
+                switch (category) {
+                    case 'natural':
+                        return Number.isInteger(num) && num > 0;
+                    case 'whole':
+                        return Number.isInteger(num) && num >= 0;
+                    case 'integer':
+                        return Number.isInteger(num);
+                    default:
+                        return false;
+                }
+            }
+
+            function updateScore(animate = false) {
+                scoreValue.textContent = score;
+                if(animate) {
+                    scoreValue.style.animation = 'none';
+                    // Trigger reflow to restart animation
+                    void scoreValue.offsetWidth;
+                    scoreValue.style.animation = 'score-pop 0.3s ease';
+                }
+            }
+
+            function flashFeedback(element, isCorrect) {
+                const className = isCorrect ? 'flash-correct' : 'flash-incorrect';
+                const originalBg = element.style.backgroundColor;
+                element.classList.add(className);
+                
+                element.addEventListener('animationend', () => {
+                    element.classList.remove(className);
+                    element.style.backgroundColor = originalBg;
+                }, { once: true });
+            }
+            
+            function checkGameCompletion() {
+                const remainingNumbers = numberPool.children.length;
+                if(remainingNumbers === 0) {
+                    finalMessage.textContent = `All numbers sorted! Final Score: ${score} / ${totalNumbers}`;
+                }
+            }
+            
+            startBtn.addEventListener('click', startGame);
+            resetBtn.addEventListener('click', startGame);
+            
+            // Initial state message
+            numberPool.innerHTML = '<p>Click "Start Game" to begin!</p>';
+
+        });
+    </script>
+</body>
+</html>
+<!--end-of-code-block-->
