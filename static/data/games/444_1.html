@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plum Pudding Builder - Thomson's Model</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fdf0d5;
+            --card-bg: #ffffff;
+            --primary-color: #c1121f; /* Pudding Red */
+            --accent-color: #003049; /* Electron Blue */
+            --text-color: #660708;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 8px 30px rgba(193, 18, 31, 0.1);
+            --correct-color: #2a9d8f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #fde4cf, #fcd5ce);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            border-radius: 12px;
+        }
+        .instructions-list li.active-step {
+            background-color: #fff1f2;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .step-icon {
+            font-size: 24px;
+            margin-right: 12px;
+            margin-top: -2px;
+        }
+        .instructions-list b { color: var(--accent-color); }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--primary-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        
+        .status-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .status-item { text-align: center; font-family: var(--heading-font); }
+        .status-label { font-size: 16px; color: #6c757d; }
+        .status-value { font-size: 24px; font-weight: 800; }
+        #positive-charge { color: var(--primary-color); }
+        #net-charge { color: var(--accent-color); }
+        
+        .builder-area {
+            display: flex;
+            width: 100%;
+            gap: 20px;
+            height: 400px;
+        }
+        
+        #electron-supply {
+            flex: 1;
+            background-color: #e9ecef;
+            border-radius: 16px;
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-content: flex-start;
+            justify-content: center;
+        }
+        .electron {
+            width: 40px; height: 40px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            cursor: grab;
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-weight: bold; font-size: 24px;
+        }
+        .electron.dragging { cursor: grabbing; opacity: 0.5; transform: scale(1.2); }
+        
+        #pudding-zone {
+            flex: 2;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            position: relative;
+            border: 8px solid #f8d5d8;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+            transition: border-color 0.5s ease;
+        }
+        #pudding-zone.correct {
+            border-color: var(--correct-color);
+        }
+        
+        .embedded-electron {
+            position: absolute;
+            width: 30px; height: 30px;
+            background-color: var(--accent-color);
+            border: 2px solid white;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+        
+        #success-message {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: var(--heading-font);
+            font-size: 32px;
+            color: white; background-color: rgba(42, 157, 143, 0.9);
+            padding: 20px 40px; border-radius: 20px;
+            display: none; animation: popIn 0.5s;
+        }
+        @keyframes popIn { from { opacity: 0; transform: translate(-50%, -30%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Plum Pudding Builder</h2>
+            <p><strong>Lesson:</strong> Thomson's Model of an Atom</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p style="margin-bottom: 15px;">Let's build an atom just like J.J. Thomson imagined it! He thought an atom was like a plum pudding—a sphere of positive charge (the pudding) with tiny negative electrons (the plums) stuck inside.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Play</h3>
+            <ul class="instructions-list" id="instructions-list">
+                <li id="step-1" class="active-step">
+                    <span class="step-icon">👉</span>
+                    <span>Click <b>Start</b> to get a sphere of positive charge. Notice its total positive charge at the top.</span>
+                </li>
+                <li id="step-2">
+                    <span class="step-icon">👇</span>
+                    <span>To make the atom neutral, <b>drag electrons</b> from the supply bin and drop them anywhere inside the red "pudding" sphere.</span>
+                </li>
+                 <li id="step-3">
+                    <span class="step-icon">🎯</span>
+                    <span>Keep adding electrons until the <b>Net Charge is 0</b>. The sphere will glow green when you get it right!</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to build a Thomson atom!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="status-bar">
+                    <div class="status-item">
+                        <div class="status-label">Positive Charge</div>
+                        <div class="status-value" id="positive-charge">+0</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-label">Net Charge</div>
+                        <div class="status-value" id="net-charge">0</div>
+                    </div>
+                </div>
+                <div class="builder-area">
+                    <div id="electron-supply"></div>
+                    <div id="pudding-zone">
+                        <div id="success-message">Atom is Neutral!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const positiveChargeDisplay = document.getElementById('positive-charge');
+    const netChargeDisplay = document.getElementById('net-charge');
+    const electronSupply = document.getElementById('electron-supply');
+    const puddingZone = document.getElementById('pudding-zone');
+    const successMessage = document.getElementById('success-message');
+    
+    // Game State
+    let positiveCharge = 0;
+    let electronsPlaced = 0;
+    let draggedElectron = null;
+
+    function createElectronSupply(count) {
+        electronSupply.innerHTML = '';
+        for (let i = 0; i < count; i++) {
+            const electron = document.createElement('div');
+            electron.className = 'electron';
+            electron.textContent = 'e⁻';
+            electron.draggable = true;
+            electronSupply.appendChild(electron);
+        }
+    }
+
+    function updateCharges() {
+        const netCharge = positiveCharge - electronsPlaced;
+        positiveChargeDisplay.textContent = `+${positiveCharge}`;
+        netChargeDisplay.textContent = netCharge > 0 ? `+${netCharge}` : netCharge;
+
+        if (netCharge === 0) {
+            puddingZone.classList.add('correct');
+            successMessage.style.display = 'block';
+            electronSupply.innerHTML = ''; // Clear remaining electrons
+        } else {
+            puddingZone.classList.remove('correct');
+            successMessage.style.display = 'none';
+        }
+    }
+
+    function resetGame() {
+        positiveCharge = Math.floor(Math.random() * 5) + 5; // Random charge from 5 to 9
+        electronsPlaced = 0;
+        puddingZone.innerHTML = '<div id="success-message">Atom is Neutral!</div>'; // Re-add success message div
+        document.getElementById('success-message').style.display = 'none'; // And hide it
+        
+        createElectronSupply(positiveCharge + 3); // Provide extra electrons
+        updateCharges();
+    }
+    
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        resetGame();
+    }
+    
+    // Event Listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', resetGame);
+
+    electronSupply.addEventListener('dragstart', (e) => {
+        if (e.target.classList.contains('electron')) {
+            draggedElectron = e.target;
+            setTimeout(() => e.target.classList.add('dragging'), 0);
+        }
+    });
+
+    electronSupply.addEventListener('dragend', (e) => {
+        if (draggedElectron) {
+            draggedElectron.classList.remove('dragging');
+            draggedElectron = null;
+        }
+    });
+
+    puddingZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+    });
+
+    puddingZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (draggedElectron) {
+            const rect = puddingZone.getBoundingClientRect();
+            const x = e.clientX - rect.left - 15; // -15 to center the 30px electron
+            const y = e.clientY - rect.top - 15;
+            
+            // Constrain within the circle
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const radius = rect.width / 2 - 25; // -25 to keep inside
+            const dist = Math.hypot(x - centerX, y - centerY);
+            
+            if(dist < radius) {
+                const embeddedElectron = document.createElement('div');
+                embeddedElectron.className = 'embedded-electron';
+                embeddedElectron.style.left = `${x}px`;
+                embeddedElectron.style.top = `${y}px`;
+                puddingZone.appendChild(embeddedElectron);
+
+                electronsPlaced++;
+                updateCharges();
+                draggedElectron.remove(); // Remove from supply
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

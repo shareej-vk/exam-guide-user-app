@@ -154,7 +154,8 @@ $effect(()=>{
 async function loadGames(unitId:any) {
  let gamesListData = await fetch(`/data/games/units/${unitId}.json`);
   gamesList = await gamesListData.json();
-lessonGameList = gamesList.units[0].lessons.find((lesson:any) => lesson.id === parseInt(page.params.id));
+  console.log(page.params.id, gamesList.units[0].lessons);
+lessonGameList = gamesList.units[0].lessons.find((lesson:any) => parseInt(lesson.id) === parseInt(page.params.id));
 console.log(lessonGameList, "lessonGameList");
 }
 

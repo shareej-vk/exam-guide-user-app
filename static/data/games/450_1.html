@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valence Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --primary-color: #f72585; /* Vibrant Pink */
+            --accent-color: #7209b7; /* Deep Purple */
+            --text-color: #3a0ca3;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 8px 30px rgba(114, 9, 183, 0.1);
+            --correct-color: #4cc9f0;
+            --electron-color: #f9c74f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #f1f1f1, #e0e0e0);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .step-icon { font-size: 24px; margin-right: 12px; margin-top: -2px; }
+        .instructions-list b { color: var(--primary-color); }
+        .key-concept {
+            background-color: #fcefee; padding: 10px; border-radius: 8px;
+            border-left: 4px solid var(--primary-color); margin-top: 5px; font-weight: 600;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #start-btn { background-color: var(--correct-color); color: white; box-shadow: 0 4px 15px rgba(76, 201, 240, 0.3); }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        #action-btn { background-color: var(--accent-color); color: white; display: none; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+        .btn:disabled { background-color: #adb5bd; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        
+        .selection-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+        .selection-area label { font-weight: 600; font-size: 18px; }
+        .selection-area select {
+            font-family: var(--body-font);
+            font-size: 16px; padding: 8px;
+            border-radius: 8px; border: 2px solid #ced4da;
+        }
+
+        .simulation-area {
+            width: 100%; height: 450px;
+            background-color: #3a0ca3;
+            border-radius: 16px; position: relative;
+            overflow: hidden;
+        }
+        .simulation-canvas { width: 100%; height: 100%; }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 10px; left: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column; gap: 5px;
+            font-family: var(--heading-font);
+            text-align: center;
+        }
+        .info-panel .label { font-size: 16px; color: var(--text-color); opacity: 0.8; }
+        .info-panel .value { font-size: 32px; color: var(--primary-color); }
+        .info-panel .value-final { font-size: 48px; color: var(--correct-color); }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Valence Visualizer</h2>
+            <p><strong>Lesson:</strong> Understanding Valency</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p style="margin-bottom: 15px;">An atom's main goal is to have a full outer shell of electrons (usually 8). Its "valency" is how many electrons it needs to gain, lose, or share to reach this goal. Let's find the valency for different elements!</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Play</h3>
+            <ul class="instructions-list">
+                <li><span class="step-icon">👉</span><span>Click <b>Start</b> and choose an element from the dropdown list.</span></li>
+                <li><span class="step-icon">🧐</span><span>The atom will be drawn, and its outermost "valence" electrons will be highlighted.</span></li>
+                <li class="key-concept"><b>Key Idea:</b> Atoms prefer the easiest path. It's easier to lose 2 electrons than to gain 6!</li>
+                <li><span class="step-icon">🎬</span><span>Click the <b>Action Button</b> (e.g., 'Lose 2 Electrons') to see the atom become stable and reveal its valency.</span></li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to visualize valency!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="selection-area">
+                    <label for="element-select">Choose an Element:</label>
+                    <select id="element-select"></select>
+                </div>
+                <div class="simulation-area">
+                    <canvas id="simulation-canvas" class="simulation-canvas"></canvas>
+                    <div class="info-panel" id="valence-electrons-panel">
+                        <div class="label">Valence Electrons</div>
+                        <div class="value" id="valence-count">0</div>
+                    </div>
+                    <div class="info-panel" id="valency-panel" style="left: auto; right: 10px;">
+                        <div class="label">Valency</div>
+                        <div class="value-final" id="valency-value">0</div>
+                    </div>
+                </div>
+                <button id="action-btn" class="btn"></button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const elementSelect = document.getElementById('element-select');
+    const canvas = document.getElementById('simulation-canvas');
+    const ctx = canvas.getContext('2d');
+    const valencePanel = document.getElementById('valence-electrons-panel');
+    const valenceCount = document.getElementById('valence-count');
+    const valencyPanel = document.getElementById('valency-panel');
+    const valencyValue = document.getElementById('valency-value');
+    const actionBtn = document.getElementById('action-btn');
+
+    // Game Data
+    const elements = [
+        { name: 'Magnesium', symbol: 'Mg', config: [2, 8, 2] },
+        { name: 'Oxygen', symbol: 'O', config: [2, 6] },
+        { name: 'Aluminium', symbol: 'Al', config: [2, 8, 3] },
+        { name: 'Sulphur', symbol: 'S', config: [2, 8, 6] },
+        { name: 'Lithium', symbol: 'Li', config: [2, 1] },
+        { name: 'Fluorine', symbol: 'F', config: [2, 7] },
+    ];
+    
+    // Game State
+    let currentElement, particles = [], animationFrameId;
+
+    class Particle {
+        constructor(x, y, type, shellIndex = -1, isValence = false) {
+            this.x = x; this.y = y; this.type = type;
+            this.shellIndex = shellIndex; this.isValence = isValence;
+            this.radius = type === 'nucleus' ? 35 : 8;
+            this.alpha = 1; this.targetX = x; this.targetY = y;
+        }
+        update() {
+            if (this.isLeaving) {
+                this.x += (this.targetX - this.x) * 0.1;
+                this.y += (this.targetY - this.y) * 0.1;
+                this.alpha -= 0.05;
+            }
+        }
+        draw(symbol) {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            
+            if (this.type === 'nucleus') {
+                ctx.fillStyle = 'var(--accent-color)';
+            } else {
+                ctx.fillStyle = 'var(--electron-color)';
+                if (this.isValence) {
+                    ctx.shadowColor = 'yellow';
+                    ctx.shadowBlur = 15;
+                }
+            }
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            if (this.type === 'nucleus') {
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 30px Baloo 2';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(symbol, this.x, this.y);
+            }
+            ctx.restore();
+        }
+    }
+
+    function populateSelector() {
+        elementSelect.innerHTML = elements.map(el => `<option value="${el.symbol}">${el.name}</option>`).join('');
+    }
+
+    function setupChallenge() {
+        const symbol = elementSelect.value;
+        currentElement = elements.find(el => el.symbol === symbol);
+        
+        actionBtn.style.display = 'block';
+        actionBtn.disabled = false;
+        valencePanel.style.display = 'none';
+        valencyPanel.style.display = 'none';
+        
+        buildAtom();
+        
+        const valenceElectrons = currentElement.config[currentElement.config.length - 1];
+        valenceCount.textContent = valenceElectrons;
+        valencePanel.style.display = 'flex';
+        
+        if (valenceElectrons <= 4) {
+            actionBtn.textContent = `Lose ${valenceElectrons} Electron(s)`;
+            currentElement.action = 'lose';
+            currentElement.valency = valenceElectrons;
+        } else {
+            const toGain = 8 - valenceElectrons;
+            actionBtn.textContent = `Gain ${toGain} Electron(s)`;
+            currentElement.action = 'gain';
+            currentElement.valency = toGain;
+        }
+    }
+
+    function buildAtom() {
+        particles = [];
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        particles.push(new Particle(centerX, centerY, 'nucleus'));
+
+        const outerShellIndex = currentElement.config.length - 1;
+        currentElement.config.forEach((electronCount, shellIndex) => {
+            const shellRadius = 60 + shellIndex * 50;
+            const isValenceShell = (shellIndex === outerShellIndex);
+            for (let i = 0; i < electronCount; i++) {
+                const angle = (i / electronCount) * 2 * Math.PI;
+                const x = centerX + shellRadius * Math.cos(angle);
+                const y = centerY + shellRadius * Math.sin(angle);
+                particles.push(new Particle(x, y, 'electron', shellIndex, isValenceShell));
+            }
+        });
+        draw();
+    }
+    
+    function performAction() {
+        actionBtn.disabled = true;
+        
+        if(currentElement.action === 'lose') {
+            particles.filter(p => p.isValence).forEach(p => {
+                p.isLeaving = true;
+                p.targetX = Math.random() * canvas.width;
+                p.targetY = -50;
+            });
+        } else { // gain
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const shellRadius = 60 + (currentElement.config.length - 1) * 50;
+            for(let i=0; i < currentElement.valency; i++) {
+                const angle = (i / 8) * 2 * Math.PI + Math.PI / 8; // Offset
+                const x = centerX + shellRadius * Math.cos(angle);
+                const y = centerY + shellRadius * Math.sin(angle);
+                const p = new Particle(x, y, 'electron', currentElement.config.length - 1, true);
+                p.alpha = 0;
+                particles.push(p);
+                // Animate them appearing
+                let alpha = 0;
+                const fadeIn = setInterval(() => {
+                    alpha += 0.1;
+                    p.alpha = alpha;
+                    if(alpha >= 1) clearInterval(fadeIn);
+                }, 50);
+            }
+        }
+        
+        setTimeout(() => {
+            valencyValue.textContent = currentElement.valency;
+            valencyPanel.style.display = 'flex';
+        }, 1000);
+    }
+    
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.lineWidth = 3;
+        currentElement.config.forEach((_, shellIndex) => {
+            const radius = 60 + shellIndex * 50;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.stroke();
+        });
+        
+        particles.forEach(p => {
+            p.update();
+            p.draw(currentElement.symbol);
+        });
+    }
+
+    function gameLoop() {
+        draw();
+        animationFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        populateSelector();
+        setupChallenge();
+        if(animationFrameId) cancelAnimationFrame(animationFrameId);
+        gameLoop();
+    }
+    
+    // Event Listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', () => {
+        if(animationFrameId) cancelAnimationFrame(animationFrameId);
+        startGame();
+    });
+    elementSelect.addEventListener('change', setupChallenge);
+    actionBtn.addEventListener('click', performAction);
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

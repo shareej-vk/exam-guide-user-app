@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Static Lab - Charged Particles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --primary-color: #0077b6; /* Cool Blue */
+            --accent-color: #fb8500; /* Vibrant Orange */
+            --positive-charge: #e63946; /* Red */
+            --negative-charge: #219ebc; /* Blue */
+            --text-color: #023047;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 8px 30px rgba(0, 87, 184, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #caf0f8, #e0fbfc);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+            padding: 10px;
+            border-radius: 12px;
+        }
+        .instructions-list li.active-step {
+            background-color: #e3f2fd;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .step-icon {
+            font-size: 24px;
+            margin-right: 12px;
+            margin-top: -2px;
+        }
+        .instructions-list b { color: var(--accent-color); }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #start-btn { background-color: var(--primary-color); color: white; }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        .lab-bench {
+            width: 100%; height: 450px;
+            background: #e9ecef;
+            border-radius: 16px; position: relative;
+            overflow: hidden;
+        }
+        
+        .draggable {
+            position: absolute;
+            transition: all 0.2s ease-out;
+            user-select: none;
+        }
+        .draggable.dragging {
+            cursor: grabbing;
+            transform: scale(1.1);
+            z-index: 100;
+        }
+
+        #silk-cloth {
+            width: 150px; height: 120px;
+            background-color: #f72585;
+            border-radius: 10px;
+            bottom: 20px; left: 20px;
+            cursor: grab;
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-family: var(--heading-font);
+            font-size: 18px;
+        }
+
+        #glass-rod {
+            width: 40px; height: 300px;
+            background-color: rgba(200, 220, 255, 0.5);
+            border: 3px solid #6c757d;
+            border-radius: 20px;
+            top: 50px; left: 50%;
+            transform: translateX(-50%);
+        }
+        #glass-rod.charged-positive::after {
+            content: '+'; color: var(--positive-charge);
+            font-size: 30px; font-weight: bold; position: absolute;
+            top: 10px; left: 50%; transform: translateX(-50%);
+        }
+
+        .electron {
+            position: absolute;
+            width: 10px; height: 10px;
+            background-color: var(--negative-charge);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .paper-bits-container {
+            position: absolute;
+            bottom: 20px; right: 40px;
+            width: 200px; height: 50px;
+        }
+        .paper-bit {
+            position: absolute;
+            width: 15px; height: 15px;
+            background-color: #fff;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            transform: rotate(45deg);
+            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Static Lab</h2>
+            <p><strong>Lesson:</strong> Charged Particles in Matter</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p style="margin-bottom: 15px;">Ever wonder how static electricity works? Let's find out! Your mission is to see how rubbing objects together reveals the tiny charged particles hidden inside all matter.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Experiment</h3>
+            <ul class="instructions-list" id="instructions-list">
+                <li id="step-1" class="active-step">
+                    <span class="step-icon">👉</span>
+                    <span><b>Drag the Silk Cloth</b> and rub it against the glass rod to transfer charge.</span>
+                </li>
+                <li id="step-2">
+                    <span class="step-icon">👉</span>
+                    <span>The rod is now charged! <b>Drag the Rod</b> near the paper bits to see what happens.</span>
+                </li>
+                 <li id="step-3">
+                    <span class="step-icon">🎉</span>
+                    <span><b>Success!</b> The charged rod attracts the neutral paper, proving that all matter contains charged particles.</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to enter the Static Lab!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="lab-bench" id="lab-bench">
+                    <div id="silk-cloth" class="draggable" draggable="true">Silk Cloth</div>
+                    <div id="glass-rod" class="draggable"></div>
+                    <div class="paper-bits-container" id="paper-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const labBench = document.getElementById('lab-bench');
+    const silkCloth = document.getElementById('silk-cloth');
+    const glassRod = document.getElementById('glass-rod');
+    const paperContainer = document.getElementById('paper-container');
+    const instructionsList = document.getElementById('instructions-list');
+
+    // Game State
+    let isRodCharged = false;
+    let draggedElement = null;
+
+    function createPaperBits() {
+        paperContainer.innerHTML = '';
+        for (let i = 0; i < 15; i++) {
+            const paperBit = document.createElement('div');
+            paperBit.className = 'paper-bit';
+            paperBit.style.left = `${Math.random() * 90}%`;
+            paperBit.style.bottom = `${Math.random() * 90}%`;
+            paperBit.style.transform = `rotate(${Math.random() * 360}deg)`;
+            paperContainer.appendChild(paperBit);
+        }
+    }
+
+    function updateInstructions(step) {
+        instructionsList.querySelectorAll('li').forEach(li => li.classList.remove('active-step'));
+        document.getElementById(`step-${step}`).classList.add('active-step');
+    }
+
+    function animateCharging() {
+        const rodRect = glassRod.getBoundingClientRect();
+        const clothRect = silkCloth.getBoundingClientRect();
+        const benchRect = labBench.getBoundingClientRect();
+
+        for (let i = 0; i < 10; i++) {
+            const electron = document.createElement('div');
+            electron.className = 'electron';
+            const startX = rodRect.left + (rodRect.width / 2) - benchRect.left;
+            const startY = rodRect.top + (Math.random() * rodRect.height) - benchRect.top;
+            electron.style.left = `${startX}px`;
+            electron.style.top = `${startY}px`;
+            labBench.appendChild(electron);
+
+            setTimeout(() => {
+                const endX = clothRect.left + (Math.random() * clothRect.width) - benchRect.left;
+                const endY = clothRect.top + (Math.random() * clothRect.height) - benchRect.top;
+                electron.style.transition = 'all 1s ease-in-out';
+                electron.style.left = `${endX}px`;
+                electron.style.top = `${endY}px`;
+                electron.style.opacity = '0';
+            }, 100);
+            setTimeout(() => electron.remove(), 1100);
+        }
+        
+        setTimeout(() => {
+            isRodCharged = true;
+            glassRod.classList.add('charged-positive');
+            glassRod.setAttribute('draggable', 'true');
+            silkCloth.style.cursor = 'default';
+            glassRod.style.cursor = 'grab';
+            updateInstructions(2);
+        }, 1200);
+    }
+
+    function animateAttraction() {
+        const rodRect = glassRod.getBoundingClientRect();
+        const benchRect = labBench.getBoundingClientRect();
+        
+        paperContainer.querySelectorAll('.paper-bit').forEach(bit => {
+            const targetX = rodRect.left + rodRect.width/2 - benchRect.left;
+            const targetY = rodRect.top + rodRect.height - benchRect.top;
+            bit.style.left = `${targetX - bit.offsetLeft}px`;
+            bit.style.top = `${targetY - bit.offsetTop}px`;
+        });
+
+        setTimeout(() => {
+            updateInstructions(3);
+            glassRod.style.cursor = 'default';
+        }, 1000);
+    }
+
+    function resetGame() {
+        isRodCharged = false;
+        glassRod.classList.remove('charged-positive');
+        glassRod.style.cursor = 'default';
+        glassRod.style.left = '50%';
+        glassRod.style.top = '50px';
+        glassRod.setAttribute('draggable', 'false');
+
+        silkCloth.style.cursor = 'grab';
+        silkCloth.style.left = '20px';
+        silkCloth.style.bottom = '20px';
+        silkCloth.setAttribute('draggable', 'true');
+
+        createPaperBits();
+        updateInstructions(1);
+    }
+    
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        resetGame();
+    }
+    
+    // Event Listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', resetGame);
+
+    labBench.addEventListener('dragstart', (e) => {
+        if(e.target.classList.contains('draggable') && e.target.draggable) {
+            draggedElement = e.target;
+            setTimeout(() => (draggedElement.style.opacity = '0.7'), 0);
+            draggedElement.classList.add('dragging');
+        } else {
+            e.preventDefault();
+        }
+    });
+
+    labBench.addEventListener('dragend', (e) => {
+        if(draggedElement) {
+            draggedElement.style.opacity = '1';
+            draggedElement.classList.remove('dragging');
+            draggedElement = null;
+        }
+    });
+    
+    labBench.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if(draggedElement) {
+            const benchRect = labBench.getBoundingClientRect();
+            let x = e.clientX - benchRect.left;
+            let y = e.clientY - benchRect.top;
+            
+            // Constrain movement within the bench
+            x = Math.max(0, Math.min(x, benchRect.width - draggedElement.offsetWidth));
+            y = Math.max(0, Math.min(y, benchRect.height - draggedElement.offsetHeight));
+
+            draggedElement.style.left = `${x}px`;
+            draggedElement.style.top = `${y}px`;
+
+            // Check for interactions
+            if (draggedElement.id === 'glass-rod' && isRodCharged) {
+                const rodRect = glassRod.getBoundingClientRect();
+                const paperRect = paperContainer.getBoundingClientRect();
+                if (Math.hypot(rodRect.x - paperRect.x, rodRect.y - paperRect.y) < 200) {
+                    animateAttraction();
+                    draggedElement.setAttribute('draggable', 'false');
+                }
+            }
+        }
+    });
+
+    labBench.addEventListener('drop', (e) => {
+        if(draggedElement && draggedElement.id === 'silk-cloth' && !isRodCharged) {
+            const rodRect = glassRod.getBoundingClientRect();
+            const clothRect = silkCloth.getBoundingClientRect();
+             if (Math.hypot(rodRect.x - clothRect.x, rodRect.y - clothRect.y) < 150) {
+                animateCharging();
+                draggedElement.setAttribute('draggable', 'false');
+            }
+        }
+    });
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

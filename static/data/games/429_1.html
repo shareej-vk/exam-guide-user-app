@@ -1,405 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matter Flowchart - Chapter Summary</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
-            --primary-color: #2c7da0;
-            --pure-color: #43aa8b;
-            --mixture-color: #f9844a;
-            --text-color: #012a4a;
-            --heading-font: 'Baloo 2', cursive;
-            --body-font: 'Poppins', sans-serif;
-            --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
-            --correct-color: #4d908e;
-            --incorrect-color: #f94144;
-            --line-color: #adb5bd;
-            --drop-zone-highlight: rgba(44, 125, 160, 0.1);
-            --drop-zone-active: rgba(44, 125, 160, 0.25);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Matter Classification - Fixed Hierarchy</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f8fbff;
+      padding: 12px;
+      color: #333;
+    }
+    h2 {
+      text-align: center;
+      font-size: 22px;
+      color: #0d47a1;
+      margin-bottom: 12px;
+    }
+    .btn {
+      background: #0d47a1;
+      color: white;
+      padding: 8px 18px;
+      border: none;
+      border-radius: 8px;
+      margin: 0 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .top-controls {
+      text-align: center;
+      margin-bottom: 14px;
+    }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+    .tree-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
 
-        body {
-            font-family: var(--body-font);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-        }
+    .row {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+    }
 
-        .main-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 25px;
-            width: 100%;
-            max-width: 1500px;
-        }
+    .box {
+      background: white;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 6px 10px;
+      width: 160px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 13px;
+    }
 
-        .top-row {
-            display: flex;
-            gap: 25px;
-            width: 100%;
-            align-items: flex-start;
-        }
+    .drop-zone {
+      margin-top: 6px;
+      min-height: 30px;
+      border: 2px dashed #bbb;
+      border-radius: 6px;
+      padding: 4px;
+      transition: 0.2s ease;
+    }
 
-        .instructions-card, .game-card {
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: var(--shadow);
-            border: 1px solid #e9ecef;
-        }
+    .drop-zone.highlight {
+      background-color: #e3f2fd;
+      border-color: #1976d2;
+    }
 
-        .instructions-card { flex: 4; }
-        .game-card {
-            flex: 6;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    .label-bank {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 8px;
+      background: #e0f7fa;
+      max-width: 800px;
+      margin: 10px auto 0;
+    }
 
-        .card-header {
-            font-family: var(--heading-font);
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            text-align: center;
-            display: inline-block;
-            background: linear-gradient(45deg, #caf0f8, #e0fbfc);
-            padding: 8px 25px;
-            border-radius: 16px;
-        }
+    .label {
+      background: white;
+      padding: 6px 12px;
+      border: 1px solid #aaa;
+      border-radius: 20px;
+      cursor: grab;
+      font-size: 13px;
+      font-weight: bold;
+    }
 
-        .instructions-list { list-style: none; padding-left: 0; }
-        .instructions-list li { margin-bottom: 15px; line-height: 1.6; display: flex; align-items: flex-start; }
-        .instructions-list li::before { content: '✅'; margin-right: 12px; font-size: 18px; margin-top: 2px; }
-        .instructions-list b { color: var(--primary-color); }
-        
-        .controls { margin-bottom: 20px; display: flex; gap: 15px; width: 100%; justify-content: center; }
+    .label.correct {
+      border-color: green;
+      color: green;
+      cursor: default;
+    }
 
-        .btn {
-            font-family: var(--heading-font);
-            font-size: 18px;
-            font-weight: 600;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        #start-btn { background-color: var(--correct-color); color: white; }
-        #reset-btn { background-color: #ffc107; color: #333; }
-        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-        
-        #initial-message {
-            font-family: var(--heading-font);
-            font-size: 24px;
-            color: #999;
-            height: 600px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-        }
+    .label.incorrect {
+      border-color: red;
+      animation: shake 0.3s;
+    }
 
-        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
-        .flowchart-container { width: 100%; position: relative; height: 500px; }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      50% { transform: translateX(4px); }
+      75% { transform: translateX(-4px); }
+      100% { transform: translateX(0); }
+    }
 
-        .flowchart-box {
-            position: absolute;
-            font-family: var(--heading-font);
-            font-size: 16px;
-            font-weight: 600;
-            padding: 15px;
-            width: 160px;
-            min-height: 60px;
-            border-radius: 12px;
-            text-align: center;
-            border: 3px dashed #ced4da;
-            background-color: #f8f9fa;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        .flowchart-box.filled { border-style: solid; color: white; box-shadow: var(--shadow); }
-        .flowchart-box.drop-zone.highlight, .example-drop-zone.highlight { border-color: var(--primary-color); background-color: var(--drop-zone-highlight); }
-        .flowchart-box.drop-zone.drag-over-active, .example-drop-zone.drag-over-active { background-color: var(--drop-zone-active); transform: scale(1.05); }
-        #box-pure.drag-over-active, #box-element.drag-over-active, #box-compound.drag-over-active { transform: translateX(-50%) scale(1.05); }
-        #box-mixture.drag-over-active, #box-homo.drag-over-active, #box-hetero.drag-over-active { transform: translateX(-50%) scale(1.05); }
-        
-        #box-matter { top: 0; left: 50%; transform: translateX(-50%); border-style: solid; background-color: var(--primary-color); color: white;}
-        #box-pure { top: 120px; left: 25%; transform: translateX(-50%); }
-        #box-mixture { top: 120px; left: 75%; transform: translateX(-50%); }
-        #box-element, #box-compound, #box-homo, #box-hetero { top: 240px; }
-        #box-element { left: 12%; transform: translateX(-50%); }
-        #box-compound { left: 38%; transform: translateX(-50%); }
-        #box-homo { left: 62%; transform: translateX(-50%); }
-        #box-hetero { left: 88%; transform: translateX(-50%); }
-        
-        .example-drop-zone {
-            min-height: 50px; margin-top: 10px; padding: 5px; border-radius: 8px;
-            border: 2px dashed #ced4da; background-color: transparent;
-            display: flex; flex-direction: column; gap: 5px;
-            align-items: center; width: 100%; transition: all 0.3s ease;
-        }
-
-        .label-bank {
-            width: 100%; margin-top: 20px; padding: 20px;
-            background-color: #e9ecef; border-radius: 16px;
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
-        }
-
-        .label-card {
-            padding: 8px 15px; font-size: 14px; font-weight: 600;
-            border-radius: 10px; background-color: var(--card-bg);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1); cursor: grab;
-            transition: all 0.2s; border: 2px solid transparent;
-            display: flex; align-items: center; gap: 5px;
-        }
-        .label-card:active { cursor: grabbing; transform: scale(1.1); z-index: 100;}
-        .label-card.dragging { opacity: 0.5; }
-        .label-card.correct { border-color: var(--correct-color); background-color: #e8f5e9; color: var(--correct-color); cursor: default; }
-        .label-card.correct::before { content: '✔'; color: var(--correct-color); font-weight: bold; }
-        .label-card.incorrect { border-color: var(--incorrect-color); animation: shake 0.5s; }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-
-        #completion-message {
-            margin-top: 20px; font-size: 22px; font-weight: 800;
-            display: none; font-family: var(--heading-font);
-            color: var(--correct-color); text-align: center;
-        }
-    </style>
+    #message {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+      color: green;
+      display: none;
+    }
+  </style>
 </head>
 <body>
-    <div class="main-container">
-        <div class="top-row">
-            <div class="instructions-card">
-                <h2 class="card-header">Matter Flowchart</h2>
-                <p><strong>Lesson:</strong> Summary of the Chapter</p>
-                <br>
-                <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Final Challenge</h3>
-                <p style="margin-bottom: 15px;">You've learned all about matter! Now it's time to put it all together. Your final mission is to complete the classification of matter flowchart, from the biggest category down to specific examples.</p>
-                <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
-                <ul class="instructions-list">
-                    <li>Click <b>Start</b> to get the flowchart puzzle.</li>
-                    <li>Drag a label from the <b>Label Bank</b>. All possible drop locations will light up.</li>
-                    <li>Drop the label into its correct box. It will turn green if correct, or shake if incorrect.</li>
-                    <li>Complete the entire flowchart to prove you're a Matter Master!</li>
-                </ul>
-            </div>
-            <div class="game-card">
-                <div class="controls">
-                    <button id="start-btn" class="btn">Start</button>
-                    <button id="reset-btn" class="btn">Reset</button>
-                </div>
-                <div id="initial-message">Click 'Start' to build the ultimate Matter Flowchart!</div>
-                <div class="lab-wrapper" id="lab-wrapper">
-                    <div class="flowchart-container" id="flowchart-container">
-                        <div id="box-matter" class="flowchart-box">Matter</div>
-                        <div id="box-pure" class="flowchart-box drop-zone" data-accepts="category-pure_substance"></div>
-                        <div id="box-mixture" class="flowchart-box drop-zone" data-accepts="category-mixture"></div>
-                        <div id="box-element" class="flowchart-box drop-zone" data-accepts="category-element"></div>
-                        <div id="box-compound" class="flowchart-box drop-zone" data-accepts="category-compound"></div>
-                        <div id="box-homo" class="flowchart-box drop-zone" data-accepts="category-homogeneous"></div>
-                        <div id="box-hetero" class="flowchart-box drop-zone" data-accepts="category-heterogeneous"></div>
-                    </div>
-                    <div id="completion-message">🎉 Fantastic! You've correctly classified all of matter! 🎉</div>
-                </div>
-            </div>
-        </div>
-        <div id="label-bank" class="label-bank" style="display: none;"></div>
+
+  <h2>Matter Classification Game</h2>
+  <div class="top-controls">
+    <button id="start-btn" class="btn">Start</button>
+    <button id="reset-btn" class="btn">Reset</button>
+  </div>
+
+  <div class="tree-container">
+    <div class="box">Matter</div>
+    <div class="row" style="gap: 200px;">
+      <div class="box">
+        <div class="drop-zone" data-accept="category-pure_substance"></div>
+      </div>
+      <div class="box">
+        <div class="drop-zone" data-accept="category-mixture"></div>
+      </div>
     </div>
+    <div class="row">
+      <div class="box">
+        <div class="drop-zone" data-accept="category-element"></div>
+        <div class="drop-zone" data-accept="example-element"></div>
+      </div>
+      <div class="box">
+        
+        <div class="drop-zone" data-accept="category-compound"></div>
+        <div class="drop-zone" data-accept="example-compound"></div>
+      </div>
+      <div class="box">
+        
+        <div class="drop-zone" data-accept="category-homogeneous"></div>
+        <div class="drop-zone" data-accept="example-homogeneous"></div>
+      </div>
+      <div class="box">
+        
+        <div class="drop-zone" data-accept="category-heterogeneous"></div>
+        <div class="drop-zone" data-accept="example-heterogeneous"></div>
+      </div>
+    </div>
+  </div>
 
-<script>
-    const startBtn = document.getElementById('start-btn');
-    const resetBtn = document.getElementById('reset-btn');
-    const initialMessage = document.getElementById('initial-message');
-    const labWrapper = document.getElementById('lab-wrapper');
-    const flowchartContainer = document.getElementById('flowchart-container');
-    const labelBank = document.getElementById('label-bank');
-    const completionMessage = document.getElementById('completion-message');
+  <div class="label-bank" id="label-bank" style="display: none;"></div>
+  <div id="message">🎉 All labels placed correctly!</div>
 
+  <script>
     const labels = [
-        { id: 'cat1', text: 'Pure Substance', type: 'category-pure_substance'},
-        { id: 'cat2', text: 'Mixture', type: 'category-mixture'},
-        { id: 'cat3', text: 'Element', type: 'category-element'},
-        { id: 'cat4', text: 'Compound', type: 'category-compound'},
-        { id: 'cat5', text: 'Homogeneous', type: 'category-homogeneous'},
-        { id: 'cat6', text: 'Heterogeneous', type: 'category-heterogeneous'},
-        { id: 'ex1', text: 'Iron (Fe)', type: 'example-element'},
-        { id: 'ex2', text: 'Water (H₂O)', type: 'example-compound'},
-        { id: 'ex3', text: 'Air', type: 'example-homogeneous'},
-        { id: 'ex4', text: 'Salad', type: 'example-heterogeneous'},
-        { id: 'ex5', text: 'Oxygen (O)', type: 'example-element'},
-        { id: 'ex6', text: 'Sugar (C₁₂H₂₂O₁₁)', type: 'example-compound'},
+      { text: 'Pure Substance', type: 'category-pure_substance' },
+      { text: 'Mixture', type: 'category-mixture' },
+      { text: 'Element', type: 'category-element' },
+      { text: 'Compound', type: 'category-compound' },
+      { text: 'Homogeneous', type: 'category-homogeneous' },
+      { text: 'Heterogeneous', type: 'category-heterogeneous' },
+      { text: 'Iron (Fe)', type: 'example-element' },
+      { text: 'Oxygen (O)', type: 'example-element' },
+      { text: 'Water (H₂O)', type: 'example-compound' },
+      { text: 'Sugar (C₁₂H₂₂O₁₁)', type: 'example-compound' },
+      { text: 'Air', type: 'example-homogeneous' },
+      { text: 'Salad', type: 'example-heterogeneous' },
     ];
-    let correctPlacements = 0;
-    let draggedCard = null;
 
-    function drawLines() {
-        flowchartContainer.querySelectorAll('svg').forEach(svg => svg.remove());
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('width', '100%');
-        svg.setAttribute('height', '100%');
-        svg.style.position = 'absolute';
-        svg.style.top = 0;
-        svg.style.left = 0;
-        svg.style.zIndex = -1;
+    let dragged = null;
+    let correct = 0;
 
-        const connect = (box1Id, box2Id) => {
-            const box1 = document.getElementById(box1Id);
-            const box2 = document.getElementById(box2Id);
-            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            line.setAttribute('x1', box1.offsetLeft + box1.offsetWidth / 2);
-            line.setAttribute('y1', box1.offsetTop + box1.offsetHeight);
-            line.setAttribute('x2', box2.offsetLeft + box2.offsetWidth / 2);
-            line.setAttribute('y2', box2.offsetTop);
-            line.setAttribute('stroke', 'var(--line-color)');
-            line.setAttribute('stroke-width', '3');
-            svg.appendChild(line);
-        };
-        
-        connect('box-matter', 'box-pure'); connect('box-matter', 'box-mixture');
-        connect('box-pure', 'box-element'); connect('box-pure', 'box-compound');
-        connect('box-mixture', 'box-homo'); connect('box-mixture', 'box-hetero');
+    const labelBank = document.getElementById('label-bank');
+    const message = document.getElementById('message');
 
-        flowchartContainer.prepend(svg);
-    }
-    
-    function populateLabelBank() {
-        labelBank.innerHTML = '';
-        labels.sort(() => Math.random() - 0.5).forEach(label => {
-            const card = document.createElement('div');
-            card.id = label.id;
-            card.className = 'label-card';
-            card.textContent = label.text;
-            card.draggable = true;
-            card.dataset.type = label.type;
-            card.addEventListener('dragstart', handleDragStart);
-            card.addEventListener('dragend', handleDragEnd);
-            labelBank.appendChild(card);
-        });
+    function setupGame() {
+      labelBank.innerHTML = '';
+      labelBank.style.display = 'flex';
+      message.style.display = 'none';
+      correct = 0;
+
+      document.querySelectorAll('.drop-zone').forEach(zone => zone.innerHTML = '');
+
+      shuffle(labels).forEach(label => {
+        const el = document.createElement('div');
+        el.textContent = label.text;
+        el.className = 'label';
+        el.draggable = true;
+        el.dataset.type = label.type;
+        labelBank.appendChild(el);
+      });
     }
 
-    function checkCompletion() {
-        if (correctPlacements === labels.length) {
-            completionMessage.style.display = 'block';
-        }
+    function shuffle(arr) {
+      return arr.sort(() => Math.random() - 0.5);
     }
 
-    function handleDragStart(e) {
-        draggedCard = e.target;
-        setTimeout(() => e.target.classList.add('dragging'), 0);
-        document.querySelectorAll(`.drop-zone[data-accepts="${draggedCard.dataset.type}"]`).forEach(zone => {
-            zone.classList.add('highlight');
-        });
-    }
-
-    function handleDragEnd() {
-        if (draggedCard) draggedCard.classList.remove('dragging');
-        draggedCard = null;
-        document.querySelectorAll('.drop-zone').forEach(zone => {
-            zone.classList.remove('highlight');
-            zone.classList.remove('drag-over-active');
-        });
-    }
-
-    function handleDragOver(e) {
-        e.preventDefault();
-        const dropZone = e.target.closest('.drop-zone');
-        if (dropZone && dropZone.classList.contains('highlight')) {
-            dropZone.classList.add('drag-over-active');
-        }
-    }
-
-    function handleDragLeave(e) {
-        e.target.closest('.drop-zone')?.classList.remove('drag-over-active');
-    }
-
-    function handleDrop(e) {
-        e.preventDefault();
-        const dropZone = e.target.closest('.drop-zone');
-        if (!dropZone || !draggedCard) return;
-
-        if (draggedCard.dataset.type === dropZone.dataset.accepts) {
-            draggedCard.classList.add('correct');
-            draggedCard.draggable = false;
-            
-            if (draggedCard.dataset.type.startsWith('category')) {
-                dropZone.textContent = draggedCard.textContent;
-                dropZone.classList.add('filled');
-                if (draggedCard.dataset.type.includes('pure')) dropZone.style.backgroundColor = 'var(--pure-color)';
-                if (draggedCard.dataset.type.includes('mixture')) dropZone.style.backgroundColor = 'var(--mixture-color)';
-                draggedCard.remove();
-            } else {
-                dropZone.appendChild(draggedCard);
-            }
-            correctPlacements++;
-            checkCompletion();
-        } else {
-            draggedCard.classList.add('incorrect');
-            setTimeout(() => draggedCard.classList.remove('incorrect'), 500);
-        }
-    }
-
-    function startGame() {
-        initialMessage.style.display = 'none';
-        labWrapper.style.display = 'flex';
-        labelBank.style.display = 'flex';
-        completionMessage.style.display = 'none';
-        correctPlacements = 0;
-        
-        document.querySelectorAll('.flowchart-box.drop-zone').forEach(dz => {
-            dz.innerHTML = '';
-            dz.classList.remove('filled');
-            dz.style.backgroundColor = '';
-            const acceptType = dz.dataset.accepts;
-            // --- FIX: Recreate example drop zones for all relevant boxes ---
-            if (!acceptType.startsWith('category-')) {
-                 const exampleZone = document.createElement('div');
-                 exampleZone.className = 'example-drop-zone';
-                 exampleZone.dataset.accepts = acceptType;
-                 dz.appendChild(exampleZone);
-            }
-        });
-        
-        populateLabelBank();
-        setTimeout(drawLines, 50);
-    }
-
-    // --- Event Listeners ---
-    startBtn.addEventListener('click', startGame);
-    resetBtn.addEventListener('click', startGame);
-    
-    flowchartContainer.addEventListener('dragover', handleDragOver);
-    flowchartContainer.addEventListener('dragleave', handleDragLeave);
-    flowchartContainer.addEventListener('drop', handleDrop);
-    
-    window.addEventListener('resize', () => {
-        if (labWrapper.style.display === 'flex') drawLines();
+    labelBank.addEventListener('dragstart', e => {
+      if (e.target.classList.contains('label')) {
+        dragged = e.target;
+        document.querySelectorAll(`.drop-zone[data-accept="${dragged.dataset.type}"]`)
+          .forEach(zone => zone.classList.add('highlight'));
+      }
     });
-</script>
+
+    labelBank.addEventListener('dragend', () => {
+      document.querySelectorAll('.drop-zone').forEach(zone => zone.classList.remove('highlight'));
+      dragged = null;
+    });
+
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+      zone.addEventListener('dragover', e => e.preventDefault());
+
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        if (!dragged) return;
+        if (dragged.dataset.type === zone.dataset.accept) {
+          dragged.classList.add('correct');
+          dragged.draggable = false;
+          zone.appendChild(dragged);
+          correct++;
+          if (correct === labels.length) {
+            message.style.display = 'block';
+          }
+        } else {
+          dragged.classList.add('incorrect');
+          setTimeout(() => dragged.classList.remove('incorrect'), 300);
+        }
+      });
+    });
+
+    document.getElementById('start-btn').onclick = setupGame;
+    document.getElementById('reset-btn').onclick = setupGame;
+  </script>
+
 </body>
 </html>

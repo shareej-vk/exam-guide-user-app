@@ -126,22 +126,10 @@
             width: 100%;
         }
 
-        .lab-wrapper {
-            width: 100%;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
         
-        .selection-area {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .selection-box {
-            display: flex; flex-direction: column;
-            align-items: center; gap: 5px;
-        }
+        .selection-area { display: flex; gap: 20px; margin-bottom: 30px; }
+        .selection-box { display: flex; flex-direction: column; align-items: center; gap: 5px; }
         .selection-box label { font-weight: 600; font-size: 18px; }
         .selection-box select {
             font-family: var(--body-font);
@@ -150,63 +138,53 @@
         }
 
         .forge-area {
-            width: 100%;
-            height: 350px;
-            background-color: #e9ecef;
-            border-radius: 16px;
+            width: 100%; height: 350px;
+            background-color: #e9ecef; border-radius: 16px;
             position: relative;
             display: flex; justify-content: center; align-items: center;
             overflow: hidden;
         }
         
-        .element-display {
-            display: flex;
-            gap: 100px;
-            justify-content: center;
-            align-items: flex-start;
-        }
-
-        .ion-card {
-            text-align: center;
-            position: relative;
-        }
+        .element-display { display: flex; gap: 100px; justify-content: center; align-items: flex-start; }
+        .ion-card { text-align: center; position: relative; }
 
         .valency {
             font-family: var(--heading-font);
-            font-size: 32px;
-            color: var(--primary-color);
-            cursor: grab;
-            user-select: none;
-            transition: transform 0.2s;
-            position: absolute;
-            top: -45px; right: -25px;
+            font-size: 32px; color: var(--primary-color);
+            cursor: grab; user-select: none;
+            transition: transform 0.2s, opacity 0.2s;
+            position: absolute; top: -45px; right: -25px;
         }
+        .valency.dragging { opacity: 0.5; }
         .valency:active { cursor: grabbing; transform: scale(1.2); }
 
-        .symbol {
-            font-family: var(--heading-font);
-            font-size: 100px;
-            color: var(--text-color);
-        }
+        .symbol { font-family: var(--heading-font); font-size: 100px; color: var(--text-color); }
         
         .subscript-zone {
-            position: absolute;
-            bottom: -35px;
-            right: -30px;
+            position: absolute; bottom: -35px; right: -30px;
             width: 50px; height: 50px;
-            border: 3px dashed #adb5bd;
-            border-radius: 10px;
+            border: 3px dashed #adb5bd; border-radius: 10px;
             transition: all 0.2s;
             display: flex; justify-content: center; align-items: center;
             font-size: 32px; font-family: var(--heading-font);
+            color: var(--correct-color);
         }
-        .subscript-zone.drag-over { border-color: var(--correct-color); background: #e8f8f5;}
+        .subscript-zone.highlight { border-color: var(--correct-color); background: #e8f8f5;}
+        
+        /* --- FIX: Pop and vibrate animation --- */
+        .subscript-zone.filled {
+             animation: pop-in 0.5s ease;
+        }
+        @keyframes pop-in {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2) rotate(-5deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
         
         #final-formula {
             margin-top: 20px;
             font-family: var(--heading-font);
-            font-size: 48px;
-            height: 60px;
+            font-size: 48px; height: 60px;
             color: var(--correct-color);
         }
     </style>
@@ -217,15 +195,16 @@
             <h2 class="card-header">Formula Forge</h2>
             <p><strong>Lesson:</strong> Writing Chemical Formulae</p>
             <br>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Mission</h3>
-            <p style="margin-bottom: 15px;">It's time to become a master chemist and forge chemical formulae! Your mission is to use the famous "criss-cross" method to correctly combine metals and non-metals.</p>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Forge</h3>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">The Mission</h3>
+            <p>It's time to become a master chemist and forge chemical formulae! Your mission is to use the famous "criss-cross" method to correctly combine metals and non-metals.</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Forge</h3>
             <ul class="instructions-list">
                 <li><span class="step-label">1</span> Click <b>Start</b> and use the dropdowns to select a metal and a non-metal.</li>
                 <li><span class="step-label">2</span> The elements will appear with their valency (charge) shown above them.</li>
-                <li><span class="step-label">3</span> Let's criss-cross! <b>Drag the valency number</b> from the metal down to the subscript box of the non-metal.</li>
-                <li><span class="step-label">4</span> Now, drag the valency number from the non-metal to the subscript box of the metal.</li>
-                <li>If you've done it correctly, the final chemical formula will be forged below!</li>
+                <li><span class="step-label">3</span> Let's criss-cross! <b>Drag a valency number</b>. The correct target will glow.</li>
+                <li><span class="step-label">4</span> Drop it on the glowing box. The number will pop into place!</li>
+                <li><span class="step-label">5</span> Do the same for the other valency to complete the formula!</li>
             </ul>
         </div>
 
@@ -256,7 +235,6 @@
     </div>
 
 <script>
-    // --- DOM Elements ---
     const startBtn = document.getElementById('start-btn');
     const resetBtn = document.getElementById('reset-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -267,20 +245,17 @@
     const elementDisplay = document.getElementById('element-display');
     const finalFormula = document.getElementById('final-formula');
 
-    // --- Data ---
     const metals = [
-        { name: 'Sodium', symbol: 'Na', valency: 1 },
-        { name: 'Magnesium', symbol: 'Mg', valency: 2 },
+        { name: 'Sodium', symbol: 'Na', valency: 1 }, { name: 'Magnesium', symbol: 'Mg', valency: 2 },
         { name: 'Aluminium', symbol: 'Al', valency: 3 }
     ];
     const nonmetals = [
-        { name: 'Chlorine', symbol: 'Cl', valency: 1 },
-        { name: 'Oxygen', symbol: 'O', valency: 2 },
+        { name: 'Chlorine', symbol: 'Cl', valency: 1 }, { name: 'Oxygen', symbol: 'O', valency: 2 },
         { name: 'Nitrogen', symbol: 'N', valency: 3 }
     ];
     let state = {};
+    let draggedValency = null;
 
-    // --- Game Logic ---
     function populateSelectors() {
         metalSelect.innerHTML = metals.map(m => `<option value="${m.symbol}">${m.name}</option>`).join('');
         nonmetalSelect.innerHTML = nonmetals.map(n => `<option value="${n.symbol}">${n.name}</option>`).join('');
@@ -289,12 +264,7 @@
     function setupChallenge() {
         const metal = metals.find(m => m.symbol === metalSelect.value);
         const nonmetal = nonmetals.find(n => n.symbol === nonmetalSelect.value);
-
-        state = {
-            metal, nonmetal,
-            metalSubscriptPlaced: false,
-            nonmetalSubscriptPlaced: false
-        };
+        state = { metal, nonmetal, metalSubscriptPlaced: false, nonmetalSubscriptPlaced: false };
         
         elementDisplay.innerHTML = `
             <div class="ion-card" id="metal-card">
@@ -310,7 +280,6 @@
         `;
         finalFormula.innerHTML = '';
         nextBtn.style.display = 'none';
-        addDragDropListeners();
     }
     
     function checkCompletion() {
@@ -321,51 +290,45 @@
             nextBtn.style.display = 'inline-block';
         }
     }
+    
+    function handleDragStart(e) {
+        if (!e.target.classList.contains('valency')) return;
+        draggedValency = e.target;
+        e.dataTransfer.setData('text/plain', JSON.stringify({
+            valency: e.target.dataset.valency,
+            from: e.target.dataset.from
+        }));
+        setTimeout(() => draggedValency.classList.add('dragging'), 0);
+        
+        const targetType = e.target.dataset.from === 'metal' ? 'nonmetal' : 'metal';
+        document.querySelector(`.subscript-zone[data-target="${targetType}"]`).classList.add('highlight');
+    }
 
-    // --- Drag and Drop Logic ---
-    function addDragDropListeners() {
-        const valencies = document.querySelectorAll('.valency');
-        const dropZones = document.querySelectorAll('.subscript-zone');
+    function handleDragEnd() {
+        if (draggedValency) draggedValency.classList.remove('dragging');
+        draggedValency = null;
+        document.querySelectorAll('.subscript-zone').forEach(z => z.classList.remove('highlight'));
+    }
 
-        valencies.forEach(v => {
-            v.addEventListener('dragstart', e => {
-                e.dataTransfer.setData('text/plain', JSON.stringify({
-                    valency: e.target.dataset.valency,
-                    from: e.target.dataset.from
-                }));
-                e.target.style.opacity = '0.5';
-            });
-            v.addEventListener('dragend', e => e.target.style.opacity = '1');
-        });
-
-        dropZones.forEach(zone => {
-            zone.addEventListener('dragover', e => {
-                e.preventDefault();
-                zone.classList.add('drag-over');
-            });
-            zone.addEventListener('dragleave', e => zone.classList.remove('drag-over'));
-            zone.addEventListener('drop', e => {
-                e.preventDefault();
-                zone.classList.remove('drag-over');
-                
-                const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-                const targetType = zone.dataset.target;
-
-                // Criss-cross rule: metal valency goes to non-metal, and vice-versa
-                if ((data.from === 'metal' && targetType === 'nonmetal') || (data.from === 'nonmetal' && targetType === 'metal')) {
-                    zone.textContent = data.valency > 1 ? data.valency : '';
-                    zone.style.borderColor = 'var(--correct-color)';
-                    
-                    if (targetType === 'metal') state.metalSubscriptPlaced = true;
-                    if (targetType === 'nonmetal') state.nonmetalSubscriptPlaced = true;
-                    
-                    checkCompletion();
-                } else {
-                     zone.style.borderColor = 'var(--incorrect-color)';
-                     setTimeout(() => zone.style.borderColor = '#adb5bd', 1000);
-                }
-            });
-        });
+    function handleDrop(e) {
+        const dropZone = e.target.closest('.subscript-zone');
+        if (!dropZone || !draggedValency || !dropZone.classList.contains('highlight')) return;
+        e.preventDefault();
+        
+        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        
+        dropZone.textContent = data.valency > 1 ? data.valency : '';
+        dropZone.style.borderColor = 'var(--correct-color)';
+        draggedValency.style.display = 'none';
+        
+        // --- FIX: Add animation class ---
+        dropZone.classList.add('filled');
+        dropZone.addEventListener('animationend', () => dropZone.classList.remove('filled'), { once: true });
+        
+        if (dropZone.dataset.target === 'metal') state.metalSubscriptPlaced = true;
+        if (dropZone.dataset.target === 'nonmetal') state.nonmetalSubscriptPlaced = true;
+        
+        checkCompletion();
     }
 
     function startGame() {
@@ -375,14 +338,17 @@
         setupChallenge();
     }
     
-    // --- Event Listeners ---
     startBtn.addEventListener('click', startGame);
     resetBtn.addEventListener('click', startGame);
     nextBtn.addEventListener('click', setupChallenge);
     metalSelect.addEventListener('change', setupChallenge);
     nonmetalSelect.addEventListener('change', setupChallenge);
+    
+    document.addEventListener('dragstart', handleDragStart);
+    document.addEventListener('dragend', handleDragEnd);
+    document.addEventListener('dragover', e => e.preventDefault());
+    document.addEventListener('drop', handleDrop);
 
 </script>
 </body>
 </html>
-<!--end-of-code-block-->

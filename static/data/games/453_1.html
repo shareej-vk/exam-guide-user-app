@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isotope Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --primary-color: #0077b6; /* Blue */
+            --accent-color: #00b4d8; /* Lighter Blue */
+            --text-color: #03045e;
+            --proton-color: #e63946;
+            --neutron-color: #6c757d;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 8px 30px rgba(0, 119, 182, 0.1);
+            --correct-color: #2a9d8f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #caf0f8, #e0fbfc);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .step-icon { font-size: 24px; margin-right: 12px; margin-top: -2px; }
+        .instructions-list b { color: var(--accent-color); }
+        .key-concept {
+            background-color: #e3f2fd; padding: 10px; border-radius: 8px;
+            border-left: 4px solid var(--accent-color); margin-top: 5px; font-weight: 600;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #start-btn { background-color: var(--primary-color); color: white; box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3); }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        
+        .lab-area {
+            display: flex;
+            width: 100%;
+            gap: 20px;
+            height: 450px;
+        }
+        
+        #particle-supply {
+            flex: 1; background-color: #e9ecef; border-radius: 16px;
+            padding: 15px; display: flex; flex-direction: column;
+            gap: 15px; align-items: center;
+        }
+        .particle-source {
+            width: 80px; height: 80px; border-radius: 50%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            font-family: var(--heading-font);
+            color: white; cursor: grab;
+            border: 4px solid white; box-shadow: var(--shadow);
+            transition: transform 0.2s;
+        }
+        .particle-source:active { cursor: grabbing; transform: scale(1.1); }
+        .particle-label { font-size: 18px; }
+        #proton-source { background-color: var(--proton-color); }
+        #neutron-source { background-color: var(--neutron-color); }
+        
+        #nucleus-area {
+            flex: 2; background-color: var(--text-color); border-radius: 16px;
+            position: relative; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 20px;
+        }
+        
+        #nucleus-zone {
+            width: 250px; height: 250px;
+            border: 4px dashed rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        #nucleus-zone.drag-over {
+            background-color: rgba(255,255,255,0.1);
+            border-style: solid;
+        }
+        .nucleus-particle {
+            position: absolute; width: 25px; height: 25px;
+            border-radius: 50%;
+        }
+
+        .info-panel {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+            color: white;
+            text-align: center;
+        }
+        .info-item { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; }
+        .info-label { font-size: 14px; opacity: 0.8; }
+        .info-value { font-size: 24px; font-weight: 800; font-family: var(--heading-font); }
+        #element-name { color: var(--accent-color); }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Isotope Lab</h2>
+            <p><strong>Lesson:</strong> Understanding Isotopes</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p style="margin-bottom: 15px;">What makes Carbon-12 different from Carbon-14? They are both Carbon! These different versions of an element are called isotopes. Your mission is to build some isotopes and see what changes... and what stays the same.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Play</h3>
+            <ul class="instructions-list">
+                <li><span class="step-icon">👉</span><span>Click <b>Start</b> to get a Carbon nucleus.</span></li>
+                <li><span class="step-icon">👇</span><span><b>Drag particles</b> from the supply bin and drop them into the nucleus.</span></li>
+                 <li class="key-concept">
+                    <span class="step-icon">🧐</span>
+                    <span><b>Observe the Info Panel!</b>
+                    <br> - Adding a <b>proton</b> changes the element.
+                    <br> - Adding a <b>neutron</b> only changes the Mass Number. This creates an ISOTOPE!
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to enter the Isotope Lab!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="lab-area">
+                    <div id="particle-supply">
+                        <div id="proton-source" class="particle-source" draggable="true" data-type="proton">
+                            <div class="particle-label">Proton</div>
+                        </div>
+                        <div id="neutron-source" class="particle-source" draggable="true" data-type="neutron">
+                             <div class="particle-label">Neutron</div>
+                        </div>
+                    </div>
+                    <div id="nucleus-area">
+                        <div id="nucleus-zone"></div>
+                        <div class="info-panel">
+                            <div class="info-item">
+                                <div class="info-label">Element Name</div>
+                                <div class="info-value" id="element-name">--</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Atomic Number (p⁺)</div>
+                                <div class="info-value" id="atomic-number">0</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Neutron Count (n⁰)</div>
+                                <div class="info-value" id="neutron-count">0</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Mass Number (p⁺ + n⁰)</div>
+                                <div class="info-value" id="mass-number">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const nucleusZone = document.getElementById('nucleus-zone');
+    const elementName = document.getElementById('element-name');
+    const atomicNumber = document.getElementById('atomic-number');
+    const neutronCount = document.getElementById('neutron-count');
+    const massNumber = document.getElementById('mass-number');
+    const particleSources = document.querySelectorAll('.particle-source');
+    
+    // Game Data
+    const elementMap = {
+        5: { name: 'Boron', symbol: 'B' },
+        6: { name: 'Carbon', symbol: 'C' },
+        7: { name: 'Nitrogen', symbol: 'N' },
+        8: { name: 'Oxygen', symbol: 'O' }
+    };
+    
+    // Game State
+    let protonCount = 0;
+    let neutronCountVal = 0;
+
+    function updateDisplay() {
+        // Update counts
+        atomicNumber.textContent = protonCount;
+        neutronCount.textContent = neutronCountVal;
+        massNumber.textContent = protonCount + neutronCountVal;
+        
+        // Update element name
+        const element = elementMap[protonCount];
+        if (element) {
+            elementName.textContent = `${element.name}-${protonCount + neutronCountVal}`;
+            elementName.style.color = 'var(--accent-color)';
+        } else {
+            elementName.textContent = 'Unknown';
+            elementName.style.color = 'white';
+        }
+
+        // Redraw nucleus particles
+        nucleusZone.innerHTML = '';
+        const particleCount = protonCount + neutronCountVal;
+        for(let i=0; i<protonCount; i++) {
+            createParticleInNucleus('proton');
+        }
+        for(let i=0; i<neutronCountVal; i++) {
+            createParticleInNucleus('neutron');
+        }
+    }
+
+    function createParticleInNucleus(type) {
+        const particleEl = document.createElement('div');
+        particleEl.className = 'nucleus-particle';
+        particleEl.style.backgroundColor = type === 'proton' ? 'var(--proton-color)' : 'var(--neutron-color)';
+        
+        // Random position within the circle
+        const angle = Math.random() * 2 * Math.PI;
+        const radius = Math.random() * (nucleusZone.offsetWidth / 2 - 25);
+        particleEl.style.left = `${nucleusZone.offsetWidth / 2 + radius * Math.cos(angle) - 12.5}px`;
+        particleEl.style.top = `${nucleusZone.offsetHeight / 2 + radius * Math.sin(angle) - 12.5}px`;
+        
+        nucleusZone.appendChild(particleEl);
+    }
+    
+    function resetGame() {
+        protonCount = 6;
+        neutronCountVal = 6;
+        updateDisplay();
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        resetGame();
+    }
+    
+    // Event Listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', resetGame);
+
+    particleSources.forEach(source => {
+        source.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.dataset.type);
+        });
+    });
+
+    nucleusZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        nucleusZone.classList.add('drag-over');
+    });
+
+    nucleusZone.addEventListener('dragleave', () => {
+        nucleusZone.classList.remove('drag-over');
+    });
+
+    nucleusZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        nucleusZone.classList.remove('drag-over');
+        const type = e.dataTransfer.getData('text/plain');
+
+        if (type === 'proton') {
+            protonCount++;
+        } else if (type === 'neutron') {
+            neutronCountVal++;
+        }
+        updateDisplay();
+    });
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

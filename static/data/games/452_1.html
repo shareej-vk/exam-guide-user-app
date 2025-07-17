@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nucleon Counter - Mass Number</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fefae0;
+            --card-bg: #ffffff;
+            --primary-color: #dda15e; /* Earthy Orange */
+            --accent-color: #606c38; /* Olive Green */
+            --text-color: #283618;
+            --proton-color: #e63946;
+            --neutron-color: #6c757d;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 8px 30px rgba(96, 108, 56, 0.1);
+            --correct-color: #2a9d8f;
+            --incorrect-color: #bc4749;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #faedcd, #fefae0);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .step-icon { font-size: 24px; margin-right: 12px; margin-top: -2px; }
+        .instructions-list b { color: var(--accent-color); }
+        .key-concept {
+            background-color: #f1f8e9; padding: 10px; border-radius: 8px;
+            border-left: 4px solid var(--accent-color); margin-top: 5px; font-weight: 600;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #start-btn { background-color: var(--accent-color); color: white; box-shadow: 0 4px 15px rgba(96, 108, 56, 0.3); }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        #next-btn { background-color: var(--primary-color); color: white; display: none; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+        .btn:disabled { background-color: #adb5bd; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        
+        .counting-area {
+            width: 100%; height: 250px;
+            background-color: #e9ecef;
+            border-radius: 16px; position: relative;
+            overflow: hidden;
+            border: 2px solid #ced4da;
+        }
+        .counting-canvas { width: 100%; height: 100%; cursor: pointer; }
+        
+        .calculation-area {
+            width: 100%;
+            margin-top: 20px; padding: 20px;
+            background-color: #fefae0;
+            border-radius: 16px;
+            text-align: center;
+        }
+        .equation { display: flex; justify-content: center; align-items: center; gap: 15px; font-size: 24px; font-family: var(--heading-font); }
+        .equation-label { font-weight: 600; }
+        .input-box {
+            width: 60px; height: 50px;
+            font-size: 24px; text-align: center;
+            border: 2px solid #ced4da;
+            border-radius: 8px;
+            font-family: var(--body-font);
+        }
+        .input-box.correct { border-color: var(--correct-color); background-color: #e8f8f5; }
+        .input-box.incorrect { border-color: var(--incorrect-color); background-color: #fff1f2; }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Nucleon Counter</h2>
+            <p><strong>Lesson:</strong> Understanding Mass Number (A)</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p style="margin-bottom: 15px;">An atom's mass comes almost entirely from its nucleus. The particles in the nucleus are called **nucleons**. Your mission is to count these nucleons to find the Mass Number!</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Play</h3>
+            <ul class="instructions-list">
+                <li><span class="step-icon">👉</span><span>Click <b>Start</b> to get a nucleus filled with protons and neutrons.</span></li>
+                <li><span class="step-icon">🖱️</span><span><b>Click on each particle</b> inside the nucleus to count it. The counters will update as you click.</span></li>
+                 <li class="key-concept"><b>Formula:</b> Mass Number (A) = (Number of Protons) + (Number of Neutrons).</li>
+                <li><span class="step-icon">✍️</span><span>Once you've counted them all, <b>type your counts</b> into the equation boxes and see if your total mass number is correct!</span></li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+                <button id="next-btn" class="btn">Next Nucleus</button>
+            </div>
+            <div id="initial-message">Click 'Start' to count some nucleons!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="counting-area">
+                    <canvas id="counting-canvas" class="counting-canvas"></canvas>
+                </div>
+                <div class="calculation-area">
+                    <div class="equation">
+                        <span class="equation-label">Mass Number (A) = </span>
+                        <input type="number" id="proton-input" class="input-box" placeholder="p+">
+                        <span class="equation-label">+</span>
+                        <input type="number" id="neutron-input" class="input-box" placeholder="n⁰">
+                        <span class="equation-label">=</span>
+                        <input type="number" id="mass-no-input" class="input-box" placeholder="A" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const canvas = document.getElementById('counting-canvas');
+    const ctx = canvas.getContext('2d');
+    const protonInput = document.getElementById('proton-input');
+    const neutronInput = document.getElementById('neutron-input');
+    const massNoInput = document.getElementById('mass-no-input');
+    
+    // Game State
+    let particles = [], currentChallenge;
+    const challenges = [
+        { protons: 6, neutrons: 6 },  // Carbon-12
+        { protons: 8, neutrons: 8 },  // Oxygen-16
+        { protons: 11, neutrons: 12 }, // Sodium-23
+        { protons: 17, neutrons: 18 } // Chlorine-35
+    ];
+
+    class Particle {
+        constructor(x, y, type) {
+            this.x = x; this.y = y; this.type = type;
+            this.radius = 12;
+            this.isCounted = false;
+            this.color = type === 'proton' ? 'var(--proton-color)' : 'var(--neutron-color)';
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.globalAlpha = this.isCounted ? 0.3 : 1.0;
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+            if (this.isCounted) {
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 14px Poppins';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('✓', this.x, this.y);
+            }
+        }
+        isClicked(mx, my) {
+            return Math.hypot(mx - this.x, my - this.y) < this.radius;
+        }
+    }
+
+    function setupChallenge() {
+        if (!currentChallenge || challenges.indexOf(currentChallenge) === challenges.length - 1) {
+            currentChallenge = challenges[0];
+        } else {
+            currentChallenge = challenges[challenges.indexOf(currentChallenge) + 1];
+        }
+
+        particles = [];
+        const { protons, neutrons } = currentChallenge;
+        for (let i = 0; i < protons; i++) particles.push(new Particle(0, 0, 'proton'));
+        for (let i = 0; i < neutrons; i++) particles.push(new Particle(0, 0, 'neutron'));
+        
+        // Distribute particles randomly
+        particles.forEach(p => {
+            p.x = Math.random() * (canvas.width - 40) + 20;
+            p.y = Math.random() * (canvas.height - 40) + 20;
+        });
+        
+        // Reset inputs
+        [protonInput, neutronInput, massNoInput].forEach(input => {
+            input.value = '';
+            input.classList.remove('correct', 'incorrect');
+        });
+        nextBtn.style.display = 'none';
+        draw();
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => p.draw());
+    }
+    
+    function checkAnswer() {
+        const pCount = parseInt(protonInput.value);
+        const nCout = parseInt(neutronInput.value);
+        
+        if (!isNaN(pCount) && !isNaN(nCout)) {
+            const totalMass = pCount + nCout;
+            massNoInput.value = totalMass;
+
+            const isProtonCorrect = pCount === currentChallenge.protons;
+            const isNeutronCorrect = nCout === currentChallenge.neutrons;
+
+            protonInput.classList.toggle('correct', isProtonCorrect);
+            protonInput.classList.toggle('incorrect', !isProtonCorrect);
+            neutronInput.classList.toggle('correct', isNeutronCorrect);
+            neutronInput.classList.toggle('incorrect', !isNeutronCorrect);
+            
+            if (isProtonCorrect && isNeutronCorrect) {
+                massNoInput.classList.add('correct');
+                nextBtn.style.display = 'inline-block';
+            } else {
+                 massNoInput.classList.remove('correct');
+            }
+        }
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        currentChallenge = null;
+        setupChallenge();
+    }
+    
+    // Event Listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    nextBtn.addEventListener('click', setupChallenge);
+
+    canvas.addEventListener('click', e => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        
+        for (const p of particles) {
+            if (!p.isCounted && p.isClicked(mx, my)) {
+                p.isCounted = true;
+                if (p.type === 'proton') {
+                    protonInput.value = (parseInt(protonInput.value) || 0) + 1;
+                } else {
+                    neutronInput.value = (parseInt(neutronInput.value) || 0) + 1;
+                }
+                draw();
+                checkAnswer();
+                break;
+            }
+        }
+    });
+    
+    protonInput.addEventListener('input', checkAnswer);
+    neutronInput.addEventListener('input', checkAnswer);
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

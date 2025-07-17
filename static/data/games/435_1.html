@@ -17,7 +17,7 @@
             --heading-font: 'Baloo 2', cursive;
             --body-font: 'Poppins', sans-serif;
             --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
-            --correct-color: #2a9d8f;
+            --correct-color: #12af07;
             --incorrect-color: #e76f51;
         }
 
@@ -78,12 +78,7 @@
             display: flex;
             align-items: flex-start;
         }
-        .instructions-list li::before {
-            content: '⚛️';
-            margin-right: 12px;
-            font-size: 18px;
-            margin-top: 2px;
-        }
+        .instructions-list li::before { content: '⚛️'; margin-right: 12px; font-size: 18px; margin-top: 2px; }
         .instructions-list b { color: var(--primary-color); }
         
         .controls {
@@ -122,71 +117,56 @@
             width: 100%;
         }
 
-        .lab-wrapper {
-            width: 100%;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
         
-        #task-display {
+        /* --- FIX: Combined Header --- */
+        #status-header {
             width: 100%;
             background-color: var(--accent-color);
             color: white;
             font-family: var(--heading-font);
-            font-size: 20px;
-            padding: 15px;
+            padding: 10px 20px;
             border-radius: 12px;
             text-align: center;
             margin-bottom: 20px;
-        }
-        
-        .assembly-area {
             display: flex;
-            width: 100%;
-            gap: 20px;
-            height: 400px;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.5s ease;
         }
-
-        #atom-bin {
-            flex: 1;
-            background-color: #e9ecef;
-            border-radius: 16px;
-            padding: 15px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-content: flex-start;
-        }
-
-        .atom {
-            width: 60px; height: 60px;
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            font-family: var(--heading-font); font-size: 30px;
-            cursor: grab;
-            transition: transform 0.2s;
-            color: var(--text-color);
-        }
-        .atom:active { cursor: grabbing; transform: scale(1.1); }
+        #task-display { font-size: 20px; }
+        #atom-counter-display { font-size: 18px; background-color: rgba(0,0,0,0.1); padding: 5px 15px; border-radius: 8px;}
         
         #molecule-zone {
-            flex: 2;
+            width: 100%;
+            height: 350px; /* Reduced height */
             background-color: #dee2e6;
-            border: 4px dashed #adb5bd;
+            border: 4px solid #adb5bd;
             border-radius: 16px;
             position: relative;
             transition: all 0.3s;
         }
-        #molecule-zone.drag-over {
-            border-color: var(--accent-color);
-            background-color: #f1f3f5;
-        }
         .molecule-canvas { width: 100%; height: 100%; }
 
-        #check-btn {
-            margin-top: 15px; background-color: var(--primary-color);
-            color: white; font-size: 20px;
+        .action-area {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #add-atom-btn {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 20px; padding: 15px 30px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .atom-icon {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            display: inline-flex; justify-content: center; align-items: center;
+            color: white; font-size: 20px; border: 2px solid white;
         }
     </style>
 </head>
@@ -196,15 +176,15 @@
             <h2 class="card-header">Atomicity Assembler</h2>
             <p><strong>Lesson:</strong> Molecules and Atomicity</p>
             <br>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">Your Mission</h3>
-            <p style="margin-bottom: 15px;">Your goal is to build stable molecules! Different elements have different "atomicity" - the number of atoms they need to form a happy molecule. Can you figure out the magic number for each element?</p>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p>Your goal is to build stable molecules! Different elements have different "atomicity" - the number of atoms they need to form a stable molecule. Can you figure out the magic number for each element?</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Play</h3>
             <ul class="instructions-list">
                 <li>Click <b>Start</b> to get your first challenge.</li>
-                <li>From the <b>Atom Bin</b>, drag the atoms into the <b>Molecule Zone</b>.</li>
-                <li>Try to figure out how many atoms are needed to form a stable molecule for the given element.</li>
-                <li>Click the <b>"Check Stability"</b> button to see if you are correct. The atoms will bond together if you have the right number!</li>
-                <li>If you're right, click "Next Challenge" to try a new element.</li>
+                <li>Click the <b>"Add Atom"</b> button to add atoms to the Molecule Zone.</li>
+                <li>When you have the right number of atoms, they will automatically bond together!</li>
+                <li>Click <b>"Next Challenge"</b> to try a new element.</li>
             </ul>
         </div>
 
@@ -216,51 +196,52 @@
             </div>
             <div id="initial-message">Click 'Start' to start assembling molecules!</div>
             <div class="lab-wrapper" id="lab-wrapper">
-                <div id="task-display"></div>
-                <div class="assembly-area">
-                    <div id="atom-bin"></div>
-                    <div id="molecule-zone">
-                        <canvas id="molecule-canvas" class="molecule-canvas"></canvas>
-                    </div>
+                <div id="status-header">
+                    <div id="task-display"></div>
+                    <div id="atom-counter-display">Atoms: <span id="atom-count">0</span></div>
                 </div>
-                <button id="check-btn" class="btn">Check Stability</button>
+                <div id="molecule-zone">
+                    <canvas id="molecule-canvas" class="molecule-canvas"></canvas>
+                </div>
+                <div class="action-area">
+                    <button id="add-atom-btn" class="btn">
+                        <div id="atom-icon" class="atom-icon"></div>
+                        <span>Add Atom</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
 <script>
-    // --- DOM Elements ---
     const startBtn = document.getElementById('start-btn');
     const resetBtn = document.getElementById('reset-btn');
     const nextBtn = document.getElementById('next-btn');
     const initialMessage = document.getElementById('initial-message');
     const labWrapper = document.getElementById('lab-wrapper');
+    const statusHeader = document.getElementById('status-header');
     const taskDisplay = document.getElementById('task-display');
-    const atomBin = document.getElementById('atom-bin');
+    const atomCountSpan = document.getElementById('atom-count');
     const moleculeZone = document.getElementById('molecule-zone');
     const canvas = document.getElementById('molecule-canvas');
     const ctx = canvas.getContext('2d');
-    const checkBtn = document.getElementById('check-btn');
+    const addAtomBtn = document.getElementById('add-atom-btn');
+    const atomIcon = document.getElementById('atom-icon');
 
-    // --- Data ---
     const elements = [
-        { name: 'Helium', symbol: 'He', color: '#ffbe0b', atomicity: 1 },
-        { name: 'Nitrogen', symbol: 'N', color: '#8338ec', atomicity: 2 },
-        { name: 'Phosphorus', symbol: 'P', color: '#ff006e', atomicity: 4 },
-        { name: 'Sulphur', symbol: 'S', color: '#fb5607', atomicity: 8 },
+        { name: 'Helium', symbol: 'He', color: '#ffbe0b', atomicity: 1 }, { name: 'Nitrogen', symbol: 'N', color: '#8338ec', atomicity: 2 },
+        { name: 'Phosphorus', symbol: 'P', color: '#ff006e', atomicity: 4 }, { name: 'Sulphur', symbol: 'S', color: '#fb5607', atomicity: 8 },
         { name: 'Oxygen', symbol: 'O', color: '#3a86ff', atomicity: 2 }
     ];
-    let currentElement;
-    let droppedAtoms = [];
+    let currentElementIndex = -1;
+    let atomsInZone = [];
     let animationFrameId;
 
-    // --- Particle Class ---
     class AtomParticle {
          constructor(x, y, symbol, color) {
-            this.x = x; this.y = y;
-            this.symbol = symbol; this.color = color;
-            this.radius = 30;
-            this.targetX = x; this.targetY = y;
+            this.x = x; this.y = y; this.symbol = symbol; this.color = color;
+            this.radius = 30; this.targetX = x; this.targetY = y;
+            this.vx = (Math.random() - 0.5) * 4; this.vy = (Math.random() - 0.5) * 4;
             this.isBonding = false;
         }
         draw() {
@@ -275,62 +256,66 @@
             ctx.fillText(this.symbol, this.x, this.y);
         }
         update() {
-            if(this.isBonding) {
+            if (this.isBonding) {
                 this.x += (this.targetX - this.x) * 0.1;
                 this.y += (this.targetY - this.y) * 0.1;
+            } else {
+                this.x += this.vx; this.y += this.vy;
+                this.vx *= 0.99; this.vy *= 0.99;
+                if (this.x < this.radius || this.x > canvas.width - this.radius) this.vx *= -1;
+                if (this.y < this.radius || this.y > canvas.height - this.radius) this.vy *= -1;
             }
         }
     }
 
-    // --- Game Logic ---
     function setupChallenge() {
-        currentElement = elements[Math.floor(Math.random() * elements.length)];
-        taskDisplay.innerHTML = `Your Challenge: Construct a stable <b>${currentElement.name}</b> molecule.`;
+        currentElementIndex = (currentElementIndex + 1) % elements.length;
+        const currentElement = elements[currentElementIndex];
+
+        taskDisplay.innerHTML = `Build a stable <b>${currentElement.name} (${currentElement.symbol})</b> molecule.`;
+        atomIcon.style.backgroundColor = currentElement.color;
+        atomIcon.textContent = currentElement.symbol;
         
-        atomBin.innerHTML = '';
-        for (let i = 0; i < 10; i++) {
-            const atomEl = document.createElement('div');
-            atomEl.className = 'atom';
-            atomEl.style.backgroundColor = currentElement.color;
-            atomEl.textContent = currentElement.symbol;
-            atomEl.draggable = true;
-            atomEl.dataset.symbol = currentElement.symbol;
-            atomEl.dataset.color = currentElement.color;
-            atomBin.appendChild(atomEl);
-        }
-        
-        droppedAtoms = [];
-        checkBtn.disabled = false;
+        atomsInZone = [];
+        addAtomBtn.disabled = false;
         nextBtn.style.display = 'none';
-        if (animationFrameId) cancelAnimationFrame(animationFrameId);
-        ctx.clearRect(0,0,canvas.width, canvas.height);
+        moleculeZone.style.borderColor = '#adb5bd';
+        statusHeader.style.backgroundColor = 'var(--accent-color)'; // Reset header color
+        updateCounter();
     }
     
-    function checkMolecule() {
-        checkBtn.disabled = true;
-        const isCorrect = droppedAtoms.length === currentElement.atomicity;
-        moleculeZone.style.borderStyle = 'solid';
-        moleculeZone.style.borderColor = isCorrect ? 'var(--correct-color)' : 'var(--incorrect-color)';
+    function addAtom() {
+        const currentElement = elements[currentElementIndex];
+        const x = Math.random() * (canvas.width - 60) + 30;
+        const y = Math.random() * (canvas.height - 60) + 30;
+        atomsInZone.push(new AtomParticle(x, y, currentElement.symbol, currentElement.color));
+        updateCounter();
+        checkStability();
+    }
 
-        if(isCorrect) {
-            animateBonding();
+    function updateCounter() {
+        atomCountSpan.textContent = atomsInZone.length;
+    }
+
+    function checkStability() {
+        const currentElement = elements[currentElementIndex];
+        if (atomsInZone.length === currentElement.atomicity) {
+            moleculeZone.style.borderColor = 'var(--correct-color)';
+            statusHeader.style.backgroundColor = 'var(--correct-color)'; // Change header color on success
+            addAtomBtn.disabled = true;
             nextBtn.style.display = 'inline-block';
+            animateBonding();
         }
-
-        setTimeout(() => {
-             moleculeZone.style.borderStyle = 'dashed';
-             moleculeZone.style.borderColor = '#adb5bd';
-        }, 1500);
     }
 
     function animateBonding() {
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
-        const moleculeRadius = Math.min(canvas.width, canvas.height) / 4;
+        const moleculeRadius = Math.min(centerX, centerY) / 2.5;
         
-        droppedAtoms.forEach((atom, i) => {
+        atomsInZone.forEach((atom, i) => {
             atom.isBonding = true;
-            const angle = (i / droppedAtoms.length) * 2 * Math.PI;
+            const angle = (i / atomsInZone.length) * 2 * Math.PI;
             atom.targetX = centerX + moleculeRadius * Math.cos(angle);
             atom.targetY = centerY + moleculeRadius * Math.sin(angle);
         });
@@ -338,7 +323,7 @@
 
     function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        droppedAtoms.forEach(p => {
+        atomsInZone.forEach(p => {
             p.update();
             p.draw();
         });
@@ -350,41 +335,16 @@
         labWrapper.style.display = 'flex';
         canvas.width = moleculeZone.clientWidth;
         canvas.height = moleculeZone.clientHeight;
+        currentElementIndex = -1;
         setupChallenge();
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
         animate();
     }
     
-    // --- Event Listeners ---
     startBtn.addEventListener('click', startGame);
     resetBtn.addEventListener('click', startGame);
     nextBtn.addEventListener('click', setupChallenge);
-    checkBtn.addEventListener('click', checkMolecule);
-
-    atomBin.addEventListener('dragstart', e => {
-        if(e.target.classList.contains('atom')) {
-            e.dataTransfer.setData('text/plain', JSON.stringify({
-                symbol: e.target.dataset.symbol,
-                color: e.target.dataset.color
-            }));
-        }
-    });
-    
-    moleculeZone.addEventListener('dragover', e => {
-        e.preventDefault();
-        moleculeZone.classList.add('drag-over');
-    });
-    moleculeZone.addEventListener('dragleave', () => moleculeZone.classList.remove('drag-over'));
-    moleculeZone.addEventListener('drop', e => {
-        e.preventDefault();
-        moleculeZone.classList.remove('drag-over');
-        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        droppedAtoms.push(new AtomParticle(x, y, data.symbol, data.color));
-    });
-
+    addAtomBtn.addEventListener('click', addAtom);
 </script>
 </body>
 </html>
-<!--end-of-code-block-->

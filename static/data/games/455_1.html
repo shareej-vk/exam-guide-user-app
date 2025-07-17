@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isobar Linker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --primary-color: #fca311; /* Bright Orange */
+            --accent-color: #14213d; /* Dark Blue */
+            --text-color: #000000;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 8px 30px rgba(252, 163, 17, 0.15);
+            --correct-color: #2a9d8f;
+            --incorrect-color: #e63946;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #fff3e0, #ffe0b2);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .step-icon { font-size: 24px; margin-right: 12px; margin-top: -2px; }
+        .instructions-list b { color: var(--primary-color); }
+        .key-concept {
+            background-color: #fff8e1; padding: 10px; border-radius: 8px;
+            border-left: 4px solid var(--primary-color); margin-top: 5px; font-weight: 600;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #start-btn { background-color: var(--primary-color); color: white; box-shadow: 0 4px 15px rgba(252, 163, 17, 0.3); }
+        #reset-btn { background-color: #6c757d; color: white; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        
+        #atom-grid {
+            width: 100%;
+            height: 500px;
+            background-color: #e9ecef;
+            border-radius: 16px; position: relative;
+            overflow: hidden;
+            border: 2px solid #ced4da;
+        }
+        .atom-canvas { position: absolute; top:0; left:0; width: 100%; height: 100%; pointer-events: none; }
+        .atom-node {
+            position: absolute;
+            width: 120px;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .atom-node:hover { transform: scale(1.05); }
+        .atom-node.selected { border-color: var(--primary-color); }
+        .atom-node.correct { border-color: var(--correct-color); background-color: #d4edda;}
+        .atom-node.incorrect { border-color: var(--incorrect-color); background-color: #f8d7da; animation: shake 0.5s; }
+        
+        .atom-name { font-family: var(--heading-font); font-size: 20px; font-weight: 800; color: var(--accent-color); }
+        .atom-details { font-size: 14px; }
+        .atom-mass { font-weight: 600; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Isobar Linker</h2>
+            <p><strong>Lesson:</strong> Understanding Isobars</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p style="margin-bottom: 15px;">You've learned about isotopes, now it's time for their cousins: isobars! Your mission is to find the pair of isobars from a group of different atoms.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Play</h3>
+            <ul class="instructions-list">
+                <li><span class="step-icon">👉</span><span>Click <b>Start</b> to get a grid of different atoms.</span></li>
+                <li><span class="step-icon">🧐</span><span>Examine each atom. Note its <b>Atomic Number (Z)</b> and its <b>Mass Number (A)</b>.</span></li>
+                 <li class="key-concept">
+                    <span class="step-icon">💡</span>
+                    <span><b>Isobar Rule:</b> Isobars are atoms of <b>different elements</b> (different Z) that have the <b>same Mass Number</b> (same A).</span>
+                </li>
+                 <li><span class="step-icon">🔗</span><span><b>Click on two atoms</b> to draw a line between them. If you've linked the correct pair of isobars, they will light up green!</span></li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to find the Isobars!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div id="atom-grid">
+                    <canvas id="link-canvas" class="atom-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const atomGrid = document.getElementById('atom-grid');
+    const canvas = document.getElementById('link-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Game Data
+    const atomData = [
+        { name: 'Argon', symbol: 'Ar', p: 18, n: 22 }, // A = 40
+        { name: 'Potassium', symbol: 'K', p: 19, n: 20 }, // A = 39
+        { name: 'Calcium', symbol: 'Ca', p: 20, n: 20 }, // A = 40
+        { name: 'Chlorine', symbol: 'Cl', p: 17, n: 20 }, // A = 37
+    ];
+    
+    // Game State
+    let selectedNodes = [];
+
+    function drawAtomNodes() {
+        atomGrid.innerHTML = '<canvas id="link-canvas" class="atom-canvas"></canvas>'; // Keep canvas
+        const positions = [
+            { top: '20%', left: '20%' }, { top: '20%', left: '80%' },
+            { top: '80%', left: '20%' }, { top: '80%', left: '80%' }
+        ];
+        
+        atomData.forEach((atom, i) => {
+            const node = document.createElement('div');
+            node.className = 'atom-node';
+            node.id = `atom-${atom.symbol}`;
+            node.style.top = positions[i].top;
+            node.style.left = positions[i].left;
+            node.style.transform = 'translate(-50%, -50%)';
+            
+            const massNumber = atom.p + atom.n;
+            node.dataset.mass = massNumber;
+
+            node.innerHTML = `
+                <div class="atom-name">${atom.name}</div>
+                <div class="atom-details">Z = ${atom.p}</div>
+                <div class="atom-mass">Mass (A) = ${massNumber}</div>
+            `;
+            
+            node.addEventListener('click', () => handleNodeClick(node));
+            atomGrid.appendChild(node);
+        });
+    }
+
+    function drawLink() {
+        // Re-get canvas context after innerHTML reset
+        const canvasEl = document.getElementById('link-canvas');
+        const ctxEl = canvasEl.getContext('2d');
+        canvasEl.width = atomGrid.clientWidth;
+        canvasEl.height = atomGrid.clientHeight;
+
+        ctxEl.clearRect(0, 0, canvasEl.width, canvasEl.height);
+        if (selectedNodes.length === 2) {
+            const node1 = selectedNodes[0];
+            const node2 = selectedNodes[1];
+            ctxEl.beginPath();
+            ctxEl.moveTo(node1.offsetLeft + node1.offsetWidth / 2, node1.offsetTop + node1.offsetHeight / 2);
+            ctxEl.lineTo(node2.offsetLeft + node2.offsetWidth / 2, node2.offsetTop + node2.offsetHeight / 2);
+            ctxEl.strokeStyle = node1.classList.contains('correct') ? 'var(--correct-color)' : 'var(--incorrect-color)';
+            ctxEl.lineWidth = 5;
+            ctxEl.stroke();
+        }
+    }
+
+    function handleNodeClick(node) {
+        if (selectedNodes.length >= 2 || node.classList.contains('selected')) return;
+
+        node.classList.add('selected');
+        selectedNodes.push(node);
+
+        if (selectedNodes.length === 2) {
+            checkAnswer();
+        }
+    }
+
+    function checkAnswer() {
+        const node1 = selectedNodes[0];
+        const node2 = selectedNodes[1];
+
+        const mass1 = node1.dataset.mass;
+        const mass2 = node2.dataset.mass;
+
+        // Isobars have same mass number but are different elements (check by ID)
+        const isCorrect = (mass1 === mass2) && (node1.id !== node2.id);
+
+        if (isCorrect) {
+            node1.classList.add('correct');
+            node2.classList.add('correct');
+        } else {
+            node1.classList.add('incorrect');
+            node2.classList.add('incorrect');
+            setTimeout(() => {
+                node1.classList.remove('selected', 'incorrect');
+                node2.classList.remove('selected', 'incorrect');
+                selectedNodes = [];
+                drawLink();
+            }, 1000);
+        }
+        drawLink();
+    }
+    
+    function resetGame() {
+        selectedNodes = [];
+        drawAtomNodes();
+        drawLink();
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        resetGame();
+    }
+    
+    // Event Listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', resetGame);
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

@@ -78,14 +78,9 @@
             display: flex;
             align-items: flex-start;
         }
-        .instructions-list li::before {
-            content: '💡';
-            margin-right: 12px;
-            font-size: 18px;
-            margin-top: 2px;
-        }
-        .instructions-list .cation { color: var(--cation-color); }
-        .instructions-list .anion { color: var(--anion-color); }
+        .instructions-list li::before { content: '💡'; margin-right: 12px; font-size: 18px; margin-top: 2px; }
+        .instructions-list .cation { color: var(--cation-color); font-weight: 600; }
+        .instructions-list .anion { color: var(--anion-color); font-weight: 600; }
         
         .controls {
             margin-bottom: 20px;
@@ -110,7 +105,8 @@
         #reset-btn { background-color: #ffc107; color: #333; }
         #next-btn { background-color: var(--primary-color); color: white; display: none;}
         .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
-        
+        .btn:disabled { background-color: #adb5bd; cursor: not-allowed; }
+
         #initial-message {
             font-family: var(--heading-font);
             font-size: 24px;
@@ -123,12 +119,7 @@
             width: 100%;
         }
 
-        .lab-wrapper {
-            width: 100%;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
         
         #task-display {
             width: 100%;
@@ -149,18 +140,18 @@
             border-radius: 16px;
             position: relative;
             overflow: hidden;
+            cursor: default;
         }
-        .simulation-canvas {
-            width: 100%;
-            height: 100%;
-        }
+        .simulation-canvas { width: 100%; height: 100%; }
         
         #feedback-message {
             margin-top: 15px; font-size: 22px; font-weight: 800;
             display: none; padding: 10px 20px; border-radius: 12px;
             font-family: var(--heading-font);
             color: white; text-align: center;
+            animation: fadeIn 0.5s;
         }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         #feedback-message.cation { background-color: var(--cation-color); }
         #feedback-message.anion { background-color: var(--anion-color); }
 
@@ -172,14 +163,14 @@
             <h2 class="card-header">Ion Architect</h2>
             <p><strong>Lesson:</strong> Understanding Ions</p>
             <br>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">Your Mission</h3>
-            <p style="margin-bottom: 15px;">Atoms are usually neutral, but they can become charged particles called ions. Your mission is to create different ions by giving or taking away their outermost electrons!</p>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p>Atoms are usually neutral, but they can become charged particles called ions. Your mission is to create different ions by giving or taking away their outermost electrons!</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Experiment</h3>
             <ul class="instructions-list">
                 <li>Click <b>Start</b> to get your first atom.</li>
-                <li>To make a <b class="cation">CATION (+)</b>, drag an electron <b>AWAY</b> from the atom's outer shell.</li>
-                <li>To make an <b class="anion">ANION (-)</b>, drag an electron from the supply <b>ONTO</b> an empty spot in the atom's outer shell.</li>
-                <li>Watch the atom transform into an ion and reveal its new name and charge!</li>
+                <li>To make a <b class="cation">CATION (+)</b>, drag an electron <b>AWAY</b> from the atom's outer shell. The atom will shrink and glow blue.</li>
+                <li>To make an <b class="anion">ANION (-)</b>, drag the spare electron <b>ONTO</b> an empty spot in the atom's outer shell. The atom will expand and glow orange.</li>
                 <li>Click "Next Challenge" to try different atoms.</li>
             </ul>
         </div>
@@ -202,7 +193,6 @@
     </div>
 
 <script>
-    // --- DOM Elements ---
     const startBtn = document.getElementById('start-btn');
     const resetBtn = document.getElementById('reset-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -213,171 +203,235 @@
     const ctx = canvas.getContext('2d');
     const feedbackMessage = document.getElementById('feedback-message');
 
-    // --- Data ---
-    const challenges = [
-        { name: 'Sodium', symbol: 'Na', shells: [2, 8, 1], type: 'cation' },
-        { name: 'Chlorine', symbol: 'Cl', shells: [2, 8, 7], type: 'anion' },
-        { name: 'Magnesium', symbol: 'Mg', shells: [2, 8, 2], type: 'cation' },
-        { name: 'Oxygen', symbol: 'O', shells: [2, 6], type: 'anion' }
-    ];
-    let currentChallenge;
-    let particles = [];
-    let draggedParticle = null;
-    let supplyElectron = null;
+    // --- FIX: Get computed color values once ---
+    const computedStyles = getComputedStyle(document.documentElement);
+    const COLORS = {
+        primary: computedStyles.getPropertyValue('--primary-color').trim(),
+        cation: computedStyles.getPropertyValue('--cation-color').trim(),
+        anion: computedStyles.getPropertyValue('--anion-color').trim(),
+        electron: computedStyles.getPropertyValue('--electron-color').trim(),
+    };
 
-    // --- Particle Class ---
+    const challenges = [
+        { name: 'Sodium', symbol: 'Na', shells: [2, 8, 1], type: 'cation', charge: '+1' },
+        { name: 'Chlorine', symbol: 'Cl', shells: [2, 8, 7], type: 'anion', charge: '-1' },
+        { name: 'Magnesium', symbol: 'Mg', shells: [2, 8, 2], type: 'cation', charge: '+2' },
+        { name: 'Oxygen', symbol: 'O', shells: [2, 6], type: 'anion', charge: '-2' }
+    ];
+    let currentChallenge, particles = [], draggedParticle = null, animationFrameId;
+    let baseShellRadii = [], currentShellRadii = [];
+    let isChallengeComplete = false;
+
     class Particle {
-        constructor(x, y, radius, type) {
-            this.x = x; this.y = y; this.radius = radius;
-            this.type = type; // 'nucleus', 'electron', 'supply'
-            this.isDraggable = type === 'electron' || type === 'supply';
+        constructor(x, y, radius, type, shellIndex = -1) {
+            this.x = x; this.y = y; this.radius = radius; this.type = type;
+            this.shellIndex = shellIndex; this.isDraggable = false;
+            this.baseX = x; this.baseY = y;
+            this.scale = 1; this.isSnapping = false; this.vibration = 0;
+            this.color = (type === 'electron' || type === 'supply') ? COLORS.electron : COLORS.primary;
         }
-        draw() {
+        draw(symbol) {
+            ctx.save();
+            let vibrationX = (Math.random() - 0.5) * this.vibration;
+            let vibrationY = (Math.random() - 0.5) * this.vibration;
+            ctx.translate(this.x + vibrationX, this.y + vibrationY);
+            ctx.scale(this.scale, this.scale);
+            
+            if (this.type === 'supply') {
+                ctx.shadowBlur = 20; ctx.shadowColor = this.color;
+            }
+
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, 2*Math.PI);
-            if (this.type === 'electron' || this.type === 'supply') {
-                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--electron-color').trim();
-            } else {
-                ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--primary-color').trim();
-            }
+            ctx.arc(0, 0, this.radius, 0, 2 * Math.PI);
+            ctx.fillStyle = this.color;
             ctx.fill();
-            if(this.type === 'nucleus') {
-                 ctx.fillStyle = 'white';
-                 ctx.font = 'bold 30px Baloo 2';
-                 ctx.textAlign = 'center';
-                 ctx.textBaseline = 'middle';
-                 ctx.fillText(currentChallenge.symbol, this.x, this.y);
+            ctx.shadowBlur = 0;
+
+            if (this.type === 'nucleus') {
+                ctx.fillStyle = 'white'; ctx.font = 'bold 30px Baloo 2';
+                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText(symbol, 0, 0);
             }
+            ctx.restore();
         }
-        isMouseOver(mx, my) {
-            return Math.hypot(mx - this.x, my - this.y) < this.radius;
+        isMouseOver(mx, my) { return Math.hypot(mx - this.x, my - this.y) < this.radius * this.scale; }
+        snapBack() {
+            const dx = this.baseX - this.x; const dy = this.baseY - this.y;
+            if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+                this.x = this.baseX; this.y = this.baseY; this.isSnapping = false;
+            } else {
+                this.x += dx * 0.2; this.y += dy * 0.2;
+            }
         }
     }
 
-    // --- Game Logic ---
     function setupChallenge() {
-        currentChallenge = challenges[Math.floor(Math.random() * challenges.length)];
-        taskDisplay.textContent = `Challenge: Form an ion from a ${currentChallenge.name} atom.`;
+        let challengeIndex = Math.floor(Math.random() * challenges.length);
+        if (currentChallenge && challenges[challengeIndex].name === currentChallenge.name) {
+             challengeIndex = (challengeIndex + 1) % challenges.length;
+        }
+        currentChallenge = { ...challenges[challengeIndex] };
         
+        taskDisplay.textContent = `Challenge: Form an ion from a ${currentChallenge.name} atom.`;
         feedbackMessage.style.display = 'none';
         nextBtn.style.display = 'none';
+        isChallengeComplete = false;
         particles = [];
         
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
-
-        // Nucleus
+        const centerX = canvas.width / 2; const centerY = canvas.height / 2;
         particles.push(new Particle(centerX, centerY, 50, 'nucleus'));
-
-        // Electrons in shells
+        baseShellRadii = currentChallenge.shells.map((_, i) => 80 + i * 50);
+        currentShellRadii = [...baseShellRadii];
+        
+        const outerShellIndex = currentChallenge.shells.length - 1;
         currentChallenge.shells.forEach((electronCount, shellIndex) => {
-            const shellRadius = 80 + shellIndex * 50;
             for (let i = 0; i < electronCount; i++) {
-                const angle = (i / electronCount) * 2 * Math.PI;
-                const x = centerX + shellRadius * Math.cos(angle);
-                const y = centerY + shellRadius * Math.sin(angle);
-                particles.push(new Particle(x, y, 8, 'electron'));
+                const p = new Particle(0, 0, 10, 'electron', shellIndex);
+                if (shellIndex === outerShellIndex && currentChallenge.type === 'cation') p.isDraggable = true;
+                particles.push(p);
             }
         });
         
-        // Supply electron for anions
         if (currentChallenge.type === 'anion') {
-            supplyElectron = new Particle(50, canvas.height/2, 12, 'supply');
-            particles.push(supplyElectron);
-        } else {
-            supplyElectron = null;
+            const p = new Particle(50, canvas.height / 2, 12, 'supply');
+            p.isDraggable = true;
+            particles.push(p);
         }
     }
-    
-    function draw() {
+
+    function animate(time) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
+        const centerX = canvas.width / 2; const centerY = canvas.height / 2;
         
-        // Draw shells
-        ctx.strokeStyle = 'rgba(0,0,0,0.1)';
-        ctx.lineWidth = 2;
-        currentChallenge.shells.forEach((_, shellIndex) => {
-            const shellRadius = 80 + shellIndex * 50;
+        const nucleus = particles.find(p => p.type === 'nucleus');
+        if (nucleus && nucleus.vibration > 0) nucleus.vibration *= 0.95;
+
+        ctx.strokeStyle = 'rgba(0,0,0,0.1)'; ctx.lineWidth = 2;
+        currentShellRadii.forEach((radius, i) => {
+            currentShellRadii[i] += (baseShellRadii[i] - radius) * 0.1;
+            const dynamicRadius = currentShellRadii[i] + Math.sin(time / 500 + i) * 2;
             ctx.beginPath();
-            ctx.arc(centerX, centerY, shellRadius, 0, 2*Math.PI);
+            ctx.arc(centerX, centerY, dynamicRadius, 0, 2 * Math.PI);
             ctx.stroke();
+            
+            const electronsInShell = particles.filter(p => p.type === 'electron' && p.shellIndex === i);
+            electronsInShell.forEach((p, j) => {
+                if (p.isSnapping) { p.snapBack(); } 
+                else if (p !== draggedParticle) {
+                    const angle = (j / electronsInShell.length) * 2 * Math.PI + time / (2000 * (i + 1));
+                    const newX = centerX + dynamicRadius * Math.cos(angle);
+                    const newY = centerY + dynamicRadius * Math.sin(angle);
+                    p.x = newX; p.y = newY; p.baseX = newX; p.baseY = newY;
+                }
+            });
         });
 
-        particles.forEach(p => p.draw());
-        requestAnimationFrame(draw);
+        particles.forEach(p => {
+            if (p.isSnapping && p.type === 'supply') p.snapBack();
+            p.draw(currentChallenge.symbol);
+        });
+        animationFrameId = requestAnimationFrame(animate);
     }
-    
+
+    function triggerSuccess(type) {
+        const nucleus = particles.find(p => p.type === 'nucleus');
+        particles.forEach(p => p.isDraggable = false);
+        isChallengeComplete = true;
+        nucleus.vibration = 15;
+
+        if (type === 'cation') {
+            showFeedback(`Correct! ${currentChallenge.name} lost an electron to become a Cation (${currentChallenge.symbol}${currentChallenge.charge}).`, 'cation');
+            nucleus.color = COLORS.cation;
+            baseShellRadii = baseShellRadii.map(r => r * 0.9);
+        } else {
+            const outerShellIndex = currentChallenge.shells.length - 1;
+            particles.push(new Particle(draggedParticle.x, draggedParticle.y, 10, 'electron', outerShellIndex));
+            
+            showFeedback(`Correct! ${currentChallenge.name} gained an electron to become an Anion (${currentChallenge.symbol}${currentChallenge.charge}).`, 'anion');
+            nucleus.color = COLORS.anion;
+            baseShellRadii = baseShellRadii.map(r => r * 1.1);
+        }
+        nextBtn.style.display = 'inline-block';
+    }
+
     function showFeedback(text, type) {
         feedbackMessage.textContent = text;
         feedbackMessage.className = `feedback-message ${type}`;
         feedbackMessage.style.display = 'block';
-        nextBtn.style.display = 'inline-block';
     }
 
     function startGame() {
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
         initialMessage.style.display = 'none';
         labWrapper.style.display = 'flex';
         canvas.width = canvas.parentElement.clientWidth;
         canvas.height = canvas.parentElement.clientHeight;
+        currentChallenge = null;
         setupChallenge();
-        requestAnimationFrame(draw);
+        animate(0);
     }
-
-    // --- Event Listeners ---
-    startBtn.addEventListener('click', startGame);
-    resetBtn.addEventListener('click', startGame);
-    nextBtn.addEventListener('click', setupChallenge);
-
-    canvas.addEventListener('mousedown', e => {
+    
+    function handleMouseDown(e) {
+        if(isChallengeComplete) return;
         const rect = canvas.getBoundingClientRect();
         const mx = e.clientX - rect.left;
         const my = e.clientY - rect.top;
-        
-        for (let p of particles) {
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
             if (p.isDraggable && p.isMouseOver(mx, my)) {
                 draggedParticle = p;
+                draggedParticle.scale = 1.5;
+                canvas.style.cursor = 'grabbing';
                 break;
             }
         }
-    });
-
-    canvas.addEventListener('mousemove', e => {
+    }
+    
+    function handleMouseMove(e) {
         if (draggedParticle) {
             const rect = canvas.getBoundingClientRect();
             draggedParticle.x = e.clientX - rect.left;
             draggedParticle.y = e.clientY - rect.top;
         }
-    });
-    
-    canvas.addEventListener('mouseup', e => {
-        if (!draggedParticle) return;
+    }
 
+    function handleMouseUp(e) {
+        canvas.style.cursor = 'default';
+        if (!draggedParticle) return;
+        draggedParticle.scale = 1;
+        
         const rect = canvas.getBoundingClientRect();
         const mx = e.clientX - rect.left;
         const my = e.clientY - rect.top;
-        const centerX = canvas.width/2;
-        const centerY = canvas.height/2;
+        const centerX = canvas.width / 2;
+        const distFromCenter = Math.hypot(mx - centerX, my - rect.height / 2);
+        let success = false;
 
-        if(currentChallenge.type === 'cation' && draggedParticle.type === 'electron') {
-            const distFromCenter = Math.hypot(mx - centerX, my - centerY);
-            if (distFromCenter > 200) { // Dragged far away
+        if (currentChallenge.type === 'cation' && draggedParticle.type === 'electron' && distFromCenter > 220) {
+            particles = particles.filter(p => p !== draggedParticle);
+            triggerSuccess('cation');
+            success = true;
+        } else if (currentChallenge.type === 'anion' && draggedParticle.type === 'supply') {
+            const outerShellRadius = currentShellRadii[currentShellRadii.length - 1];
+            if (Math.abs(distFromCenter - outerShellRadius) < 30) {
+                triggerSuccess('anion');
                 particles = particles.filter(p => p !== draggedParticle);
-                showFeedback(`Correct! ${currentChallenge.name} lost an electron to become a Cation (${currentChallenge.symbol}⁺).`, 'cation');
-            }
-        } else if(currentChallenge.type === 'anion' && draggedParticle.type === 'supply') {
-            const outerShellRadius = 80 + (currentChallenge.shells.length - 1) * 50;
-            const distFromCenter = Math.hypot(mx - centerX, my - centerY);
-            if (Math.abs(distFromCenter - outerShellRadius) < 25) { // Dropped on outer shell
-                 particles = particles.filter(p => p !== draggedParticle);
-                 showFeedback(`Correct! ${currentChallenge.name} gained an electron to become an Anion (${currentChallenge.symbol}⁻).`, 'anion');
+                success = true;
             }
         }
         
+        if (!success) {
+            draggedParticle.isSnapping = true;
+        }
         draggedParticle = null;
-    });
+    }
 
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    nextBtn.addEventListener('click', setupChallenge);
+    canvas.addEventListener('mousedown', handleMouseDown);
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseup', handleMouseUp);
 </script>
 </body>
 </html>
-<!--end-of-code-block-->

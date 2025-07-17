@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mass Puzzle - Discovering the Neutron</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --primary-color: #495057; /* Neutral Gray */
+            --accent-color: #fca311; /* Bright Yellow */
+            --text-color: #212529;
+            --proton-color: #e63946;
+            --electron-color: #219ebc;
+            --neutron-color: #6c757d;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 8px 30px rgba(73, 80, 87, 0.1);
+            --correct-color: #2a9d8f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #e9ecef, #f8f9fa);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .instructions-list li.active-step {
+            background-color: #e9ecef;
+            border-left: 5px solid var(--accent-color);
+        }
+        .step-icon { font-size: 24px; margin-right: 12px; margin-top: -2px; }
+        .instructions-list b { color: var(--accent-color); }
+        .key-concept {
+            background-color: #fff3e0; padding: 10px; border-radius: 8px;
+            border-left: 4px solid var(--accent-color); margin-top: 5px;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #start-btn { background-color: var(--correct-color); color: white; box-shadow: 0 4px 15px rgba(42, 157, 143, 0.3); }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        .puzzle-area {
+            display: flex;
+            width: 100%;
+            gap: 20px;
+            height: 450px;
+        }
+        
+        #particle-supply {
+            flex: 1; background-color: #e9ecef; border-radius: 16px;
+            padding: 15px; display: flex; flex-direction: column;
+            gap: 15px; align-items: center;
+        }
+        .particle-source {
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-family: var(--heading-font); font-size: 28px;
+            color: white; cursor: grab;
+            border: 3px solid white; box-shadow: var(--shadow);
+            transition: transform 0.2s;
+        }
+        .particle-source:active { cursor: grabbing; transform: scale(1.1); }
+        
+        #scale-area {
+            flex: 2; background-color: var(--primary-color); border-radius: 16px;
+            position: relative; display: flex; flex-direction: column;
+            justify-content: space-between; align-items: center; padding: 20px;
+        }
+        
+        #nucleus-zone {
+            width: 200px; height: 200px;
+            border: 4px dashed rgba(255,255,255,0.5);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        #nucleus-zone.drag-over {
+            background-color: rgba(255,255,255,0.1);
+            border-style: solid;
+        }
+        .nucleus-particle {
+            position: absolute; width: 30px; height: 30px;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-weight: bold;
+        }
+
+        .info-panel {
+            display: flex;
+            width: 100%;
+            justify-content: space-around;
+            background-color: rgba(255,255,255,0.1);
+            padding: 10px; border-radius: 12px;
+        }
+        .info-item { text-align: center; color: white; }
+        .info-label { font-size: 14px; opacity: 0.8; }
+        .info-value { font-size: 28px; font-weight: 800; font-family: var(--heading-font); }
+        
+        #feedback-popup {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            background: var(--correct-color);
+            padding: 25px; border-radius: 16px;
+            text-align: center;
+            font-size: 24px; font-family: var(--heading-font);
+            color: white;
+            display: none; animation: popIn 0.5s ease;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        @keyframes popIn { from { opacity: 0; transform: translate(-50%, -40%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">The Mass Puzzle</h2>
+            <p><strong>Lesson:</strong> The Discovery of the Neutron</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p style="margin-bottom: 15px;">There's a mystery in the nucleus! Scientists knew about positive protons, but the atom's mass was all wrong. Your mission is to solve the puzzle and discover the missing piece.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Experiment</h3>
+            <ul class="instructions-list" id="instructions-list">
+                <li id="step-1" class="active-step">
+                    <span class="step-icon">🤔</span>
+                    <span>You have a Helium atom. It has <b>2 Protons</b>, but a total mass of <b>4u</b>. What else could be in the nucleus?</span>
+                </li>
+                <li id="step-2">
+                    <span class="step-icon">👇</span>
+                    <span><b>Drag particles</b> from the supply bin on the left and drop them into the nucleus to try and solve the puzzle.</span>
+                </li>
+                 <li id="step-3" class="key-concept">
+                    <span class="step-icon">💡</span>
+                    <span><b>Observe the changes!</b> Only one type of particle will add mass without changing the atom's identity (the Atomic Number). You've just discovered the <b>Neutron!</b></span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+            </div>
+            <div id="initial-message">Click 'Start' to solve the Mass Puzzle!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="puzzle-area">
+                    <div id="particle-supply"></div>
+                    <div id="scale-area">
+                        <div id="nucleus-zone"></div>
+                        <div class="info-panel">
+                            <div class="info-item">
+                                <div class="info-label">Atomic Number (Z)</div>
+                                <div class="info-value" id="atomic-number">2</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Actual Mass</div>
+                                <div class="info-value">4 u</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Calculated Mass</div>
+                                <div class="info-value" id="calculated-mass">2 u</div>
+                            </div>
+                        </div>
+                         <div id="feedback-popup"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const particleSupply = document.getElementById('particle-supply');
+    const nucleusZone = document.getElementById('nucleus-zone');
+    const atomicNumberDisplay = document.getElementById('atomic-number');
+    const calculatedMassDisplay = document.getElementById('calculated-mass');
+    const feedbackPopup = document.getElementById('feedback-popup');
+    const instructionsList = document.getElementById('instructions-list');
+    
+    // Game State
+    let particlesInNucleus = [];
+    let draggedParticle = null;
+
+    const particleTypes = [
+        { type: 'proton', symbol: 'p+', color: 'var(--proton-color)', mass: 1 },
+        { type: 'electron', symbol: 'e-', color: 'var(--electron-color)', mass: 0 },
+        { type: 'neutron', symbol: 'n', color: 'var(--neutron-color)', mass: 1 }
+    ];
+
+    function createParticleSource() {
+        particleSupply.innerHTML = '';
+        particleTypes.forEach(p => {
+            const source = document.createElement('div');
+            source.className = 'particle-source';
+            source.textContent = p.symbol;
+            source.style.backgroundColor = p.color;
+            source.draggable = true;
+            source.dataset.particle = JSON.stringify(p);
+            particleSupply.appendChild(source);
+        });
+    }
+
+    function updateInstructions(step) {
+        instructionsList.querySelectorAll('li').forEach(li => li.classList.remove('active-step'));
+        document.getElementById(`step-${step}`).classList.add('active-step');
+    }
+
+    function updateNucleus() {
+        nucleusZone.innerHTML = '';
+        let protonCount = 0;
+        let mass = 0;
+
+        particlesInNucleus.forEach(p => {
+            const particleEl = document.createElement('div');
+            particleEl.className = 'nucleus-particle';
+            particleEl.style.backgroundColor = p.color;
+            particleEl.style.left = `${Math.random() * 80 + 10}%`;
+            particleEl.style.top = `${Math.random() * 80 + 10}%`;
+            particleEl.style.transform = 'translate(-50%, -50%)';
+            particleEl.textContent = p.symbol;
+            nucleusZone.appendChild(particleEl);
+            
+            protonCount += (p.type === 'proton' ? 1 : 0);
+            mass += p.mass;
+        });
+
+        atomicNumberDisplay.textContent = protonCount;
+        calculatedMassDisplay.textContent = `${mass} u`;
+
+        if (protonCount === 2 && mass === 4) {
+            feedbackPopup.textContent = "Solved! You discovered the NEUTRON - a neutral particle with mass!";
+            feedbackPopup.style.display = 'block';
+            particleSupply.innerHTML = ''; // Disable adding more
+        }
+    }
+
+    function resetGame() {
+        particlesInNucleus = [
+            { type: 'proton', symbol: 'p+', color: 'var(--proton-color)', mass: 1 },
+            { type: 'proton', symbol: 'p+', color: 'var(--proton-color)', mass: 1 }
+        ];
+        feedbackPopup.style.display = 'none';
+        createParticleSource();
+        updateNucleus();
+        updateInstructions(2);
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        resetGame();
+    }
+
+    // Event Listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', resetGame);
+
+    particleSupply.addEventListener('dragstart', (e) => {
+        if (e.target.classList.contains('particle-source')) {
+            e.dataTransfer.setData('text/plain', e.target.dataset.particle);
+        }
+    });
+
+    nucleusZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        nucleusZone.classList.add('drag-over');
+    });
+
+    nucleusZone.addEventListener('dragleave', () => {
+        nucleusZone.classList.remove('drag-over');
+    });
+
+    nucleusZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        nucleusZone.classList.remove('drag-over');
+        const particleData = JSON.parse(e.dataTransfer.getData('text/plain'));
+        
+        if (particleData.type === 'electron') {
+            feedbackPopup.textContent = "Electrons don't belong in the nucleus!";
+            feedbackPopup.style.background = 'var(--incorrect-color)';
+            feedbackPopup.style.display = 'block';
+            setTimeout(() => {
+                feedbackPopup.style.display = 'none';
+                feedbackPopup.style.background = 'var(--correct-color)';
+            }, 2000);
+            return;
+        }
+
+        particlesInNucleus.push(particleData);
+        updateInstructions(3);
+        updateNucleus();
+    });
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

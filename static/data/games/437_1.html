@@ -19,6 +19,7 @@
             --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
             --correct-color: #4cc9f0;
             --incorrect-color: #f72585;
+            --line-color: #480ca8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -78,12 +79,7 @@
             display: flex;
             align-items: flex-start;
         }
-        .instructions-list li::before {
-            content: '🔗';
-            margin-right: 12px;
-            font-size: 18px;
-            margin-top: 2px;
-        }
+        .instructions-list li::before { content: '🔗'; margin-right: 12px; font-size: 18px; margin-top: 2px; }
         .instructions-list b { color: var(--primary-color); }
         
         .controls {
@@ -122,12 +118,7 @@
             width: 100%;
         }
 
-        .lab-wrapper {
-            width: 100%;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
         
         #task-display {
             width: 100%;
@@ -153,9 +144,8 @@
         #atom-supply {
             position: absolute;
             bottom: 10px;
-            left: 10px;
-            display: flex;
-            gap: 10px;
+            left: 50%;
+            transform: translateX(-50%);
         }
         
         .atom {
@@ -169,25 +159,17 @@
             box-shadow: var(--shadow);
             transition: transform 0.2s;
         }
-        .atom:active { cursor: grabbing; transform: scale(1.1); }
-        
-        #check-btn {
-            position: absolute;
-            bottom: 20px; right: 20px;
-            font-size: 20px;
-            background-color: var(--primary-color);
-            color: white;
-        }
+        .atom.dragging { cursor: grabbing; transform: scale(1.1); z-index: 100; }
         
         #feedback-area {
             position: absolute;
-            top: 20px; right: 20px;
+            top: 20px; left: 50%;
+            transform: translateX(-50%);
             font-size: 20px; font-weight: 800;
             display: none; padding: 10px 20px; border-radius: 12px;
             font-family: var(--heading-font); color: white; text-align: center;
+            background-color: var(--correct-color);
         }
-        #feedback-area.correct { background-color: var(--correct-color); }
-        #feedback-area.incorrect { background-color: var(--incorrect-color); }
 
     </style>
 </head>
@@ -197,15 +179,15 @@
             <h2 class="card-header">Valency Link-Up</h2>
             <p><strong>Lesson:</strong> Introduction to Valency</p>
             <br>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Mission</h3>
-            <p style="margin-bottom: 15px;">Think of an atom's valency as the number of "hands" or "arms" it has to link up with other atoms. Your mission is to build a stable molecule by making sure every atom's "arms" are holding another's.</p>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Play</h3>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">The Mission</h3>
+            <p>An atom's valency is its "combining power" - like having a certain number of hands to link with other atoms. Your mission is to build a stable molecule by making sure every atom's "hands" are holding another's.</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Play</h3>
             <ul class="instructions-list">
-                <li>Click <b>Start</b>. You'll get a central atom with its valency "arms" shown.</li>
-                <li>From the <b>Atom Supply</b> at the bottom, drag other atoms into the workspace.</li>
-                <li>Drag an atom's arm to another atom's arm to create a bond. A link will form!</li>
-                <li>Your goal is to use up <b>all the arms</b> of the central atom.</li>
-                <li>Click <b>"Check Molecule"</b> to see if you've built a stable compound!</li>
+                <li>Click <b>Start</b>. A central atom will appear with glowing "docking ports" for each of its valency arms.</li>
+                <li><b>Drag an atom</b> from the supply at the bottom.</li>
+                <li>Drop it onto any of the glowing ports to form a chemical bond.</li>
+                <li>Fill all the ports on the central atom to create a stable molecule!</li>
             </ul>
         </div>
 
@@ -221,7 +203,6 @@
                 <div class="assembly-area">
                     <canvas id="assembly-canvas" class="assembly-canvas"></canvas>
                     <div id="atom-supply"></div>
-                    <button id="check-btn" class="btn">Check Molecule</button>
                     <div id="feedback-area"></div>
                 </div>
             </div>
@@ -229,7 +210,6 @@
     </div>
 
 <script>
-    // --- DOM Elements ---
     const startBtn = document.getElementById('start-btn');
     const resetBtn = document.getElementById('reset-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -239,118 +219,117 @@
     const atomSupply = document.getElementById('atom-supply');
     const canvas = document.getElementById('assembly-canvas');
     const ctx = canvas.getContext('2d');
-    const checkBtn = document.getElementById('check-btn');
     const feedbackArea = document.getElementById('feedback-area');
 
-    // --- Data ---
     const challenges = [
         { central: { symbol: 'Mg', valency: 2, color: '#f94144' }, link: { symbol: 'Cl', valency: 1, color: '#90be6d'} },
         { central: { symbol: 'O', valency: 2, color: '#f94144' }, link: { symbol: 'H', valency: 1, color: '#f3722c'} },
         { central: { symbol: 'N', valency: 3, color: '#f9c74f' }, link: { symbol: 'H', valency: 1, color: '#f3722c'} }
     ];
     let currentChallenge;
-    let atomsOnCanvas = [];
-    let bonds = [];
-    let draggedArm = null;
+    let centralAtom, linkedAtoms = [], draggedAtom = null, animationFrameId;
 
-    // --- Atom & Arm Class ---
     class Atom {
         constructor(x, y, data, isCentral = false) {
-            this.x = x; this.y = y;
-            this.symbol = data.symbol; this.valency = data.valency;
-            this.color = data.color;
-            this.radius = 40;
-            this.arms = [];
-            this.id = Math.random();
+            this.x = x; this.y = y; this.data = data;
+            this.radius = 40; this.id = Math.random();
             this.isCentral = isCentral;
-            this.createArms();
+            this.dockingPorts = [];
+            if(isCentral) this.createDockingPorts();
         }
-        createArms() {
-            for (let i = 0; i < this.valency; i++) {
-                const angle = (i / this.valency) * 2 * Math.PI;
-                this.arms.push({ parent: this, angle, isLinked: false, id: Math.random() });
+        createDockingPorts() {
+            for (let i = 0; i < this.data.valency; i++) {
+                const angle = (i / this.data.valency) * 2 * Math.PI;
+                this.dockingPorts.push({ angle, isFilled: false });
             }
         }
-        draw() {
-            // Draw arms and bonds first
-            this.arms.forEach(arm => {
-                const endX = this.x + (this.radius + 20) * Math.cos(arm.angle);
-                const endY = this.y + (this.radius + 20) * Math.sin(arm.angle);
-                if (!arm.isLinked) {
-                    ctx.beginPath();
-                    ctx.moveTo(this.x, this.y);
-                    ctx.lineTo(endX, endY);
-                    ctx.strokeStyle = '#adb5bd'; ctx.lineWidth = 4;
-                    ctx.stroke();
-                    ctx.beginPath();
-                    ctx.arc(endX, endY, 8, 0, 2*Math.PI);
-                    ctx.fillStyle = '#6c757d'; ctx.fill();
-                }
-            });
-            // Draw atom body
+        draw(isComplete = false) {
             ctx.beginPath();
-            ctx.arc(this.x, this.y, this.radius, 0, 2*Math.PI);
-            ctx.fillStyle = this.color;
+            ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+            ctx.fillStyle = this.data.color;
+            if(isComplete) {
+                ctx.shadowColor = 'var(--correct-color)';
+                ctx.shadowBlur = 20;
+            }
             ctx.fill();
+            ctx.shadowBlur = 0;
             ctx.fillStyle = 'white';
             ctx.font = 'bold 36px Baloo 2';
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(this.symbol, this.x, this.y);
+            ctx.fillText(this.data.symbol, this.x, this.y);
         }
     }
-
-    // --- Game Logic ---
+    
     function setupChallenge() {
-        currentChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+        if (!currentChallenge || challenges.indexOf(currentChallenge) === challenges.length - 1) {
+            currentChallenge = challenges[0];
+        } else {
+            currentChallenge = challenges[challenges.indexOf(currentChallenge) + 1];
+        }
+        
         taskDisplay.textContent = `Build a stable molecule with ${currentChallenge.central.symbol} as the central atom.`;
         
-        // Populate supply bin
-        atomSupply.innerHTML = '';
-        const linkAtom = document.createElement('div');
-        linkAtom.className = 'atom';
-        linkAtom.style.backgroundColor = currentChallenge.link.color;
-        linkAtom.textContent = currentChallenge.link.symbol;
-        linkAtom.draggable = true;
-        linkAtom.dataset.atom = JSON.stringify(currentChallenge.link);
-        atomSupply.appendChild(linkAtom);
+        // --- FIX: Ensure atom supply is visible ---
+        atomSupply.style.display = 'block';
         
-        // Reset state
-        atomsOnCanvas = [new Atom(canvas.width / 2, canvas.height / 2, currentChallenge.central, true)];
-        bonds = [];
+        atomSupply.innerHTML = '';
+        const linkAtomEl = document.createElement('div');
+        linkAtomEl.className = 'atom';
+        linkAtomEl.style.backgroundColor = currentChallenge.link.color;
+        linkAtomEl.textContent = currentChallenge.link.symbol;
+        linkAtomEl.draggable = true;
+        linkAtomEl.id = 'draggable-atom';
+        atomSupply.appendChild(linkAtomEl);
+        
+        centralAtom = new Atom(canvas.width / 2, canvas.height / 2, currentChallenge.central, true);
+        linkedAtoms = [];
         nextBtn.style.display = 'none';
-        checkBtn.disabled = false;
         feedbackArea.style.display = 'none';
     }
     
-    function draw() {
+    function animate() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        bonds.forEach(bond => {
-            ctx.beginPath();
-            ctx.moveTo(bond.x1, bond.y1);
-            ctx.lineTo(bond.x2, bond.y2);
-            ctx.strokeStyle = '#343a40'; ctx.lineWidth = 6;
-            ctx.stroke();
+        const isComplete = centralAtom.dockingPorts.every(p => p.isFilled);
+
+        centralAtom.dockingPorts.forEach((port, i) => {
+            const portRadius = centralAtom.radius + 60;
+            const portX = centralAtom.x + portRadius * Math.cos(port.angle);
+            const portY = centralAtom.y + portRadius * Math.sin(port.angle);
+            
+            if (port.isFilled) {
+                const linkedAtom = linkedAtoms.find(a => a.portIndex === i);
+                if (linkedAtom) {
+                    linkedAtom.x += (portX - linkedAtom.x) * 0.2;
+                    linkedAtom.y += (portY - linkedAtom.y) * 0.2;
+                    ctx.beginPath();
+                    ctx.moveTo(centralAtom.x, centralAtom.y);
+                    ctx.lineTo(linkedAtom.x, linkedAtom.y);
+                    ctx.strokeStyle = 'var(--line-color)'; ctx.lineWidth = 8;
+                    ctx.stroke();
+                }
+            } else {
+                ctx.beginPath();
+                ctx.arc(portX, portY, 15, 0, 2*Math.PI);
+                ctx.fillStyle = 'var(--accent-color)';
+                ctx.globalAlpha = 0.5 + Math.sin(Date.now() / 200) * 0.2;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
         });
-        atomsOnCanvas.forEach(atom => atom.draw());
-        requestAnimationFrame(draw);
+        
+        centralAtom.draw(isComplete);
+        linkedAtoms.forEach(atom => atom.draw(isComplete));
+
+        animationFrameId = requestAnimationFrame(animate);
     }
     
-    function checkMolecule() {
-        const centralAtom = atomsOnCanvas.find(a => a.isCentral);
-        const allArmsLinked = centralAtom.arms.every(arm => arm.isLinked);
-        const otherAtomsAllLinked = atomsOnCanvas.filter(a => !a.isCentral).every(a => a.arms.every(arm => arm.isLinked));
-
-        if (allArmsLinked && otherAtomsAllLinked) {
+    function checkCompletion() {
+        if (centralAtom.dockingPorts.every(p => p.isFilled)) {
             feedbackArea.textContent = 'Stable Molecule Formed!';
-            feedbackArea.className = 'feedback-area correct';
+            feedbackArea.style.display = 'block';
             nextBtn.style.display = 'inline-block';
-            checkBtn.disabled = true;
-        } else {
-            feedbackArea.textContent = 'Not stable yet! Check all the "arms".';
-            feedbackArea.className = 'feedback-area incorrect';
+            atomSupply.style.display = 'none';
         }
-        feedbackArea.style.display = 'block';
-        setTimeout(() => feedbackArea.style.display = 'none', 2000);
     }
 
     function startGame() {
@@ -358,79 +337,51 @@
         labWrapper.style.display = 'flex';
         canvas.width = canvas.parentElement.clientWidth;
         canvas.height = canvas.parentElement.clientHeight;
+        currentChallenge = null; // Reset to start from first challenge
         setupChallenge();
         if(animationFrameId) cancelAnimationFrame(animationFrameId);
-        draw();
+        animate();
     }
     
-    // --- Event Listeners ---
+    // Event Listeners
     startBtn.addEventListener('click', startGame);
     resetBtn.addEventListener('click', startGame);
     nextBtn.addEventListener('click', setupChallenge);
-    checkBtn.addEventListener('click', checkMolecule);
 
     atomSupply.addEventListener('dragstart', e => {
-        if(e.target.classList.contains('atom')) {
-            e.dataTransfer.setData('text/plain', e.target.dataset.atom);
-        }
+        if (!e.target.classList.contains('atom')) return;
+        draggedAtom = e.target;
+        e.dataTransfer.setData('text/plain', 'atom');
+        setTimeout(() => (draggedAtom.style.display = 'none'), 0);
+    });
+    atomSupply.addEventListener('dragend', () => {
+        if(draggedAtom) draggedAtom.style.display = 'flex';
     });
 
     canvas.addEventListener('dragover', e => e.preventDefault());
     canvas.addEventListener('drop', e => {
         e.preventDefault();
-        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        atomsOnCanvas.push(new Atom(x, y, data));
-    });
 
-    canvas.addEventListener('mousedown', e => {
-        const rect = canvas.getBoundingClientRect();
-        const mx = e.clientX - rect.left;
-        const my = e.clientY - rect.top;
+        const openPortIndex = centralAtom.dockingPorts.findIndex(p => !p.isFilled);
+        if (openPortIndex === -1) return; // No open ports
         
-        atomsOnCanvas.forEach(atom => {
-            atom.arms.forEach(arm => {
-                const endX = atom.x + (atom.radius + 20) * Math.cos(arm.angle);
-                const endY = atom.y + (atom.radius + 20) * Math.sin(arm.angle);
-                if (Math.hypot(mx-endX, my-endY) < 10 && !arm.isLinked) {
-                    draggedArm = arm;
-                }
-            });
-        });
-    });
-    
-    canvas.addEventListener('mouseup', e => {
-        if (!draggedArm) return;
-        const rect = canvas.getBoundingClientRect();
-        const mx = e.clientX - rect.left;
-        const my = e.clientY - rect.top;
+        const openPort = centralAtom.dockingPorts[openPortIndex];
+        const portRadius = centralAtom.radius + 60;
+        const portX = centralAtom.x + portRadius * Math.cos(openPort.angle);
+        const portY = centralAtom.y + portRadius * Math.sin(openPort.angle);
 
-        let linkMade = false;
-        atomsOnCanvas.forEach(atom => {
-            if(atom.id === draggedArm.parent.id) return;
-            atom.arms.forEach(targetArm => {
-                if (targetArm.isLinked) return;
-                const endX = atom.x + (atom.radius + 20) * Math.cos(targetArm.angle);
-                const endY = atom.y + (atom.radius + 20) * Math.sin(targetArm.angle);
-                 if (Math.hypot(mx-endX, my-endY) < 10) {
-                     draggedArm.isLinked = true;
-                     targetArm.isLinked = true;
-                     const startX = draggedArm.parent.x + (draggedArm.parent.radius) * Math.cos(draggedArm.angle);
-                     const startY = draggedArm.parent.y + (draggedArm.parent.radius) * Math.sin(draggedArm.angle);
-                     const finalX = targetArm.parent.x + (targetArm.parent.radius) * Math.cos(targetArm.angle);
-                     const finalY = targetArm.parent.y + (targetArm.parent.radius) * Math.sin(targetArm.angle);
-                     bonds.push({x1: startX, y1: startY, x2: finalX, y2: finalY });
-                     linkMade = true;
-                 }
-            });
-        });
-        
-        draggedArm = null;
+        // Check if dropped near an open port
+        if (Math.hypot(x - portX, y - portY) < 40) {
+            openPort.isFilled = true;
+            const newAtom = new Atom(x, y, currentChallenge.link);
+            newAtom.portIndex = openPortIndex; // Assign port to atom
+            linkedAtoms.push(newAtom);
+            checkCompletion();
+        }
     });
-
 </script>
 </body>
 </html>
-<!--end-of-code-block-->

@@ -78,12 +78,7 @@
             display: flex;
             align-items: flex-start;
         }
-        .instructions-list li::before {
-            content: '⚖️';
-            margin-right: 12px;
-            font-size: 18px;
-            margin-top: 2px;
-        }
+        .instructions-list li::before { content: '⚖️'; margin-right: 12px; font-size: 18px; margin-top: 2px; }
         .instructions-list b { color: var(--primary-color); }
         
         .controls {
@@ -122,50 +117,36 @@
             width: 100%;
         }
 
-        .lab-wrapper {
-            width: 100%;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
         
         #task-display {
             font-family: var(--heading-font);
             font-size: 22px;
             color: var(--primary-color);
             margin-bottom: 20px;
+            text-align: center;
+            min-height: 55px;
         }
         
-        .balance-scale-area {
-            width: 100%;
-            height: 350px;
-            position: relative;
-        }
+        .balance-scale-area { width: 100%; height: 350px; position: relative; }
         
         #scale-beam {
-            width: 500px;
-            height: 20px;
-            background-color: #495057;
-            position: absolute;
-            left: 50%;
-            top: 50px;
+            width: 500px; height: 20px; background-color: #495057;
+            position: absolute; left: 50%; top: 50px;
             transform-origin: center center;
             transition: transform 0.5s ease-in-out;
             margin-left: -250px;
+            border-radius: 10px;
         }
         #scale-base {
-            position: absolute;
-            bottom: 50px; left: 50%;
-            transform: translateX(-50%);
+            position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%);
             width: 0; height: 0;
             border-left: 50px solid transparent;
             border-right: 50px solid transparent;
             border-bottom: 250px solid #6c757d;
         }
         #scale-fulcrum {
-            position: absolute;
-            top: 70px; left: 50%;
-            transform: translateX(-50%);
+            position: absolute; top: 70px; left: 50%; transform: translateX(-50%);
             width: 0; height: 0;
             border-left: 15px solid transparent;
             border-right: 15px solid transparent;
@@ -174,48 +155,46 @@
 
         .scale-pan {
             position: absolute;
-            width: 120px; height: 100px;
+            width: 140px; height: 100px;
             border: 4px solid #495057;
             border-top: none;
             border-radius: 0 0 15px 15px;
             background-color: #ced4da;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 0.5s ease-in-out, border-color 0.5s;
             display: flex; flex-wrap: wrap;
-            padding: 5px; gap: 2px;
+            padding: 8px; gap: 3px;
             justify-content: center; align-content: flex-start;
         }
-        #left-pan { left: 50px; }
-        #right-pan { right: 50px; }
+        #left-pan { left: 40px; }
+        #right-pan { right: 40px; }
         
-        .weight-supply {
-            display: flex; flex-direction: column;
-            align-items: center; gap: 10px;
-            margin-top: 20px;
-        }
-        .weight {
-            width: 40px; height: 40px;
-            background-color: var(--accent-color);
-            color: white;
-            display: flex; justify-content: center; align-items: center;
+        .atom-display {
+            font-size: 80px;
+            color: var(--text-color);
             font-family: var(--heading-font);
-            border-radius: 8px;
-            cursor: grab;
-            border: 2px solid white;
-            box-shadow: var(--shadow);
+            line-height: 1;
         }
-        
-        .atom-display { font-size: 80px; }
         .unit-weight {
              width: 15px; height: 15px;
              background-color: #6c757d;
              border-radius: 3px;
         }
 
-        #check-btn {
-            margin-top: 15px; background-color: var(--primary-color);
-            color: white; font-size: 20px;
+        .action-area {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
-        
+        #weight-counter {
+            font-size: 24px; font-weight: bold; background-color: #e9ecef;
+            padding: 5px 20px; border-radius: 8px;
+        }
+        #add-weight-btn {
+            background-color: var(--accent-color); color: white;
+            font-size: 20px; padding: 15px 30px;
+        }
     </style>
 </head>
 <body>
@@ -224,15 +203,17 @@
             <h2 class="card-header">The Carbon-12 Scale</h2>
             <p><strong>Lesson:</strong> Atomic Mass & Atomic Mass Unit</p>
             <br>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Mission</h3>
-            <p style="margin-bottom: 15px;">How do we "weigh" an atom? We can't use a regular scale! Instead, we compare it to a standard: the <b>Carbon-12 atom</b>. Your mission is to find the relative atomic mass of different elements.</p>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">The Mission</h3>
+            <p>How do we "weigh" an atom? We use a relative scale! Your mission is to balance the scale to find the relative atomic mass of different elements.</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Experiment</h3>
             <ul class="instructions-list">
-                <li>Click <b>Start</b> to get an unknown atom on the left pan of the scale.</li>
-                <li>The standard weight is <b>1u</b>, which is 1/12th the mass of a Carbon-12 atom.</li>
-                <li><b>Drag the '1u' weights</b> from the supply onto the right pan of the scale.</li>
-                <li>Keep adding weights until the scale is perfectly balanced.</li>
-                <li>Click <b>"Check Balance"</b>. The number of '1u' weights you used is that atom's relative atomic mass!</li>
+                <li>Click <b>Start</b> to get an unknown atom on the left pan.</li>
+                <li>The standard weight is <b>1u</b> (atomic mass unit).</li>
+                <li>Click the <b>"Add 1u Weight"</b> button to add weights to the right pan.</li>
+                <li>Keep adding weights until the scale balances perfectly. The scale will turn green!</li>
+                <li>The number of weights you used is that atom's relative atomic mass.</li>
+                <li>Click <b>"Next Atom"</b> to try another one.</li>
             </ul>
         </div>
 
@@ -250,19 +231,18 @@
                     <div id="scale-beam"></div>
                     <div id="scale-fulcrum"></div>
                     <div id="left-pan" class="scale-pan"></div>
-                    <div id="right-pan" class="scale-pan drop-zone"></div>
+                    <div id="right-pan" class="scale-pan"></div>
                 </div>
-                <div class="weight-supply">
-                    <div id="unit-weight-source" class="weight" draggable="true">1u</div>
-                    <p>Drag 1u weights to the right pan</p>
+                <div class="action-area">
+                    <button id="add-weight-btn" class="btn">Add 1u Weight</button>
+                    <div>Total Weight: <span id="weight-counter">0 u</span></div>
                 </div>
-                <button id="check-btn" class="btn">Check Balance</button>
             </div>
         </div>
     </div>
 
 <script>
-    // --- DOM Elements ---
+    // DOM Elements
     const startBtn = document.getElementById('start-btn');
     const resetBtn = document.getElementById('reset-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -272,44 +252,52 @@
     const scaleBeam = document.getElementById('scale-beam');
     const leftPan = document.getElementById('left-pan');
     const rightPan = document.getElementById('right-pan');
-    const unitWeightSource = document.getElementById('unit-weight-source');
-    const checkBtn = document.getElementById('check-btn');
+    const addWeightBtn = document.getElementById('add-weight-btn');
+    const weightCounter = document.getElementById('weight-counter');
 
-    // --- Data ---
+    // Data
     const elements = [
-        { name: 'Hydrogen', symbol: 'H', mass: 1 },
-        { name: 'Oxygen', symbol: 'O', mass: 16 },
-        { name: 'Nitrogen', symbol: 'N', mass: 14 },
-        { name: 'Sodium', symbol: 'Na', mass: 23 },
-        { name: 'Sulphur', symbol: 'S', mass: 32 }
+        { name: 'Hydrogen', symbol: 'H', mass: 1 }, { name: 'Helium', symbol: 'He', mass: 4 },
+        { name: 'Oxygen', symbol: 'O', mass: 16 }, { name: 'Nitrogen', symbol: 'N', mass: 14 },
+        { name: 'Sodium', symbol: 'Na', mass: 23 }, { name: 'Sulphur', symbol: 'S', mass: 32 }
     ];
-    let currentElement;
+    let currentElementIndex = -1;
     let weightsOnPan = 0;
     
-    // --- Game Logic ---
+    // Game Logic
     function setupNewElement() {
-        currentElement = elements[Math.floor(Math.random() * elements.length)];
-        taskDisplay.textContent = `Find the relative atomic mass of: ${currentElement.name} (${currentElement.symbol})`;
-        
+        // Cycle through elements
+        currentElementIndex = (currentElementIndex + 1) % elements.length;
+        const currentElement = elements[currentElementIndex];
+
+        taskDisplay.textContent = `Balance the scale to find the mass of: ${currentElement.name} (${currentElement.symbol})`;
         leftPan.innerHTML = `<span class="atom-display">${currentElement.symbol}</span>`;
         rightPan.innerHTML = '';
         weightsOnPan = 0;
 
         updateScale();
-        checkBtn.disabled = false;
+        addWeightBtn.disabled = false;
         nextBtn.style.display = 'none';
         leftPan.style.borderColor = "#495057";
         rightPan.style.borderColor = "#495057";
+        scaleBeam.style.backgroundColor = '#495057';
     }
 
     function updateScale() {
-        const diff = currentElement.mass - weightsOnPan;
-        const maxTilt = 10; // degrees
-        const tiltAngle = Math.max(-maxTilt, Math.min(maxTilt, diff / 2));
+        const currentMass = elements[currentElementIndex].mass;
+        const diff = currentMass - weightsOnPan;
+        const maxTilt = 10;
+        const tiltAngle = Math.max(-maxTilt, Math.min(maxTilt, diff));
         
         scaleBeam.style.transform = `rotate(${tiltAngle}deg)`;
-        leftPan.style.transform = `translateY(${-tiltAngle * 3}px)`;
-        rightPan.style.transform = `translateY(${tiltAngle * 3}px)`;
+        leftPan.style.transform = `translateY(${-tiltAngle * 4}px)`;
+        rightPan.style.transform = `translateY(${tiltAngle * 4}px)`;
+        weightCounter.textContent = `${weightsOnPan} u`;
+
+        // Check for balance automatically
+        if (weightsOnPan === currentMass) {
+            handleCorrectBalance();
+        }
     }
     
     function addWeight() {
@@ -319,49 +307,30 @@
         rightPan.appendChild(weightEl);
         updateScale();
     }
-    
-    function checkBalance() {
-        const isCorrect = weightsOnPan === currentElement.mass;
-        if (isCorrect) {
-            leftPan.style.borderColor = 'var(--correct-color)';
-            rightPan.style.borderColor = 'var(--correct-color)';
-            taskDisplay.textContent = `Correct! The relative atomic mass of ${currentElement.name} is ${currentElement.mass}u.`;
-            nextBtn.style.display = 'inline-block';
-            checkBtn.disabled = true;
-        } else {
-            rightPan.style.borderColor = 'var(--incorrect-color)';
-            taskDisplay.textContent = 'Not quite balanced! Try adding or removing weights.';
-        }
+
+    function handleCorrectBalance() {
+        const currentElement = elements[currentElementIndex];
+        leftPan.style.borderColor = 'var(--correct-color)';
+        rightPan.style.borderColor = 'var(--correct-color)';
+        scaleBeam.style.backgroundColor = 'var(--correct-color)';
+        taskDisplay.innerHTML = `Correct! The relative atomic mass of ${currentElement.name} is <b>${currentElement.mass}u</b>.`;
+        nextBtn.style.display = 'inline-block';
+        addWeightBtn.disabled = true;
     }
 
-    // --- Event Listeners & Setup ---
+    // Event Listeners & Setup
     function startGame() {
         initialMessage.style.display = 'none';
         labWrapper.style.display = 'flex';
+        currentElementIndex = -1; // Reset index to start from the first element
         setupNewElement();
     }
 
     startBtn.addEventListener('click', startGame);
     resetBtn.addEventListener('click', startGame);
     nextBtn.addEventListener('click', setupNewElement);
-    checkBtn.addEventListener('click', checkBalance);
-    
-    unitWeightSource.addEventListener('dragstart', e => {
-        e.dataTransfer.setData('text/plain', '1u');
-    });
-
-    rightPan.addEventListener('dragover', e => {
-        e.preventDefault();
-    });
-
-    rightPan.addEventListener('drop', e => {
-        e.preventDefault();
-        if (e.dataTransfer.getData('text/plain') === '1u') {
-            addWeight();
-        }
-    });
+    addWeightBtn.addEventListener('click', addWeight);
 
 </script>
 </body>
 </html>
-<!--end-of-code-block-->

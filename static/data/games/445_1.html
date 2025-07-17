@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alpha Particle Cannon - Rutherford's Experiment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #212529;
+            --card-bg: #ffffff;
+            --primary-color: #ffbe0b; /* Alpha Particle Yellow */
+            --accent-color: #fb5607; /* Orange for interaction */
+            --text-color: #001219;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 8px 30px rgba(255, 190, 11, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #495057;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #343a40, #495057);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .step-icon { font-size: 24px; margin-right: 12px; margin-top: -2px; }
+        .instructions-list b { color: var(--accent-color); }
+        .key-observation {
+            background-color: #fff3e0;
+            padding: 10px; border-radius: 8px;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #fire-btn { background-color: var(--accent-color); color: white; box-shadow: 0 4px 15px rgba(251, 86, 7, 0.3); }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); }
+        .btn:disabled { background-color: #adb5bd; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+        .model-toggle { display: flex; background-color: #e9ecef; border-radius: 12px; padding: 5px; }
+        .toggle-btn { padding: 8px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; background-color: transparent; }
+        .toggle-btn.active { background-color: var(--primary-color); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 550px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        .experiment-container {
+            width: 100%; height: 550px;
+            background-color: #343a40;
+            border-radius: 16px; position: relative;
+            overflow: hidden;
+        }
+        .experiment-canvas { width: 100%; height: 100%; }
+        
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Alpha Particle Cannon</h2>
+            <p><strong>Lesson:</strong> Rutherford's Gold Foil Experiment</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--accent-color);">Your Mission</h3>
+            <p style="margin-bottom: 15px;">Step into the shoes of Ernest Rutherford! Your mission is to fire alpha particles at a thin gold foil and observe what happens. The results might surprise you and change our idea of the atom forever!</p>
+            <h3 style="font-family: var(--heading-font); color: var(--accent-color);">How to Experiment</h3>
+            <ul class="instructions-list">
+                <li>
+                    <span class="step-icon">🎯</span>
+                    <span>Use the <b>Model Toggle</b> to switch the gold foil between Thomson's and Rutherford's atomic models.</span>
+                </li>
+                <li>
+                    <span class="step-icon">💥</span>
+                    <span>Click the <b>"Fire Particles"</b> button to shoot a stream of alpha particles at the foil.</span>
+                </li>
+                <li class="key-observation">
+                    <span class="step-icon">🧐</span>
+                    <span><b>Observe Carefully!</b> How do the particles behave with each model? Notice how most pass through, some deflect, and a few bounce back in Rutherford's model. This is the key evidence for a tiny, dense nucleus!</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div id="initial-message">Click 'Start' to power up the cannon!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                 <div class="controls">
+                    <button id="fire-btn" class="btn">Fire Particles</button>
+                    <div class="model-toggle">
+                        <button class="toggle-btn" id="thomson-btn">Thomson's Model</button>
+                        <button class="toggle-btn active" id="rutherford-btn">Rutherford's Model</button>
+                    </div>
+                    <button id="reset-btn" class="btn">Reset</button>
+                </div>
+                <div class="experiment-container">
+                    <canvas id="experiment-canvas" class="experiment-canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const fireBtn = document.getElementById('fire-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const thomsonBtn = document.getElementById('thomson-btn');
+    const rutherfordBtn = document.getElementById('rutherford-btn');
+    const canvas = document.getElementById('experiment-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Game State
+    let particles = [];
+    let goldAtoms = [];
+    let currentModel = 'rutherford'; // 'thomson' or 'rutherford'
+    let animationFrameId;
+
+    // Particle and Atom Classes
+    class AlphaParticle {
+        constructor(y) {
+            this.x = 0;
+            this.y = y;
+            this.vx = 8;
+            this.vy = 0;
+            this.radius = 4;
+            this.color = 'var(--primary-color)';
+            this.hasCollided = false;
+        }
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+    }
+
+    class GoldAtom {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.radius = 20;
+            this.nucleusRadius = 3;
+        }
+        draw(model) {
+            if (model === 'thomson') {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 215, 0, 0.1)';
+                ctx.fill();
+            } else { // rutherford
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.nucleusRadius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 215, 0, 1)';
+                ctx.fill();
+            }
+        }
+    }
+
+    function createGoldFoil() {
+        goldAtoms = [];
+        const foilX = canvas.width / 2;
+        const numLayers = 5;
+        const numAtomsPerLayer = 10;
+        for (let i = 0; i < numLayers; i++) {
+            for (let j = 0; j < numAtomsPerLayer; j++) {
+                const x = foilX + (i * 25);
+                const y = (canvas.height / numAtomsPerLayer) * j + (canvas.height / (numAtomsPerLayer*2));
+                goldAtoms.push(new GoldAtom(x, y));
+            }
+        }
+    }
+
+    function fireParticles() {
+        fireBtn.disabled = true;
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                const y = Math.random() * canvas.height;
+                particles.push(new AlphaParticle(y));
+            }, i * 50);
+        }
+        setTimeout(() => fireBtn.disabled = false, 50 * 50);
+    }
+
+    function checkCollision(particle) {
+        if (particle.hasCollided) return;
+        
+        for (const atom of goldAtoms) {
+            const dx = particle.x - atom.x;
+            const dy = particle.y - atom.y;
+            const distance = Math.hypot(dx, dy);
+
+            if (currentModel === 'thomson') {
+                if (distance < atom.radius) {
+                    particle.vy += (Math.random() - 0.5) * 0.1; // Very slight deflection
+                    particle.hasCollided = true;
+                    return;
+                }
+            } else { // rutherford
+                 if (distance < atom.nucleusRadius + particle.radius) {
+                    // Head-on collision - rebound
+                    particle.vx *= -1;
+                    particle.vy = (Math.random() - 0.5) * 2;
+                    particle.hasCollided = true;
+                    return;
+                } else if (distance < atom.radius * 2) { // Close approach - deflect
+                    const force = 100 / (distance * distance);
+                    particle.vx -= (dx / distance) * force * 0.1;
+                    particle.vy -= (dy / distance) * force * 0.1;
+                    particle.hasCollided = true;
+                    return;
+                }
+            }
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw gold atoms
+        goldAtoms.forEach(atom => atom.draw(currentModel));
+        
+        // Update and draw alpha particles
+        for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            p.update();
+            p.draw();
+            checkCollision(p);
+            
+            // Remove particles that are off-screen
+            if (p.x > canvas.width + 20 || p.x < -20) {
+                particles.splice(i, 1);
+            }
+        }
+
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    
+    function reset() {
+        if(animationFrameId) cancelAnimationFrame(animationFrameId);
+        particles = [];
+        createGoldFoil();
+        animate();
+    }
+    
+    function startGame() {
+        document.getElementById('initial-message').style.display = 'none';
+        labWrapper.style.display = 'flex';
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        reset();
+    }
+    
+    // Initial Setup on Load
+    document.addEventListener('DOMContentLoaded', () => {
+         // This button is just for show in the HTML, we will add Start button functionality
+        const startBtn = document.getElementById('start-btn');
+        if(startBtn) {
+            // This is a placeholder for the start button in the main game-card
+        } else {
+            // Find the button in the main controls if it's there
+            const mainStartBtn = document.querySelector('.controls #start-btn');
+            if(mainStartBtn) {
+                mainStartBtn.addEventListener('click', startGame);
+            }
+        }
+        // Let's assume there is a start button and it will call startGame
+    });
+
+
+    // Event Listeners
+    fireBtn.addEventListener('click', fireParticles);
+    resetBtn.addEventListener('click', reset);
+    thomsonBtn.addEventListener('click', () => {
+        currentModel = 'thomson';
+        thomsonBtn.classList.add('active');
+        rutherfordBtn.classList.remove('active');
+        reset();
+    });
+    rutherfordBtn.addEventListener('click', () => {
+        currentModel = 'rutherford';
+        rutherfordBtn.classList.add('active');
+        thomsonBtn.classList.remove('active');
+        reset();
+    });
+    // This is a dummy start button for the example. A real implementation would have a single start button.
+    const dummyStart = document.createElement('button');
+    dummyStart.id = 'start-btn';
+    document.querySelector('.controls').prepend(dummyStart);
+    dummyStart.style.display = 'none';
+    dummyStart.addEventListener('click', startGame);
+    
+    // Since the provided HTML has no start button, let's trigger start when the script loads.
+    // In a real scenario, you'd bind this to your actual start button.
+    setTimeout(startGame, 0);
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

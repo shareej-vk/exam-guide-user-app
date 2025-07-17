@@ -18,7 +18,6 @@
             --body-font: 'Poppins', sans-serif;
             --shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
             --correct-color: #4cc9f0;
-            --incorrect-color: #f72585;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -65,7 +64,6 @@
             color: var(--primary-color);
             margin-bottom: 20px;
             text-align: center;
-            display: inline-block;
             background: linear-gradient(45deg, #e0aaff, #c77dff);
             padding: 8px 25px;
             border-radius: 16px;
@@ -110,7 +108,7 @@
             transition: all 0.3s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        #start-btn { background-color: var(--correct-color); color: white; }
+        #start-btn { background-color: #4361ee; color: white; }
         #reset-btn { background-color: #ffc107; color: #333; }
         #next-btn { background-color: var(--accent-color); color: white; display: none;}
         .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.15); }
@@ -128,12 +126,7 @@
             width: 100%;
         }
 
-        .lab-wrapper {
-            width: 100%;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
         
         #task-display {
             width: 100%;
@@ -146,7 +139,7 @@
             text-align: center;
             margin-bottom: 20px;
         }
-        #task-display span { font-size: 36px; }
+        #task-display .formula { font-size: 36px; }
         
         .weighing-area {
             display: flex;
@@ -166,74 +159,82 @@
             align-items: center;
         }
         .atom-card {
-            width: 100%;
-            padding: 10px;
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            cursor: grab;
-            box-shadow: var(--shadow);
+            width: 100%; padding: 8px; background-color: var(--card-bg);
+            border-radius: 10px; display: flex;
+            justify-content: space-between; align-items: center;
+            font-weight: 600; box-shadow: var(--shadow);
         }
-        .atom-card:active { cursor: grabbing; }
+        .atom-info { display: flex; align-items: center; gap: 10px; }
         .atom-symbol {
             font-family: var(--heading-font);
-            font-size: 24px;
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            color: white;
+            font-size: 20px; width: 35px; height: 35px;
+            border-radius: 50%; display: flex;
+            justify-content: center; align-items: center; color: white;
         }
-        .atom-mass { font-size: 14px; }
+        .atom-mass { font-size: 14px; color: #6c757d; }
+        .add-btn {
+            background-color: var(--primary-color); color: white;
+            border: none; border-radius: 50%;
+            width: 30px; height: 30px;
+            font-size: 24px; font-weight: bold; line-height: 30px;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .add-btn:hover { background-color: #480ca8; transform: scale(1.1); }
         
         .scale-area {
             flex: 2;
-            background-color: #adb5bd;
-            border-radius: 16px;
+            background-color: #adb5bd; border-radius: 16px;
             position: relative;
-            display: flex; justify-content: center; align-items: center;
-        }
-        
-        .scale {
-            width: 300px; height: 200px;
-            background-color: #f8f9fa;
-            border-radius: 12px;
-            border: 3px solid #6c757d;
             display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
+            justify-content: flex-start; align-items: center;
             padding: 20px;
         }
+        
+        #scale-pan-display {
+            width: 100%; height: 180px;
+            background: #e9ecef; border-radius: 8px;
+            padding: 10px; display: flex; flex-wrap: wrap;
+            gap: 5px; align-content: flex-start;
+            margin-bottom: 20px;
+            border: 4px solid transparent;
+        }
+        .pan-atom {
+            width: 25px; height: 25px;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            color: white; font-size: 12px; font-weight: bold;
+        }
+        
+        .scale-readout {
+            width: 100%; background-color: #f8f9fa;
+            border-radius: 12px; border: 3px solid #6c757d;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center; padding: 15px;
+            transition: all 0.3s ease;
+        }
+        .scale-readout.correct { border-color: var(--correct-color); }
         .scale-title { font-family: var(--heading-font); font-size: 20px; }
         #total-mass-display {
             font-family: 'Courier New', Courier, monospace;
             font-size: 48px; font-weight: bold;
-            color: var(--primary-color);
-            margin: 10px 0;
+            color: var(--primary-color); margin: 5px 0;
             background: #e9ecef; padding: 5px 20px; border-radius: 8px;
         }
-        
-        .scale-pan {
-            width: 250px; height: 150px;
-            position: absolute;
-            top: 20px; left: 50%; transform: translateX(-50%);
-            border: 4px dashed transparent;
-            border-radius: 10px;
-            transition: border-color 0.3s;
-            display: flex; flex-wrap: wrap; gap: 5px;
-            padding: 10px;
-            align-content: flex-start;
+        #feedback-area {
+            margin-top: 15px;
+            width: 100%;
+            padding: 12px;
+            font-family: var(--heading-font);
+            font-size: 20px;
+            text-align: center;
+            color: white;
+            background-color: var(--correct-color);
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.5s;
         }
-        .scale-pan.drag-over { border-color: var(--correct-color); }
-        .pan-atom {
-            width: 30px; height: 30px; font-size: 16px;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        #check-btn {
-            margin-top: 15px; background-color: var(--primary-color);
-            color: white; font-size: 20px;
-        }
     </style>
 </head>
 <body>
@@ -242,15 +243,15 @@
             <h2 class="card-header">Ionic Weigher</h2>
             <p><strong>Lesson:</strong> Calculating Formula Unit Mass</p>
             <br>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">The Mission</h3>
-            <p style="margin-bottom: 15px;">Ionic compounds don't form single molecules, but crystal lattices. So we calculate their "Formula Unit Mass". Good news: the calculation method is exactly the same as for molecular mass!</p>
-            <h3 style="font-family: var(--heading-font); color: var(--primary-color); margin-bottom: 10px;">How to Experiment</h3>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">The Mission</h3>
+            <p>Ionic compounds don't form single molecules, but crystal lattices. We calculate their "Formula Unit Mass" the same way as molecular mass!</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Play</h3>
             <ul class="instructions-list">
-                <li><span class="step-label">1</span> Click <b>Start</b> to get an ionic compound challenge, like ZnO or CaCl₂.</li>
-                <li><span class="step-label">2</span> Look at the formula. How many of each atom (ion) do you need?</li>
-                <li><span class="step-label">3</span> <b>Drag the correct atoms</b> from the supply on the left onto the virtual scale.</li>
-                <li><span class="step-label">4</span> As you add atoms, the <b>Total Mass</b> display will update.</li>
-                <li>Once you've added all the right atoms, click <b>"Check Mass"</b> to confirm your calculation!</li>
+                <li><span class="step-label">1</span> Click <b>Start</b> to get an ionic compound challenge, like ZnO.</li>
+                <li><span class="step-label">2</span> Look at the formula to see how many of each ion you need.</li>
+                <li><span class="step-label">3</span> Click the <b>"+" button</b> next to the correct ions in the supply.</li>
+                <li><span class="step-label">4</span> The scale will update instantly. When you have the correct ions, a success message will appear!</li>
             </ul>
         </div>
 
@@ -266,20 +267,19 @@
                 <div class="weighing-area">
                     <div id="atom-supply"></div>
                     <div class="scale-area">
-                        <div class="scale-pan" id="scale-pan"></div>
-                        <div class="scale">
+                        <div id="scale-pan-display"></div>
+                        <div class="scale-readout" id="scale-readout">
                             <div class="scale-title">Formula Unit Mass</div>
                             <div id="total-mass-display">0 u</div>
                         </div>
                     </div>
                 </div>
-                <button id="check-btn" class="btn">Check Mass</button>
+                 <div id="feedback-area"></div>
             </div>
         </div>
     </div>
 
 <script>
-    // --- DOM Elements ---
     const startBtn = document.getElementById('start-btn');
     const resetBtn = document.getElementById('reset-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -287,112 +287,110 @@
     const labWrapper = document.getElementById('lab-wrapper');
     const taskDisplay = document.getElementById('task-display');
     const atomSupply = document.getElementById('atom-supply');
-    const scalePan = document.getElementById('scale-pan');
+    const scalePanDisplay = document.getElementById('scale-pan-display');
     const totalMassDisplay = document.getElementById('total-mass-display');
-    const checkBtn = document.getElementById('check-btn');
+    const scaleReadout = document.getElementById('scale-readout');
+    const feedbackArea = document.getElementById('feedback-area');
 
-    // --- Data ---
     const atomsData = [
-        { name: 'Zinc', symbol: 'Zn', mass: 65, color: '#6c757d' },
-        { name: 'Sodium', symbol: 'Na', mass: 23, color: '#5e60ce' },
-        { name: 'Potassium', symbol: 'K', mass: 39, color: '#7209b7' },
-        { name: 'Calcium', symbol: 'Ca', mass: 40, color: '#8f2d56' },
-        { name: 'Oxygen', symbol: 'O', mass: 16, color: '#e63946' },
-        { name: 'Carbon', symbol: 'C', mass: 12, color: '#432818' },
+        { name: 'Zinc', symbol: 'Zn', mass: 65.4, color: '#6c757d' }, { name: 'Sodium', symbol: 'Na', mass: 23.0, color: '#5e60ce' },
+        { name: 'Potassium', symbol: 'K', mass: 39.1, color: '#7209b7' }, { name: 'Calcium', symbol: 'Ca', mass: 40.1, color: '#8f2d56' },
+        { name: 'Oxygen', symbol: 'O', mass: 16.0, color: '#e63946' }, { name: 'Carbon', symbol: 'C', mass: 12.0, color: '#432818' },
         { name: 'Chlorine', symbol: 'Cl', mass: 35.5, color: '#90be6d' }
     ];
     
     const challenges = [
-        { name: 'Zinc Oxide', formula: 'ZnO', components: {'Zn': 1, 'O': 1} },
-        { name: 'Sodium Oxide', formula: 'Na₂O', components: {'Na': 2, 'O': 1} },
-        { name: 'Potassium Carbonate', formula: 'K₂CO₃', components: {'K': 2, 'C': 1, 'O': 3} },
-        { name: 'Calcium Chloride', formula: 'CaCl₂', components: {'Ca': 1, 'Cl': 2} }
+        { name: 'Zinc Oxide', formula: 'ZnO', components: {'Zn': 1, 'O': 1} }, { name: 'Sodium Oxide', formula: 'Na₂O', components: {'Na': 2, 'O': 1} },
+        { name: 'Potassium Carbonate', formula: 'K₂CO₃', components: {'K': 2, 'C': 1, 'O': 3} }, { name: 'Calcium Chloride', formula: 'CaCl₂', components: {'Ca': 1, 'Cl': 2} }
     ];
     let currentChallenge;
     let atomsOnScale = [];
     
-    // --- Game Logic ---
     function populateAtomSupply() {
         atomSupply.innerHTML = '';
         atomsData.forEach(atom => {
             const card = document.createElement('div');
             card.className = 'atom-card';
-            card.draggable = true;
-            card.dataset.atom = JSON.stringify(atom);
             card.innerHTML = `
-                <div class="atom-symbol" style="background-color:${atom.color};">${atom.symbol}</div>
-                <div class="atom-name">${atom.name}</div>
-                <div class="atom-mass">${atom.mass} u</div>
+                <div class="atom-info">
+                    <div class="atom-symbol" style="background-color:${atom.color};">${atom.symbol}</div>
+                    <div>
+                        <div>${atom.name}</div>
+                        <div class="atom-mass">${atom.mass.toFixed(1)} u</div>
+                    </div>
+                </div>
+                <button class="add-btn" data-atom='${JSON.stringify(atom)}'>+</button>
             `;
             atomSupply.appendChild(card);
         });
     }
 
     function setupChallenge() {
-        currentChallenge = challenges[Math.floor(Math.random() * challenges.length)];
-        taskDisplay.innerHTML = `Calculate the Formula Unit Mass of <b>${currentChallenge.name} (<span>${currentChallenge.formula}</span>)</b>`;
-        
+        if (!currentChallenge || challenges.indexOf(currentChallenge) === challenges.length - 1) {
+            currentChallenge = challenges[0];
+        } else {
+            currentChallenge = challenges[challenges.indexOf(currentChallenge) + 1];
+        }
+
+        taskDisplay.innerHTML = `Calculate the Formula Unit Mass of <b>${currentChallenge.name} (<span class="formula">${currentChallenge.formula}</span>)</b>`;
         atomsOnScale = [];
         updateScale();
-        checkBtn.disabled = false;
         nextBtn.style.display = 'none';
-        scalePan.style.borderColor = 'transparent';
+        feedbackArea.style.display = 'none';
+        scaleReadout.classList.remove('correct');
+        document.querySelectorAll('.add-btn').forEach(btn => btn.disabled = false);
     }
     
-    function updateScale() {
-        scalePan.innerHTML = '';
-        let totalMass = 0;
-        atomsOnScale.forEach(atom => {
-            const atomData = JSON.parse(atom);
-            totalMass += atomData.mass;
-            
-            const atomEl = document.createElement('div');
-            atomEl.className = 'atom-symbol pan-atom';
-            atomEl.style.backgroundColor = atomData.color;
-            atomEl.textContent = atomData.symbol;
-            scalePan.appendChild(atomEl);
-        });
-        totalMassDisplay.textContent = `${totalMass.toFixed(1)} u`;
+    function addAtom(atomData) {
+        atomsOnScale.push(atomData);
+        updateScale();
     }
 
-    function checkAnswer() {
-        let correctMass = 0;
-        let userComposition = {};
-        
-        // Calculate correct mass
-        for (const symbol in currentChallenge.components) {
-            const atomData = atomsData.find(a => a.symbol === symbol);
-            correctMass += atomData.mass * currentChallenge.components[symbol];
-        }
-        
-        // Calculate user composition
-        atomsOnScale.forEach(atomStr => {
-            const atom = JSON.parse(atomStr);
-            userComposition[atom.symbol] = (userComposition[atom.symbol] || 0) + 1;
+    function updateScale() {
+        scalePanDisplay.innerHTML = '';
+        let totalMass = 0;
+        atomsOnScale.forEach(atom => {
+            totalMass += atom.mass;
+            const atomEl = document.createElement('div');
+            atomEl.className = 'pan-atom';
+            atomEl.style.backgroundColor = atom.color;
+            atomEl.textContent = atom.symbol;
+            scalePanDisplay.appendChild(atomEl);
         });
+        totalMassDisplay.textContent = `${totalMass.toFixed(1)} u`;
+        checkAnswer(totalMass);
+    }
 
-        let isCorrect = true;
-        if(Object.keys(userComposition).length !== Object.keys(currentChallenge.components).length) {
-            isCorrect = false;
-        } else {
+    function checkAnswer(currentMass) {
+        let correctMass = 0;
+        const userComposition = atomsOnScale.reduce((acc, atom) => {
+            acc[atom.symbol] = (acc[atom.symbol] || 0) + 1;
+            return acc;
+        }, {});
+
+        for (const symbol in currentChallenge.components) {
+            correctMass += atomsData.find(a => a.symbol === symbol).mass * currentChallenge.components[symbol];
+        }
+
+        let isCompositionCorrect = Object.keys(userComposition).length === Object.keys(currentChallenge.components).length;
+        if (isCompositionCorrect) {
             for(const symbol in currentChallenge.components) {
                 if(userComposition[symbol] !== currentChallenge.components[symbol]) {
-                    isCorrect = false;
+                    isCompositionCorrect = false;
                     break;
                 }
             }
         }
 
-        if (isCorrect) {
-            scalePan.style.borderColor = 'var(--correct-color)';
+        if (isCompositionCorrect) {
+            scaleReadout.classList.add('correct');
+            feedbackArea.textContent = `Correct! The mass of ${currentChallenge.formula} is ${correctMass.toFixed(1)} u.`;
+            feedbackArea.style.display = 'block';
             nextBtn.style.display = 'inline-block';
-            checkBtn.disabled = true;
-        } else {
-            scalePan.style.borderColor = 'var(--incorrect-color)';
+            document.querySelectorAll('.add-btn').forEach(btn => btn.disabled = true);
         }
     }
 
-    // --- Event Listeners & Setup ---
     function startGame() {
         initialMessage.style.display = 'none';
         labWrapper.style.display = 'flex';
@@ -403,30 +401,14 @@
     startBtn.addEventListener('click', startGame);
     resetBtn.addEventListener('click', startGame);
     nextBtn.addEventListener('click', setupChallenge);
-    checkBtn.addEventListener('click', checkAnswer);
     
-    atomSupply.addEventListener('dragstart', e => {
-        if(e.target.classList.contains('atom-card')) {
-            e.dataTransfer.setData('text/plain', e.target.dataset.atom);
+    atomSupply.addEventListener('click', e => {
+        if (e.target.classList.contains('add-btn')) {
+            const atomData = JSON.parse(e.target.dataset.atom);
+            addAtom(atomData);
         }
-    });
-    
-    scalePan.addEventListener('dragover', e => {
-        e.preventDefault();
-        scalePan.classList.add('drag-over');
-    });
-    scalePan.addEventListener('dragleave', () => {
-        scalePan.classList.remove('drag-over');
-    });
-    scalePan.addEventListener('drop', e => {
-        e.preventDefault();
-        scalePan.classList.remove('drag-over');
-        const atomData = e.dataTransfer.getData('text/plain');
-        atomsOnScale.push(atomData);
-        updateScale();
     });
 
 </script>
 </body>
 </html>
-<!--end-of-code-block-->

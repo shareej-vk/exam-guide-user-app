@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isotope Mission - Applications</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --primary-color: #007f5f; /* Green */
+            --accent-color: #f2cc8f; /* Gold */
+            --text-color: #013a63;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 8px 30px rgba(0, 127, 95, 0.1);
+            --correct-color: #52b788;
+            --incorrect-color: #ef476f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #d8f3dc, #caffbf);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+        }
+        .step-icon { font-size: 24px; margin-right: 12px; margin-top: -2px; }
+        .instructions-list b { color: var(--primary-color); }
+        .key-concept {
+            background-color: #fefee3; padding: 10px; border-radius: 8px;
+            border-left: 4px solid var(--accent-color); margin-top: 5px; font-weight: 600;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #start-btn { background-color: var(--primary-color); color: white; box-shadow: 0 4px 15px rgba(0, 127, 95, 0.3); }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        #next-btn { background-color: var(--accent-color); color: var(--text-color); display: none; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+        .btn:disabled { background-color: #adb5bd; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        
+        .mission-board {
+            width: 100%;
+            min-height: 500px;
+            background-color: #e9ecef;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        #mission-title {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background-color: white;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+        
+        .animation-area {
+            width: 250px;
+            height: 250px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .animation-area img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .animation-area img.active { opacity: 1; }
+        
+        #isotope-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .isotope-btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            padding: 15px 25px;
+            border-radius: 12px;
+            border: 3px solid transparent;
+            background-color: var(--card-bg);
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+        }
+        .isotope-btn:hover { transform: translateY(-3px); }
+        .isotope-btn.correct { border-color: var(--correct-color); background-color: #d4edda; }
+        .isotope-btn.incorrect { border-color: var(--incorrect-color); background-color: #f8d7da; animation: shake 0.5s; }
+        .isotope-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Isotope Mission</h2>
+            <p><strong>Lesson:</strong> Applications of Isotopes</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p style="margin-bottom: 15px;">Isotopes aren't just a curiosity, they have amazing real-world uses! Your mission is to select the correct isotope to solve a series of important problems in medicine, energy, and science.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Play</h3>
+            <ul class="instructions-list">
+                <li><span class="step-icon">👉</span><span>Click <b>Start</b> to receive your first mission brief.</span></li>
+                <li><span class="step-icon">🧐</span><span>Read the mission carefully. What problem needs to be solved?</span></li>
+                <li class="key-concept">
+                    <span class="step-icon">💡</span>
+                    <span><b>Choose the right tool for the job!</b> Select the isotope from the options that is used for that specific application.</span>
+                </li>
+                <li><span class="step-icon">🎉</span><span>A correct choice will show a success animation. Click "Next Mission" to continue.</span></li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+                <button id="next-btn" class="btn">Next Mission</button>
+            </div>
+            <div id="initial-message">Click 'Start' to accept your first mission!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="mission-board">
+                    <div id="mission-title"></div>
+                    <div class="animation-area" id="animation-area">
+                        <!-- Images for animations will be added here -->
+                    </div>
+                    <div id="isotope-options"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const missionTitle = document.getElementById('mission-title');
+    const animationArea = document.getElementById('animation-area');
+    const isotopeOptions = document.getElementById('isotope-options');
+    
+    // Game Data
+    const missions = [
+        { 
+            id: 'goitre', 
+            task: 'A patient has a thyroid disorder. Select the correct isotope for treatment.',
+            correct: 'Iodine-131',
+            options: ['Iodine-131', 'Cobalt-60', 'Uranium-235'],
+            img: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,20 Q60,30 65,40 Q80,60 60,80 Q40,90 30,70 Q10,50 35,35 Q40,25 50,20 Z" fill="%23f4a261" stroke="%23c1121f" stroke-width="3"/><circle cx="50" cy="55" r="5" fill="%23e63946"/></svg>`
+        },
+        { 
+            id: 'reactor', 
+            task: 'We need to power a nuclear submarine. Choose the right fuel.',
+            correct: 'Uranium-235',
+            options: ['Carbon-14', 'Iodine-131', 'Uranium-235'],
+            img: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="30" y="20" width="40" height="60" rx="10" fill="%23495057"/><rect x="40" y="30" width="20" height="40" fill="%2390be6d"/><circle cx="50" cy="50" r="5" fill="%23fefae0" /></svg>`
+        },
+        { 
+            id: 'cancer', 
+            task: 'A patient requires radiation therapy for cancer. Select the isotope.',
+            correct: 'Cobalt-60',
+            options: ['Cobalt-60', 'Carbon-14', 'Uranium-235'],
+            img: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 10 L60 40 L90 45 L65 65 L75 95 L50 75 L25 95 L35 65 L10 45 L40 40 Z" fill="none" stroke="%23e63946" stroke-width="4"/><circle cx="50" cy="50" r="10" fill="%23457b9d" /></svg>`
+        },
+         { 
+            id: 'dating', 
+            task: 'An archaeologist needs to date an ancient wooden artifact.',
+            correct: 'Carbon-14',
+            options: ['Iodine-131', 'Cobalt-60', 'Carbon-14'],
+            img: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M20 90 Q 50 80, 80 90 L 75 20 Q 50 10, 25 20 Z" fill="%237f5539"/><path d="M30 80 Q 50 75, 70 80" stroke="%23582f0e" stroke-width="3" fill="none"/></svg>`
+        }
+    ];
+    
+    // Game State
+    let currentMissionIndex = -1;
+
+    function setupMission() {
+        currentMissionIndex = (currentMissionIndex + 1) % missions.length;
+        const mission = missions[currentMissionIndex];
+
+        missionTitle.textContent = mission.task;
+        nextBtn.style.display = 'none';
+        
+        // Setup animation image
+        animationArea.innerHTML = `<img id="${mission.id}-img" src="${mission.img}" alt="${mission.id}">`;
+        
+        // Setup options
+        isotopeOptions.innerHTML = '';
+        mission.options.sort(() => Math.random() - 0.5).forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'isotope-btn';
+            btn.textContent = opt;
+            btn.dataset.option = opt;
+            btn.addEventListener('click', () => handleGuess(opt, btn));
+            isotopeOptions.appendChild(btn);
+        });
+    }
+
+    function handleGuess(guess, btn) {
+        const mission = missions[currentMissionIndex];
+        const isCorrect = guess === mission.correct;
+        
+        // Disable all buttons
+        isotopeOptions.querySelectorAll('.isotope-btn').forEach(b => b.disabled = true);
+        
+        if (isCorrect) {
+            btn.classList.add('correct');
+            document.getElementById(`${mission.id}-img`).classList.add('active');
+            nextBtn.style.display = 'inline-block';
+        } else {
+            btn.classList.add('incorrect');
+            // Highlight the correct one after a delay
+            setTimeout(() => {
+                const correctBtn = isotopeOptions.querySelector(`[data-option="${mission.correct}"]`);
+                if (correctBtn) correctBtn.classList.add('correct');
+                nextBtn.style.display = 'inline-block';
+            }, 1000);
+        }
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        currentMissionIndex = -1; // Start from the beginning
+        setupMission();
+    }
+    
+    // Event Listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    nextBtn.addEventListener('click', setupMission);
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

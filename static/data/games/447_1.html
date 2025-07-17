@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bohr's Quantum Leap</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --primary-color: #7400b8; /* Deep Purple */
+            --accent-color: #48bfe3; /* Cyan */
+            --text-color: #531c7a;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 8px 30px rgba(116, 0, 184, 0.1);
+            --photon-color: #f9c74f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #e0d5ff, #dbeafe);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .instructions-list li.active-step {
+            background-color: #f1e4ff;
+            border-left: 5px solid var(--primary-color);
+        }
+        .step-icon { font-size: 24px; margin-right: 12px; margin-top: -2px; }
+        .instructions-list b { color: var(--accent-color); }
+        .key-concept {
+            background-color: #e3f7fc; padding: 10px; border-radius: 8px;
+            border-left: 4px solid var(--accent-color); margin-top: 5px;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #start-btn { background-color: var(--accent-color); color: white; box-shadow: 0 4px 15px rgba(72, 191, 227, 0.3); }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        #photon-btn { background-color: var(--photon-color); color: #333; display: none; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+        .btn:disabled { background-color: #adb5bd; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        .simulation-area {
+            width: 100%; height: 500px;
+            background-color: #03045e;
+            border-radius: 16px; position: relative;
+            overflow: hidden;
+        }
+        .simulation-canvas { width: 100%; height: 100%; }
+        
+        #draggable-electron {
+            position: absolute;
+            width: 20px; height: 20px;
+            background-color: var(--photon-color);
+            border-radius: 50%;
+            cursor: grab;
+            left: 20px; top: 50%;
+            transform: translateY(-50%);
+            border: 2px solid white;
+            box-shadow: 0 0 15px var(--photon-color);
+        }
+        #draggable-electron.dragging { cursor: grabbing; opacity: 0.7; transform: translateY(-50%) scale(1.2);}
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Bohr's Quantum Leap</h2>
+            <p><strong>Lesson:</strong> Bohr's Model of an Atom</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p style="margin-bottom: 15px;">Niels Bohr fixed the big problem with Rutherford's atom. He said electrons live in special "houses" or orbits and can't be found in between. Let's see how it works!</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Experiment</h3>
+            <ul class="instructions-list" id="instructions-list">
+                <li id="step-1" class="active-step">
+                    <span class="step-icon">👇</span>
+                    <span><b>Drag the electron</b> towards the nucleus. Notice how it will only "snap" into the glowing orbits (energy shells)! It can't stay in the empty space.</span>
+                </li>
+                <li id="step-2">
+                    <span class="step-icon">⚡</span>
+                    <span>Once the electron is in an orbit, click <b>"Fire Photon"</b> to shoot energy at it.</span>
+                </li>
+                 <li id="step-3" class="key-concept">
+                    <span class="step-icon">🚀</span>
+                    <span><b>Observe the Quantum Leap!</b> The electron absorbs the energy and jumps to a higher orbit. After a moment, it jumps back down, releasing the energy as a flash of light. This shows electrons have specific energy levels.</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+                <button id="photon-btn" class="btn">Fire Photon</button>
+            </div>
+            <div id="initial-message">Click 'Start' to explore Bohr's Atom!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="simulation-area">
+                    <canvas id="simulation-canvas" class="simulation-canvas"></canvas>
+                    <div id="draggable-electron" draggable="true"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const photonBtn = document.getElementById('photon-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const canvas = document.getElementById('simulation-canvas');
+    const ctx = canvas.getContext('2d');
+    const draggableElectron = document.getElementById('draggable-electron');
+    const instructionsList = document.getElementById('instructions-list');
+
+    let nucleus, electron, photon;
+    let animationFrameId;
+    let gameState = 'place_electron'; // place_electron, in_orbit, jumping, falling
+
+    const SHELL_RADII = [80, 130, 180];
+    const SHELL_LABELS = ['K', 'L', 'M'];
+
+    class Nucleus {
+        constructor(x, y) { this.x = x; this.y = y; this.radius = 30; this.color = '#ffafcc'; }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = this.color; ctx.shadowBlur = 20;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = '#c9184a'; ctx.font = 'bold 30px Baloo 2';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText('+', this.x, this.y);
+        }
+    }
+
+    class Electron {
+        constructor(nucleus, shellIndex) {
+            this.nucleus = nucleus;
+            this.shellIndex = shellIndex;
+            this.angle = Math.random() * Math.PI * 2;
+            this.speed = 0.02 - (shellIndex * 0.005);
+            this.updatePosition();
+        }
+        updatePosition() {
+            const radius = SHELL_RADII[this.shellIndex];
+            this.x = this.nucleus.x + radius * Math.cos(this.angle);
+            this.y = this.nucleus.y + radius * Math.sin(this.angle);
+        }
+        update() {
+            if (gameState === 'in_orbit') {
+                this.angle += this.speed;
+                this.updatePosition();
+            }
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 8, 0, Math.PI * 2);
+            ctx.fillStyle = 'var(--photon-color)';
+            ctx.shadowColor = 'var(--photon-color)'; ctx.shadowBlur = 15;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+    }
+
+    class Photon {
+        constructor(targetX, targetY) {
+            this.x = 20; this.y = targetY;
+            this.targetX = targetX; this.targetY = targetY;
+            this.radius = 10; this.isAlive = true;
+        }
+        update() {
+            this.x += 10;
+            if (this.x >= this.targetX) {
+                this.isAlive = false;
+                gameState = 'jumping';
+                setTimeout(() => {
+                    electron.shellIndex = Math.min(electron.shellIndex + 1, SHELL_RADII.length - 1);
+                    electron.updatePosition();
+                    gameState = 'falling';
+                }, 100);
+            }
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+            ctx.fillStyle = 'var(--photon-color)';
+            ctx.shadowColor = 'var(--photon-color)'; ctx.shadowBlur = 20;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+    }
+
+    function updateInstructions(step) {
+        instructionsList.querySelectorAll('li').forEach(li => li.classList.remove('active-step'));
+        document.getElementById(`step-${step}`).classList.add('active-step');
+    }
+    
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Draw Orbits
+        SHELL_RADII.forEach((radius, i) => {
+            ctx.beginPath();
+            ctx.arc(nucleus.x, nucleus.y, radius, 0, Math.PI * 2);
+            ctx.strokeStyle = `rgba(72, 191, 227, ${gameState === 'place_electron' ? 0.5 : 0.2})`;
+            ctx.lineWidth = 4;
+            ctx.stroke();
+
+            ctx.font = '16px Poppins';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.fillText(SHELL_LABELS[i], nucleus.x + radius + 10, nucleus.y);
+        });
+
+        nucleus.draw();
+        if (electron) electron.update();
+        if (electron) electron.draw();
+        
+        if (photon && photon.isAlive) {
+            photon.update();
+            photon.draw();
+        }
+
+        if (gameState === 'falling') {
+            const originalShellIndex = Math.max(0, electron.shellIndex - 1);
+            const targetRadius = SHELL_RADII[originalShellIndex];
+            const currentRadius = SHELL_RADII[electron.shellIndex];
+            const diff = currentRadius - targetRadius;
+            
+            // Emit light
+            ctx.beginPath();
+            ctx.moveTo(electron.x, electron.y);
+            ctx.lineTo(electron.x + diff, electron.y + diff);
+            ctx.strokeStyle = '#fefae0'; ctx.lineWidth = 3; ctx.stroke();
+            
+            // Jump back down
+            electron.shellIndex = originalShellIndex;
+            electron.updatePosition();
+            gameState = 'in_orbit';
+            photonBtn.disabled = false;
+        }
+
+        animationFrameId = requestAnimationFrame(animate);
+    }
+    
+    function resetGame() {
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        gameState = 'place_electron';
+        electron = null;
+        photon = null;
+        draggableElectron.style.display = 'block';
+        draggableElectron.style.left = '20px';
+        draggableElectron.style.top = '50%';
+        photonBtn.style.display = 'none';
+        photonBtn.disabled = true;
+        nucleus = new Nucleus(canvas.width / 2, canvas.height / 2);
+        updateInstructions(1);
+        animate();
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.parentElement.clientHeight;
+        resetGame();
+    }
+    
+    // Event Listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', resetGame);
+    photonBtn.addEventListener('click', () => {
+        if (gameState === 'in_orbit') {
+            photon = new Photon(electron.x, electron.y);
+            photonBtn.disabled = true;
+            updateInstructions(3);
+        }
+    });
+
+    draggableElectron.addEventListener('dragstart', e => {
+        e.target.classList.add('dragging');
+    });
+    draggableElectron.addEventListener('dragend', e => {
+        e.target.classList.remove('dragging');
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const distFromCenter = Math.hypot(x - nucleus.x, y - nucleus.y);
+        let snapped = false;
+        for(let i = 0; i < SHELL_RADII.length; i++) {
+            if (Math.abs(distFromCenter - SHELL_RADII[i]) < 20) {
+                electron = new Electron(nucleus, i);
+                snapped = true;
+                break;
+            }
+        }
+        
+        if (snapped) {
+            draggableElectron.style.display = 'none';
+            gameState = 'in_orbit';
+            photonBtn.style.display = 'inline-block';
+            photonBtn.disabled = false;
+            updateInstructions(2);
+        } else {
+            // Return to start if not snapped
+            e.target.style.left = '20px';
+            e.target.style.top = '50%';
+        }
+    });
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

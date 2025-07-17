@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Element Identifier - Atomic Number</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --primary-color: #5a189a; /* Deep Purple */
+            --accent-color: #ff8500; /* Vibrant Orange */
+            --text-color: #10002b;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 8px 30px rgba(90, 24, 154, 0.1);
+            --correct-color: #2a9d8f;
+            --incorrect-color: #e63946;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #e0d5ff, #c77dff);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .instructions-list li.active-step {
+            background-color: #f3e8ff;
+            border-left: 5px solid var(--accent-color);
+        }
+        .step-icon { font-size: 24px; margin-right: 12px; margin-top: -2px; }
+        .instructions-list b { color: var(--accent-color); }
+        .key-concept {
+            background-color: #fff3e0; padding: 10px; border-radius: 8px;
+            border-left: 4px solid var(--accent-color); margin-top: 5px; font-weight: 600;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #start-btn { background-color: var(--primary-color); color: white; box-shadow: 0 4px 15px rgba(90, 24, 154, 0.3); }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        #next-btn { background-color: var(--accent-color); color: white; display: none; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+        
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        
+        .lab-area {
+            display: flex;
+            width: 100%;
+            gap: 20px;
+            height: 450px;
+        }
+        
+        #nucleus-station {
+            flex: 1.5;
+            background-color: #e9ecef;
+            border-radius: 16px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        #nucleus-canvas {
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            background-color: #ced4da;
+            cursor: pointer;
+            border: 4px dashed var(--primary-color);
+        }
+        #proton-counter-tool {
+            font-family: var(--heading-font);
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 18px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+        
+        #periodic-table-station {
+            flex: 2;
+            background-color: #e9ecef;
+            border-radius: 16px;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+            gap: 8px;
+            align-content: flex-start;
+        }
+        .element-tile {
+            height: 70px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 2px solid #ced4da;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .element-tile:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        .element-tile.correct { background-color: #d4edda; border-color: var(--correct-color); }
+        .element-tile.incorrect { background-color: #f8d7da; border-color: var(--incorrect-color); }
+        .atomic-number { font-size: 12px; color: #6c757d; }
+        .element-symbol { font-family: var(--heading-font); font-size: 24px; font-weight: 800; }
+        .element-name { font-size: 12px; display: none; }
+        .element-tile.correct .element-name { display: block; color: var(--correct-color); }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">Element Identifier</h2>
+            <p><strong>Lesson:</strong> Atomic Number (Z)</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p style="margin-bottom: 15px;">Every element has a unique identity card, and it's called the Atomic Number! Your mission is to use this crucial piece of information to identify mystery elements.</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Play</h3>
+            <ul class="instructions-list" id="instructions-list">
+                <li id="step-1" class="active-step">
+                    <span class="step-icon">⚛️</span>
+                    <span>Click <b>Start</b> to get a mystery nucleus.</span>
+                </li>
+                <li id="step-2">
+                    <span class="step-icon">👇</span>
+                    <span>Click the <b>Proton Counter</b> button to find out how many protons are inside the nucleus. This number is the element's Atomic Number!</span>
+                </li>
+                 <li id="step-3" class="key-concept">
+                    <span class="step-icon">🗺️</span>
+                    <span>Find the element with that same Atomic Number on the <b>mini periodic table</b> and click it to make your identification!</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+                <button id="next-btn" class="btn">Next Element</button>
+            </div>
+            <div id="initial-message">Click 'Start' to become an Element Identifier!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="lab-area">
+                    <div id="nucleus-station">
+                        <canvas id="nucleus-canvas"></canvas>
+                        <div id="proton-counter-tool">Click to Count Protons</div>
+                    </div>
+                    <div id="periodic-table-station"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const nucleusCanvas = document.getElementById('nucleus-canvas');
+    const ctx = nucleusCanvas.getContext('2d');
+    const protonCounterTool = document.getElementById('proton-counter-tool');
+    const periodicTable = document.getElementById('periodic-table-station');
+    
+    // Game Data
+    const elementsData = [
+        { name: 'Hydrogen', symbol: 'H', z: 1 }, { name: 'Helium', symbol: 'He', z: 2 },
+        { name: 'Lithium', symbol: 'Li', z: 3 }, { name: 'Beryllium', symbol: 'Be', z: 4 },
+        { name: 'Boron', symbol: 'B', z: 5 }, { name: 'Carbon', symbol: 'C', z: 6 },
+        { name: 'Nitrogen', symbol: 'N', z: 7 }, { name: 'Oxygen', symbol: 'O', z: 8 },
+        { name: 'Fluorine', symbol: 'F', z: 9 }, { name: 'Neon', symbol: 'Ne', z: 10 },
+        { name: 'Sodium', symbol: 'Na', z: 11 }, { name: 'Magnesium', symbol: 'Mg', z: 12 }
+    ];
+
+    // Game State
+    let currentChallenge;
+    let isCounterUsed = false;
+
+    function drawNucleus(protonCount) {
+        nucleusCanvas.width = nucleusCanvas.clientWidth;
+        nucleusCanvas.height = nucleusCanvas.clientHeight;
+        const centerX = nucleusCanvas.width / 2;
+        const centerY = nucleusCanvas.height / 2;
+        
+        for (let i = 0; i < protonCount; i++) {
+            const angle = Math.random() * 2 * Math.PI;
+            const radius = Math.random() * (centerX - 15);
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+            
+            ctx.beginPath();
+            ctx.arc(x, y, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#e63946';
+            ctx.fill();
+        }
+    }
+    
+    function populatePeriodicTable() {
+        periodicTable.innerHTML = '';
+        elementsData.forEach(el => {
+            const tile = document.createElement('div');
+            tile.className = 'element-tile';
+            tile.dataset.z = el.z;
+            tile.innerHTML = `
+                <div class="atomic-number">${el.z}</div>
+                <div class="element-symbol">${el.symbol}</div>
+                <div class="element-name">${el.name}</div>
+            `;
+            tile.addEventListener('click', () => handleGuess(el.z, tile));
+            periodicTable.appendChild(tile);
+        });
+    }
+
+    function setupChallenge() {
+        if (!currentChallenge || elementsData.indexOf(currentChallenge) === elementsData.length - 1) {
+            currentChallenge = elementsData[Math.floor(Math.random() * 6)]; // First 6
+        } else {
+             currentChallenge = elementsData[elementsData.indexOf(currentChallenge) + 1];
+        }
+
+        isCounterUsed = false;
+        protonCounterTool.textContent = 'Click to Count Protons';
+        protonCounterTool.style.backgroundColor = 'var(--accent-color)';
+        periodicTable.style.opacity = '0.5';
+        periodicTable.style.pointerEvents = 'none';
+        nextBtn.style.display = 'none';
+
+        populatePeriodicTable();
+        drawNucleus(currentChallenge.z);
+    }
+    
+    function useCounter() {
+        if (isCounterUsed) return;
+        isCounterUsed = true;
+        protonCounterTool.textContent = `Protons (Z) = ${currentChallenge.z}`;
+        protonCounterTool.style.backgroundColor = 'var(--primary-color)';
+        periodicTable.style.opacity = '1';
+        periodicTable.style.pointerEvents = 'auto';
+    }
+
+    function handleGuess(guessedZ, tile) {
+        if (!isCounterUsed) {
+            protonCounterTool.textContent = 'Count the protons first!';
+            return;
+        }
+        
+        const isCorrect = guessedZ === currentChallenge.z;
+        tile.classList.add(isCorrect ? 'correct' : 'incorrect');
+        
+        if (isCorrect) {
+            nextBtn.style.display = 'inline-block';
+            // Disable further guesses
+            periodicTable.style.pointerEvents = 'none';
+        } else {
+            setTimeout(() => tile.classList.remove('incorrect'), 1000);
+        }
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        currentChallenge = null;
+        setupChallenge();
+    }
+    
+    // Event Listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', startGame);
+    nextBtn.addEventListener('click', setupChallenge);
+    protonCounterTool.addEventListener('click', useCounter);
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

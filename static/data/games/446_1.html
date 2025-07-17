@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Unstable Atom - Rutherford's Model</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --primary-color: #c9184a; /* Strong Pink/Red */
+            --accent-color: #ff758f; /* Lighter Pink */
+            --text-color: #590d22;
+            --heading-font: 'Baloo 2', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 8px 30px rgba(201, 24, 74, 0.1);
+            --correct-color: #2a9d8f;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 25px;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .instructions-card, .game-card {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+            align-self: flex-start;
+        }
+
+        .instructions-card { flex: 3; }
+        .game-card {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-header {
+            font-family: var(--heading-font);
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(45deg, #ffccd5, #fff0f3);
+            padding: 8px 25px;
+            border-radius: 16px;
+        }
+
+        .instructions-list { list-style: none; padding-left: 0; }
+        .instructions-list li {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            display: flex;
+            align-items: flex-start;
+            padding: 10px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .instructions-list li.active-step {
+            background-color: #fff1f2;
+            border-left: 5px solid var(--accent-color);
+        }
+        .step-icon { font-size: 24px; margin-right: 12px; margin-top: -2px; }
+        .instructions-list b { color: var(--primary-color); }
+        .key-concept {
+            background-color: #fff1f2; padding: 10px; border-radius: 8px;
+            border-left: 4px solid var(--accent-color); margin-top: 5px;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: var(--heading-font);
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #start-btn { background-color: var(--correct-color); color: white; box-shadow: 0 4px 15px rgba(42, 157, 143, 0.3); }
+        #reset-btn { background-color: #ffc107; color: #333; }
+        #physics-btn { background-color: var(--primary-color); color: white; display: none; }
+        .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+        .btn:disabled { background-color: #adb5bd; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+        #initial-message {
+            font-family: var(--heading-font);
+            font-size: 24px;
+            color: #999;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+        }
+
+        .lab-wrapper { width: 100%; display: none; flex-direction: column; align-items: center; }
+        .simulation-area {
+            width: 100%; height: 450px;
+            background-color: #2b2d42;
+            border-radius: 16px; position: relative;
+            overflow: hidden;
+        }
+        .simulation-canvas { width: 100%; height: 100%; }
+        
+        #feedback-message {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            background: rgba(255,255,255,0.95);
+            padding: 25px; border-radius: 16px;
+            text-align: center;
+            font-size: 24px; font-family: var(--heading-font);
+            color: var(--primary-color);
+            display: none; animation: popIn 0.5s ease;
+        }
+        @keyframes popIn { from { opacity: 0; transform: translate(-50%, -40%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="instructions-card">
+            <h2 class="card-header">The Unstable Atom</h2>
+            <p><strong>Lesson:</strong> Rutherford's Model & Its Drawbacks</p>
+            <br>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">Your Mission</h3>
+            <p style="margin-bottom: 15px;">Rutherford's model was a huge leap forward, but it had one giant problem. Your mission is to discover why his atom, according to the physics of the time, just couldn't exist!</p>
+            <h3 style="font-family: var(--heading-font); color: var(--primary-color);">How to Experiment</h3>
+            <ul class="instructions-list" id="instructions-list">
+                <li id="step-1" class="active-step">
+                    <span class="step-icon">👍</span>
+                    <span>Click <b>Start</b> to see Rutherford's atom: a positive nucleus with an electron orbiting it. So far, so good!</span>
+                </li>
+                <li id="step-2">
+                    <span class="step-icon">⚡</span>
+                    <span>Now, click <b>"Apply Classical Physics"</b>. This will apply the known rule that accelerating charges should lose energy.</span>
+                </li>
+                 <li id="step-3" class="key-concept">
+                    <span class="step-icon">💥</span>
+                    <span><b>Observe the Collapse!</b> The electron loses energy, its orbit decays, and it spirals into the nucleus. This proved the model was incomplete and unstable.</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="game-card">
+            <div class="controls">
+                <button id="start-btn" class="btn">Start</button>
+                <button id="reset-btn" class="btn">Reset</button>
+                <button id="physics-btn" class="btn">Apply Classical Physics</button>
+            </div>
+            <div id="initial-message">Click 'Start' to test Rutherford's model!</div>
+            <div class="lab-wrapper" id="lab-wrapper">
+                <div class="simulation-area">
+                    <canvas id="simulation-canvas" class="simulation-canvas"></canvas>
+                    <div id="feedback-message"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // DOM Elements
+    const startBtn = document.getElementById('start-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const physicsBtn = document.getElementById('physics-btn');
+    const initialMessage = document.getElementById('initial-message');
+    const labWrapper = document.getElementById('lab-wrapper');
+    const canvas = document.getElementById('simulation-canvas');
+    const ctx = canvas.getContext('2d');
+    const feedbackMessage = document.getElementById('feedback-message');
+    const instructionsList = document.getElementById('instructions-list');
+
+    // Game State
+    let nucleus, electron;
+    let animationFrameId;
+    let isCollapsing = false;
+
+    // Classes
+    class Nucleus {
+        constructor(x, y) {
+            this.x = x; this.y = y; this.radius = 20;
+            this.color = '#ffb703';
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 15;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+            
+            ctx.fillStyle = '#8338ec';
+            ctx.font = 'bold 24px Baloo 2';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('+', this.x, this.y);
+        }
+    }
+
+    class Electron {
+        constructor(nucleus) {
+            this.nucleus = nucleus;
+            this.angle = 0;
+            this.radius = 150;
+            this.speed = 0.02;
+            this.x = this.nucleus.x + this.radius;
+            this.y = this.nucleus.y;
+            this.color = '#4cc9f0';
+        }
+
+        update() {
+            this.angle += this.speed;
+            if (isCollapsing && this.radius > this.nucleus.radius + 5) {
+                this.radius -= 0.5; // Spiral inwards
+                this.speed += 0.0005; // Speed up as it gets closer
+            }
+            this.x = this.nucleus.x + this.radius * Math.cos(this.angle);
+            this.y = this.nucleus.y + this.radius * Math.sin(this.angle);
+        }
+
+        draw() {
+            // Draw orbit path (trail)
+            if(isCollapsing) {
+                ctx.beginPath();
+                ctx.moveTo(this.nucleus.x, this.nucleus.y);
+                ctx.lineTo(this.x, this.y);
+                ctx.strokeStyle = 'rgba(255, 117, 143, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            // Draw electron
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 8, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = isCollapsing ? 20 : 10;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+    }
+    
+    // Game Logic
+    function updateInstructions(step) {
+        instructionsList.querySelectorAll('li').forEach(li => li.classList.remove('active-step'));
+        document.getElementById(`step-${step}`).classList.add('active-step');
+    }
+    
+    function startCollapse() {
+        if (isCollapsing) return;
+        isCollapsing = true;
+        physicsBtn.disabled = true;
+        updateInstructions(3);
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        electron.update();
+        nucleus.draw();
+        electron.draw();
+
+        // Check for collision
+        const distance = Math.hypot(electron.x - nucleus.x, electron.y - nucleus.y);
+        if (distance <= nucleus.radius + 5) {
+            cancelAnimationFrame(animationFrameId);
+            feedbackMessage.textContent = 'Collision! The atom is unstable!';
+            feedbackMessage.style.display = 'block';
+        } else {
+            animationFrameId = requestAnimationFrame(animate);
+        }
+    }
+
+    function resetGame() {
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        isCollapsing = false;
+        physicsBtn.style.display = 'inline-block';
+        physicsBtn.disabled = false;
+        feedbackMessage.style.display = 'none';
+        
+        nucleus = new Nucleus(canvas.width / 2, canvas.height / 2);
+        electron = new Electron(nucleus);
+        
+        updateInstructions(2);
+        animate();
+    }
+
+    function startGame() {
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        canvas.width = canvas.parentElement.clientWidth;
+        canvas.height = canvas.clientHeight;
+        updateInstructions(1);
+        
+        // Initial stable atom display
+        nucleus = new Nucleus(canvas.width / 2, canvas.height / 2);
+        electron = new Electron(nucleus);
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        nucleus.draw();
+        electron.draw();
+
+        setTimeout(() => {
+            physicsBtn.style.display = 'inline-block';
+            resetGame();
+        }, 1500);
+    }
+    
+    // Event Listeners
+    startBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', resetGame);
+    physicsBtn.addEventListener('click', startCollapse);
+
+</script>
+</body>
+</html>
+<!--end-of-code-block-->

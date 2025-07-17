@@ -251,6 +251,7 @@
 
     // --- State & Canvas Contexts ---
     let state = {};
+    let animationFrameId;
     const mixtureCtx = mixtureCanvas.getContext('2d');
     const compoundCtx = compoundCanvas.getContext('2d');
     const IRON_COLOR = '#6c757d';
@@ -348,12 +349,18 @@
     }
 
     function startGame() {
+        // --- FIX: This line was missing ---
+        initialMessage.style.display = 'none';
+        labWrapper.style.display = 'flex';
+        // --- End of FIX ---
+
         state = { compoundFormed: false, selectedTool: null };
         initParticles();
         drawParticles(mixtureCtx, state.mixtureParticles);
         drawParticles(compoundCtx, state.compoundParticles);
         heatButton.disabled = false;
         feedbackArea.classList.remove('visible');
+        tools.forEach(t => t.classList.remove('active'));
     }
 
     // --- Event Listeners ---
@@ -379,7 +386,9 @@
                  p.color = COMPOUND_COLOR;
             });
             drawParticles(compoundCtx, state.compoundParticles);
-            if (!allBonded) requestAnimationFrame(anim);
+            if (!allBonded) {
+                animationFrameId = requestAnimationFrame(anim);
+            }
         };
         anim();
     });
@@ -388,6 +397,8 @@
         tool.addEventListener('click', () => {
             state.selectedTool = tool.dataset.tool;
             tools.forEach(t => t.classList.remove('active'));
+            // Use parentNode to remove active class from all tools in both stations
+            tool.parentElement.querySelectorAll('.tool').forEach(t => t.classList.remove('active'));
             tool.classList.add('active');
         });
     });
@@ -405,4 +416,3 @@
 </script>
 </body>
 </html>
-<!--end-of-code-block-->
